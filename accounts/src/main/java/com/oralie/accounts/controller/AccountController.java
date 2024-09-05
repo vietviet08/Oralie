@@ -1,6 +1,5 @@
 package com.oralie.accounts.controller;
 
-import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.oralie.accounts.dto.AccountsContactDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,8 +21,15 @@ public class AccountController {
     @Autowired
     private AccountsContactDto accountsContactDto;
 
-    @Value("${build.version}")
+    @Value("${info.app.version}")
     private String build;
+
+    @GetMapping("/build-version")
+    public ResponseEntity<String> getBuildVersion() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(build);
+    }
 
     @GetMapping("/java-version")
     public ResponseEntity<String> getJavaVersion() {

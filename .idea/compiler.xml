@@ -2,17 +2,28 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Accounts" />
+        <module name="eurekaserver" />
+        <module name="configserver" />
+        <module name="accounts" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Accounts" target="17" />
+      <module name="customer" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="Accounts" options="-parameters" />
+      <module name="accounts" options="-parameters" />
+      <module name="configserver" options="-parameters" />
+      <module name="customer" options="-parameters" />
+      <module name="eurekaserver" options="-parameters" />
     </option>
   </component>
 </project>

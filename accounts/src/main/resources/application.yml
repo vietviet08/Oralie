@@ -18,6 +18,9 @@ spring:
   profiles:
     active: "prod"
 
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
 management:
   endpoints:
     web:
@@ -29,11 +32,26 @@ management:
     liveness-state:
       enabled: true
 
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
 info:
   app:
     name: "accounts"
     description: "Accounts application"
     version: "1.0.0"
+
+logging:
+  level:
+    com:
+      oralie:
+        accounts: DEBUG
 
 server:
   port: 8080
