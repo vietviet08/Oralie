@@ -1,0 +1,16 @@
+spring:
+  config:
+    activate:
+      on-profile: "prod"
+
+build:
+  version: "2.0"
+
+accounts:
+  message: "This is message for accounts service related Prod APIs"
+  contactInfo:
+    name: "Nguyen Quoc Viet"
+    email: "vvivu789@gmail.com"
+  onCallSupport:
+    - (+84)777560753
+    - (+84)935526710

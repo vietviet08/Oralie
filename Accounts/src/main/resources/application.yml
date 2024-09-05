@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: accounts
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/customers_db?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=UTF-8
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  profiles:
+    active: "prod"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+
+info:
+  app:
+    name: "accounts"
+    description: "Accounts application"
+    version: "1.0.0"
+
+server:
+  port: 8080
