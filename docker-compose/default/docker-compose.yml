@@ -1,0 +1,15 @@
+services:
+  accountsdb:
+    container_name: accountsdb
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: accountsdb
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
+
+networks:
+  vietquoc:
+    driver: bridge
