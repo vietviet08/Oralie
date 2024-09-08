@@ -1,6 +1,7 @@
 package com.oralie.accounts.controller;
 
 import com.oralie.accounts.dto.AccountsContactDto;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -11,6 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(
+        name = "CRUD REST APIs for Accounts",
+        description = "CREATE, READ, UPDATE, DELETE Accounts"
+)
 @RestController
 @RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class AccountController {
