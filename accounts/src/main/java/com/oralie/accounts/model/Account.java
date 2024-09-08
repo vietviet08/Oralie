@@ -20,8 +20,10 @@ public class Account extends BaseEntity {
     @Column(name = "account_id")
     private Long id;
 
-    @Column(name = "name")
-    private String name;
+    private String userId;
+
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "email")
     private String email;
@@ -29,6 +31,9 @@ public class Account extends BaseEntity {
     @Column(name = "password")
     private String password;
 
-
+    private String phone;
+    private String address;
+    private String fullName;
+    private Boolean gender;
 
 }

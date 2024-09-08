@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Configuration
-public class SecurityConfig {
+ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -27,7 +27,8 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/**",
+                        .requestMatchers(
+                                "/api/**",
                                 "/actuator/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",

@@ -20,7 +20,9 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http.authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec.pathMatchers(HttpMethod.GET).permitAll()
-                        .pathMatchers("/api/accounts/**").hasRole("ACCOUNTS")
+                        .pathMatchers("/accounts/**")
+                                .permitAll()
+//                                .hasRole("ACCOUNTS")
 //                        .pathMatchers("/api/cards/**").hasRole("CARDS")
 //                        .pathMatchers("/api/loans/**").hasRole("LOANS")
                         )

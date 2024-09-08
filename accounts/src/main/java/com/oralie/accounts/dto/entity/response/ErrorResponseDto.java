@@ -1,15 +1,18 @@
 package com.oralie.accounts.dto.entity.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 
+@Schema(name = "ErrorResponse", description = "Schema to hold error response information")
 @Data
 @AllArgsConstructor
-@Schema(name = "ErrorResponse", description = "Schema to hold error response information")
+@NoArgsConstructor
 public class ErrorResponseDto {
 
     @Schema(description = "API path invoked by client")
