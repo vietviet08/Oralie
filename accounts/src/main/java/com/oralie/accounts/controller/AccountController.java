@@ -1,7 +1,9 @@
 package com.oralie.accounts.controller;
 
+import com.oralie.accounts.constant.AccountConstant;
 import com.oralie.accounts.dto.AccountsContactDto;
 import com.oralie.accounts.dto.entity.request.AccountRequest;
+import com.oralie.accounts.dto.entity.response.AccountResponse;
 import com.oralie.accounts.dto.entity.response.ResponseDto;
 import com.oralie.accounts.service.AccountService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +15,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Tag(
         name = "CRUD REST APIs for Accounts",
@@ -35,16 +39,35 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping("/register")
-    private ResponseEntity<ResponseDto> registerAccount(@RequestBody @Valid AccountRequest accountRequest) {
+    private ResponseEntity<ResponseDto<?>> registerAccount(@RequestBody @Valid AccountRequest accountRequest) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(ResponseDto.builder()
+                        .statusMessage(AccountConstant.ACCOUNT_CREATED)
+                        .statusCode(HttpStatus.OK.toString())
+                        .data(accountService.createAccount(accountRequest))
+                        .build());
+    }
 
-        accountService.createAccount(accountRequest);
-
+    @GetMapping("/account/{id}")
+    public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ResponseDto.builder()
-                        .statusMessage("Account created successfully")
-                        .statusCode(HttpStatus.OK.toString())
-                        .build());
+                .body(accountService.getAccountById(id));
+    }
+
+    @GetMapping("/user/{username}")
+    public ResponseEntity<AccountResponse> getAccountByUsername(@PathVariable String username) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountService.getAccount(username));
+    }
+
+    @GetMapping("/accounts")
+    public ResponseEntity<List<AccountResponse>> getAllAccounts() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountService.getAllAccounts());
     }
 
 

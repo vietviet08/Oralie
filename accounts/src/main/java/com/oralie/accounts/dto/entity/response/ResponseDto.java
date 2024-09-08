@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ResponseDto {
+public class ResponseDto<T> {
 
     @Schema(description = "Status code in the response")
     private String statusCode;
@@ -20,4 +20,6 @@ public class ResponseDto {
     @Schema(description = "Status message in the response")
     private String statusMessage;
 
+    @Schema(description = "This is the data in the response")
+    private T data;
 }

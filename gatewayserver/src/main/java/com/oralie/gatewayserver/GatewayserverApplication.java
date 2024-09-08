@@ -27,6 +27,7 @@ public class GatewayserverApplication {
                                 )
                         )
                         .uri("lb://ACCOUNTS")
-                ).build();
+                )
+                .build();
     }
 }

@@ -6,7 +6,8 @@ import com.oralie.accounts.dto.entity.response.AccountResponse;
 import com.oralie.accounts.dto.identity.Credential;
 import com.oralie.accounts.dto.identity.TokenExchangeParam;
 import com.oralie.accounts.dto.identity.UserCreationParam;
-import com.oralie.accounts.exception.AccountAlreadyExistException;
+import com.oralie.accounts.exception.ErrorNormalizer;
+import com.oralie.accounts.exception.ResourceNotFoundException;
 import com.oralie.accounts.model.Account;
 import com.oralie.accounts.repository.AccountsRepository;
 import com.oralie.accounts.repository.IdentityClient;
@@ -29,6 +30,7 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountsRepository accountsRepository;
     private final IdentityClient identityClient;
+    private final ErrorNormalizer errorNormalizer;
 
     @Value("${idp.client-id}")
     private String clientId;
@@ -37,7 +39,7 @@ public class AccountServiceImpl implements AccountService {
     private String clientSecret;
 
     @Override
-    public String createAccount(AccountRequest request) {
+    public AccountResponse createAccount(AccountRequest request) {
         try {
             var token = identityClient.exchangeToken(TokenExchangeParam.builder()
                     .grant_type("client_credentials")
@@ -72,11 +74,11 @@ public class AccountServiceImpl implements AccountService {
             var profile = mapAccountRequestToAccount(request);
             profile.setUserId(userId);
 
-             accountsRepository.save(profile);
-            return AccountConstant.ACCOUNT_CREATED;
+            Account account = accountsRepository.save(profile);
+            return mapAccountToAccountResponse(account);
         } catch (FeignException exception) {
-           log.error("Error while creating account", exception);
-           return AccountConstant.FEIGN_EXCEPTION;
+            log.error("Error while creating account", exception);
+            throw errorNormalizer.handleKeyCloakException(exception);
         }
     }
 
@@ -91,8 +93,20 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public AccountResponse getAccountById(Long id) {
+        Account account = accountsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account not found", "id", id.toString()));
+        return mapAccountToAccountResponse(account);
+    }
+
+    @Override
+    public List<AccountResponse> getAllAccounts() {
+        return accountResponses(accountsRepository.findAll());
+    }
+
+    @Override
     public AccountResponse getAccount(String username) {
-        return null;
+        Account account = accountsRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
+        return mapAccountToAccountResponse(account);
     }
 
     @Override
@@ -105,15 +119,15 @@ public class AccountServiceImpl implements AccountService {
 
     }
 
-   private String extractUserId(ResponseEntity<?> response) {
-    List<String> locationHeaders = response.getHeaders().get("Location");
-    if (locationHeaders == null || locationHeaders.isEmpty()) {
-        throw new IllegalArgumentException("Location header is missing");
+    private String extractUserId(ResponseEntity<?> response) {
+        List<String> locationHeaders = response.getHeaders().get("Location");
+        if (locationHeaders == null || locationHeaders.isEmpty()) {
+            throw new IllegalArgumentException("Location header is missing");
+        }
+        String location = locationHeaders.get(0);
+        String[] splitedStr = location.split("/");
+        return splitedStr[splitedStr.length - 1];
     }
-    String location = locationHeaders.get(0);
-    String[] splitedStr = location.split("/");
-    return splitedStr[splitedStr.length - 1];
-}
 
     private Account mapAccountRequestToAccount(AccountRequest accountRequest) {
         Account account = new Account();
@@ -124,5 +138,25 @@ public class AccountServiceImpl implements AccountService {
         account.setFullName(accountRequest.getFirstName() + " " + accountRequest.getLastName());
         account.setGender(accountRequest.getGender());
         return account;
+    }
+
+    private AccountResponse mapAccountToAccountResponse(Account account) {
+        return AccountResponse.builder()
+                .username(account.getUsername())
+                .email(account.getEmail())
+                .phone(account.getPhone())
+                .address(account.getAddress())
+                .fullName(account.getFullName()).build();
+    }
+
+    private List<AccountResponse> accountResponses(List<Account> accounts) {
+        return accounts.stream()
+                .map(account -> AccountResponse.builder()
+                        .username(account.getUsername())
+                        .email(account.getEmail())
+                        .phone(account.getPhone())
+                        .address(account.getAddress())
+                        .fullName(account.getFullName()).build())
+                .toList();
     }
 }

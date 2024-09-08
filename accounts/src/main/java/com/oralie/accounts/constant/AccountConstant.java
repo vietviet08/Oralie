@@ -41,4 +41,7 @@ public class AccountConstant {
     public static final String ROLE_NAME_INVALID = "Role name invalid";
     public static final String ROLE_DESCRIPTION_INVALID = "Role description invalid";
     public static final String ROLE_ID_NOT_MATCH = "Role";
+    public static final String EMAIL_EXISTED = "Email existed";
+    public static final String USERNAME_IS_MISSING = "Username is missing";
+    public static final Object UNCATEGORIZED_EXCEPTION = "Uncategorized exception";
 }
