@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
                                 "/swagger-ui.html",
                                 "/swagger-ui",
                                 "/swagger-ui/**").permitAll()
+                        .requestMatchers("/api/contact-info").hasRole("ACCOUNTS")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()).authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
                 .build();
