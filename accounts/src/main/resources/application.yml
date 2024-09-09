@@ -24,17 +24,6 @@ spring:
 
   security:
     oauth2:
-#      client:
-#        registration:
-#            keycloak:
-#                client-id: accounts-service
-#                client-secret: 3b3b3b3b-3b3b-3b3b-3b3b-3b3b3b3b3b3b
-#                client-name: accounts-service
-#                provider: keycloak
-#                authorization-grant-type: authorization_code
-#                redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
-#                scope: openid, profile, email
-
       resourceserver:
         jwt:
           issuer-uri: http://localhost:7080/realms/oralie
@@ -47,20 +36,6 @@ springdoc:
     path: /swagger-ui.html
   packages-to-scan:
     - com.oralie.accounts
-
-
-idp:
-  url: http://localhost:7080
-  client-id: oralie_accounts
-  client-secret: CC5JEspbl4tM42MkoWjNr2dvpOf9A6WQ
-
-#keycloak:
-#  realm: oralie
-#  auth-server-url: http://localhost:8180/auth
-#  ssl-required: external
-#  resource: accounts-service
-#  public-client: true
-#  confidential-port: 0
 
 
 management:
@@ -88,6 +63,11 @@ info:
     name: "accounts"
     description: "Accounts application"
     version: "1.0.0"
+
+idp:
+  url: http://localhost:7080
+  client-id: oralie_accounts
+  client-secret: CC5JEspbl4tM42MkoWjNr2dvpOf9A6WQ
 
 logging:
   level:
