@@ -44,4 +44,5 @@ public class AccountConstant {
     public static final String EMAIL_EXISTED = "Email existed";
     public static final String USERNAME_IS_MISSING = "Username is missing";
     public static final Object UNCATEGORIZED_EXCEPTION = "Uncategorized exception";
+    public static final String UNAUTHORIZED =  "Unauthorized";
 }
