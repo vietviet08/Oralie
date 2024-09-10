@@ -3,16 +3,23 @@ spring:
     name: gatewayserver
   config:
     import: "optional:configserver:http://localhost:8071/"
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
-      httpclient:
-        connect-timeout: 1000
-        response-timeout: 2s
-#  data:
+cloud:
+  gateway:
+    routes:
+      - id: accounts_service
+        uri: lb://ACCOUNTS
+        predicates:
+          - Path=/api/accounts/**
+        filters:
+          - RewritePath=/api/accounts/(?<remaining>.*), /${remaining}
+    discovery:
+      locator:
+        enabled: true
+        lower-case-service-id: true
+    httpclient:
+      connect-timeout: 1000
+      response-timeout: 2s
+  #  data:
 #    redis:
 #      connect-timeout: 2s
 #      host: localhost
@@ -34,6 +41,19 @@ management:
     gateway:
       enabled: true
 
+services:
+  accounts:
+    url: "http://localhost:8080"
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: "accounts-service"
+        url: "/aggregate/accounts-service/v3/api-docs"
+
 info:
   app:
     name: "gatewayserver"
@@ -45,6 +65,10 @@ logging:
     com:
       oralie:
         gatewayserver: DEBUG
+    org:
+      springframework:
+        security: DEBUG
+        web: DEBUG
 
 resilience4j.circuitbreaker:
     configs:

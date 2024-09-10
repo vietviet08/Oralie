@@ -74,6 +74,10 @@ logging:
     com:
       oralie:
         accounts: DEBUG
+    org:
+      springframework:
+        security: DEBUG
+        web: DEBUG
 
 server:
   port: 8080

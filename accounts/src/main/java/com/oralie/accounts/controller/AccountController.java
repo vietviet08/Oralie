@@ -23,7 +23,7 @@ import java.util.List;
         description = "CREATE, READ, UPDATE, DELETE Accounts"
 )
 @RestController
-@RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/api/accounts", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class AccountController {
 
     @Autowired
