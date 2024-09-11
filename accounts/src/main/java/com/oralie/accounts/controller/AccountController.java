@@ -24,7 +24,7 @@ import java.util.List;
         description = "CREATE, READ, UPDATE, DELETE Accounts"
 )
 @RestController
-@RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/accounts", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class AccountController {
 
     @Autowired
@@ -50,7 +50,7 @@ public class AccountController {
                         .build());
     }
 
-    @GetMapping("/account/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -64,7 +64,7 @@ public class AccountController {
                 .body(accountService.getAccount(username));
     }
 
-    @GetMapping("/accounts")
+    @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<AccountResponse>> getAllAccounts(
             @RequestParam(required = false, defaultValue = "0") int page,

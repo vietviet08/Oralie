@@ -1,54 +1,111 @@
 package com.oralie.accounts.service.impl;
 
 import com.oralie.accounts.dto.UserAddressDto;
+import com.oralie.accounts.exception.ResourceNotFoundException;
+import com.oralie.accounts.model.Account;
 import com.oralie.accounts.model.UserAddress;
+import com.oralie.accounts.repository.AccountsRepository;
+import com.oralie.accounts.repository.UserAddressRepository;
 import com.oralie.accounts.service.UserAddressService;
+import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class UserAddressServiceImpl implements UserAddressService {
+
+    private final UserAddressRepository userAddressRepository;
+    private final AccountsRepository accountsRepository;
+
     @Override
     public UserAddressDto save(UserAddressDto userAddressDto) {
-        return null;
+        UserAddress userAddress = userAddressRepository.save(mapToUserAddress(userAddressDto));
+        return mapToUserAddressDto(userAddress);
     }
 
     @Override
-    public UserAddressDto findById(Long id) {
-        return null;
-    }
+    public UserAddressDto update(UserAddressDto userAddress, Long id) {
+        UserAddress userAddressFind = userAddressRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User Address not found", "id", id+""));
+        userAddressFind.setAddressDetail("");
+        userAddressFind.setCity("");
+        userAddressFind.setPhone("");
+        userAddressRepository.save(userAddressFind);
 
-    @Override
-    public UserAddressDto findByUserId(Long id) {
-        return null;
-    }
-
-    @Override
-    public UserAddressDto findByUsername(Long id) {
-        return null;
-    }
-
-    @Override
-    public List<UserAddressDto> findAll() {
-        return List.of();
+        return mapToUserAddressDto(userAddressFind);
     }
 
     @Override
     public void deleteById(Long id) {
-
+        userAddressRepository.deleteById(id);
     }
 
     @Override
     public void deleteByUserId(String userId) {
-
+        userAddressRepository.deleteByUserId(userId);
     }
 
     @Override
     public void deleteByUsername(String username) {
-
     }
 
     @Override
-    public UserAddressDto update(UserAddressDto userAddress) {
-        return null;
+    public List<UserAddressDto> findAllByUserId(String userId, int page, int size, String sortBy, String sort) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+        Page<UserAddress> userAddressDtoPage = userAddressRepository.findAllByUserId(userId, pageable);
+        return mapToUserAddressDtoList(userAddressDtoPage.getContent());
+    }
+
+    @Override
+    public List<UserAddressDto> findAll(int page, int size, String sortBy, String sort) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+        Page<UserAddress> userAddressDtoPage = userAddressRepository.findAll(pageable);
+        return mapToUserAddressDtoList(userAddressDtoPage.getContent());
+    }
+
+    private String getUsername(String userId) {
+        Account account = accountsRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found", "userId", userId));
+        return account.getUsername();
+    }
+
+    private List<UserAddressDto> mapToUserAddressDtoList(List<UserAddress> userAddressList) {
+
+        return userAddressList.stream().map(userAddress ->
+                     UserAddressDto.builder()
+                    .userId(userAddress.getUserId())
+                    .username(getUsername(userAddress.getUserId()))
+                    .phone(userAddress.getPhone())
+                    .addressDetail(userAddress.getAddressDetail())
+                    .city(userAddress.getCity())
+                    .build()).toList();
+    }
+
+    private UserAddressDto mapToUserAddressDto(UserAddress userAddress) {
+        return UserAddressDto.builder()
+                .userId(userAddress.getUserId())
+                .username(getUsername(userAddress.getUserId()))
+                .phone(userAddress.getPhone())
+                .addressDetail(userAddress.getAddressDetail())
+                .city(userAddress.getCity())
+                .build();
+    }
+
+    private UserAddress mapToUserAddress(UserAddressDto userAddressDto) {
+        return UserAddress.builder()
+                .userId(userAddressDto.getUserId())
+                .phone(userAddressDto.getPhone())
+                .addressDetail(userAddressDto.getAddressDetail())
+                .city(userAddressDto.getCity())
+                .build();
     }
 }
