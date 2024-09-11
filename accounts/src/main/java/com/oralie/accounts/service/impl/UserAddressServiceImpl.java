@@ -13,6 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.orm.hibernate5.SpringSessionContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,24 +29,47 @@ public class UserAddressServiceImpl implements UserAddressService {
 
     @Override
     public UserAddressDto save(UserAddressDto userAddressDto) {
-        UserAddress userAddress = userAddressRepository.save(mapToUserAddress(userAddressDto));
-        return mapToUserAddressDto(userAddress);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Account account = accountsRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
+        account.getAddress().addLast(mapToUserAddress(userAddressDto));
+        accountsRepository.save(account);
+//        UserAddress userAddress = userAddressRepository.save(mapToUserAddress(userAddressDto));
+        return mapToUserAddressDto(mapToUserAddress(userAddressDto));
     }
 
     @Override
     public UserAddressDto update(UserAddressDto userAddress, Long id) {
-        UserAddress userAddressFind = userAddressRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User Address not found", "id", id+""));
-        userAddressFind.setAddressDetail("");
-        userAddressFind.setCity("");
-        userAddressFind.setPhone("");
-        userAddressRepository.save(userAddressFind);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Account account = accountsRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
 
-        return mapToUserAddressDto(userAddressFind);
+        UserAddress address = account.getAddress().stream().filter(userAddress1 -> userAddress1.getId().equals(id)).findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("User Address not found", "id", id+""));
+
+//        UserAddress userAddressFind = userAddressRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("User Address not found", "id", id+""));
+
+        address.setAddressDetail(userAddress.getAddressDetail());
+        address.setCity(userAddress.getCity());
+        address.setPhone(userAddress.getPhone());
+
+        accountsRepository.save(account);
+
+        return mapToUserAddressDto(address);
     }
 
     @Override
     public void deleteById(Long id) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Account account = accountsRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
+
+        boolean addressExists = account.getAddress().stream().anyMatch(address -> address.getId().equals(id));
+        if (!addressExists) {
+            throw new ResourceNotFoundException("User Address not found", "id", id + "");
+        }
+
         userAddressRepository.deleteById(id);
     }
 
