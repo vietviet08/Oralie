@@ -3,22 +3,15 @@ spring:
     name: gatewayserver
   config:
     import: "optional:configserver:http://localhost:8071/"
-cloud:
-  gateway:
-    routes:
-      - id: accounts_service
-        uri: lb://ACCOUNTS
-        predicates:
-          - Path=/api/accounts/**
-        filters:
-          - RewritePath=/api/accounts/(?<remaining>.*), /${remaining}
-    discovery:
-      locator:
-        enabled: true
-        lower-case-service-id: true
-    httpclient:
-      connect-timeout: 1000
-      response-timeout: 2s
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      httpclient:
+        connect-timeout: 1000
+        response-timeout: 2s
   #  data:
 #    redis:
 #      connect-timeout: 2s
@@ -29,7 +22,6 @@ cloud:
     oauth2:
       resourceserver:
         jwt:
-#          jwk-set-uri: "http://localhost:7080/realms/oralie/protocol/openid-connect/certs"
             issuer-uri: "http://localhost:7080/realms/oralie"
 
 management:

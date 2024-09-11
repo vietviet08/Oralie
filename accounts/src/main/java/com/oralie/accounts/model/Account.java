@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -31,8 +32,9 @@ public class Account extends BaseEntity {
     @Column(name = "password")
     private String password;
 
-    private String phone;
-    private String address;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
+    private List<UserAddress> address;
+
     private String fullName;
     private Boolean gender;
 

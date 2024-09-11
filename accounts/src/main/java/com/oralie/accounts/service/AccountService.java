@@ -7,11 +7,10 @@ import java.util.List;
 
 public interface AccountService {
     AccountResponse createAccount(AccountRequest accountRequest);
-    void updateAccount(AccountRequest accountRequest);
+    AccountResponse updateAccount(AccountRequest accountRequest);
     void deleteAccount(String username);
     AccountResponse getAccountById(Long id);
-    List<AccountResponse> getAllAccounts();
     AccountResponse getAccount(String username);
-    List<AccountResponse> getAccounts();
+    List<AccountResponse> getAccounts(int page, int size, String sortBy, String sort);
     void changePassword(String username, String password);
 }

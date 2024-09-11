@@ -14,6 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
         description = "CREATE, READ, UPDATE, DELETE Accounts"
 )
 @RestController
-@RequestMapping(path = "/api/accounts", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 public class AccountController {
 
     @Autowired
@@ -64,12 +65,51 @@ public class AccountController {
     }
 
     @GetMapping("/accounts")
-    public ResponseEntity<List<AccountResponse>> getAllAccounts() {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<AccountResponse>> getAllAccounts(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String sort
+    ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(accountService.getAllAccounts());
+                .body(accountService.getAccounts(page, size, sortBy, sort));
     }
 
+    @PutMapping("/update")
+    public ResponseEntity<ResponseDto<?>> updateAccount(@RequestBody @Valid AccountRequest accountRequest) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseDto.builder()
+                        .statusMessage(AccountConstant.ACCOUNT_UPDATED)
+                        .statusCode(HttpStatus.OK.toString())
+                        .data(accountService.updateAccount(accountRequest))
+                        .build());
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<ResponseDto<?>> changePassword(@RequestParam String username, @RequestParam String password) {
+        accountService.changePassword(username, password);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseDto.builder()
+                        .statusMessage(AccountConstant.PASSWORD_CHANGED)
+                        .statusCode(HttpStatus.OK.toString())
+                        .build());
+    }
+
+    @DeleteMapping("/delete/{username}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ResponseDto<?>> deleteAccount(@PathVariable String username) {
+        accountService.deleteAccount(username);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseDto.builder()
+                        .statusMessage(AccountConstant.ACCOUNT_DELETED)
+                        .statusCode(HttpStatus.OK.toString())
+                        .build());
+    }
 
     @GetMapping("/build-version")
     public ResponseEntity<String> getBuildVersion() {

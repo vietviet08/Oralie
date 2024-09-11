@@ -1,6 +1,6 @@
 package com.oralie.accounts.service.impl;
 
-import com.oralie.accounts.constant.AccountConstant;
+import com.oralie.accounts.dto.UserAddressDto;
 import com.oralie.accounts.dto.entity.request.AccountRequest;
 import com.oralie.accounts.dto.entity.response.AccountResponse;
 import com.oralie.accounts.dto.identity.Credential;
@@ -9,15 +9,22 @@ import com.oralie.accounts.dto.identity.UserCreationParam;
 import com.oralie.accounts.exception.ErrorNormalizer;
 import com.oralie.accounts.exception.ResourceNotFoundException;
 import com.oralie.accounts.model.Account;
+import com.oralie.accounts.model.UserAddress;
 import com.oralie.accounts.repository.AccountsRepository;
-import com.oralie.accounts.repository.IdentityClient;
+import com.oralie.accounts.repository.client.IdentityClient;
+import com.oralie.accounts.repository.UserAddressRepository;
 import com.oralie.accounts.service.AccountService;
 import feign.FeignException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +36,7 @@ public class AccountServiceImpl implements AccountService {
     private static final Logger log = LoggerFactory.getLogger(AccountServiceImpl.class);
 
     private final AccountsRepository accountsRepository;
+    private final UserAddressRepository userAddressRepository;
     private final IdentityClient identityClient;
     private final ErrorNormalizer errorNormalizer;
 
@@ -41,19 +49,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponse createAccount(AccountRequest request) {
         try {
-            var token = identityClient.exchangeToken(TokenExchangeParam.builder()
-                    .grant_type("client_credentials")
-                    .client_id(clientId)
-                    .client_secret(clientSecret)
-                    .scope("openid")
-                    .build());
-
-            log.info("TokenInfo {}", token);
-            // Create user with client Token and given info
-
             // Get userId of keyCloak account
             var creationResponse = identityClient.createUser(
-                    "Bearer " + token.getAccessToken(),
+                    "Bearer " + getAccessToken(),
                     UserCreationParam.builder()
                             .username(request.getUsername())
                             .firstName(request.getFirstName())
@@ -83,13 +81,58 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void updateAccount(AccountRequest accountRequest) {
+    public AccountResponse updateAccount(AccountRequest accountRequest) {
+        try {
+            String password = accountsRepository.findByUsername(accountRequest.getUsername())
+                    .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", accountRequest.getUsername()))
+                    .getPassword();
 
+            var creationResponse = identityClient.updateUser(
+                    "Bearer " + getAccessToken(),
+                    UserCreationParam.builder()
+                            .username(accountRequest.getUsername())
+                            .firstName(accountRequest.getFirstName())
+                            .lastName(accountRequest.getLastName())
+                            .email(accountRequest.getEmail())
+                            .enabled(true)
+                            .emailVerified(false)
+                            .credentials(List.of(Credential.builder()
+                                    .type("password")
+                                    .temporary(false)
+                                    .value(password)
+                                    .build()))
+                            .build(), accountRequest.getUsername());
+
+            String userId = extractUserId(creationResponse);
+
+            var profile = mapAccountRequestToAccount(accountRequest);
+            profile.setUserId(userId);
+
+            Account account = accountsRepository.save(profile);
+            return mapAccountToAccountResponse(account);
+        } catch (FeignException exception) {
+            log.error("Error while update account", exception);
+            throw errorNormalizer.handleKeyCloakException(exception);
+        }
     }
 
     @Override
+    @Transactional
     public void deleteAccount(String username) {
+        try {
+            Account account = accountsRepository.findByUsername(username)
+                    .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
+            String userId = account.getUserId();
 
+            var creationResponse = identityClient.deleteUser(
+                    "Bearer " + getAccessToken(),
+                    userId);
+
+            accountsRepository.deleteById(account.getId());
+        } catch (FeignException exception) {
+            log.error("Error while delete account", exception);
+            throw errorNormalizer.handleKeyCloakException(exception);
+        }
     }
 
     @Override
@@ -98,10 +141,6 @@ public class AccountServiceImpl implements AccountService {
         return mapAccountToAccountResponse(account);
     }
 
-    @Override
-    public List<AccountResponse> getAllAccounts() {
-        return accountResponses(accountsRepository.findAll());
-    }
 
     @Override
     public AccountResponse getAccount(String username) {
@@ -110,13 +149,34 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<AccountResponse> getAccounts() {
-        return List.of();
+    public List<AccountResponse> getAccounts(int page, int size, String sortBy, String sort) {
+
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+
+        List<Account> accounts = accountsRepository.findAll(pageable).getContent();
+
+        return accountResponses(accounts);
     }
 
     @Override
     public void changePassword(String username, String password) {
+        try {
+            Account account = accountsRepository.findByUsername(username)
+                    .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
 
+            identityClient.updatePassword(
+                    "Bearer " + getAccessToken(),
+                    Credential.builder()
+                            .type("password")
+                            .temporary(false)
+                            .value(password)
+                            .build(),
+                    account.getUserId());
+        } catch (FeignException exception) {
+            log.error("Error while change password", exception);
+            throw errorNormalizer.handleKeyCloakException(exception);
+        }
     }
 
     private String extractUserId(ResponseEntity<?> response) {
@@ -129,12 +189,23 @@ public class AccountServiceImpl implements AccountService {
         return splitedStr[splitedStr.length - 1];
     }
 
+    private String getAccessToken() {
+        var token = identityClient.exchangeToken(TokenExchangeParam.builder()
+                .grant_type("client_credentials")
+                .client_id(clientId)
+                .client_secret(clientSecret)
+                .scope("openid")
+                .build());
+
+        return token.getAccessToken();
+    }
+
     private Account mapAccountRequestToAccount(AccountRequest accountRequest) {
         Account account = new Account();
         account.setUsername(accountRequest.getUsername());
+        account.setPassword(new BCryptPasswordEncoder().encode(accountRequest.getPassword()));
         account.setEmail(accountRequest.getEmail());
-        account.setPhone(accountRequest.getPhone());
-        account.setAddress(accountRequest.getAddress());
+        account.setAddress(null);
         account.setFullName(accountRequest.getFirstName() + " " + accountRequest.getLastName());
         account.setGender(accountRequest.getGender());
         return account;
@@ -144,9 +215,10 @@ public class AccountServiceImpl implements AccountService {
         return AccountResponse.builder()
                 .username(account.getUsername())
                 .email(account.getEmail())
-                .phone(account.getPhone())
-                .address(account.getAddress())
-                .fullName(account.getFullName()).build();
+                .address(userAddressDtos(account.getAddress()))
+                .fullName(account.getFullName())
+                .gender(account.getGender())
+                .build();
     }
 
     private List<AccountResponse> accountResponses(List<Account> accounts) {
@@ -154,9 +226,20 @@ public class AccountServiceImpl implements AccountService {
                 .map(account -> AccountResponse.builder()
                         .username(account.getUsername())
                         .email(account.getEmail())
-                        .phone(account.getPhone())
-                        .address(account.getAddress())
-                        .fullName(account.getFullName()).build())
+                        .address(userAddressDtos(account.getAddress()))
+                        .fullName(account.getFullName())
+                        .gender(account.getGender())
+                        .build())
+                .toList();
+    }
+
+    private List<UserAddressDto> userAddressDtos(List<UserAddress> userAddresses) {
+        return userAddresses.stream()
+                .map(userAddress -> UserAddressDto.builder()
+                        .userId(userAddress.getUserId())
+                        .phone(userAddress.getPhone())
+                        .addressDetail(userAddress.getAddressDetail())
+                        .city(userAddress.getCity()).build())
                 .toList();
     }
 }

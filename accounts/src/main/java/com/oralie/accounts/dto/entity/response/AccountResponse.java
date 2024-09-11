@@ -1,9 +1,12 @@
 package com.oralie.accounts.dto.entity.response;
 
+import com.oralie.accounts.dto.UserAddressDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -12,8 +15,7 @@ import lombok.NoArgsConstructor;
 public class AccountResponse {
     private String username;
     private String email;
-    private String phone;
-    private String address;
+    private List<UserAddressDto> address;
     private String fullName;
     private boolean gender;
 }

@@ -26,8 +26,6 @@ public class AccountRequest {
     @Email(message = "Email is invalid")
     private String email;
 
-    private String phone;
-    private String address;
     private String firstName;
     private String lastName;
     private Boolean gender;
