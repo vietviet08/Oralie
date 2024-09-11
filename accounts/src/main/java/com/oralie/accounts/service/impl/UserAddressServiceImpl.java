@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,7 +33,14 @@ public class UserAddressServiceImpl implements UserAddressService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountsRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
-        account.getAddress().addLast(mapToUserAddress(userAddressDto));
+
+        if (account.getAddress().isEmpty()) {
+            List<UserAddress> listUserAddress = new ArrayList<>();
+            account.setAddress(listUserAddress);
+        }
+
+        account.getAddress().add(mapToUserAddress(userAddressDto));
+
         accountsRepository.save(account);
 //        UserAddress userAddress = userAddressRepository.save(mapToUserAddress(userAddressDto));
         return mapToUserAddressDto(mapToUserAddress(userAddressDto));
@@ -45,7 +53,7 @@ public class UserAddressServiceImpl implements UserAddressService {
                 .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
 
         UserAddress address = account.getAddress().stream().filter(userAddress1 -> userAddress1.getId().equals(id)).findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("User Address not found", "id", id+""));
+                .orElseThrow(() -> new ResourceNotFoundException("User Address not found", "id", id + ""));
 
 //        UserAddress userAddressFind = userAddressRepository.findById(id)
 //                .orElseThrow(() -> new ResourceNotFoundException("User Address not found", "id", id+""));
@@ -107,13 +115,13 @@ public class UserAddressServiceImpl implements UserAddressService {
     private List<UserAddressDto> mapToUserAddressDtoList(List<UserAddress> userAddressList) {
 
         return userAddressList.stream().map(userAddress ->
-                     UserAddressDto.builder()
-                    .userId(userAddress.getUserId())
-                    .username(getUsername(userAddress.getUserId()))
-                    .phone(userAddress.getPhone())
-                    .addressDetail(userAddress.getAddressDetail())
-                    .city(userAddress.getCity())
-                    .build()).toList();
+                UserAddressDto.builder()
+                        .userId(userAddress.getUserId())
+                        .username(getUsername(userAddress.getUserId()))
+                        .phone(userAddress.getPhone())
+                        .addressDetail(userAddress.getAddressDetail())
+                        .city(userAddress.getCity())
+                        .build()).toList();
     }
 
     private UserAddressDto mapToUserAddressDto(UserAddress userAddress) {

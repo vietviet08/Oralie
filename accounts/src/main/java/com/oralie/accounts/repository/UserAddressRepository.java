@@ -13,7 +13,6 @@ import java.util.List;
 @Repository
 public interface UserAddressRepository extends JpaRepository<UserAddress, Long> {
     void deleteByUserId(String userId);
-    void deleteByUsername(String username);
 
     @Query("SELECT u FROM UserAddress u WHERE u.userId = :userId")
     Page<UserAddress> findAllByUserId(@Param("userId") String UserId, Pageable pageable);

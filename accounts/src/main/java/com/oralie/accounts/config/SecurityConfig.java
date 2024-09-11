@@ -33,6 +33,7 @@ import java.util.stream.Collectors;
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/",
                                 "/api/register",
                                 "/api/build-version",
                                 "/actuator/**",
