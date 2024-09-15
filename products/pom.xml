@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.oralie</groupId>
-    <artifactId>accounts</artifactId>
+    <artifactId>products</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>accounts</name>
-    <description>accounts</description>
+    <name>products</name>
+    <description>products</description>
     <url/>
     <licenses>
         <license/>
@@ -108,6 +108,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
