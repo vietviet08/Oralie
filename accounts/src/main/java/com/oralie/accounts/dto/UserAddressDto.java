@@ -10,9 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class UserAddressDto {
-    private String userId;
-    private String username;
-    private String phone;
-    private String addressDetail;
-    private String city;
+        private String userId;
+        private String username;
+        private String phone;
+        private String addressDetail;
+        private String city;
 }

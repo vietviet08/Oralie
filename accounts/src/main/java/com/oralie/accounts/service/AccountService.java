@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface AccountService {
     AccountResponse createAccount(AccountRequest accountRequest);
-    AccountResponse updateAccount(AccountRequest accountRequest);
+    AccountResponse updateAccount(AccountRequest accountRequest, boolean isCustomer);
     void deleteAccount(String username);
     AssignRole assignRole(String username, String roleName);
     AccountResponse getAccountById(Long id);

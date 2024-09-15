@@ -97,35 +97,37 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountResponse updateAccount(AccountRequest accountRequest) {
+    public AccountResponse updateAccount(AccountRequest accountRequest, boolean isCustomer) {
         try {
-            String password = accountsRepository.findByUsername(accountRequest.getUsername())
-                    .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", accountRequest.getUsername()))
-                    .getPassword();
+            Account account = accountsRepository.findByUsername(accountRequest.getUsername())
+                    .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", accountRequest.getUsername()));
+            if(isCustomer){
+                String userIdExisting = SecurityContextHolder.getContext().getAuthentication().getName();
+                String userIdCustomer =    account.getUserId();
+                if(!userIdExisting.equals(userIdCustomer)){
+                    throw new ResourceNotFoundException("Account not found", "username", accountRequest.getUsername());
+                }
+            }
+//            String password = account.getPassword();
 
             var creationResponse = identityClient.updateUser(
                     "Bearer " + getAccessToken(),
                     UserCreationParam.builder()
-                            .username(accountRequest.getUsername())
+//                            .username(account.getUsername())
                             .firstName(accountRequest.getFirstName())
                             .lastName(accountRequest.getLastName())
                             .email(accountRequest.getEmail())
                             .enabled(true)
                             .emailVerified(false)
-                            .credentials(List.of(Credential.builder()
-                                    .type("password")
-                                    .temporary(false)
-                                    .value(password)
-                                    .build()))
-                            .build(), accountRequest.getUsername());
+                            .build(), account.getUserId());
 
             String userId = extractUserId(creationResponse);
 
             var profile = mapAccountRequestToAccount(accountRequest);
             profile.setUserId(userId);
 
-            Account account = accountsRepository.save(profile);
-            return mapAccountToAccountResponse(account);
+            Account accountSave = accountsRepository.save(profile);
+            return mapAccountToAccountResponse(accountSave);
         } catch (FeignException exception) {
             log.error("Error while update account", exception);
             throw errorNormalizer.handleKeyCloakException(exception);

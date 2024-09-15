@@ -39,7 +39,7 @@ public class UserAddressController {
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sort,
-            @RequestParam() String userId
+            @RequestParam String userId
     ){
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -66,7 +66,7 @@ public class UserAddressController {
 
         userAddressService.deleteById(id);
         return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
+                .status(HttpStatus.OK)
                 .build();
     }
 }

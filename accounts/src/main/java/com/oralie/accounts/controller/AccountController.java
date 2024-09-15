@@ -2,10 +2,13 @@ package com.oralie.accounts.controller;
 
 import com.oralie.accounts.constant.AccountConstant;
 import com.oralie.accounts.dto.AccountsContactDto;
+import com.oralie.accounts.dto.ValidationGroups;
 import com.oralie.accounts.dto.entity.request.AccountRequest;
 import com.oralie.accounts.dto.entity.response.AccountResponse;
 import com.oralie.accounts.dto.entity.response.ResponseDto;
+import com.oralie.accounts.exception.ResourceNotFoundException;
 import com.oralie.accounts.service.AccountService;
+import feign.FeignException;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,9 +44,9 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping("/store/accounts/register")
-    private ResponseEntity<ResponseDto<?>> registerAccount(@RequestBody @Valid AccountRequest accountRequest) {
+    private ResponseEntity<ResponseDto<?>> registerAccount(@RequestBody @Validated(ValidationGroups.OnCreate.class) AccountRequest accountRequest) {
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(ResponseDto.builder()
                         .statusMessage(AccountConstant.ACCOUNT_CREATED)
                         .statusCode(HttpStatus.OK.toString())
@@ -84,47 +88,55 @@ public class AccountController {
     }
 
     @PutMapping("/dash/accounts/update")
-    public ResponseEntity<ResponseDto<?>> updateAccount(@RequestBody @Valid AccountRequest accountRequest) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ResponseDto.builder()
-                        .statusMessage(AccountConstant.ACCOUNT_UPDATED)
-                        .statusCode(HttpStatus.OK.toString())
-                        .data(accountService.updateAccount(accountRequest))
-                        .build());
+    public ResponseEntity<?> updateAccount(@RequestBody @Validated(ValidationGroups.OnUpdate.class) AccountRequest accountRequest) {
+        try {
+            accountService.updateAccount(accountRequest, false);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("/store/accounts/update")
-    public ResponseEntity<ResponseDto<?>> updateAccountProfile(@RequestBody @Valid AccountRequest accountRequest) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ResponseDto.builder()
-                        .statusMessage(AccountConstant.ACCOUNT_UPDATED)
-                        .statusCode(HttpStatus.OK.toString())
-                        .data(accountService.updateAccount(accountRequest))
-                        .build());
+    public ResponseEntity<?> updateAccountProfile(@RequestBody @Validated(ValidationGroups.OnUpdate.class) AccountRequest accountRequest) {
+        try {
+            accountService.updateAccount(accountRequest, true);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("/dash/accounts/change-password")
-    public ResponseEntity<ResponseDto<?>> changePassword(@RequestParam String username, @RequestParam String password) {
-        accountService.changePassword(username, password);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ResponseDto.builder()
-                        .statusMessage(AccountConstant.PASSWORD_CHANGED)
-                        .statusCode(HttpStatus.OK.toString())
-                        .build());
+    public ResponseEntity<?> changePassword(@RequestParam String username, @RequestBody String password) {
+        try {
+            accountService.changePassword(username, password);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PutMapping("/store/accounts/change-password")
-    public ResponseEntity<ResponseDto<?>> changePasswordProfile(@RequestParam String password) {
-        accountService.changePasswordProfile(password);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ResponseDto.builder()
-                        .statusMessage(AccountConstant.PASSWORD_CHANGED)
-                        .statusCode(HttpStatus.OK.toString())
-                        .build());
+    public ResponseEntity<?> changePasswordProfile(@RequestBody String password) {
+        try {
+            accountService.changePasswordProfile(password);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @DeleteMapping("/dash/accounts/delete/{username}")
