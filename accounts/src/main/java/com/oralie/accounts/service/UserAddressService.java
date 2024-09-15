@@ -8,9 +8,9 @@ import java.util.List;
 public interface UserAddressService {
     UserAddressDto save(UserAddressDto userAddressDto);
 
-    UserAddressDto update(UserAddressDto userAddress, Long id);
+    UserAddressDto update(UserAddressDto userAddress, Long idUserAddress);
 
-    void deleteById(Long id);
+    void deleteById(Long idUserAddress);
     void deleteByUserId(String userId);
     void deleteByUsername(String username);
 

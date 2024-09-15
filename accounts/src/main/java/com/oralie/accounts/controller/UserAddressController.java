@@ -15,13 +15,13 @@ import java.util.List;
         name = "CRUD REST APIs for User Address",
         description = "CREATE, READ, UPDATE, DELETE User Address"
 )
-@RequestMapping(path = "/user-address", produces = {"application/json"})
+@RequestMapping(produces = {"application/json"})
 @RequiredArgsConstructor
 public class UserAddressController {
 
     private final UserAddressService userAddressService;
 
-    @GetMapping
+    @GetMapping("/dash/user-address")
     public ResponseEntity<List<UserAddressDto>> getAllUserAddress(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
@@ -33,7 +33,7 @@ public class UserAddressController {
                 .body(userAddressService.findAll(page, size, sortBy, sort));
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/dash/user-address/{userId}")
     public ResponseEntity<List<UserAddressDto>> getUserAddressByUserId(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
@@ -46,14 +46,14 @@ public class UserAddressController {
                 .body(userAddressService.findAllByUserId(userId, page, size, sortBy, sort));
     }
 
-    @PostMapping("/save")
+    @PostMapping("/store/user-address/save")
     public ResponseEntity<UserAddressDto> saveUserAddress(@RequestBody UserAddressDto userAddressDto){
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(userAddressService.save(userAddressDto));
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/store/user-address/update/{id}")
     public ResponseEntity<UserAddressDto> updateUserAddress(@RequestBody UserAddressDto userAddressDto,
                                                             @PathVariable Long id){
         return ResponseEntity
@@ -61,7 +61,7 @@ public class UserAddressController {
                 .body(userAddressService.update(userAddressDto, id));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/dash/user-address/delete/{id}")
     public ResponseEntity<Void> deleteUserAddress(@PathVariable Long id){
 
         userAddressService.deleteById(id);

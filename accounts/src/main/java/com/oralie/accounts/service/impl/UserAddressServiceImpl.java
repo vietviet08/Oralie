@@ -30,9 +30,9 @@ public class UserAddressServiceImpl implements UserAddressService {
 
     @Override
     public UserAddressDto save(UserAddressDto userAddressDto) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Account account = accountsRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        Account account = accountsRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found", "userId", userId));
 
         if (account.getAddress().isEmpty()) {
             List<UserAddress> listUserAddress = new ArrayList<>();
@@ -47,13 +47,13 @@ public class UserAddressServiceImpl implements UserAddressService {
     }
 
     @Override
-    public UserAddressDto update(UserAddressDto userAddress, Long id) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Account account = accountsRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
+    public UserAddressDto update(UserAddressDto userAddress, Long idUserAddress) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        Account account = accountsRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found", "userId", userId));
 
-        UserAddress address = account.getAddress().stream().filter(userAddress1 -> userAddress1.getId().equals(id)).findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("User Address not found", "id", id + ""));
+        UserAddress address = account.getAddress().stream().filter(userAddress1 -> userAddress1.getId().equals(idUserAddress)).findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("User Address not found", "id", idUserAddress + ""));
 
 //        UserAddress userAddressFind = userAddressRepository.findById(id)
 //                .orElseThrow(() -> new ResourceNotFoundException("User Address not found", "id", id+""));
@@ -68,17 +68,17 @@ public class UserAddressServiceImpl implements UserAddressService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        Account account = accountsRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
+    public void deleteById(Long idUserAddress) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        Account account = accountsRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found", "userId", userId));
 
-        boolean addressExists = account.getAddress().stream().anyMatch(address -> address.getId().equals(id));
+        boolean addressExists = account.getAddress().stream().anyMatch(address -> address.getId().equals(idUserAddress));
         if (!addressExists) {
-            throw new ResourceNotFoundException("User Address not found", "id", id + "");
+            throw new ResourceNotFoundException("User Address not found", "id", idUserAddress + "");
         }
 
-        userAddressRepository.deleteById(id);
+        userAddressRepository.deleteById(idUserAddress);
     }
 
     @Override

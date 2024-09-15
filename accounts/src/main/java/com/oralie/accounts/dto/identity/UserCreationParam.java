@@ -21,5 +21,7 @@ public class UserCreationParam {
     boolean emailVerified;
     String firstName;
     String lastName;
+    List<String> realmRoles;
     List<Credential> credentials;
+
 }

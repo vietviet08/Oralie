@@ -3,6 +3,7 @@ package com.oralie.accounts.service.impl;
 import com.oralie.accounts.dto.UserAddressDto;
 import com.oralie.accounts.dto.entity.request.AccountRequest;
 import com.oralie.accounts.dto.entity.response.AccountResponse;
+import com.oralie.accounts.dto.identity.AssignRole;
 import com.oralie.accounts.dto.identity.Credential;
 import com.oralie.accounts.dto.identity.TokenExchangeParam;
 import com.oralie.accounts.dto.identity.UserCreationParam;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +48,18 @@ public class AccountServiceImpl implements AccountService {
     @Value("${idp.client-secret}")
     private String clientSecret;
 
+    // get access token? => all request can accept it?
+    private String getAccessToken() {
+        var token = identityClient.exchangeToken(TokenExchangeParam.builder()
+                .grant_type("client_credentials")
+                .client_id(clientId)
+                .client_secret(clientSecret)
+                .scope("openid")
+                .build());
+
+        return token.getAccessToken();
+    }
+
     @Override
     public AccountResponse createAccount(AccountRequest request) {
         try {
@@ -59,6 +73,7 @@ public class AccountServiceImpl implements AccountService {
                             .email(request.getEmail())
                             .enabled(true)
                             .emailVerified(false)
+                            .realmRoles(List.of("CUSTOMER"))
                             .credentials(List.of(Credential.builder()
                                     .type("password")
                                     .temporary(false)
@@ -73,6 +88,7 @@ public class AccountServiceImpl implements AccountService {
             profile.setUserId(userId);
 
             Account account = accountsRepository.save(profile);
+
             return mapAccountToAccountResponse(account);
         } catch (FeignException exception) {
             log.error("Error while creating account", exception);
@@ -136,6 +152,30 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public AssignRole assignRole(String username, String roleName) {
+        try {
+            Account account = accountsRepository.findByUsername(username)
+                    .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
+
+            AssignRole assignRole = AssignRole.builder()
+                    .name(username)
+                    .description(roleName)
+                    .clientRole(true)
+                    .build();
+
+            identityClient.assignRole(
+                    "Bearer " + getAccessToken(),
+                    assignRole,
+                    account.getUserId());
+            return assignRole;
+
+        } catch (FeignException exception) {
+            log.error("Error while assign role", exception);
+            throw errorNormalizer.handleKeyCloakException(exception);
+        }
+    }
+
+    @Override
     public AccountResponse getAccountById(Long id) {
         Account account = accountsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account not found", "id", id.toString()));
         return mapAccountToAccountResponse(account);
@@ -179,6 +219,32 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
+    @Override
+    public AccountResponse getAccountProfile() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        Account account = accountsRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found", "userId", userId));
+        return mapAccountToAccountResponse(account);
+    }
+
+    @Override
+    public void changePasswordProfile(String password) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        try {
+            identityClient.updatePassword(
+                    "Bearer " + getAccessToken(),
+                    Credential.builder()
+                            .type("password")
+                            .temporary(false)
+                            .value(password)
+                            .build(),
+                    userId);
+        } catch (FeignException exception) {
+            log.error("Error while change password", exception);
+            throw errorNormalizer.handleKeyCloakException(exception);
+        }
+    }
+
     private String extractUserId(ResponseEntity<?> response) {
         List<String> locationHeaders = response.getHeaders().get("Location");
         if (locationHeaders == null || locationHeaders.isEmpty()) {
@@ -189,16 +255,6 @@ public class AccountServiceImpl implements AccountService {
         return splitedStr[splitedStr.length - 1];
     }
 
-    private String getAccessToken() {
-        var token = identityClient.exchangeToken(TokenExchangeParam.builder()
-                .grant_type("client_credentials")
-                .client_id(clientId)
-                .client_secret(clientSecret)
-                .scope("openid")
-                .build());
-
-        return token.getAccessToken();
-    }
 
     private Account mapAccountRequestToAccount(AccountRequest accountRequest) {
         Account account = new Account();

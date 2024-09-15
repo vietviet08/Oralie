@@ -24,7 +24,7 @@ import java.util.List;
         description = "CREATE, READ, UPDATE, DELETE Accounts"
 )
 @RestController
-@RequestMapping(path = "/accounts", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
 public class AccountController {
 
     @Autowired
@@ -39,7 +39,7 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
-    @PostMapping("/register")
+    @PostMapping("/store/accounts/register")
     private ResponseEntity<ResponseDto<?>> registerAccount(@RequestBody @Valid AccountRequest accountRequest) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -50,22 +50,28 @@ public class AccountController {
                         .build());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/dash/accounts/{id}")
     public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(accountService.getAccountById(id));
     }
 
-    @GetMapping("/user/{username}")
+    @GetMapping("/store/accounts/profile")
+    public ResponseEntity<AccountResponse> getAccountProfile() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountService.getAccountProfile());
+    }
+
+    @GetMapping("/dash/accounts/user/{username}")
     public ResponseEntity<AccountResponse> getAccountByUsername(@PathVariable String username) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(accountService.getAccount(username));
     }
 
-    @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/dash/accounts")
     public ResponseEntity<List<AccountResponse>> getAllAccounts(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
@@ -77,7 +83,7 @@ public class AccountController {
                 .body(accountService.getAccounts(page, size, sortBy, sort));
     }
 
-    @PutMapping("/update")
+    @PutMapping("/dash/accounts/update")
     public ResponseEntity<ResponseDto<?>> updateAccount(@RequestBody @Valid AccountRequest accountRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -88,7 +94,18 @@ public class AccountController {
                         .build());
     }
 
-    @PutMapping("/change-password")
+    @PutMapping("/store/accounts/update")
+    public ResponseEntity<ResponseDto<?>> updateAccountProfile(@RequestBody @Valid AccountRequest accountRequest) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseDto.builder()
+                        .statusMessage(AccountConstant.ACCOUNT_UPDATED)
+                        .statusCode(HttpStatus.OK.toString())
+                        .data(accountService.updateAccount(accountRequest))
+                        .build());
+    }
+
+    @PutMapping("/dash/accounts/change-password")
     public ResponseEntity<ResponseDto<?>> changePassword(@RequestParam String username, @RequestParam String password) {
         accountService.changePassword(username, password);
         return ResponseEntity
@@ -99,8 +116,18 @@ public class AccountController {
                         .build());
     }
 
-    @DeleteMapping("/delete/{username}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PutMapping("/store/accounts/change-password")
+    public ResponseEntity<ResponseDto<?>> changePasswordProfile(@RequestParam String password) {
+        accountService.changePasswordProfile(password);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseDto.builder()
+                        .statusMessage(AccountConstant.PASSWORD_CHANGED)
+                        .statusCode(HttpStatus.OK.toString())
+                        .build());
+    }
+
+    @DeleteMapping("/dash/accounts/delete/{username}")
     public ResponseEntity<ResponseDto<?>> deleteAccount(@PathVariable String username) {
         accountService.deleteAccount(username);
         return ResponseEntity
@@ -111,14 +138,14 @@ public class AccountController {
                         .build());
     }
 
-    @GetMapping("/build-version")
+    @GetMapping("/accounts/build-version")
     public ResponseEntity<String> getBuildVersion() {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(build);
     }
 
-    @GetMapping("/java-version")
+    @GetMapping("/accounts/java-version")
     public ResponseEntity<String> getJavaVersion() {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -126,7 +153,7 @@ public class AccountController {
     }
 
 
-    @GetMapping("/contact-info")
+    @GetMapping("/accounts/contact-info")
     public ResponseEntity<AccountsContactDto> getAccountsContactDto() {
         return ResponseEntity
                 .status(HttpStatus.OK)
