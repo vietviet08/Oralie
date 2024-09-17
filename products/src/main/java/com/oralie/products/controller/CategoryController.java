@@ -12,5 +12,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CategoryController {
-    
+
 }
