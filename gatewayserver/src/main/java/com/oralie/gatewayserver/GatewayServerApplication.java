@@ -34,6 +34,24 @@ public class GatewayServerApplication {
                         )
                         .uri("lb://ACCOUNTS")
                 )
+                .route(p -> p
+                        .path("/api/products/**")
+                        .filters(f -> f.tokenRelay()
+                                .rewritePath("/api/products/?(?<remaining>.*)", "/${remaining}")
+                                .circuitBreaker(c -> c.setName("PRODUCTS-CIRCUIT-BREAKER")
+                                        .setFallbackUri("forward:/productsServiceFallback")
+                                )
+                        )
+
+                        .uri("lb://PRODUCTS")
+                )
+                .route(r -> r
+                        .path("/aggregate/products-service/v3/api-docs/**")
+                        .filters(f -> f
+                                .rewritePath("/aggregate/products-service/v3/api-docs/(?<remaining>.*)", "/v3/api-docs/${remaining}")
+                        )
+                        .uri("lb://PRODUCTS")
+                )
                 .build();
     }
 

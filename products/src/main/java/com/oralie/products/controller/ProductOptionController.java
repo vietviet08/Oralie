@@ -6,13 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Tag(
-        name = "CRUD REST APIs for Products",
-        description = "CREATE, READ, UPDATE, DELETE Products"
+        name = "CRUD REST APIs for ProductOption",
+        description = "CREATE, READ, UPDATE, DELETE ProductOption"
 )
 @RestController
 @RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-public class ProductController {
-
-
-
+public class ProductOptionController {
 }
