@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -31,17 +33,17 @@ import java.util.stream.Collectors;
 //                                "/",
 //                                "/login",
 //                                "/store/**",
-//                                "/store/accounts/register",
-//                                "/accounts/build-version",
-//                                "/accounts/contact-info",
-//                                "/accounts/java-version",
+//                                "/store/products/register",
+//                                "/products/build-version",
+//                                "/products/contact-info",
+//                                "/products/java-version",
 //                                "/actuator/**",
 //                                "/v3/api-docs/**",
 //                                "/swagger-ui.html",
 //                                "/swagger-ui",
 //                                "/swagger-ui/**").permitAll()
 //                        .requestMatchers("/dash/**").hasRole("ADMIN")
-//                        .requestMatchers("/store/accounts/**").hasRole("CUSTOMER")
+//                        .requestMatchers("/store/products/**").hasRole("CUSTOMER")
 //                        .anyRequest().authenticated()
                                 .anyRequest().permitAll()
                 )
@@ -49,10 +51,10 @@ import java.util.stream.Collectors;
                 .build();
     }
 
-//    @Bean
-//    public JwtDecoder jwtDecoder() {
-//        return NimbusJwtDecoder.withJwkSetUri("http://localhost:7080/realms/oralie/protocol/openid-connect/certs").build();
-//    }
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        return NimbusJwtDecoder.withJwkSetUri("http://localhost:7080/realms/oralie/protocol/openid-connect/certs").build();
+    }
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverterForKeycloak() {
