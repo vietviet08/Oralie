@@ -3,6 +3,8 @@ package com.oralie.products.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -14,23 +16,18 @@ public class Brand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "brand_id")
     private Long id;
+
+    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Product> products;
 
     private String name;
 
+    @Column(length = 1000)
     private String description;
 
-    private String image;
+    private String imageUrl;
 
-    private Boolean isDeleted;
-
-    private Boolean isFeatured;
-
-    private Boolean isPromoted;
-
-    private Boolean isDiscounted;
-
-    private Double discount;
-
-
+    private Boolean isActive;
 }
