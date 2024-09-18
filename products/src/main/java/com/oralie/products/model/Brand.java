@@ -23,6 +23,7 @@ public class Brand {
     @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Product> products;
 
+    @Column(unique = true)
     private String name;
 
     @Column(length = 1000)

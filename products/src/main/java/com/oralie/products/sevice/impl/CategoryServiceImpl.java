@@ -1,12 +1,16 @@
 package com.oralie.products.sevice.impl;
 
+import com.oralie.products.dto.request.CategoryRequest;
 import com.oralie.products.dto.response.CategoryResponse;
+import com.oralie.products.dto.response.ListResponse;
+import com.oralie.products.exception.ResourceAlreadyExistException;
 import com.oralie.products.exception.ResourceNotFoundException;
 import com.oralie.products.model.Brand;
 import com.oralie.products.model.Category;
 import com.oralie.products.repository.CategoryRepository;
 import com.oralie.products.sevice.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,41 +26,66 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public List<CategoryResponse> getAllCategories(int page, int size, String sortBy, String sort) {
+    public ListResponse<CategoryResponse> getAllCategories(int page, int size, String sortBy, String sort) {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
+        Page<Category> pageCategory = categoryRepository.findAll(pageable);
+        List<Category> categories = pageCategory.getContent();
 
-        List<Category> brands = categoryRepository.findAll(pageable).getContent();
-
-        return mapToCategoryResponseList(brands);
+        return ListResponse.<CategoryResponse>builder()
+                .data(mapToCategoryResponseList(categories))
+                .pageNo(pageCategory.getNumber())
+                .pageSize(pageCategory.getSize())
+                .totalElements((int) pageCategory.getTotalElements())
+                .totalPages(pageCategory.getTotalPages())
+                .isLast(pageCategory.isLast())
+                .build();
     }
 
     @Override
     public CategoryResponse getCategoryById(Long id) {
-        return mapToCategoryResponse(categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + "")));
-    }
-
-    @Override
-    public CategoryResponse createCategory(CategoryResponse categoryResponse) {
-        Category category = Category.builder()
-                .name(categoryResponse.getName())
-                .description(categoryResponse.getDescription())
-                .image(categoryResponse.getImage())
-                .isDeleted(categoryResponse.getIsDeleted())
-                .parentCategory(Category.builder().id(categoryResponse.getParentId()).build())
-                .build();
-        categoryRepository.save(category);
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
         return mapToCategoryResponse(category);
     }
 
     @Override
-    public CategoryResponse updateCategory(Long id, CategoryResponse categoryResponse) {
+    public CategoryResponse createCategory(CategoryRequest categoryRequest) {
+        if (categoryRepository.existsByName(categoryRequest.getName())) {
+            throw new ResourceAlreadyExistException("Category already exists with name " + categoryRequest.getName());
+        }
+
+        Category parentCategory = categoryRepository.findById(categoryRequest.getParentId()).orElseThrow(() -> new ResourceNotFoundException("Parent category not found", "id", categoryRequest.getParentId() + ""));
+
+        Category category = Category.builder()
+                .name(categoryRequest.getName())
+                .description(categoryRequest.getDescription())
+                .image(categoryRequest.getImage())
+                .isDeleted(categoryRequest.getIsDeleted())
+                .parentCategory(categoryRequest.getParentId() != null ? parentCategory : null)
+                .build();
+        categoryRepository.save(category);
+
+        return mapToCategoryResponse(category);
+    }
+
+    @Override
+    public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
-        category.setName(categoryResponse.getName());
-        category.setDescription(categoryResponse.getDescription());
-        category.setImage(categoryResponse.getImage());
-        category.setIsDeleted(categoryResponse.getIsDeleted());
-        category.setParentCategory(Category.builder().id(categoryResponse.getParentId()).build());
+        if (categoryRepository.existsByName(categoryRequest.getName())) {
+            throw new ResourceAlreadyExistException("Category already exists with name " + categoryRequest.getName());
+        }
+        Category parentCategory = null;
+        if (categoryRequest.getParentId() != null) {
+            if (id.equals(categoryRequest.getParentId())) {
+                throw new RuntimeException("Category can't be parent of itself");
+            }
+            parentCategory = categoryRepository.findById(categoryRequest.getParentId()).orElseThrow(() -> new ResourceNotFoundException("Parent category not found", "id", categoryRequest.getParentId() + ""));
+        }
+        category.setName(categoryRequest.getName());
+        category.setDescription(categoryRequest.getDescription());
+        category.setImage(categoryRequest.getImage());
+        category.setIsDeleted(categoryRequest.getIsDeleted());
+        category.setParentCategory(categoryRequest.getParentId() != null ? parentCategory : null);
         categoryRepository.save(category);
         return mapToCategoryResponse(category);
     }
@@ -83,3 +112,5 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
 }
+
+

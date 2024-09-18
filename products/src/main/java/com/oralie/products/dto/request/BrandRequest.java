@@ -14,6 +14,7 @@ import org.hibernate.validator.constraints.Length;
 @Builder
 public class BrandRequest {
     @NotBlank(message = "Name is required")
+    @Size(min = 4, max = 50, message = "Name must be between 4 and 100 characters")
     private String name;
 
     @Size(min = 4, max = 1000, message = "Description must be between 4 and 1000 characters")
