@@ -46,8 +46,6 @@ public class ProductResponse {
 
     private Integer quantity;
 
-    private String image;
-
     private Boolean isAvailable;
 
     private Boolean isDeleted;
