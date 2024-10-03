@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
         description = "CREATE, READ, UPDATE, DELETE Category"
 )
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CategoryController {
 
-    @Autowired
-    private CategoryService categoryService;
+    private final CategoryService categoryService;
 
     @GetMapping("/dash/categories")
     public ResponseEntity<ListResponse<CategoryResponse>> getAllCategories(

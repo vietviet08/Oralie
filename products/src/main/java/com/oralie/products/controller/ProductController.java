@@ -3,11 +3,10 @@ package com.oralie.products.controller;
 import com.oralie.products.dto.ProductContactDto;
 import com.oralie.products.dto.request.ProductRequest;
 import com.oralie.products.dto.response.ListResponse;
-import com.oralie.products.dto.response.ProductOptionResponse;
 import com.oralie.products.dto.response.ProductResponse;
 import com.oralie.products.sevice.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -20,20 +19,18 @@ import org.springframework.web.bind.annotation.*;
         description = "CREATE, READ, UPDATE, DELETE Products"
 )
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
 public class ProductController {
 
-    @Autowired
-    private ProductContactDto accountsContactDto;
+    private final ProductContactDto accountsContactDto;
 
-    @Autowired
-    private Environment environment;
+    private final Environment environment;
 
     @Value("${info.app.version}")
     private String build;
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
     @GetMapping("/store/products")
     public ResponseEntity<ListResponse<ProductResponse>> getAllProducts(
@@ -47,28 +44,21 @@ public class ProductController {
                 .body(productService.getAllProducts(page, size, sortBy, sort));
     }
 
-    @GetMapping("/store/{categoryName}")
-    public ResponseEntity<ListResponse<ProductResponse>> getAllProductsByCategoryName(
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "10") int size,
-            @RequestParam(required = false, defaultValue = "id") String sortBy,
-            @RequestParam(required = false, defaultValue = "asc") String sort,
-            @PathVariable String categoryName
-    ) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(productService.getAllProductsByCategory(page, size, sortBy, sort, categoryName));
-    }
 
-    @GetMapping("/store/{categoryName}/{brandName:[a-zA-Z]+}")
+    @GetMapping("/store/{categoryName}")
     public ResponseEntity<ListResponse<ProductResponse>> getAllProductsByBrandName(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sort,
             @PathVariable String categoryName,
-            @PathVariable String brandName
+            @RequestParam(required = false) String brandName
     ) {
+        if(brandName == null) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(productService.getAllProductsByCategory(page, size, sortBy, sort, categoryName));
+        }
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.getAllProductsByBrand(page, size, sortBy, sort, categoryName, brandName));
@@ -82,32 +72,21 @@ public class ProductController {
     }
 
 
-    //slug
-    @GetMapping("/store/{categoryName}/{slug:[a-z0-9\\-]+}")
+    @GetMapping("/store/product/{slug}")
+    public ResponseEntity<ProductResponse> getProductBySlug(@PathVariable String slug) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.getProductBySlug(slug));
+    }
+
+    @GetMapping("/store/{categoryName}/{slug}")
     public ResponseEntity<ProductResponse> getProductBySlugs(
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "10") int size,
-            @RequestParam(required = false, defaultValue = "id") String sortBy,
-            @RequestParam(required = false, defaultValue = "asc") String sort,
             @PathVariable String categoryName,
             @PathVariable String slug
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body( null);
-    }
-
-    @GetMapping("/store/{slug:[a-z0-9\\-]+}")
-    public ResponseEntity<ProductResponse> getProductBySlug(
-            @RequestParam(required = false, defaultValue = "0") int page,
-            @RequestParam(required = false, defaultValue = "10") int size,
-            @RequestParam(required = false, defaultValue = "id") String sortBy,
-            @RequestParam(required = false, defaultValue = "asc") String sort,
-            @PathVariable String slug
-    ) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body( null);
+                .body(productService.getProductBySlugs(categoryName, slug));
     }
 
 //    @GetMapping("/store/products/{id}/options")

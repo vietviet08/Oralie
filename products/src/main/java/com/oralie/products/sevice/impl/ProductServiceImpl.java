@@ -1,10 +1,14 @@
 package com.oralie.products.sevice.impl;
 
+import com.oralie.products.dto.request.ProductOptionRequest;
 import com.oralie.products.dto.request.ProductRequest;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.dto.response.ProductResponse;
 import com.oralie.products.exception.ResourceNotFoundException;
 import com.oralie.products.model.Product;
+import com.oralie.products.model.ProductCategory;
+import com.oralie.products.model.ProductImage;
+import com.oralie.products.model.ProductOption;
 import com.oralie.products.repository.*;
 import com.oralie.products.sevice.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,16 +107,34 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse createProduct(ProductRequest productRequest) {
+
+        List<ProductImage> productImageList = new ArrayList<>();
+        if (productRequest.getImagesUrl() != null) {
+            for (String urlImage : productRequest.getImagesUrl()) {
+                ProductImage productImage = ProductImage.builder()
+                        .url(urlImage)
+                        .build();
+                productImageRepository.save(productImage);
+                productImageList.add(productImage);
+            }
+        }
+
+        List<ProductCategory> productCategoryList = new ArrayList<>();
+        for (Long urlImage : productRequest.getCategoryIds()) {
+            ProductCategory productCategory = productCategoryRepository.findById(urlImage).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", urlImage + ""));
+            productCategoryList.add(productCategory);
+        }
+
         Product product = Product.builder()
                 .name(productRequest.getName())
                 .description(productRequest.getDescription())
                 .price(productRequest.getPrice())
                 .discount(productRequest.getDiscount())
-                .productCategories(productRequest.getProductCategories())
-                .brand(productRequest.getBrand())
+                .productCategories(productCategoryList)
+                .brand(brandRepository.findById(productRequest.getBrandId()).orElseThrow(() -> new ResourceNotFoundException("Brand not found", "id", productRequest.getBrandId() + "")))
                 .sku(productRequest.getSku())
-                .images(productRequest.getImages())
-                .options(productRequest.getOptions())
+                .images(productImageList)
+                .options(mapToProductOptionList(productRequest.getOptions()))
                 .quantity(productRequest.getQuantity())
                 .slug(productRequest.getSlug())
                 .isAvailable(productRequest.getIsAvailable())
@@ -125,16 +148,36 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
+
         Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
+
+        List<ProductImage> productImageList = new ArrayList<>();
+        if (productRequest.getImagesUrl() != null) {
+            for (String urlImage : productRequest.getImagesUrl()) {
+                ProductImage productImage = ProductImage.builder()
+                        .url(urlImage)
+                        .build();
+                productImageRepository.save(productImage);
+                productImageList.add(productImage);
+            }
+            product.setImages(productImageList);
+        }
+
+        List<ProductCategory> productCategoryList = new ArrayList<>();
+        for (Long urlImage : productRequest.getCategoryIds()) {
+            ProductCategory productCategory = productCategoryRepository.findById(urlImage).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", urlImage + ""));
+            productCategoryList.add(productCategory);
+        }
+
         product.setName(productRequest.getName());
         product.setDescription(productRequest.getDescription());
         product.setPrice(productRequest.getPrice());
         product.setDiscount(productRequest.getDiscount());
-        product.setProductCategories(productRequest.getProductCategories());
-        product.setBrand(productRequest.getBrand());
+        product.setProductCategories(productCategoryList);
+        product.setBrand(brandRepository.findById(productRequest.getBrandId()).orElseThrow(() -> new ResourceNotFoundException("Brand not found", "id", productRequest.getBrandId() + "")));
         product.setSku(productRequest.getSku());
-        product.setImages(productRequest.getImages());
-        product.setOptions(productRequest.getOptions());
+        product.setImages(productImageList);
+        product.setOptions(mapToProductOptionList(productRequest.getOptions()));
         product.setQuantity(productRequest.getQuantity());
         product.setSlug(productRequest.getSlug());
         product.setIsAvailable(productRequest.getIsAvailable());
@@ -195,5 +238,23 @@ public class ProductServiceImpl implements ProductService {
                 .isFeatured(product.getIsFeatured())
                 .isPromoted(product.getIsPromoted())
                 .build();
+    }
+
+    private List<ProductOption> mapToProductOptionList(List<ProductOptionRequest> productOptionRequests) {
+        return productOptionRequests.stream()
+                .map(productOptionRequest -> ProductOption.builder()
+                        .name(productOptionRequest.getName())
+                        .value(productOptionRequest.getValue())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    private List<ProductOptionRequest> mapToProductOptionRequestList(List<ProductOption> productOptions) {
+        return productOptions.stream()
+                .map(productOption -> ProductOptionRequest.builder()
+                        .name(productOption.getName())
+                        .value(productOption.getValue())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.*;
         description = "CREATE, READ, UPDATE, DELETE Brand"
 )
 @RestController
+@RequiredArgsConstructor
 @RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
 public class BrandController {
 
-    @Autowired
-    private BrandService brandService;
+    private final BrandService brandService;
 
     @GetMapping("/dash/brands")
     public ResponseEntity<ListResponse<BrandResponse>> getAllBrands(

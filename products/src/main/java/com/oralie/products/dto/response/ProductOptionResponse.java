@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,5 +15,5 @@ import lombok.NoArgsConstructor;
 public class ProductOptionResponse {
     private Long id;
     private String name;
-    private String value;
+    private List<String> value;
 }

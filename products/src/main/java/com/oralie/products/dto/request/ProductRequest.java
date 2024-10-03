@@ -34,13 +34,13 @@ public class ProductRequest {
 
     private String sku;
 
-    private List<ProductCategory> productCategories;
+    private List<Long> categoryIds;
 
-    private Brand brand;
+    private Long brandId;
 
-    private List<ProductImage> images;
+    private List<String> imagesUrl;
 
-    private List<ProductOption> options;
+    private List<ProductOptionRequest> options;
 
     @NotBlank(message = "Price is required")
     @DecimalMin(value = "0.0", message = "Price must be greater than 0")
@@ -51,8 +51,6 @@ public class ProductRequest {
     @NotBlank(message = "Quantity is required")
     @DecimalMin(value = "0", message = "Quantity must be greater than 0")
     private Integer quantity;
-
-    private String image;
 
     private Boolean isDiscounted;
 
