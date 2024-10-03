@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl  implements ProductService{
+public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
@@ -35,7 +35,44 @@ public class ProductServiceImpl  implements ProductService{
         Page<Product> pageProducts = productRepository.findAll(pageable);
         List<Product> products = pageProducts.getContent();
 
-        return ListResponse.<ProductResponse>builder()
+        return ListResponse
+                .<ProductResponse>builder()
+                .data(mapToProductResponseList(products))
+                .pageNo(pageProducts.getNumber())
+                .pageSize(pageProducts.getSize())
+                .totalElements((int) pageProducts.getTotalElements())
+                .totalPages(pageProducts.getTotalPages())
+                .isLast(pageProducts.isLast())
+                .build();
+    }
+
+    @Override
+    public ListResponse<ProductResponse> getAllProductsByCategory(int page, int size, String sortBy, String sort, String categoryName) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+        Page<Product> pageProducts = productRepository.findAllByCategoryName(pageable, categoryName);
+        List<Product> products = pageProducts.getContent();
+
+        return ListResponse
+                .<ProductResponse>builder()
+                .data(mapToProductResponseList(products))
+                .pageNo(pageProducts.getNumber())
+                .pageSize(pageProducts.getSize())
+                .totalElements((int) pageProducts.getTotalElements())
+                .totalPages(pageProducts.getTotalPages())
+                .isLast(pageProducts.isLast())
+                .build();
+    }
+
+    @Override
+    public ListResponse<ProductResponse> getAllProductsByBrand(int page, int size, String sortBy, String sort, String categoryName, String brandName) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+        Page<Product> pageProducts = productRepository.findAllByBrandName(pageable, categoryName, brandName);
+        List<Product> products = pageProducts.getContent();
+
+        return ListResponse
+                .<ProductResponse>builder()
                 .data(mapToProductResponseList(products))
                 .pageNo(pageProducts.getNumber())
                 .pageSize(pageProducts.getSize())
@@ -48,6 +85,18 @@ public class ProductServiceImpl  implements ProductService{
     @Override
     public ProductResponse getProductById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
+        return mapToProductResponse(product);
+    }
+
+    @Override
+    public ProductResponse getProductBySlugs(String categoryName, String slug) {
+        Product product = productRepository.findBySlugs(slug, categoryName).orElseThrow(() -> new ResourceNotFoundException("Product not found", "slug", slug));
+        return mapToProductResponse(product);
+    }
+
+    @Override
+    public ProductResponse getProductBySlug(String slug) {
+        Product product = productRepository.findBySlug(slug).orElseThrow(() -> new ResourceNotFoundException("Product not found", "slug", slug));
         return mapToProductResponse(product);
     }
 

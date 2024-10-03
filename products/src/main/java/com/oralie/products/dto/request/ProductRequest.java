@@ -46,8 +46,6 @@ public class ProductRequest {
     @DecimalMin(value = "0.0", message = "Price must be greater than 0")
     private Double price;
 
-    private Boolean isDiscounted;
-
     private Double discount;
 
     @NotBlank(message = "Quantity is required")
@@ -56,11 +54,13 @@ public class ProductRequest {
 
     private String image;
 
-    private Boolean isAvailable;
+    private Boolean isDiscounted;
 
-    private Boolean isDeleted;
+    private Boolean isAvailable = true;
 
-    private Boolean isFeatured;
+    private Boolean isDeleted = false;
 
-    private Boolean isPromoted;
+    private Boolean isFeatured = true;
+
+    private Boolean isPromoted = true;
 }

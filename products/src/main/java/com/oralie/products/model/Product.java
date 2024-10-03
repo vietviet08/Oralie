@@ -47,20 +47,20 @@ public class Product extends BaseEntity {
 
     private Double price;
 
-    private Boolean isDiscounted;
-
     private Double discount;
 
     private Integer quantity;
 
     private String image;
 
-    private Boolean isAvailable;
+    private Boolean isDiscounted;
 
-    private Boolean isDeleted;
+    private Boolean isAvailable = true;
 
-    private Boolean isFeatured;
+    private Boolean isDeleted = false;
 
-    private Boolean isPromoted;
+    private Boolean isFeatured = true;
+
+    private Boolean isPromoted = true;
 
 }
