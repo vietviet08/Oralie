@@ -53,11 +53,21 @@ public class CategoryServiceImpl implements CategoryService {
         if (categoryRepository.existsByName(categoryRequest.getName())) {
             throw new ResourceAlreadyExistException("Category already exists with name " + categoryRequest.getName());
         }
+        Category parentCategory = null;
+        if(categoryRequest.getParentId() != null && !categoryRepository.existsById(categoryRequest.getParentId())) {
+            throw new ResourceNotFoundException("Parent category not found", "id", categoryRequest.getParentId() + "");
+        }else if(categoryRequest.getParentId() != null){
+             parentCategory = categoryRepository.findById(categoryRequest.getParentId()).orElseThrow(() -> new ResourceNotFoundException("Parent category not found", "id", categoryRequest.getParentId() + ""));
+        }
 
-        Category parentCategory = categoryRepository.findById(categoryRequest.getParentId()).orElseThrow(() -> new ResourceNotFoundException("Parent category not found", "id", categoryRequest.getParentId() + ""));
+        String slug = categoryRequest.getSlug();
+        if(categoryRequest.getSlug() == null || categoryRequest.getSlug().isEmpty()){
+            slug = categoryRequest.getName().toLowerCase().replace(" ", "-");
+        }
 
         Category category = Category.builder()
                 .name(categoryRequest.getName())
+                .slug(slug)
                 .description(categoryRequest.getDescription())
                 .image(categoryRequest.getImage())
                 .isDeleted(categoryRequest.getIsDeleted())
@@ -71,9 +81,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
-        if (categoryRepository.existsByName(categoryRequest.getName())) {
-            throw new ResourceAlreadyExistException("Category already exists with name " + categoryRequest.getName());
-        }
         Category parentCategory = null;
         if (categoryRequest.getParentId() != null) {
             if (id.equals(categoryRequest.getParentId())) {
@@ -81,7 +88,14 @@ public class CategoryServiceImpl implements CategoryService {
             }
             parentCategory = categoryRepository.findById(categoryRequest.getParentId()).orElseThrow(() -> new ResourceNotFoundException("Parent category not found", "id", categoryRequest.getParentId() + ""));
         }
+
+        String slug = categoryRequest.getSlug();
+        if(categoryRequest.getSlug() == null || categoryRequest.getSlug().isEmpty()){
+            slug = categoryRequest.getName().toLowerCase().replace(" ", "-");
+        }
+
         category.setName(categoryRequest.getName());
+        category.setSlug(slug);
         category.setDescription(categoryRequest.getDescription());
         category.setImage(categoryRequest.getImage());
         category.setIsDeleted(categoryRequest.getIsDeleted());
@@ -97,13 +111,15 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private CategoryResponse mapToCategoryResponse(Category category) {
+        Long parentCategoryId = (category.getParentCategory() != null) ? category.getParentCategory().getId() : null;
         return CategoryResponse.builder()
                 .id(category.getId())
                 .name(category.getName())
+                .slug(category.getSlug())
                 .description(category.getDescription())
                 .image(category.getImage())
                 .isDeleted(category.getIsDeleted())
-                .parentId(category.getParentCategory().getId())
+                .parentId(parentCategoryId)
                 .build();
     }
 

@@ -31,5 +31,5 @@ public class Brand {
 
     private String imageUrl;
 
-    private Boolean isActive;
+    private Boolean isActive = true;
 }

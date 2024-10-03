@@ -17,6 +17,8 @@ public class CategoryRequest {
     @NotBlank(message = "Name is required")
     private String name;
 
+    private String slug;
+
     @Size(min = 4, max = 1000, message = "Description must be between 4 and 1000 characters")
     private String description;
 

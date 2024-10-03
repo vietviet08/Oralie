@@ -65,8 +65,6 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public BrandResponse updateBrand(Long id, BrandRequest brandRequest) {
         Brand brand = brandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Brand not found", "id", id + ""));
-        if (brandRepository.existsByName(brandRequest.getName()))
-            throw new ResourceAlreadyExistException("Brand already exists with name " + brandRequest.getName());
         brand.setName(brandRequest.getName());
         brand.setDescription(brandRequest.getDescription());
         brand.setImageUrl(brandRequest.getUrlImage());

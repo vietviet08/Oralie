@@ -41,6 +41,6 @@ public class Category extends BaseEntity {
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProductCategory> productCategories;
 
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;
 
 }
