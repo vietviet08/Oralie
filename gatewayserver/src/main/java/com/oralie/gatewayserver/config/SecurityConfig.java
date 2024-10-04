@@ -57,6 +57,8 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.PUT, "api/products/dash/**").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.DELETE, "api/products/dash/**").hasRole("ADMIN")
 
+                        //order
+
 
 
                         .anyExchange().authenticated()
