@@ -36,8 +36,30 @@ public class SecurityConfig {
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) throws Exception {
         http.authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
                         .pathMatchers(freeResourceUrls).permitAll()
-                        .anyExchange()
-                                .authenticated()
+                        .pathMatchers(HttpMethod.GET, "api/accounts/accounts/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "api/products/products/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "api/accounts/store/**").permitAll()
+                        .pathMatchers(HttpMethod.POST, "api/accounts/store/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "api/products/store/**").permitAll()
+                        .pathMatchers(HttpMethod.POST, "api/products/store/**").permitAll()
+
+                        //author by http method here
+
+                        //accounts
+                        .pathMatchers(HttpMethod.GET, "api/accounts/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "api/accounts/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "api/accounts/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "api/accounts/dash/**").hasRole("ADMIN")
+
+                        //products
+                        .pathMatchers(HttpMethod.GET, "api/products/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "api/products/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "api/products/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "api/products/dash/**").hasRole("ADMIN")
+
+
+
+                        .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2ResourceServerSpec -> oauth2ResourceServerSpec
                         .jwt(jwtSpec -> jwtSpec.jwtAuthenticationConverter(converter())));
@@ -51,7 +73,6 @@ public class SecurityConfig {
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeyCloakRoleConverter());
         return new ReactiveJwtAuthenticationConverterAdapter(jwtAuthenticationConverter);
     }
-
 
 
 //    @Bean
@@ -74,7 +95,6 @@ public class SecurityConfig {
 //        source.registerCorsConfiguration("/**", configuration);
 //        return source;
 //    }
-
 
 
 }
