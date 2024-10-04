@@ -27,13 +27,13 @@ public class ProductResponse {
 
     private String sku;
 
-    private List<ProductCategory> productCategories;
+    private List<ProductCategoryResponse> productCategories;
 
-    private Brand brand;
+    private BrandResponse brand;
 
-    private List<ProductImage> images;
+    private List<ProductImageResponse> images;
 
-    private List<ProductOption> options;
+    private List<ProductOptionResponse> options;
 
     private Double price;
 
