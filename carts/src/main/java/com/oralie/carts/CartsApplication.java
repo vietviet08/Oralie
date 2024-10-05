@@ -1,5 +1,6 @@
 package com.oralie.carts;
 
+import com.oralie.carts.dto.CartContactDto;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -11,7 +12,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
-//@EnableConfigurationProperties(CartContactDto.class)
+@EnableConfigurationProperties(CartContactDto.class)
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @OpenAPIDefinition(
         info = @Info(
