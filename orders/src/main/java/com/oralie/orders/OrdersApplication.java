@@ -1,5 +1,6 @@
 package com.oralie.orders;
 
+import com.oralie.orders.dto.OrderContactDto;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -11,7 +12,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
-//@EnableConfigurationProperties(OrdersContactDto.class)
+@EnableConfigurationProperties(OrderContactDto.class)
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @OpenAPIDefinition(
         info = @Info(

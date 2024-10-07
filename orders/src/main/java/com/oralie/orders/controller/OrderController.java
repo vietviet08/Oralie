@@ -1,6 +1,6 @@
 package com.oralie.orders.controller;
 
-import com.oralie.carts.dto.CartContactDto;
+import com.oralie.orders.dto.OrderContactDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -20,16 +20,16 @@ public class OrderController {
     @Value("${info.app.version}")
     private String build;
 
-    private final CartContactDto cartContactDto;
+    private final OrderContactDto orderContactDto;
 
-    @GetMapping("/carts/build-version")
+    @GetMapping("/orders/build-version")
     public ResponseEntity<String> getBuildVersion() {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(build);
     }
 
-    @GetMapping("/carts/java-version")
+    @GetMapping("/orders/java-version")
     public ResponseEntity<String> getJavaVersion() {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -37,11 +37,11 @@ public class OrderController {
     }
 
 
-    @GetMapping("/carts/contact-info")
-    public ResponseEntity<CartContactDto> getProductsContactDto() {
+    @GetMapping("/orders/contact-info")
+    public ResponseEntity<OrderContactDto> getProductsContactDto() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(cartContactDto);
+                .body(orderContactDto);
     }
 
 }
