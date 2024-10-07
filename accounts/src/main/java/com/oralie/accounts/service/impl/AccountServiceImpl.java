@@ -191,6 +191,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public AccountResponse getAccountByUserId(String userId) {
+        Account account = accountsRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Account not found", "userId", userId));
+        return mapAccountToAccountResponse(account);
+    }
+
+    @Override
     public List<AccountResponse> getAccounts(int page, int size, String sortBy, String sort) {
 
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();

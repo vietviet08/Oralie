@@ -54,13 +54,6 @@ public class AccountController {
                         .build());
     }
 
-    @GetMapping("/dash/accounts/{id}")
-    public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(accountService.getAccountById(id));
-    }
-
     @GetMapping("/store/accounts/profile")
     public ResponseEntity<AccountResponse> getAccountProfile() {
         return ResponseEntity
@@ -68,11 +61,51 @@ public class AccountController {
                 .body(accountService.getAccountProfile());
     }
 
+    @PutMapping("/store/accounts/update")
+    public ResponseEntity<?> updateAccountProfile(@RequestBody @Validated(ValidationGroups.OnUpdate.class) AccountRequest accountRequest) {
+        try {
+            accountService.updateAccount(accountRequest, true);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/store/accounts/change-password")
+    public ResponseEntity<?> changePasswordProfile(@RequestBody String password) {
+        try {
+            accountService.changePasswordProfile(password);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .build();
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/dash/accounts/{id}")
+    public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountService.getAccountById(id));
+    }
+
     @GetMapping("/dash/accounts/user/{username}")
     public ResponseEntity<AccountResponse> getAccountByUsername(@PathVariable String username) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(accountService.getAccount(username));
+    }
+
+    @GetMapping("/dash/accounts/userId/{userId}")
+    public ResponseEntity<AccountResponse> getAccountByUserId(@PathVariable String userId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountService.getAccount(userId));
     }
 
     @GetMapping("/dash/accounts")
@@ -99,36 +132,10 @@ public class AccountController {
         }
     }
 
-    @PutMapping("/store/accounts/update")
-    public ResponseEntity<?> updateAccountProfile(@RequestBody @Validated(ValidationGroups.OnUpdate.class) AccountRequest accountRequest) {
-        try {
-            accountService.updateAccount(accountRequest, true);
-            return ResponseEntity.status(HttpStatus.OK).build();
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
     @PutMapping("/dash/accounts/change-password")
     public ResponseEntity<?> changePassword(@RequestParam String username, @RequestBody String password) {
         try {
             accountService.changePassword(username, password);
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .build();
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
-
-    @PutMapping("/store/accounts/change-password")
-    public ResponseEntity<?> changePasswordProfile(@RequestBody String password) {
-        try {
-            accountService.changePasswordProfile(password);
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .build();
@@ -163,7 +170,6 @@ public class AccountController {
                 .status(HttpStatus.OK)
                 .body(environment.getProperty("JAVA_HOME"));
     }
-
 
     @GetMapping("/accounts/contact-info")
     public ResponseEntity<AccountsContactDto> getAccountsContactDto() {

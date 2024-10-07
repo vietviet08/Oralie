@@ -13,6 +13,7 @@ public interface AccountService {
     AssignRole assignRole(String username, String roleName);
     AccountResponse getAccountById(Long id);
     AccountResponse getAccount(String username);
+    AccountResponse getAccountByUserId(String userId);
     List<AccountResponse> getAccounts(int page, int size, String sortBy, String sort);
     void changePassword(String username, String password);
     AccountResponse getAccountProfile();
