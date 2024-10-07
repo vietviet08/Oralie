@@ -88,7 +88,9 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public Set<CartItemResponse> getCartItemByUserId(Long userId) {
-        return null;
+        Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Cart", "userId", userId + ""));
+        Set<CartItem> cartItems = cart.getCartItems();
+        return mapToCartItemResponseSet(cartItems);
     }
 
     @Override
@@ -158,12 +160,35 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartResponse removeItemFromCart(Long cartId, Long productId) {
-        return null;
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new ResourceNotFoundException("Cart", "id", cartId + ""));
+        Set<CartItem> cartItems = cart.getCartItems();
+        if (cartItems == null) {
+            throw new ResourceNotFoundException("CartItem", "productId", productId + " check cart if not null and exist productId");
+        }
+        CartItem cartItem = cartItems.stream()
+                .filter(item -> item.getProductId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("CartItem", "productId", productId + " check cart if not null and exist productId"));
+        if (cartItem == null) {
+            throw new ResourceNotFoundException("CartItem", "productId", productId + " check cart if not null and exist productId");
+        } else {
+            cartItems.remove(cartItem);
+            cart.setCartItems(cartItems);
+            cart.setQuantity(cart.getQuantity() - cartItem.getQuantity());
+            cart.setTotalPrice(cart.getTotalPrice() - cartItem.getTotalPrice());
+            Cart cartSaved = cartRepository.save(cart);
+            return mapToCartResponse(cartSaved);
+        }
     }
 
     @Override
     public CartResponse clearCart(Long cartId) {
-        return null;
+        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new ResourceNotFoundException("Cart", "id", cartId + ""));
+        cart.setCartItems(new HashSet<>());
+        cart.setQuantity(0);
+        cart.setTotalPrice(0.0);
+        Cart cartSaved = cartRepository.save(cart);
+        return mapToCartResponse(cartSaved);
     }
 
     @Override
