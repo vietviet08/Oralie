@@ -17,6 +17,5 @@ public class OrderResponse {
     private String status;
     private String paymentMethod;
     private String paymentStatus;
-
-
+    private String note;
 }

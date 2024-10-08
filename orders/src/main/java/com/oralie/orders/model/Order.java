@@ -20,10 +20,12 @@ public class Order extends BaseEntity {
     @Column(nullable = false)
     private Long userId;
 
+
     @Column(nullable = false)
     private Long cartId;
     private Double totalPrice;
     private String status;
     private String paymentMethod;
     private String paymentStatus;
+    private String note;
 }

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CartResponse {
     private Long id;
-    private Long userId;
+    private String userId;
     private Integer quantity;
     private Double totalPrice;
 }

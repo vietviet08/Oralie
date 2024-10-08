@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.Set;
 
 public interface CartService {
-     CartResponse createCart(Long userId);
+     CartResponse createCart(String userId);
      CartResponse getCartById(Long id);
+     CartResponse getCartByUserId(String userId);
      CartResponse updateCart(Long id, Cart cart);
      void deleteCart(Long id);
      ListResponse<CartResponse> getAllCarts(int page, int size, String sortBy, String sort);
-     Set<CartItemResponse> getCartItemByUserId(Long userId);
+     Set<CartItemResponse> getCartItemByUserId(String userId);
      Set<CartItemResponse> getCartItemByCartId(Long cartId);
      CartResponse addItemToCart(Long cartId, Long productId, Integer quantity);
      CartResponse removeItemFromCart(Long cartId, Long productId);

@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -31,7 +32,7 @@ public class CartServiceImpl implements CartService {
     private final ProductFeignClient productFeignClient;
 
     @Override
-    public CartResponse createCart(Long userId) {
+    public CartResponse createCart(String userId) {
         boolean isCartExist = cartRepository.existsByUserId(userId);
         Cart cart;
         if (!isCartExist) {
@@ -51,6 +52,11 @@ public class CartServiceImpl implements CartService {
     public CartResponse getCartById(Long id) {
         Cart cart = cartRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cart", "id", id + ""));
         return mapToCartResponse(cart);
+    }
+
+    @Override
+    public CartResponse getCartByUserId(String userId) {
+        return null;
     }
 
     @Override
@@ -87,7 +93,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Set<CartItemResponse> getCartItemByUserId(Long userId) {
+    public Set<CartItemResponse> getCartItemByUserId(String userId) {
         Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Cart", "userId", userId + ""));
         Set<CartItem> cartItems = cart.getCartItems();
         return mapToCartItemResponseSet(cartItems);
@@ -102,7 +108,12 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartResponse addItemToCart(Long cartId, Long productId, Integer quantity) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new ResourceNotFoundException("Cart", "id", cartId + ""));
+        //get cart when in spring context
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Cart", "userId", userId));
+
+        //get cart when test in postman
+//        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new ResourceNotFoundException("Cart", "id", cartId + ""));
 
         Set<CartItem> cartItems = cart.getCartItems();
 
@@ -194,6 +205,13 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartResponse checkoutCart(Long cartId) {
         return null;
+    }
+
+    private Cart mapToCart(CartResponse cartByUserId) {
+        return Cart.builder()
+                .userId(cartByUserId.getUserId())
+
+                .build();
     }
 
     private CartResponse mapToCartResponse(Cart cart) {
