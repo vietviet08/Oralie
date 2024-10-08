@@ -1,5 +1,6 @@
 package com.oralie.carts.dto.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
@@ -23,6 +24,7 @@ public class BaseEntity {
 
     @CreatedDate
     @Column(updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdAt;
 
     @CreatedBy
@@ -31,6 +33,7 @@ public class BaseEntity {
 
     @LastModifiedDate
     @Column(updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime updatedAt;
 
     @LastModifiedBy
