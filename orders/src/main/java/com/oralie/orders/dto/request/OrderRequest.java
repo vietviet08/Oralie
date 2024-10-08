@@ -1,24 +1,17 @@
-package com.oralie.orders.dto.response;
+package com.oralie.orders.dto.request;
 
-import com.oralie.orders.model.OrderAddress;
-import jakarta.persistence.SecondaryTable;
+import com.oralie.orders.dto.response.OrderAddressResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderResponse {
-    private Long id;
-    private Long userId;
-    private Long cartId;
-    private OrderAddressResponse address;
-    private Set<OrderItemResponse> orderItems;
+public class OrderRequest {
+    private OrderAddressRequest address;
     private Double totalPrice;
     private String voucher;
     private Double discount;

@@ -29,6 +29,10 @@ import java.util.Set;
 @RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CartController {
 
+
+//    String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+//            .getTokenValue();
+
     private final Environment environment;
 
     @Value("${info.app.version}")
