@@ -44,7 +44,10 @@ public class AccountController {
     private AccountService accountService;
 
     @PostMapping("/store/accounts/register")
-    private ResponseEntity<ResponseDto<?>> registerAccount(@RequestBody @Validated(ValidationGroups.OnCreate.class) AccountRequest accountRequest) {
+    private ResponseEntity<ResponseDto<?>> registerAccount(
+            @RequestBody
+            @Validated(ValidationGroups.OnCreate.class)
+            AccountRequest accountRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ResponseDto.builder()

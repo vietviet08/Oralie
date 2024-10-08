@@ -29,6 +29,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -63,6 +64,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponse createAccount(AccountRequest request) {
         try {
+            System.out.println(getAccessToken());
             // Get userId of keyCloak account
             var creationResponse = identityClient.createUser(
                     "Bearer " + getAccessToken(),
@@ -84,14 +86,29 @@ public class AccountServiceImpl implements AccountService {
             String userId = extractUserId(creationResponse);
             log.info("UserId {}", userId);
 
-            var profile = mapAccountRequestToAccount(request);
+            var profile = mapToAccount(request);
             profile.setUserId(userId);
 
             Account account = accountsRepository.save(profile);
 
-            return mapAccountToAccountResponse(account);
+            List<UserAddress> userAddresses = new ArrayList<>();
+            UserAddress address = UserAddress.builder()
+                    .account(account)
+                    .userId(userId)
+                    .addressDetail(request.getAddressDetail())
+                    .phone(request.getPhoneNumber())
+                    .city(request.getCity())
+                    .build();
+            userAddresses.add(address);
+            account.setAddress(userAddresses);
+
+            accountsRepository.save(account);
+
+            return mapToAccountResponse(account);
+
         } catch (FeignException exception) {
             log.error("Error while creating account", exception);
+
             throw errorNormalizer.handleKeyCloakException(exception);
         }
     }
@@ -101,10 +118,10 @@ public class AccountServiceImpl implements AccountService {
         try {
             Account account = accountsRepository.findByUsername(accountRequest.getUsername())
                     .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", accountRequest.getUsername()));
-            if(isCustomer){
+            if (isCustomer) {
                 String userIdExisting = SecurityContextHolder.getContext().getAuthentication().getName();
-                String userIdCustomer =    account.getUserId();
-                if(!userIdExisting.equals(userIdCustomer)){
+                String userIdCustomer = account.getUserId();
+                if (!userIdExisting.equals(userIdCustomer)) {
                     throw new ResourceNotFoundException("Account not found", "username", accountRequest.getUsername());
                 }
             }
@@ -123,11 +140,11 @@ public class AccountServiceImpl implements AccountService {
 
             String userId = extractUserId(creationResponse);
 
-            var profile = mapAccountRequestToAccount(accountRequest);
+            var profile = mapToAccount(accountRequest);
             profile.setUserId(userId);
 
             Account accountSave = accountsRepository.save(profile);
-            return mapAccountToAccountResponse(accountSave);
+            return mapToAccountResponse(accountSave);
         } catch (FeignException exception) {
             log.error("Error while update account", exception);
             throw errorNormalizer.handleKeyCloakException(exception);
@@ -180,20 +197,20 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponse getAccountById(Long id) {
         Account account = accountsRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Account not found", "id", id.toString()));
-        return mapAccountToAccountResponse(account);
+        return mapToAccountResponse(account);
     }
 
 
     @Override
     public AccountResponse getAccount(String username) {
         Account account = accountsRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
-        return mapAccountToAccountResponse(account);
+        return mapToAccountResponse(account);
     }
 
     @Override
     public AccountResponse getAccountByUserId(String userId) {
         Account account = accountsRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Account not found", "userId", userId));
-        return mapAccountToAccountResponse(account);
+        return mapToAccountResponse(account);
     }
 
     @Override
@@ -204,7 +221,7 @@ public class AccountServiceImpl implements AccountService {
 
         List<Account> accounts = accountsRepository.findAll(pageable).getContent();
 
-        return accountResponses(accounts);
+        return mapToAccountListResponse(accounts);
     }
 
     @Override
@@ -232,7 +249,7 @@ public class AccountServiceImpl implements AccountService {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountsRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account not found", "userId", userId));
-        return mapAccountToAccountResponse(account);
+        return mapToAccountResponse(account);
     }
 
     @Override
@@ -264,7 +281,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
 
-    private Account mapAccountRequestToAccount(AccountRequest accountRequest) {
+    private Account mapToAccount(AccountRequest accountRequest) {
         Account account = new Account();
         account.setUsername(accountRequest.getUsername());
         account.setPassword(new BCryptPasswordEncoder().encode(accountRequest.getPassword()));
@@ -275,33 +292,34 @@ public class AccountServiceImpl implements AccountService {
         return account;
     }
 
-    private AccountResponse mapAccountToAccountResponse(Account account) {
+    private AccountResponse mapToAccountResponse(Account account) {
         return AccountResponse.builder()
                 .username(account.getUsername())
                 .email(account.getEmail())
-                .address(userAddressDtos(account.getAddress()))
+                .address(account.getAddress() != null ? mapToListUserAddressDto(account.getAddress()) : null)
                 .fullName(account.getFullName())
                 .gender(account.getGender())
                 .build();
     }
 
-    private List<AccountResponse> accountResponses(List<Account> accounts) {
+    private List<AccountResponse> mapToAccountListResponse(List<Account> accounts) {
         return accounts.stream()
                 .map(account -> AccountResponse.builder()
                         .username(account.getUsername())
                         .email(account.getEmail())
-                        .address(userAddressDtos(account.getAddress()))
+                        .address(account.getAddress() != null ? mapToListUserAddressDto(account.getAddress()) : null)
                         .fullName(account.getFullName())
                         .gender(account.getGender())
                         .build())
                 .toList();
     }
 
-    private List<UserAddressDto> userAddressDtos(List<UserAddress> userAddresses) {
+    private List<UserAddressDto> mapToListUserAddressDto(List<UserAddress> userAddresses) {
         return userAddresses.stream()
                 .map(userAddress -> UserAddressDto.builder()
                         .userId(userAddress.getUserId())
                         .phone(userAddress.getPhone())
+                        .city(userAddress.getCity())
                         .addressDetail(userAddress.getAddressDetail())
                         .city(userAddress.getCity()).build())
                 .toList();

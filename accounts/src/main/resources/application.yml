@@ -66,8 +66,8 @@ info:
 
 idp:
   url: http://localhost:7080
-  client-id: oralie_accounts
-  client-secret: NKKyGuRUPRLa6x3u6rBGazlJAyPYNAyM
+  client-id: accounts-oralie
+  client-secret: 0DQb0Q4yrzpEPC1NO6sTE3XPRzKoOcCV
 
 logging:
   level:

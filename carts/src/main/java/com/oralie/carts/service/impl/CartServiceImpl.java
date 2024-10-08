@@ -170,8 +170,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse removeItemFromCart(Long cartId, Long productId) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new ResourceNotFoundException("Cart", "id", cartId + ""));
+    public CartResponse removeItemFromCart(String cartId, Long productId) {
+        Cart cart = cartRepository.findByUserId(cartId).orElseThrow(() -> new ResourceNotFoundException("Cart", "id", cartId + ""));
         Set<CartItem> cartItems = cart.getCartItems();
         if (cartItems == null) {
             throw new ResourceNotFoundException("CartItem", "productId", productId + " check cart if not null and exist productId");

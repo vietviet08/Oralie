@@ -19,7 +19,7 @@ public interface CartService {
      Set<CartItemResponse> getCartItemByUserId(String userId);
      Set<CartItemResponse> getCartItemByCartId(Long cartId);
      CartResponse addItemToCart(Long cartId, Long productId, Integer quantity);
-     CartResponse removeItemFromCart(Long cartId, Long productId);
+     CartResponse removeItemFromCart(String userId, Long productId);
      CartResponse clearCart(Long cartId);
      CartResponse checkoutCart(Long cartId);
 }
