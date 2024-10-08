@@ -2,11 +2,24 @@ package com.oralie.orders.service;
 
 import com.oralie.orders.dto.request.OrderRequest;
 import com.oralie.orders.dto.response.ListResponse;
+import com.oralie.orders.dto.response.OrderItemResponse;
 import com.oralie.orders.dto.response.OrderResponse;
 
+import java.util.List;
+
 public interface OrderService {
+
+    ListResponse<OrderResponse> getAllOrders(int page, int size, String sortBy, String sort);
+
     OrderResponse createOrder(OrderRequest orderRequest);
     ListResponse<OrderResponse> getOrdersByUserId(String userId);
-    OrderResponse viewOrder(String userid);
+
+    ListResponse<OrderItemResponse> getOrderItemsByOrderId(Long orderId);
+
+    OrderResponse viewOrder(Long idOrder);
+
+    OrderResponse updateOrderStatus(Long orderId, String status);
+
+    String cancelOrder(Long orderId);
 
 }

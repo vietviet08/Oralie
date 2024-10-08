@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class OrderAddressResponse {
+    private Long id;
+
     private String phoneNumber;
 
     private String email;
