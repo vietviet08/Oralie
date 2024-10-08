@@ -117,7 +117,6 @@ public class UserAddressServiceImpl implements UserAddressService {
         return userAddressList.stream().map(userAddress ->
                 UserAddressDto.builder()
                         .userId(userAddress.getUserId())
-                        .username(getUsername(userAddress.getUserId()))
                         .phone(userAddress.getPhone())
                         .addressDetail(userAddress.getAddressDetail())
                         .city(userAddress.getCity())
@@ -127,7 +126,6 @@ public class UserAddressServiceImpl implements UserAddressService {
     private UserAddressDto mapToUserAddressDto(UserAddress userAddress) {
         return UserAddressDto.builder()
                 .userId(userAddress.getUserId())
-                .username(getUsername(userAddress.getUserId()))
                 .phone(userAddress.getPhone())
                 .addressDetail(userAddress.getAddressDetail())
                 .city(userAddress.getCity())
