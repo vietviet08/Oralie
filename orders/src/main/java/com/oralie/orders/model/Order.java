@@ -21,7 +21,7 @@ public class Order extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private Long userId;
+    private String userId;
 
     @Column(nullable = false)
     private Long cartId;

@@ -15,7 +15,7 @@ import java.util.Set;
 @Builder
 public class OrderResponse {
     private Long id;
-    private Long userId;
+    private String userId;
     private Long cartId;
     private OrderAddressResponse address;
     private Set<OrderItemResponse> orderItems;

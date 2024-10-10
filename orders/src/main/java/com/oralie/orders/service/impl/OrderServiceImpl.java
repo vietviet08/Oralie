@@ -51,13 +51,46 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponse createOrder(OrderRequest orderRequest) {
-        return null;
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Order order = Order.builder()
+                .userId(userId)
+                .cartId(1L)
+                .address(OrderAddress.builder()
+                        .addressDetail(orderRequest.getAddress().getAddressDetail())
+                        .city(orderRequest.getAddress().getCity())
+                        .email(orderRequest.getAddress().getEmail())
+                        .phoneNumber(orderRequest.getAddress().getPhoneNumber())
+                        .build())
+                .orderItems(orderRequest.getOrderItems().stream()
+                        .map(orderItemRequest -> OrderItem.builder()
+                                .productId(orderItemRequest.getProductId())
+                                .productName(orderItemRequest.getProductName())
+                                .quantity(orderItemRequest.getQuantity())
+                                .totalPrice(orderItemRequest.getTotalPrice())
+                                .build())
+                        .collect(Collectors.toSet()))
+                .totalPrice(orderRequest.getTotalPrice())
+                .voucher(orderRequest.getVoucher())
+                .discount(orderRequest.getDiscount())
+                .shippingFee(orderRequest.getShippingFee())
+                .status(orderRequest.getStatus())
+                .shippingMethod(orderRequest.getShippingMethod())
+                .paymentMethod(orderRequest.getPaymentMethod())
+                .paymentStatus(orderRequest.getPaymentStatus())
+                .note(orderRequest.getNote())
+                .build();
+        orderRepository.save(order);
+        return mapToOrderResponse(order);
     }
 
     @Override
-    public ListResponse<OrderResponse> getOrdersByUserId(String userId) {
-//        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        List<Order> orders = orderRepository.findByUserId(userId);
+    public ListResponse<OrderResponse> getOrdersByUserId(String userId, int page, int size, String sortBy, String sort) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+        Page<Order> pageOrders = orderRepository.findByUserId(userId, pageable);
+        List<Order> orders = pageOrders.getContent();
+        //        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ListResponse
                 .<OrderResponse>builder()
                 .data(mapToOrderResponseList(orders))
@@ -84,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderResponse updateOrderStatus(Long orderId, String status) {
-       Order order = orderRepository.findById(orderId)
+        Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found", "id", orderId + ""));
         order.setStatus(status);
         orderRepository.save(order);
@@ -147,8 +180,6 @@ public class OrderServiceImpl implements OrderService {
                 .map(this::mapToOrderResponse)
                 .collect(Collectors.toList());
     }
-
-
 
 
 }

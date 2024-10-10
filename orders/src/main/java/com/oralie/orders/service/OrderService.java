@@ -12,7 +12,8 @@ public interface OrderService {
     ListResponse<OrderResponse> getAllOrders(int page, int size, String sortBy, String sort);
 
     OrderResponse createOrder(OrderRequest orderRequest);
-    ListResponse<OrderResponse> getOrdersByUserId(String userId);
+
+    ListResponse<OrderResponse> getOrdersByUserId(String userId, int page, int size, String sortBy, String sort);
 
     ListResponse<OrderItemResponse> getOrderItemsByOrderId(Long orderId);
 
