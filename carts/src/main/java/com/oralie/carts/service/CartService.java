@@ -12,14 +12,15 @@ import java.util.Set;
 public interface CartService {
      CartResponse createCart(String userId);
      CartResponse getCartById(Long id);
-     CartResponse getCartByUserId(String userId);
+     Set<CartItemResponse> getCartItemByCartId(Long cartId);
      CartResponse updateCart(Long id, Cart cart);
      void deleteCart(Long id);
+
+     CartResponse getCartByUserId(String userId);
      ListResponse<CartResponse> getAllCarts(int page, int size, String sortBy, String sort);
      Set<CartItemResponse> getCartItemByUserId(String userId);
-     Set<CartItemResponse> getCartItemByCartId(Long cartId);
-     CartResponse addItemToCart(Long cartId, Long productId, Integer quantity);
+     CartResponse addItemToCart(String userId, Long productId, Integer quantity);
      CartResponse removeItemFromCart(String userId, Long productId);
-     CartResponse clearCart(Long cartId);
+     CartResponse clearCart(String userId);
      CartResponse checkoutCart(Long cartId);
 }

@@ -107,9 +107,9 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse addItemToCart(Long cartId, Long productId, Integer quantity) {
+    public CartResponse addItemToCart(String userId, Long productId, Integer quantity) {
         //get cart when in spring context
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+//        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Cart", "userId", userId));
 
         //get cart when test in postman
@@ -193,8 +193,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse clearCart(Long cartId) {
-        Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new ResourceNotFoundException("Cart", "id", cartId + ""));
+    public CartResponse clearCart(String userId) {
+        Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Cart", "userId", userId));
         cart.setCartItems(new HashSet<>());
         cart.setQuantity(0);
         cart.setTotalPrice(0.0);

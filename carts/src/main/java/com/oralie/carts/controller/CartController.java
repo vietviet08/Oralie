@@ -48,27 +48,52 @@ public class CartController {
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sort
-    ){
+    ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(cartService.getAllCarts(page, size, sortBy, sort));
     }
 
+    @GetMapping("/dash/carts/{id}")
+    public ResponseEntity<Set<CartItemResponse>> getCartById(@PathVariable("id") Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cartService.getCartItemByCartId(id));
+    }
+
+
+    @PostMapping("/dash/carts")
+    public ResponseEntity<CartResponse> createCart() {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(cartService.createCart(SecurityContextHolder.getContext().getAuthentication().getName()));
+    }
+
+//    @PutMapping("/dash/carts/{id}")
+//    public ResponseEntity<CartResponse> updateCart(@PathVariable("id") Long id, @RequestBody CartResponse cart) {
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(cartService.updateCart(id, cart));
+//    }
+
+
+
     @DeleteMapping("/dash/carts/{id}")
-    public HttpStatus deleteCart(@PathVariable("id") Long id){
+    public HttpStatus deleteCart(@PathVariable("id") Long id) {
         cartService.deleteCart(id);
         return HttpStatus.OK;
     }
 
+
     @GetMapping("/store/carts")
-    public ResponseEntity<Set<CartItemResponse>> getItemFromCart(){
+    public ResponseEntity<Set<CartItemResponse>> getItemFromCart() {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(cartService.getCartItemByUserId(SecurityContextHolder.getContext().getAuthentication().getName()));
     }
 
     @PutMapping("/store/carts/remove/{idProduct}")
-    public ResponseEntity<CartResponse> removeProductInCart(@PathVariable("idProduct") Long idProduct){
+    public ResponseEntity<CartResponse> removeProductInCart(@PathVariable("idProduct") Long idProduct) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -76,18 +101,25 @@ public class CartController {
     }
 
     @PostMapping(value = "/store/carts/add-to-cart")
-    public ResponseEntity<CartResponse> addProductToCart(){
-        return null;
+    public ResponseEntity<CartResponse> addProductToCart() {
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cartService.addItemToCart(SecurityContextHolder.getContext().getAuthentication().getName(), 1L, 1));
     }
 
-    @PutMapping("/store/carts/remove")
-    public ResponseEntity<CartResponse> removeItemInCart(){
-        return null;
+    @PutMapping("/store/carts/remove/{productId}")
+    public ResponseEntity<CartResponse> removeItemInCart(@PathVariable("productId") Long productId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cartService.removeItemFromCart(SecurityContextHolder.getContext().getAuthentication().getName(), productId));
     }
 
     @PutMapping("/store/carts/clear")
-    public ResponseEntity<CartResponse> clearCart(){
-        return null;
+    public ResponseEntity<CartResponse> clearCart() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cartService.clearCart(SecurityContextHolder.getContext().getAuthentication().getName()));
     }
 
     @GetMapping("/carts/build-version")
