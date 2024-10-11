@@ -3,15 +3,47 @@ services:
     networks:
       - vietquoc
 
-  microservice-db-config:
+#  microservice-db-config:
+#    extends:
+#      service: network-deploy-service
+#    image: mysql
+#    healthcheck:
+#      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+#      timeout: 10s
+#      retries: 10
+#      interval: 10s
+#      start_period: 10s
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+  microservice-base-config:
     extends:
       service: network-deploy-service
-    image: mysql
-    healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-      timeout: 10s
-      retries: 10
-      interval: 10s
-      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          memory: 800m
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.33.5.jar"
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
+      OTEL_METRICS_EXPORTER: none
+    #    environment:
+    #      SPRING_RABBITMQ_HOST: "rabbit"
+
+    microservice-configserver-config:
+      extends:
+        service: microservice-base-config
+      depends_on:
+        config-server:
+          condition: service_healthy
+      environment:
+        SPRING_PROFILES_ACTIVE: default
+        SPRING_CONFIG_IMPORT: configserver:http://config-server:8071/
+
+    microservice-eurekaserver-config:
+      extends:
+        service: microservice-config-server-config
+      depends_on:
+        eurekaserver:
+          condition: service_healthy
+      environment:
+        EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
