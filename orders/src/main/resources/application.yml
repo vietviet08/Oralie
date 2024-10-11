@@ -66,5 +66,10 @@ logging:
         security: DEBUG
         web: DEBUG
 
+paypal:
+  client-id: AWgfD0pzzu5uEWJiCrg6HDeY2JnLgXxoTxsnHVkmXCK-TJ-T7lQixe1vcZU5WPjTsCLUkcOi-piRWGKT
+  client-secret: EMbibNim6DQs6l4k4aGm9_SgDvUH1ezYP6sBuqp3aNF2ccYZdo1apZ0v2ajL95Sc0g2gfUy2IpcAgpy7
+  mode: sandbox
+
 server:
   port: 8083

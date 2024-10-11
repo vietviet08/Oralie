@@ -40,6 +40,14 @@ public class OrderController {
                 .body(orderService.getAllOrders(page, size, sortBy, sort));
     }
 
+    @PutMapping("/dash/orders/{orderId}")
+    public ResponseEntity<OrderResponse> updateOrderStatus(@PathVariable("orderId") Long orderId, @RequestParam String status) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(orderService.updateOrderStatus(orderId, status));
+    }
+
+
     @PostMapping("/store/orders")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest) {
         return ResponseEntity
