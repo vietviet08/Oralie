@@ -114,7 +114,7 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
 
         //subtract quantity product in inventory service
-        
+
 
         //clear cart in cart service
         cartFeignClient.clearCart();
