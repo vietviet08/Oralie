@@ -1,5 +1,6 @@
 package com.oralie.orders.service.impl;
 
+import com.oralie.orders.constant.OrderStatus;
 import com.oralie.orders.dto.request.OrderRequest;
 import com.oralie.orders.dto.response.ListResponse;
 import com.oralie.orders.dto.response.OrderAddressResponse;
@@ -74,13 +75,18 @@ public class OrderServiceImpl implements OrderService {
                 .voucher(orderRequest.getVoucher())
                 .discount(orderRequest.getDiscount())
                 .shippingFee(orderRequest.getShippingFee())
-                .status(orderRequest.getStatus())
+                .status(OrderStatus.PENDING)
                 .shippingMethod(orderRequest.getShippingMethod())
                 .paymentMethod(orderRequest.getPaymentMethod())
                 .paymentStatus(orderRequest.getPaymentStatus())
                 .note(orderRequest.getNote())
                 .build();
         orderRepository.save(order);
+
+        //subtract quantity product in inventory service
+
+        //clear cart in cart service
+
         return mapToOrderResponse(order);
     }
 
@@ -128,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
     public String cancelOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found", "id", orderId + ""));
-        order.setStatus("CANCELLED");
+        order.setStatus(OrderStatus.CANCELLED);
         orderRepository.save(order);
         return "Order cancelled successfully";
     }
