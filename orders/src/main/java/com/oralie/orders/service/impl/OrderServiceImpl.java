@@ -1,17 +1,22 @@
 package com.oralie.orders.service.impl;
 
 import com.oralie.orders.constant.OrderStatus;
+import com.oralie.orders.constant.PaymentStatus;
 import com.oralie.orders.dto.request.OrderRequest;
+import com.oralie.orders.dto.request.PayPalInfoRequest;
 import com.oralie.orders.dto.response.ListResponse;
 import com.oralie.orders.dto.response.OrderAddressResponse;
 import com.oralie.orders.dto.response.OrderItemResponse;
 import com.oralie.orders.dto.response.OrderResponse;
+import com.oralie.orders.exception.PaymentProcessingException;
 import com.oralie.orders.exception.ResourceNotFoundException;
 import com.oralie.orders.model.Order;
 import com.oralie.orders.model.OrderAddress;
 import com.oralie.orders.model.OrderItem;
 import com.oralie.orders.repository.OrderRepository;
+import com.oralie.orders.repository.client.CartFeignClient;
 import com.oralie.orders.service.OrderService;
+import com.oralie.orders.service.PayPalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,6 +36,8 @@ public class OrderServiceImpl implements OrderService {
 
 
     private final OrderRepository orderRepository;
+    private final PayPalService payPalService;
+    private final CartFeignClient cartFeignClient;
 
     @Override
     public ListResponse<OrderResponse> getAllOrders(int page, int size, String sortBy, String sort) {
@@ -51,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponse createOrder(OrderRequest orderRequest) {
+    public OrderResponse createOrder(OrderRequest orderRequest) throws PaymentProcessingException {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Order order = Order.builder()
@@ -81,11 +88,36 @@ public class OrderServiceImpl implements OrderService {
                 .paymentStatus(orderRequest.getPaymentStatus())
                 .note(orderRequest.getNote())
                 .build();
+
+        if ("PAYPAL".equalsIgnoreCase(orderRequest.getPaymentMethod())) {
+            try {
+                PayPalInfoRequest payPalInfoRequest = PayPalInfoRequest.builder()
+                        .currency("USD")
+                        .total(order.getTotalPrice())
+                        .description("Order payment")
+                        .method("paypal")
+                        .intent("sale")
+                        .cancelUrl("http://localhost:3000/cancel")
+                        .successUrl("http://localhost:3000/success")
+                        .build();
+
+                payPalService.createPayment(payPalInfoRequest);
+
+                order.setPaymentStatus(PaymentStatus.COMPLETED);
+                //need create payment model to store payment entity
+//                order.setPaymentId(paymentId);  // Store payment ID from PayPal
+            } catch (Exception e) {
+                throw new PaymentProcessingException("Payment failed: " + e.getMessage());
+            }
+        }
+
         orderRepository.save(order);
 
         //subtract quantity product in inventory service
+        
 
         //clear cart in cart service
+        cartFeignClient.clearCart();
 
         return mapToOrderResponse(order);
     }
