@@ -21,6 +21,11 @@ spring:
   config:
     import: "optional:configserver:http://localhost:8071/"
 
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -40,6 +45,22 @@ management:
       enabled: true
     liveness-state:
       enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+    shutdown:
+      enabled: true
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+endpoints:
+  shutdown:
+    enabled: true
 
 eureka:
   instance:
@@ -65,6 +86,35 @@ logging:
       springframework:
         security: DEBUG
         web: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 2
+      waitDurationInOpenState: 5000
+      failureRateThreshold: 50
+
+resilience4j.retry:
+  configs:
+    default:
+      maxAttempts: 3
+      waitDuration: 500
+      enableExponentialBackoff: true
+      exponentialBackoffMultiplier: 2
+      ignoreExceptions:
+        - java.lang.NullPointerException
+      retryExceptions:
+        - java.util.concurrent.TimeoutException
+
+resilience4j.ratelimiter:
+  configs:
+    default:
+      timeoutDuration: 1000
+      limitRefreshPeriod: 5000
+      limitForPeriod: 1
 
 paypal:
   client-id: AWgfD0pzzu5uEWJiCrg6HDeY2JnLgXxoTxsnHVkmXCK-TJ-T7lQixe1vcZU5WPjTsCLUkcOi-piRWGKT

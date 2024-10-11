@@ -37,7 +37,6 @@ springdoc:
   packages-to-scan:
     - com.oralie.accounts
 
-
 management:
   endpoints:
     web:
@@ -48,6 +47,22 @@ management:
       enabled: true
     liveness-state:
       enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+    shutdown:
+      enabled: true
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+endpoints:
+  shutdown:
+    enabled: true
 
 eureka:
   instance:
@@ -78,6 +93,8 @@ logging:
       springframework:
         security: DEBUG
         web: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 server:
   port: 8080

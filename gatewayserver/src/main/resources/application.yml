@@ -22,7 +22,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-            issuer-uri: "http://localhost:7080/realms/oralie"
+          jwk-set-uri: "http://localhost:7080/realms/oralie/protocol/openid-connect/certs"
+          issuer-uri: "http://localhost:7080/realms/oralie"
 
 management:
   endpoints:
@@ -32,6 +33,12 @@ management:
   endpoint:
     gateway:
       enabled: true
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
 
 services:
   accounts:
@@ -61,6 +68,8 @@ logging:
       springframework:
         security: DEBUG
         web: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 resilience4j.circuitbreaker:
     configs:
