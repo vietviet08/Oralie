@@ -24,6 +24,6 @@ public class OrderItem extends BaseEntity {
     private Double totalPrice;
 
     @ManyToOne( fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     private Order order;
 }

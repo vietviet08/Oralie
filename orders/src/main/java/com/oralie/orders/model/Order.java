@@ -13,11 +13,12 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "`order`")
 @Builder
 public class Order extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
     private Long id;
 
     @Column(nullable = false)
@@ -26,12 +27,12 @@ public class Order extends BaseEntity {
     @Column(nullable = false)
     private Long cartId;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_address_id", referencedColumnName = "order_address_id")
     private OrderAddress address;
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<OrderItem> orderItems;
+    private List<OrderItem> orderItems;
 
     private Double totalPrice;
     private String voucher;

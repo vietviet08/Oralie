@@ -5,6 +5,7 @@ import com.oralie.orders.dto.request.OrderRequest;
 import com.oralie.orders.dto.response.ListResponse;
 import com.oralie.orders.dto.response.OrderItemResponse;
 import com.oralie.orders.dto.response.OrderResponse;
+import com.oralie.orders.exception.PaymentProcessingException;
 import com.oralie.orders.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +50,7 @@ public class OrderController {
 
 
     @PostMapping("/store/orders")
-    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest) {
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest) throws PaymentProcessingException {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(orderService.createOrder(orderRequest));

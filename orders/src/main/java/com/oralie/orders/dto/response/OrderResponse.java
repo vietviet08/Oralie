@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -18,7 +19,7 @@ public class OrderResponse {
     private String userId;
     private Long cartId;
     private OrderAddressResponse address;
-    private Set<OrderItemResponse> orderItems;
+    private List<OrderItemResponse> orderItems;
     private Double totalPrice;
     private String voucher;
     private Double discount;

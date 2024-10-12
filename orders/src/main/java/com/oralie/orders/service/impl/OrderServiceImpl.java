@@ -77,7 +77,7 @@ public class OrderServiceImpl implements OrderService {
                                 .quantity(orderItemRequest.getQuantity())
                                 .totalPrice(orderItemRequest.getTotalPrice())
                                 .build())
-                        .collect(Collectors.toSet()))
+                        .collect(Collectors.toList()))
                 .totalPrice(orderRequest.getTotalPrice())
                 .voucher(orderRequest.getVoucher())
                 .discount(orderRequest.getDiscount())
@@ -139,7 +139,7 @@ public class OrderServiceImpl implements OrderService {
     public ListResponse<OrderItemResponse> getOrderItemsByOrderId(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found", "id", orderId + ""));
-        Set<OrderItem> orderItems = order.getOrderItems();
+        List<OrderItem> orderItems = order.getOrderItems();
         return ListResponse
                 .<OrderItemResponse>builder()
                 .data(mapToOrderItemResponse(orderItems).stream().toList())
@@ -190,7 +190,7 @@ public class OrderServiceImpl implements OrderService {
                 .build();
     }
 
-    private Set<OrderItemResponse> mapToOrderItemResponse(Set<OrderItem> orderItems) {
+    private List<OrderItemResponse> mapToOrderItemResponse(List<OrderItem> orderItems) {
         return orderItems.stream()
                 .map(orderItem -> OrderItemResponse.builder()
                         .id(orderItem.getId())
@@ -200,7 +200,7 @@ public class OrderServiceImpl implements OrderService {
                         .totalPrice(orderItem.getTotalPrice())
                         .order(orderItem.getOrder())
                         .build())
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
 
     private OrderAddressResponse mapToOrderAddressResponse(OrderAddress address) {

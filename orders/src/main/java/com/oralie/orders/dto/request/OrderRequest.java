@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -13,7 +14,7 @@ import java.util.Set;
 @Builder
 public class OrderRequest {
     private OrderAddressRequest address;
-    private Set<OrderItemRequest> orderItems;
+    private List<OrderItemRequest> orderItems;
     private Double totalPrice;
     private String voucher;
     private Double discount;
