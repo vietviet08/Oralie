@@ -14,6 +14,9 @@ pipeline {
 //         }
 
         stage('Build Services') {
+            when {
+                branch 'dockerize'
+            }
             parallel {
                 stage('Build ConfigServer') {
                     steps {
