@@ -15,6 +15,36 @@ pipeline {
 
         stage('Build Services') {
             parallel {
+                stage('Build ConfigServer') {
+                    steps {
+                        script {
+                            dir('configserver') {
+                                sh "docker build -t ${DOCKERHUB_REPO}/configserver-oralie:latest ."
+                            }
+                        }
+                    }
+                }
+
+                stage('Build Eureka Server') {
+                    steps {
+                        script {
+                            dir('eurekaserver') {
+                                sh "docker build -t ${DOCKERHUB_REPO}/eurekaserver-oralie:latest ."
+                            }
+                        }
+                    }
+                }
+
+                stage('Build Gateway Service') {
+                    steps {
+                        script {
+                            dir('gatewayserver') {
+                                sh "docker build -t ${DOCKERHUB_REPO}/gatewayserver-oralie:latest ."
+                            }
+                        }
+                    }
+                }
+
                 stage('Build Accounts Service') {
                     steps {
                         script {
@@ -63,6 +93,11 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-account', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
                          sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
                     }
+                    sh "docker push ${DOCKERHUB_REPO}/configserver-oralie:latest"
+
+                    sh "docker push ${DOCKERHUB_REPO}/eurekaserver-oralie:latest"
+
+                    sh "docker push ${DOCKERHUB_REPO}/gatewayserver-oralie:latest"
 
                     sh "docker push ${DOCKERHUB_REPO}/accounts-oralie:latest"
 
