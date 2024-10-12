@@ -1,15 +1,15 @@
 version: '3.8'
 
 services:
-#  accountsdb:
-#    container_name: accountsdb
-#    ports:
-#      - 3306:3306
-#    environment:
-#      MYSQL_DATABASE: accountsdb
-#    extends:
-#      file: common-config.yml
-#      service: microservice-db-config
+  #  accountsdb:
+  #    container_name: accountsdb
+  #    ports:
+  #      - 3306:3306
+  #    environment:
+  #      MYSQL_DATABASE: accountsdb
+  #    extends:
+  #      file: common-config.yml
+  #      service: microservice-db-config
 
   kafka:
     image: docker.io/bitnami/kafka:3.7
