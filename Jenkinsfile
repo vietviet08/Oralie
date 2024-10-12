@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'master', url: 'https://github.com/vietviet08/Oralie.git'
+                git branch: 'master', credentialsId: 'github-account', url: 'https://github.com/vietviet08/Oralie.git'
             }
         }
 
