@@ -15,15 +15,18 @@ pipeline {
 //         }
 
         stage('Build Services') {
-//             when {
-//                 branch 'dockerize'
-//             }
+//
             parallel {
                 stage('Build Config Server') {
                     steps {
                         script {
                             dir('configserver') {
-                                sh "docker build -t ${DOCKERHUB_REPO}/configserver-oralie:latest ."
+                                sh """
+                                    if docker images | grep '${DOCKERHUB_REPO}/configserver-oralie'; then
+                                        docker rmi -f ${DOCKERHUB_REPO}/configserver-oralie:latest
+                                    fi
+                                    docker build -t ${DOCKERHUB_REPO}/configserver-oralie:latest .
+                                """
                             }
                         }
                     }
@@ -33,7 +36,12 @@ pipeline {
                     steps {
                         script {
                             dir('eurekaserver') {
-                                sh "docker build -t ${DOCKERHUB_REPO}/eurekaserver-oralie:latest ."
+                                 sh """
+                                     if docker images | grep '${DOCKERHUB_REPO}/eurekaserver-oralie'; then
+                                        docker rmi -f ${DOCKERHUB_REPO}/eurekaserver-oralie:latest
+                                     fi
+                                     docker build -t ${DOCKERHUB_REPO}/eurekaserver-oralie:latest .
+                                 """
                             }
                         }
                     }
@@ -43,7 +51,12 @@ pipeline {
                     steps {
                         script {
                             dir('gatewayserver') {
-                                sh "docker build -t ${DOCKERHUB_REPO}/gatewayserver-oralie:latest ."
+                                sh """
+                                    if docker images | grep '${DOCKERHUB_REPO}/gatewayserver-oralie'; then
+                                        docker rmi -f ${DOCKERHUB_REPO}/gatewayserver-oralie:latest
+                                    fi
+                                    docker build -t ${DOCKERHUB_REPO}/gatewayserver-oralie:latest .
+                                """
                             }
                         }
                     }
@@ -53,7 +66,12 @@ pipeline {
                     steps {
                         script {
                             dir('accounts') {
-                                sh "docker build -t ${DOCKERHUB_REPO}/accounts-oralie:latest ."
+                                sh """
+                                    if docker images | grep '${DOCKERHUB_REPO}/accounts-oralie'; then
+                                        docker rmi -f ${DOCKERHUB_REPO}/accounts-oralie:latest
+                                    fi
+                                    docker build -t ${DOCKERHUB_REPO}/accounts-oralie:latest .
+                                """
                             }
                         }
                     }
@@ -62,7 +80,12 @@ pipeline {
                     steps {
                         script {
                             dir('products') {
-                                sh "docker build -t ${DOCKERHUB_REPO}/products-oralie:latest ."
+                                sh """
+                                    if docker images | grep '${DOCKERHUB_REPO}/products-oralie'; then
+                                        docker rmi -f ${DOCKERHUB_REPO}/products-oralie:latest
+                                    fi
+                                    docker build -t ${DOCKERHUB_REPO}/products-oralie:latest .
+                                """
                             }
                         }
                     }
@@ -72,7 +95,12 @@ pipeline {
                     steps {
                         script {
                             dir('carts') {
-                                sh "docker build -t ${DOCKERHUB_REPO}/carts-oralie:latest ."
+                                sh """
+                                    if docker images | grep '${DOCKERHUB_REPO}/carts-oralie'; then
+                                        docker rmi -f ${DOCKERHUB_REPO}/carts-oralie:latest
+                                    fi
+                                    docker build -t ${DOCKERHUB_REPO}/carts-oralie:latest .
+                                """
                             }
                         }
                     }
@@ -82,7 +110,12 @@ pipeline {
                     steps {
                         script {
                             dir('orders') {
-                                sh "docker build -t ${DOCKERHUB_REPO}/orders-oralie:latest ."
+                                sh """
+                                    if docker images | grep '${DOCKERHUB_REPO}/orders-oralie'; then
+                                        docker rmi -f ${DOCKERHUB_REPO}/orders-oralie:latest
+                                    fi
+                                    docker build -t ${DOCKERHUB_REPO}/orders-oralie:latest .
+                                """
                             }
                         }
                     }
