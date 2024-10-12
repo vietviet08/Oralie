@@ -15,8 +15,16 @@ pipeline {
 //         }
 
         stage('Build Services') {
-//
+
             parallel {
+                stage('Clean up Docker repository') {
+                    steps {
+                        script {
+                            sh 'docker system prune -af'
+                        }
+                    }
+                }
+
                 stage('Build Config Server') {
                     steps {
                         script {
