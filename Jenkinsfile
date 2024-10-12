@@ -18,7 +18,7 @@ pipeline {
                 branch 'dockerize'
             }
             parallel {
-                stage('Build ConfigServer') {
+                stage('Build Config Server') {
                     steps {
                         script {
                             dir('configserver') {
@@ -38,7 +38,7 @@ pipeline {
                     }
                 }
 
-                stage('Build Gateway Service') {
+                stage('Build Gateway Server') {
                     steps {
                         script {
                             dir('gatewayserver') {
