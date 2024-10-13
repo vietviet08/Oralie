@@ -13,3 +13,6 @@ EXPOSE 8888
 ENV JAVA_OPTIONS="-Xmx2048m -Xms256m"
 ENTRYPOINT java -jar $JAVA_OPTIONS /run/app.jar
 
+#FROM eclipse-temurin:21-jre-alpine
+#COPY target/eurekaserver*.jar app.jar
+#ENTRYPOINT ["java", "-jar", "/app.jar"]

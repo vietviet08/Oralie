@@ -25,11 +25,12 @@ services:
         limits:
           memory: 800m
     environment:
-      JAVA_TOOL_OPTIONS: "-javaagent:/app/libs/opentelemetry-javaagent-1.33.5.jar"
+      JAVA_TOOL_OPTIONS: "-javaagent:/etc/opentelemetry-javaagent.jar"
       OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
       OTEL_METRICS_EXPORTER: none
-    #    environment:
-    #      SPRING_RABBITMQ_HOST: "rabbit"
+#      SPRING_RABBITMQ_HOST: "rabbit"
+    volumes:
+      - ../libs/opentelemetry-javaagent.jar:/etc/opentelemetry-javaagent.jar
 
   microservice-configserver-config:
     extends:
