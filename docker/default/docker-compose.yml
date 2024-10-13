@@ -11,6 +11,54 @@ services:
   #      file: common-config.yml
   #      service: microservice-db-config
 
+  accounts_db:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: accounts_db
+    volumes:
+      - accountsdb_data:/var/lib/mysql
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
+  products_db:
+    image: mysql
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: products_db
+    volumes:
+      - productsdb_data:/var/lib/mysql
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
+  carts_db:
+    image: mysql
+    ports:
+      - "3308:3306"
+    environment:
+      MYSQL_DATABASE: carts_db
+    volumes:
+      - cartsdb_data:/var/lib/mysql
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
+  orders_db:
+    image: mysql
+    ports:
+      - "3309:3306"
+    environment:
+      MYSQL_DATABASE: orders_db
+    volumes:
+      - ordersdb_data:/var/lib/mysql
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
   kafka:
     image: docker.io/bitnami/kafka:3.7
     ports:
@@ -328,6 +376,8 @@ services:
       retries: 20
       start_period: 10s
     depends_on:
+      accounts_db:
+        condition: service_healthy
       configserver:
         condition: service_healthy
     environment:
@@ -335,9 +385,10 @@ services:
       #      SPRING_RABBITMQ_HOST: "rabbit"
       OTEL_SERVICE_NAME: "accounts"
 #      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: "kafka:9092"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://accounts_db:3306/accounts_db"
     extends:
       file: common-config.yml
-      service: microservice-eurekaserver-config
+      service: microservice-service-config
 
   products:
     image: "vietquoc2408/products-oralie:latest"
@@ -351,14 +402,19 @@ services:
       retries: 20
       start_period: 10s
     depends_on:
+      products_db:
+        condition: service_healthy
       configserver:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "products"
       OTEL_SERVICE_NAME: "products"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://products_db:3306/products_db"
+      SPRING_DATASOURCE_USERNAME: "root"
+      SPRING_DATASOURCE_PASSWORD: "root"
     extends:
       file: common-config.yml
-      service: microservice-eurekaserver-config
+      service: microservice-service-config
 
   carts:
     image: "vietquoc2408/carts-oralie:latest"
@@ -372,14 +428,17 @@ services:
       retries: 20
       start_period: 10s
     depends_on:
+      carts_db:
+        condition: service_healthy
       configserver:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "carts"
       OTEL_SERVICE_NAME: "carts"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://carts_db:3306/carts_db"
     extends:
       file: common-config.yml
-      service: microservice-eurekaserver-config
+      service: microservice-service-config
 
   orders:
     image: "vietquoc2408/orders-oralie:latest"
@@ -393,14 +452,17 @@ services:
       retries: 20
       start_period: 10s
     depends_on:
+      orders_db:
+        condition: service_healthy
       configserver:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "orders"
       OTEL_SERVICE_NAME: "orders"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://orders_db:3306/orders_db"
     extends:
       file: common-config.yml
-      service: microservice-eurekaserver-config
+      service: microservice-service-config
 
   gatewayserver:
     image: "vietquoc2408/gatewayserver-oralie:latest"
@@ -410,16 +472,18 @@ services:
     depends_on:
       accounts:
         condition: service_healthy
-      loans:
+      products:
         condition: service_healthy
-      cards:
+      carts:
+        condition: service_healthy
+      orders:
         condition: service_healthy
       redis:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "gatewayserver"
       OTEL_SERVICE_NAME: "gatewayserver"
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:8080/realms/master/protocol/openid-connect/certs"
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:7080/realms/oralie/protocol/openid-connect/certs"
       SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
@@ -429,7 +493,7 @@ services:
       service: microservice-eurekaserver-config
 
 #  notification:
-#    image: "vietquoc2408/notification-oralie:v1"
+#    image: "vietquoc2408/notification-oralie:latest"
 #    container_name: notification-oralie-ms
 #    ports:
 #      - "9010:9010"
@@ -443,6 +507,10 @@ services:
 volumes:
   kafka_data:
     driver: local
+  accountsdb_data:
+  productsdb_data:
+  cartsdb_data:
+  ordersdb_data:
 
 networks:
   vietquoc:
