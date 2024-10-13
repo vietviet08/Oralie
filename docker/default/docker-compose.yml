@@ -321,7 +321,7 @@ services:
 
 
   configserver:
-    image: "vietquoc2408/configserver:test"
+    image: "vietquoc2408/configserver-oralie:latest"
     container_name: configserver-oralie-ms
     ports:
       - "8071:8071"
@@ -338,7 +338,7 @@ services:
       service: microservice-base-config
 
   eurekaserver:
-    image: "vietquoc2408/eurekaserver-oralie:test"
+    image: "vietquoc2408/eurekaserver-oralie:latest"
     container_name: eurekaserver-oralie-ms
     ports:
       - "8070:8070"
