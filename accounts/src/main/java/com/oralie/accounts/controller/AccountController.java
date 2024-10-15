@@ -7,6 +7,7 @@ import com.oralie.accounts.dto.entity.request.AccountRequest;
 import com.oralie.accounts.dto.entity.response.AccountResponse;
 import com.oralie.accounts.dto.entity.response.ListResponse;
 import com.oralie.accounts.dto.entity.response.ResponseDto;
+import com.oralie.accounts.dto.identity.AssignRole;
 import com.oralie.accounts.exception.ResourceNotFoundException;
 import com.oralie.accounts.service.AccountService;
 import feign.FeignException;
@@ -44,6 +45,8 @@ public class AccountController {
     @Autowired
     private AccountService accountService;
 
+
+    //store
     @PostMapping("/store/accounts/register")
     private ResponseEntity<ResponseDto<?>> registerAccount(
             @RequestBody
@@ -65,7 +68,7 @@ public class AccountController {
                 .body(accountService.getAccountProfile());
     }
 
-    @PutMapping("/store/accounts/update")
+    @PutMapping("/store/accounts/profile")
     public ResponseEntity<?> updateAccountProfile(@RequestBody @Validated(ValidationGroups.OnUpdate.class) AccountRequest accountRequest) {
         try {
             accountService.updateAccount(accountRequest, true);
@@ -91,6 +94,7 @@ public class AccountController {
         }
     }
 
+    //dash
     @GetMapping("/dash/accounts/{id}")
     public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id) {
         return ResponseEntity
@@ -124,7 +128,63 @@ public class AccountController {
                 .body(accountService.getAccounts(page, size, sortBy, sort));
     }
 
+    @PostMapping("/dash/accounts/create")
+    public ResponseEntity<AccountResponse> createAccount(@RequestBody AccountRequest accountRequest) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountService.createAccount(accountRequest));
+    }
+
+    @PutMapping("/dash/accounts/assign-role")
+    public ResponseEntity<AssignRole> assignRole(@RequestBody AccountRequest accountRequest, @RequestParam String roleName) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountService.assignRole(accountRequest.getUsername(), roleName));
+    }
+
+    @PutMapping("/dash/accounts/un-assign-role")
+    public ResponseEntity<AssignRole> unAssignRole(@RequestBody AccountRequest accountRequest, @RequestParam String roleName) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountService.assignRole(accountRequest.getUsername(), roleName));
+    }
+
     @PutMapping("/dash/accounts/update")
+    public ResponseEntity<AccountResponse> updateAccountUser(@RequestBody AccountRequest accountRequest) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountService.updateAccount(accountRequest, false));
+    }
+
+    @PutMapping("/dash/accounts/lock/{username}")
+    public ResponseDto<?> lockAccount(@PathVariable String username) {
+        accountService.lockAccount(username);
+        return ResponseDto.builder()
+                .statusMessage(AccountConstant.ACCOUNT_LOCKED)
+                .statusCode(HttpStatus.OK.toString())
+                .build();
+    }
+
+    @DeleteMapping("/dash/accounts/delete/{username}")
+    public ResponseEntity<ResponseDto<?>> deleteAccount(@PathVariable String username) {
+        accountService.deleteAccount(username);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseDto.builder()
+                        .statusMessage(AccountConstant.ACCOUNT_DELETED)
+                        .statusCode(HttpStatus.OK.toString())
+                        .build());
+    }
+
+    //seft
+    @GetMapping("/dash/profile")
+    public ResponseEntity<AccountResponse> getProfile() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountService.getAccountProfile());
+    }
+
+    @PutMapping("/dash/profile")
     public ResponseEntity<?> updateAccount(@RequestBody @Validated(ValidationGroups.OnUpdate.class) AccountRequest accountRequest) {
         try {
             accountService.updateAccount(accountRequest, false);
@@ -136,7 +196,7 @@ public class AccountController {
         }
     }
 
-    @PutMapping("/dash/accounts/change-password")
+    @PutMapping("/dash/profile/change-password")
     public ResponseEntity<?> changePassword(@RequestParam String username, @RequestBody String password) {
         try {
             accountService.changePassword(username, password);
@@ -150,16 +210,6 @@ public class AccountController {
         }
     }
 
-    @DeleteMapping("/dash/accounts/delete/{username}")
-    public ResponseEntity<ResponseDto<?>> deleteAccount(@PathVariable String username) {
-        accountService.deleteAccount(username);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ResponseDto.builder()
-                        .statusMessage(AccountConstant.ACCOUNT_DELETED)
-                        .statusCode(HttpStatus.OK.toString())
-                        .build());
-    }
 
     @GetMapping("/accounts/build-version")
     public ResponseEntity<String> getBuildVersion() {

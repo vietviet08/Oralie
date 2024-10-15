@@ -2,6 +2,7 @@ package com.oralie.accounts.constant;
 
 public class AccountConstant {
     public static final String ACCOUNT_NOT_FOUND = "Account not found";
+    public static final String ACCOUNT_LOCKED = "Account locked";
     public static final String ACCOUNT_EXISTED = "Account existed";
     public static final String ACCOUNT_CREATED = "Account created";
     public static final String FEIGN_EXCEPTION = "FeignException";

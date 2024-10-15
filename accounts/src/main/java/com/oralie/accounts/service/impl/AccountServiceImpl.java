@@ -239,7 +239,10 @@ public class AccountServiceImpl implements AccountService {
         try {
             Account account = accountsRepository.findByUsername(username)
                     .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
-
+            String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+            if(!account.getUserId().equals(userId)) {
+                throw new ResourceNotFoundException("Account not found", "username", username);
+            }
             identityClient.updatePassword(
                     "Bearer " + getAccessToken(),
                     Credential.builder()
@@ -276,6 +279,21 @@ public class AccountServiceImpl implements AccountService {
                     userId);
         } catch (FeignException exception) {
             log.error("Error while change password", exception);
+            throw errorNormalizer.handleKeyCloakException(exception);
+        }
+    }
+
+    @Override
+    public void lockAccount(String username) {
+        try {
+            Account account = accountsRepository.findByUsername(username)
+                    .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
+
+            identityClient.lockUser(
+                    "Bearer " + getAccessToken(),
+                    account.getUserId());
+        } catch (FeignException exception) {
+            log.error("Error while lock account", exception);
             throw errorNormalizer.handleKeyCloakException(exception);
         }
     }

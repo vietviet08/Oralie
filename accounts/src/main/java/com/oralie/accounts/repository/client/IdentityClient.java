@@ -47,4 +47,7 @@ public interface IdentityClient {
                                     @RequestBody Credential param,
                                     @PathVariable("user-id") String userid);
 
+    @PutMapping(value = "/admin/realms/oralie/users/{user-id}/disable-credential-types", consumes = MediaType.APPLICATION_JSON_VALUE)
+    ResponseEntity<?> lockUser(@RequestHeader("authorization") String token,
+                               @PathVariable("user-id") String userid);
 }

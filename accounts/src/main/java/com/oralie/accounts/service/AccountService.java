@@ -19,5 +19,5 @@ public interface AccountService {
     void changePassword(String username, String password);
     AccountResponse getAccountProfile();
     void changePasswordProfile(String password);
-
+    void lockAccount(String username);
 }
