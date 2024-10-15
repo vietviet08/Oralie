@@ -5,6 +5,7 @@ import com.oralie.accounts.dto.AccountsContactDto;
 import com.oralie.accounts.dto.ValidationGroups;
 import com.oralie.accounts.dto.entity.request.AccountRequest;
 import com.oralie.accounts.dto.entity.response.AccountResponse;
+import com.oralie.accounts.dto.entity.response.ListResponse;
 import com.oralie.accounts.dto.entity.response.ResponseDto;
 import com.oralie.accounts.exception.ResourceNotFoundException;
 import com.oralie.accounts.service.AccountService;
@@ -112,7 +113,7 @@ public class AccountController {
     }
 
     @GetMapping("/dash/accounts")
-    public ResponseEntity<List<AccountResponse>> getAllAccounts(
+    public ResponseEntity<ListResponse<AccountResponse>> getAllAccounts(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "id") String sortBy,

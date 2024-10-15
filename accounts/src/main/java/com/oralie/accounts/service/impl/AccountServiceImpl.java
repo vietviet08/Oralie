@@ -3,6 +3,7 @@ package com.oralie.accounts.service.impl;
 import com.oralie.accounts.dto.UserAddressDto;
 import com.oralie.accounts.dto.entity.request.AccountRequest;
 import com.oralie.accounts.dto.entity.response.AccountResponse;
+import com.oralie.accounts.dto.entity.response.ListResponse;
 import com.oralie.accounts.dto.identity.AssignRole;
 import com.oralie.accounts.dto.identity.Credential;
 import com.oralie.accounts.dto.identity.TokenExchangeParam;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -214,14 +216,22 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<AccountResponse> getAccounts(int page, int size, String sortBy, String sort) {
+    public ListResponse<AccountResponse> getAccounts(int page, int size, String sortBy, String sort) {
 
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
+        Page<Account> pageAccount = accountsRepository.findAll(pageable);
+        List<Account> accounts = pageAccount.getContent();
 
-        List<Account> accounts = accountsRepository.findAll(pageable).getContent();
+        return ListResponse.<AccountResponse>builder()
+                .data(mapToAccountListResponse(accounts))
+                .pageNo(pageAccount.getNumber())
+                .pageSize(pageAccount.getSize())
+                .totalElements((int) pageAccount.getTotalElements())
+                .totalPages(pageAccount.getTotalPages())
+                .isLast(pageAccount.isLast())
+                .build();
 
-        return mapToAccountListResponse(accounts);
     }
 
     @Override
