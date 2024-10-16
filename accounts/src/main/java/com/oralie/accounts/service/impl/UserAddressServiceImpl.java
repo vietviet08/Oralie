@@ -1,6 +1,8 @@
 package com.oralie.accounts.service.impl;
 
 import com.oralie.accounts.dto.UserAddressDto;
+import com.oralie.accounts.dto.entity.request.AddressRequest;
+import com.oralie.accounts.dto.entity.response.AddressResponse;
 import com.oralie.accounts.exception.ResourceNotFoundException;
 import com.oralie.accounts.model.Account;
 import com.oralie.accounts.model.UserAddress;
@@ -29,7 +31,7 @@ public class UserAddressServiceImpl implements UserAddressService {
     private final AccountsRepository accountsRepository;
 
     @Override
-    public UserAddressDto save(UserAddressDto userAddressDto) {
+    public AddressResponse save(AddressRequest addressRequest) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountsRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account not found", "userId", userId));
@@ -39,15 +41,15 @@ public class UserAddressServiceImpl implements UserAddressService {
             account.setAddress(listUserAddress);
         }
 
-        account.getAddress().add(mapToUserAddress(userAddressDto));
+        account.getAddress().add(mapToUserAddress(addressRequest));
 
         accountsRepository.save(account);
 //        UserAddress userAddress = userAddressRepository.save(mapToUserAddress(userAddressDto));
-        return mapToUserAddressDto(mapToUserAddress(userAddressDto));
+        return mapToAddressResponse(mapToUserAddress(addressRequest));
     }
 
     @Override
-    public UserAddressDto update(UserAddressDto userAddress, Long idUserAddress) {
+    public AddressResponse update(AddressRequest userAddress, Long idUserAddress) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountsRepository.findByUserId(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Account not found", "userId", userId));
@@ -64,7 +66,7 @@ public class UserAddressServiceImpl implements UserAddressService {
 
         accountsRepository.save(account);
 
-        return mapToUserAddressDto(address);
+        return mapToAddressResponse(address);
     }
 
     @Override
@@ -91,19 +93,19 @@ public class UserAddressServiceImpl implements UserAddressService {
     }
 
     @Override
-    public List<UserAddressDto> findAllByUserId(String userId, int page, int size, String sortBy, String sort) {
+    public List<AddressResponse> findAllByUserId(String userId, int page, int size, String sortBy, String sort) {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
         Page<UserAddress> userAddressDtoPage = userAddressRepository.findAllByUserId(userId, pageable);
-        return mapToUserAddressDtoList(userAddressDtoPage.getContent());
+        return mapToUserAddressResponseList(userAddressDtoPage.getContent());
     }
 
     @Override
-    public List<UserAddressDto> findAll(int page, int size, String sortBy, String sort) {
+    public List<AddressResponse> findAll(int page, int size, String sortBy, String sort) {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
         Page<UserAddress> userAddressDtoPage = userAddressRepository.findAll(pageable);
-        return mapToUserAddressDtoList(userAddressDtoPage.getContent());
+        return mapToUserAddressResponseList(userAddressDtoPage.getContent());
     }
 
     private String getUsername(String userId) {
@@ -132,12 +134,30 @@ public class UserAddressServiceImpl implements UserAddressService {
                 .build();
     }
 
-    private UserAddress mapToUserAddress(UserAddressDto userAddressDto) {
+    private UserAddress mapToUserAddress(AddressRequest addressRequest) {
         return UserAddress.builder()
-                .userId(userAddressDto.getUserId())
-                .phone(userAddressDto.getPhone())
-                .addressDetail(userAddressDto.getAddressDetail())
-                .city(userAddressDto.getCity())
+                .phone(addressRequest.getPhone())
+                .addressDetail(addressRequest.getAddressDetail())
+                .city(addressRequest.getCity())
                 .build();
+    }
+
+    private AddressResponse mapToAddressResponse(UserAddress userAddress) {
+        return AddressResponse.builder()
+                .userId(userAddress.getUserId())
+                .phone(userAddress.getPhone())
+                .addressDetail(userAddress.getAddressDetail())
+                .city(userAddress.getCity())
+                .build();
+    }
+
+    private List<AddressResponse> mapToUserAddressResponseList(List<UserAddress> userAddressList) {
+        return userAddressList.stream().map(userAddress ->
+                AddressResponse.builder()
+                        .userId(userAddress.getUserId())
+                        .phone(userAddress.getPhone())
+                        .addressDetail(userAddress.getAddressDetail())
+                        .city(userAddress.getCity())
+                        .build()).toList();
     }
 }

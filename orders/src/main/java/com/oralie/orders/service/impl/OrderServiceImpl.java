@@ -198,7 +198,6 @@ public class OrderServiceImpl implements OrderService {
                         .productName(orderItem.getProductName())
                         .quantity(orderItem.getQuantity())
                         .totalPrice(orderItem.getTotalPrice())
-                        .order(orderItem.getOrder())
                         .build())
                 .collect(Collectors.toList());
     }

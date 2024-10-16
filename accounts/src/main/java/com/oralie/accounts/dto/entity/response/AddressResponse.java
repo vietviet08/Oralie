@@ -1,20 +1,18 @@
-package com.oralie.carts.dto.response;
+package com.oralie.accounts.dto.entity.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CartResponse {
+public class AddressResponse {
     private Long id;
     private String userId;
-    private Integer quantity;
-    private Double totalPrice;
-    private Set<CartItemResponse> cartItemResponses;
+    private String addressDetail;
+    private String city;
+    private String phone;
 }

@@ -16,6 +16,5 @@ public class OrderItemResponse {
     private String productName;
     private int quantity;
     private Double totalPrice;
-    private Order order;
 
 }

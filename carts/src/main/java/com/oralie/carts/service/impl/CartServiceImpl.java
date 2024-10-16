@@ -217,6 +217,7 @@ public class CartServiceImpl implements CartService {
     private CartResponse mapToCartResponse(Cart cart) {
         return CartResponse.builder()
                 .id(cart.getId())
+                .cartItemResponses(mapToCartItemResponseSet(cart.getCartItems()))
                 .userId(cart.getUserId())
                 .quantity(cart.getQuantity())
                 .totalPrice(cart.getTotalPrice())
