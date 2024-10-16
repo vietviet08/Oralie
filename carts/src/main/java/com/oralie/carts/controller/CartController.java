@@ -42,6 +42,7 @@ public class CartController {
 
     private final CartService cartService;
 
+    //dash
     @GetMapping("/dash/carts")
     public ResponseEntity<ListResponse<CartResponse>> getAllCart(
             @RequestParam(required = false, defaultValue = "0") int page,
@@ -84,7 +85,7 @@ public class CartController {
         return HttpStatus.OK;
     }
 
-
+    //store
     @GetMapping("/store/carts")
     public ResponseEntity<Set<CartItemResponse>> getItemFromCart() {
         return ResponseEntity
@@ -122,6 +123,7 @@ public class CartController {
                 .body(cartService.clearCart(SecurityContextHolder.getContext().getAuthentication().getName()));
     }
 
+    //info services
     @GetMapping("/carts/build-version")
     public ResponseEntity<String> getBuildVersion() {
         return ResponseEntity

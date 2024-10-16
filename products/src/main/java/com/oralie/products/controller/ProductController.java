@@ -44,14 +44,13 @@ public class ProductController {
                 .body(productService.getAllProducts(page, size, sortBy, sort));
     }
 
-
-    @GetMapping("/store/{categoryName}")
+    @GetMapping("/store/categories")
     public ResponseEntity<ListResponse<ProductResponse>> getAllProductsByBrandName(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sort,
-            @PathVariable String categoryName,
+            @RequestParam(required = false) String categoryName,
             @RequestParam(required = false) String brandName
     ) {
         if(brandName == null) {
@@ -72,7 +71,7 @@ public class ProductController {
     }
 
 
-    @GetMapping("/store/product/{slug}")
+    @GetMapping("/store/products/{slug}")
     public ResponseEntity<ProductResponse> getProductBySlug(@PathVariable String slug) {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -96,6 +95,7 @@ public class ProductController {
 //                .body(productService.getProductOptions(id));
 //    }
 
+    // dash
     @PostMapping("/dash/products")
     public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest productRequest) {
         return ResponseEntity
@@ -118,6 +118,7 @@ public class ProductController {
                 .build();
     }
 
+    //info services
     @GetMapping("/products/build-version")
     public ResponseEntity<String> getBuildVersion() {
         return ResponseEntity
@@ -129,9 +130,12 @@ public class ProductController {
     public ResponseEntity<String> getJavaVersion() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(environment.getProperty("JAVA_HOME"));
+                .body("JAVA_HOME: " + environment.getProperty("JAVA_HOME")
+                        + "\n JAVA_VERSION: " + System.getProperty("java.version")
+                        + "\n JAVA_VENDOR: " + System.getProperty("java.vendor")
+                        + "\n JAVA_VM: " + System.getProperty("java.vm.name")
+                        + "\n JAVA_CATALINA: " + environment.getProperty("CATALINA_HOME"));
     }
-
 
     @GetMapping("/products/contact-info")
     public ResponseEntity<ProductContactDto> getProductsContactDto() {
