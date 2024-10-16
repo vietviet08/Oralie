@@ -94,7 +94,7 @@ public class AccountController {
         }
     }
 
-    //dash
+    //dash for manage
     @GetMapping("/dash/accounts/{id}")
     public ResponseEntity<AccountResponse> getAccountById(@PathVariable Long id) {
         return ResponseEntity
@@ -176,7 +176,7 @@ public class AccountController {
                         .build());
     }
 
-    //seft
+    //dash for self
     @GetMapping("/dash/profile")
     public ResponseEntity<AccountResponse> getProfile() {
         return ResponseEntity
@@ -210,7 +210,7 @@ public class AccountController {
         }
     }
 
-
+    //info the service
     @GetMapping("/accounts/build-version")
     public ResponseEntity<String> getBuildVersion() {
         return ResponseEntity

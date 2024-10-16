@@ -31,6 +31,13 @@ public class UserAddressServiceImpl implements UserAddressService {
     private final AccountsRepository accountsRepository;
 
     @Override
+    public AddressResponse findById(Long idUserAddress) {
+        return userAddressRepository.findById(idUserAddress)
+                .map(this::mapToAddressResponse)
+                .orElseThrow(() -> new ResourceNotFoundException("User Address not found", "id", idUserAddress + ""));
+    }
+
+    @Override
     public AddressResponse save(AddressRequest addressRequest) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         Account account = accountsRepository.findByUserId(userId)

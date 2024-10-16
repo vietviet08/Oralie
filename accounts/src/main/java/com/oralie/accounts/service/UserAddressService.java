@@ -8,6 +8,8 @@ import com.oralie.accounts.model.UserAddress;
 import java.util.List;
 
 public interface UserAddressService {
+    AddressResponse findById(Long idUserAddress);
+
     AddressResponse save(AddressRequest addressRequest);
 
     AddressResponse update(AddressRequest addressRequest, Long idUserAddress);
