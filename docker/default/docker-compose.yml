@@ -1,7 +1,8 @@
-version: '3.8'
+version: '3.9'
 
 services:
   postgres:
+    container_name: postgres
     image: postgres:16.4-alpine
     restart: unless-stopped
     healthcheck:
@@ -22,14 +23,18 @@ services:
 
   pgadmin:
     container_name: pgadmin
-    image: dpage/pgadmin4:8.10
+    image: dpage/pgadmin4:6.20
+    restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: postgres@domain.local
-      PGADMIN_DEFAULT_PASSWORD: postgres
+      PGADMIN_DEFAULT_EMAIL: vietnq.23ceb@vku.udn.vn
+      PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - "5050:80"
+    volumes:
+      - pgadmin:/var/lib/pgadmin
     networks:
         - vietquoc
+
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.4
     container_name: keycloak
@@ -539,6 +544,7 @@ services:
 
 volumes:
   postgres_data:
+  pgadmin:
   kafka_data:
     driver: local
   accountsdb_data:
