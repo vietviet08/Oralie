@@ -17,9 +17,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
+    networks:
+        - vietquoc
 
   pgadmin:
     container_name: pgadmin
@@ -29,15 +28,13 @@ services:
       PGADMIN_DEFAULT_PASSWORD: postgres
     ports:
       - "5050:80"
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
-
+    networks:
+        - vietquoc
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.4
     container_name: keycloak
 #    command: [ "start-dev", "--import-realm" ]
-    command: ["start-dev", "--optimized"]
+    command: ["start-dev"]
 #    restart: unless-stopped
     ports:
       - "7080:8080"
@@ -541,6 +538,7 @@ services:
 #      service: network-deploy-service
 
 volumes:
+  postgres_data:
   kafka_data:
     driver: local
   accountsdb_data:
