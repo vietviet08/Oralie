@@ -38,6 +38,12 @@ public class SecurityConfig {
                         .pathMatchers(freeResourceUrls).permitAll()
                         .pathMatchers(HttpMethod.GET, "api/accounts/accounts/**").permitAll()
                         .pathMatchers(HttpMethod.GET, "api/products/products/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "api/carts/carts/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "api/orders/orders/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "api/payment/payment/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "api/inventory/inventory/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "api/rates/rates/**").permitAll()
+
                         .pathMatchers(HttpMethod.GET, "api/accounts/store/**").permitAll()
                         .pathMatchers(HttpMethod.POST, "api/accounts/store/**").permitAll()
                         .pathMatchers(HttpMethod.GET, "api/products/store/**").permitAll()
@@ -57,8 +63,36 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.PUT, "api/products/dash/**").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.DELETE, "api/products/dash/**").hasRole("ADMIN")
 
-                        //order
+                        //carts
+                        .pathMatchers(HttpMethod.GET, "api/carts/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "api/carts/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "api/carts/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "api/carts/dash/**").hasRole("ADMIN")
 
+                        //orders
+                        .pathMatchers(HttpMethod.GET, "api/orders/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "api/orders/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "api/orders/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "api/orders/dash/**").hasRole("ADMIN")
+
+
+                        //payment
+                        .pathMatchers(HttpMethod.GET, "api/payment/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "api/payment/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "api/payment/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "api/payment/dash/**").hasRole("ADMIN")
+
+                        //inventory
+                        .pathMatchers(HttpMethod.GET, "api/inventory/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "api/inventory/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "api/inventory/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "api/inventory/dash/**").hasRole("ADMIN")
+
+                        //rates
+                        .pathMatchers(HttpMethod.GET, "api/rates/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "api/rates/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "api/rates/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "api/rates/dash/**").hasRole("ADMIN")
 
 
                         .anyExchange().authenticated()

@@ -15,4 +15,29 @@ public class FallbackController {
     public Mono<String> productsServiceFallback() {
         return Mono.just("Products Service is taking too long to respond or is down. Please try again later.");
     }
+
+    @GetMapping("/cartsServiceFallback")
+    public Mono<String> cartsServiceFallback() {
+        return Mono.just("Carts Service is taking too long to respond or is down. Please try again later.");
+    }
+
+    @GetMapping("/ordersServiceFallback")
+    public Mono<String> ordersServiceFallback() {
+        return Mono.just("Orders Service is taking too long to respond or is down. Please try again later.");
+    }
+
+    @GetMapping("/paymentServiceFallback")
+    public Mono<String> paymentServiceFallback() {
+        return Mono.just("Payment Service is taking too long to respond or is down. Please try again later.");
+    }
+
+    @GetMapping("/inventoryServiceFallback")
+    public Mono<String> inventoryServiceFallback() {
+        return Mono.just("Inventory Service is taking too long to respond or is down. Please try again later.");
+    }
+
+    @GetMapping("/ratesServiceFallback")
+    public Mono<String> ratesServiceFallback() {
+        return Mono.just("Rates Service is taking too long to respond or is down. Please try again later.");
+    }
 }

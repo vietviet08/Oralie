@@ -1,10 +1,20 @@
 package com.oralie.gatewayserver;
 
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
+import io.github.resilience4j.timelimiter.TimeLimiterConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
+import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
+import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.Customizer;
+import reactor.core.publisher.Mono;
+
+import java.time.Duration;
 
 @SpringBootApplication
 public class GatewayServerApplication {
@@ -52,9 +62,82 @@ public class GatewayServerApplication {
                         )
                         .uri("lb://PRODUCTS")
                 )
+                .route(p -> p
+                        .path("/api/carts/**")
+                        .filters(f -> f.tokenRelay()
+                                .rewritePath("/api/carts/?(?<remaining>.*)", "/${remaining}")
+                                .circuitBreaker(c -> c.setName("CARTS-CIRCUIT-BREAKER")
+                                        .setFallbackUri("forward:/cartsServiceFallback")
+                                )
+                        )
+
+                        .uri("lb://CARTS")
+                )
+                .route(p -> p
+                        .path("/api/orders/**")
+                        .filters(f -> f.tokenRelay()
+                                .rewritePath("/api/orders/?(?<remaining>.*)", "/${remaining}")
+                                .circuitBreaker(c -> c.setName("ORDERS-CIRCUIT-BREAKER")
+                                        .setFallbackUri("forward:/ordersServiceFallback")
+                                )
+                        )
+
+                        .uri("lb://ORDERS")
+                )
+                .route(p -> p
+                        .path("/api/payment/**")
+                        .filters(f -> f.tokenRelay()
+                                .rewritePath("/api/payment/?(?<remaining>.*)", "/${remaining}")
+                                .circuitBreaker(c -> c.setName("PAYMENT-CIRCUIT-BREAKER")
+                                        .setFallbackUri("forward:/paymentServiceFallback")
+                                )
+                        )
+
+                        .uri("lb://PAYMENT")
+                )
+                .route(p -> p
+                        .path("/api/inventory/**")
+                        .filters(f -> f.tokenRelay()
+                                .rewritePath("/api/inventory/?(?<remaining>.*)", "/${remaining}")
+                                .circuitBreaker(c -> c.setName("INVENTORY-CIRCUIT-BREAKER")
+                                        .setFallbackUri("forward:/inventoryServiceFallback")
+                                )
+                        )
+
+                        .uri("lb://INVENTORY")
+                )
+                .route(p -> p
+                        .path("/api/rates/**")
+                        .filters(f -> f.tokenRelay()
+                                .rewritePath("/api/rates/?(?<remaining>.*)", "/${remaining}")
+                                .circuitBreaker(c -> c.setName("RATES-CIRCUIT-BREAKER")
+                                        .setFallbackUri("forward:/ratesServiceFallback")
+                                )
+                        )
+
+                        .uri("lb://RATES")
+                )
                 .build();
     }
 
+    @Bean
+    public Customizer<ReactiveResilience4JCircuitBreakerFactory> defaultCustomizer() {
+        return factory -> factory.configureDefault(id -> new Resilience4JConfigBuilder(id)
+                .circuitBreakerConfig(CircuitBreakerConfig.ofDefaults())
+                .timeLimiterConfig(TimeLimiterConfig.custom().timeoutDuration(Duration.ofSeconds(10))
+                        .build()).build());
+    }
+
+    @Bean
+    public RedisRateLimiter redisRateLimiter() {
+        return new RedisRateLimiter(1, 1, 1);
+    }
+
+    @Bean
+    KeyResolver userKeyResolver() {
+        return exchange -> Mono.justOrEmpty(exchange.getRequest().getHeaders().getFirst("user"))
+                .defaultIfEmpty("anonymous");
+    }
 
 
 }
