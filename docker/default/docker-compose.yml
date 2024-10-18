@@ -267,7 +267,7 @@ services:
       - |
         /run.sh
     ports:
-      - "3000:3000"
+      - "3003:3000"
     volumes:
       - ../observability/grafana/datasource.yml:/etc/grafana/provisioning/datasources/datasource.yml
     healthcheck:

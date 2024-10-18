@@ -36,7 +36,7 @@ public interface IdentityClient {
     ResponseEntity<?> deleteUser(@RequestHeader("authorization") String token,
                                  @PathVariable("user-id") String userid);
 
-    @PostMapping(value = "/admin/realms/oralie/users/{user-id}/role-mappings/clients/oralie-account",
+    @PostMapping(value = "/admin/realms/oralie/users/{user-id}/role-mappings/clients/${idp.client-id}",
                 consumes = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<?> assignRole(@RequestHeader("authorization") String token,
                                  @RequestBody AssignRole param,
