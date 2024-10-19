@@ -73,6 +73,15 @@
     <#if realm.password && social.providers??>
       <@provider.kw />
     </#if>
+<#--    other oauth2-->
+    <#if social.providers??>
+      <p class="para">${msg("selectAlternative")}</p>
+      <div id="social-providers">
+        <#list social.providers as p>
+          <input class="social-link-style" type="button" onclick="location.href='${p.loginUrl}';" value="${p.displayName}"/>
+        </#list>
+      </div>
+    </#if>
   <#elseif section="info">
     <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
       <div class="text-center mt-2" style="display: flex ;justify-content: center;align-items: center; width:320px">
