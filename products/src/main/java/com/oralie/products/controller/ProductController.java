@@ -37,11 +37,13 @@ public class ProductController {
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
-            @RequestParam(required = false, defaultValue = "asc") String sort
+            @RequestParam(required = false, defaultValue = "asc") String sort,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String category
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(productService.getAllProducts(page, size, sortBy, sort));
+                .body(productService.getAllProducts(page, size, sortBy, sort, search, category));
     }
 
     @GetMapping("/store/categories")

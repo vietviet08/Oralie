@@ -13,18 +13,29 @@ import java.util.Optional;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
+    @Query("SELECT p FROM Product p " +
+            "JOIN p.productCategories pc JOIN pc.category c WHERE c.name = :category" +
+            " AND (p.name LIKE %:search% OR p.description LIKE %:search%)")
+    Page<Product> findAllProducts(Pageable pageable,
+                                  @Param("search") String search,
+                                  @Param("category") String category
+    );
+
     @Query(value = "SELECT p FROM Product p" +
-                   " JOIN p.productCategories pc WHERE pc.category.name = :categoryName AND p.brand.name = :brandName")
+            " JOIN p.productCategories pc WHERE pc.category.name = :categoryName " +
+            "AND p.brand.name = :brandName")
     Page<Product> findAllByBrandName(Pageable pageable,
                                      @Param("categoryName") String categoryName,
                                      @Param("brandName") String brandName);
 
-    @Query("SELECT p FROM Product p JOIN p.productCategories pc JOIN pc.category c WHERE c.name = :categoryName")
+    @Query("SELECT p FROM Product p JOIN p.productCategories pc " +
+            "JOIN pc.category c WHERE c.name = :categoryName")
     Page<Product> findAllByCategoryName(Pageable pageable, @Param("categoryName") String categoryName);
 
     Optional<Product> findBySlug(String slug);
 
-    @Query("SELECT p FROM Product p JOIN p.productCategories pc JOIN pc.category c WHERE p.slug = :slug AND c.name = :categoryName")
+    @Query("SELECT p FROM Product p JOIN p.productCategories pc " +
+            "JOIN pc.category c WHERE p.slug = :slug AND c.name = :categoryName")
     Optional<Product> findBySlugs(String slug, String categoryName);
 
 

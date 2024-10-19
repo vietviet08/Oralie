@@ -24,41 +24,41 @@ public class ProductRequest {
 
     @NotBlank(message = "Name is required")
     @Size(min = 4, max = 100, message = "Name must be between 4 and 100 characters")
-    private String name;
+        private String name;
 
-    @NotBlank(message = "Slug is required")
-    private String slug;
+        @NotBlank(message = "Slug is required")
+        private String slug;
 
-    @Size(min = 4, max = 1000, message = "Description must be between 4 and 1000 characters")
-    private String description;
+        @Size(min = 4, max = 1000, message = "Description must be between 4 and 1000 characters")
+        private String description;
 
-    private String sku;
+        private String sku;
 
-    private List<Long> categoryIds;
+        private List<Long> categoryIds;
 
-    private Long brandId;
+        private Long brandId;
 
-    private List<String> imagesUrl;
+        private List<String> imagesUrl;
 
-    private List<ProductOptionRequest> options;
+        private List<ProductOptionRequest> options;
 
-    @NotBlank(message = "Price is required")
-    @DecimalMin(value = "0.0", message = "Price must be greater than 0")
-    private Double price;
+        @NotBlank(message = "Price is required")
+        @DecimalMin(value = "0.0", message = "Price must be greater than 0")
+        private Double price;
 
-    private Double discount;
+        private Double discount;
 
-    @NotBlank(message = "Quantity is required")
-    @DecimalMin(value = "0", message = "Quantity must be greater than 0")
-    private Integer quantity;
+        @NotBlank(message = "Quantity is required")
+        @DecimalMin(value = "0", message = "Quantity must be greater than 0")
+        private Integer quantity;
 
-    private Boolean isDiscounted;
+        private Boolean isDiscounted;
 
-    private Boolean isAvailable = true;
+        private Boolean isAvailable = true;
 
-    private Boolean isDeleted = false;
+        private Boolean isDeleted = false;
 
-    private Boolean isFeatured = true;
+        private Boolean isFeatured = true;
 
-    private Boolean isPromoted = true;
+        private Boolean isPromoted = true;
 }

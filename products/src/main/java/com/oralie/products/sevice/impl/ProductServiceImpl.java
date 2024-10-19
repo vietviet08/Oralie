@@ -31,10 +31,10 @@ public class ProductServiceImpl implements ProductService {
     private final ProductImageRepository productImageRepository;
 
     @Override
-    public ListResponse<ProductResponse> getAllProducts(int page, int size, String sortBy, String sort) {
+    public ListResponse<ProductResponse> getAllProducts(int page, int size, String sortBy, String sort, String search, String category) {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
-        Page<Product> pageProducts = productRepository.findAll(pageable);
+        Page<Product> pageProducts = productRepository.findAllProducts(pageable, search, category);
         List<Product> products = pageProducts.getContent();
 
         return ListResponse
