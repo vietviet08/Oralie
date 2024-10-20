@@ -45,7 +45,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "api/rates/rates/**").permitAll()
 
                         //store
-                        .pathMatchers(HttpMethod.GET, "api/**/store/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "api/*/store/**").permitAll()
 
                         .pathMatchers(HttpMethod.GET, "api/accounts/store/**").hasRole("CUSTOMER")
                         .pathMatchers(HttpMethod.POST, "api/accounts/store/**").hasRole("CUSTOMER")
@@ -58,10 +58,10 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.DELETE, "api/carts/store/**").hasRole("CUSTOMER")
 
                         //dash
-                        .pathMatchers(HttpMethod.GET, "api/**/dash/**").hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.POST, "api/**/dash/**").hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.PUT, "api/**/dash/**").hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.DELETE, "api/**/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.GET, "api/*/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "api/*/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "api/*/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "api/*/dash/**").hasRole("ADMIN")
 
 
                         .anyExchange().authenticated()
