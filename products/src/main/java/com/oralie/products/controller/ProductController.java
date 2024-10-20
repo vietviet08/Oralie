@@ -40,7 +40,6 @@ public class ProductController {
 
     @PostMapping("/dash/products/images")
     public ResponseEntity<Map> uploadFile(@ModelAttribute("file") MultipartFile file) {
-
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productImageService.uploadFileSingle(file));
