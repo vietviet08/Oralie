@@ -65,53 +65,65 @@ services:
       file: common-config.yml
       service: network-deploy-service
 
-  accounts_db:
+  oralie_db:
     image: mysql
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: accounts_db
+      MYSQL_DATABASE: oralie_db
     volumes:
-      - accountsdb_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     extends:
       file: common-config.yml
       service: microservice-db-config
 
-  products_db:
-    image: mysql
-    ports:
-      - "3307:3306"
-    environment:
-      MYSQL_DATABASE: products_db
-    volumes:
-      - productsdb_data:/var/lib/mysql
-    extends:
-      file: common-config.yml
-      service: microservice-db-config
-
-  carts_db:
-    image: mysql
-    ports:
-      - "3308:3306"
-    environment:
-      MYSQL_DATABASE: carts_db
-    volumes:
-      - cartsdb_data:/var/lib/mysql
-    extends:
-      file: common-config.yml
-      service: microservice-db-config
-
-  orders_db:
-    image: mysql
-    ports:
-      - "3309:3306"
-    environment:
-      MYSQL_DATABASE: orders_db
-    volumes:
-      - ordersdb_data:/var/lib/mysql
-    extends:
-      file: common-config.yml
-      service: microservice-db-config
+#  accounts_db:
+#    image: mysql
+#    ports:
+#      - "3306:3306"
+#    environment:
+#      MYSQL_DATABASE: accounts_db
+#    volumes:
+#      - accountsdb_data:/var/lib/mysql
+#    extends:
+#      file: common-config.yml
+#      service: microservice-db-config
+#
+#  products_db:
+#    image: mysql
+#    ports:
+#      - "3307:3306"
+#    environment:
+#      MYSQL_DATABASE: products_db
+#    volumes:
+#      - productsdb_data:/var/lib/mysql
+#    extends:
+#      file: common-config.yml
+#      service: microservice-db-config
+#
+#  carts_db:
+#    image: mysql
+#    ports:
+#      - "3308:3306"
+#    environment:
+#      MYSQL_DATABASE: carts_db
+#    volumes:
+#      - cartsdb_data:/var/lib/mysql
+#    extends:
+#      file: common-config.yml
+#      service: microservice-db-config
+#
+#  orders_db:
+#    image: mysql
+#    ports:
+#      - "3309:3306"
+#    environment:
+#      MYSQL_DATABASE: orders_db
+#    volumes:
+#      - ordersdb_data:/var/lib/mysql
+#    extends:
+#      file: common-config.yml
+#      service: microservice-db-config
 
   kafka:
     image: docker.io/bitnami/kafka:3.7
@@ -417,7 +429,7 @@ services:
       retries: 20
       start_period: 10s
     depends_on:
-      accounts_db:
+      oralie_db:
         condition: service_healthy
       configserver:
         condition: service_healthy
@@ -426,7 +438,7 @@ services:
       #      SPRING_RABBITMQ_HOST: "rabbit"
       OTEL_SERVICE_NAME: "accounts"
 #      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: "kafka:9092"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://accounts_db:3306/accounts_db"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
     extends:
       file: common-config.yml
       service: microservice-service-config
@@ -443,14 +455,14 @@ services:
       retries: 20
       start_period: 10s
     depends_on:
-      products_db:
+      oralie_db:
         condition: service_healthy
       configserver:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "products"
       OTEL_SERVICE_NAME: "products"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://products_db:3306/products_db"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
       SPRING_DATASOURCE_USERNAME: "root"
       SPRING_DATASOURCE_PASSWORD: "root"
     extends:
@@ -469,14 +481,14 @@ services:
       retries: 20
       start_period: 10s
     depends_on:
-      carts_db:
+      oralie_db:
         condition: service_healthy
       configserver:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "carts"
       OTEL_SERVICE_NAME: "carts"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://carts_db:3306/carts_db"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
     extends:
       file: common-config.yml
       service: microservice-service-config
@@ -493,14 +505,14 @@ services:
       retries: 20
       start_period: 10s
     depends_on:
-      orders_db:
+      oralie_db:
         condition: service_healthy
       configserver:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "orders"
       OTEL_SERVICE_NAME: "orders"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://orders_db:3306/orders_db"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
     extends:
       file: common-config.yml
       service: microservice-service-config
@@ -547,13 +559,14 @@ services:
 
 volumes:
   postgres_data:
+  mysql_data:
   pgadmin:
   kafka_data:
     driver: local
-  accountsdb_data:
-  productsdb_data:
-  cartsdb_data:
-  ordersdb_data:
+#  accountsdb_data:
+#  productsdb_data:
+#  cartsdb_data:
+#  ordersdb_data:
 
 networks:
   vietquoc:

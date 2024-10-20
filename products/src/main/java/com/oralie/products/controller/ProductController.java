@@ -4,6 +4,7 @@ import com.oralie.products.dto.ProductContactDto;
 import com.oralie.products.dto.request.ProductRequest;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.dto.response.ProductResponse;
+import com.oralie.products.sevice.ProductImageService;
 import com.oralie.products.sevice.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Map;
 
 @Tag(
         name = "CRUD REST APIs for Products",
@@ -31,6 +35,16 @@ public class ProductController {
     private String build;
 
     private final ProductService productService;
+
+    private final ProductImageService productImageService;
+
+    @PostMapping("/dash/products/images")
+    public ResponseEntity<Map> uploadFile(@ModelAttribute("file") MultipartFile file) {
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productImageService.uploadFileSingle(file));
+    }
 
     @GetMapping("/store/products")
     public ResponseEntity<ListResponse<ProductResponse>> getAllProducts(
@@ -65,8 +79,8 @@ public class ProductController {
                 .body(productService.getAllProductsByBrand(page, size, sortBy, sort, categoryName, brandName));
     }
 
-    @GetMapping("/store/products/{id}")
-    public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id) {
+    @GetMapping("/store/products/id/{id}")
+    public ResponseEntity<ProductResponse> getProductById(@PathVariable("id") Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.getProductById(id));
@@ -74,7 +88,7 @@ public class ProductController {
 
 
     @GetMapping("/store/products/{slug}")
-    public ResponseEntity<ProductResponse> getProductBySlug(@PathVariable String slug) {
+    public ResponseEntity<ProductResponse> getProductBySlug(@PathVariable("slug") String slug) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.getProductBySlug(slug));

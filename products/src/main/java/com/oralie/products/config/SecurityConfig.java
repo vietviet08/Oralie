@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
                         .requestMatchers("/dash/**").hasRole("ADMIN")
                         .requestMatchers("/store/products/**").hasRole("CUSTOMER")
                         .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+//                                .anyRequest().permitAll()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()).authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
                 .build();

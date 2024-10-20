@@ -29,6 +29,10 @@ springdoc:
   packages-to-scan:
     - com.oralie.products
 
+cloudinary:
+  cloud_name: "dm5bdbi6w"
+  api_key: "442117998348316"
+  api_secret: "nf1QdyE6GXdEYB58vivwkzsHZX8"
 
 management:
   endpoints:
