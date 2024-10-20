@@ -2,7 +2,7 @@
 <configuration scan="true" debug="false">
 
     <property name="LOG_PATH" value="logs" />
-    <property name="LOG_FILE" value="${LOG_PATH}/gatewayserver/app.log" />
+    <property name="LOG_FILE" value="${LOG_PATH}/orders/app.log" />
     <property name="MAX_LOG_FILE_SIZE" value="10MB" />
     <property name="MAX_HISTORY" value="30" />
 
@@ -16,7 +16,7 @@
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_FILE}</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_PATH}/gatewayserver/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/orders/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>${MAX_LOG_FILE_SIZE}</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -30,9 +30,9 @@
     </appender>
 
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/gatewayserver/error.log</file>
+        <file>${LOG_PATH}/orders/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_PATH}/gatewayserver/error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/orders/error.%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>${MAX_HISTORY}</maxHistory>
         </rollingPolicy>
         <encoder>
