@@ -38,13 +38,6 @@ public class ProductController {
 
     private final ProductImageService productImageService;
 
-    @PostMapping("/dash/products/images")
-    public ResponseEntity<Map> uploadFile(@ModelAttribute("file") MultipartFile file) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(productImageService.uploadFileSingle(file));
-    }
-
     @GetMapping("/store/products")
     public ResponseEntity<ListResponse<ProductResponse>> getAllProducts(
             @RequestParam(required = false, defaultValue = "0") int page,

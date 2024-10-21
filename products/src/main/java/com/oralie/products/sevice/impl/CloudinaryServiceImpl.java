@@ -4,6 +4,8 @@ import com.cloudinary.Cloudinary;
 import com.oralie.products.sevice.CloudinaryService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,10 +20,13 @@ import java.util.Map;
 public class CloudinaryServiceImpl implements CloudinaryService {
 
     private final Cloudinary cloudinary;
+    private static final String FOLDER_NAME = "products";
+    private static final Logger log = LoggerFactory.getLogger(CloudinaryServiceImpl.class);
 
     @Override
     public List<String> uploadFile(List<MultipartFile> files, String folderName) {
         List<String> urls = new ArrayList<>();
+
         for (MultipartFile file : files) {
             try {
                 Map<String, String> options = new HashMap<>();
@@ -31,9 +36,10 @@ public class CloudinaryServiceImpl implements CloudinaryService {
                 Map uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
                 urls.add((String) uploadResult.get("url"));
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("Error uploading file: {}", e.getMessage());
             }
         }
+
         return urls;
     }
 
@@ -45,11 +51,13 @@ public class CloudinaryServiceImpl implements CloudinaryService {
             options.put("folder", folderName);
             Map uploadedFile = cloudinary.uploader().upload(file.getBytes(), options);
             String publicId = (String) uploadedFile.get("public_id");
+
             return cloudinary.url().secure(true).generate(publicId);
 
         }catch (IOException e){
-            e.printStackTrace();
+            log.error("Error uploading file: {}", e.getMessage());
             return null;
+
         }
     }
 }

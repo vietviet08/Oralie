@@ -14,17 +14,18 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-//@RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
 public class ProductImageController {
 
     private final ProductImageService productImageService;
 
-//    @PostMapping("/dash/products/images")
-//    public ResponseEntity<Map> uploadFile(@ModelAttribute ProductImageRequest productImageRequest) {
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(productImageService.uploadFile(productImageRequest));
-//    }
+    @PostMapping("/dash/products/images")
+    public ResponseEntity<Map> uploadFile(@ModelAttribute("file") MultipartFile file) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productImageService.uploadFileSingle(file));
+    }
+
 
 
 }

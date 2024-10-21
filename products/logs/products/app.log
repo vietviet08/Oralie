@@ -1,0 +1,82 @@
+2024-10-21 20:27:39 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-21 20:27:39 INFO  [main] c.o.p.ProductsApplicationTests - Starting ProductsApplicationTests using Java 21.0.4 with PID 224206 (started by vietquoc in /home/vietquoc/Public/workspace/Oralie/products)
+2024-10-21 20:27:39 DEBUG [main] c.o.p.ProductsApplicationTests - Running with Spring Boot v3.3.3, Spring v6.1.12
+2024-10-21 20:27:39 INFO  [main] c.o.p.ProductsApplicationTests - The following 1 profile is active: "prod"
+2024-10-21 20:27:39 INFO  [main] o.s.c.c.c.ConfigServerConfigDataLoader - Fetching config from server at : http://localhost:8071/
+2024-10-21 20:27:39 INFO  [main] o.s.c.c.c.ConfigServerConfigDataLoader - Located environment: name=products, profiles=[default], label=null, version=ed11e47069a3ef7b1f218fc7c2dd9b77592f21c5, state=null
+2024-10-21 20:27:39 INFO  [main] o.s.c.c.c.ConfigServerConfigDataLoader - Fetching config from server at : http://localhost:8071/
+2024-10-21 20:27:39 INFO  [main] o.s.c.c.c.ConfigServerConfigDataLoader - Located environment: name=products, profiles=[prod], label=null, version=ed11e47069a3ef7b1f218fc7c2dd9b77592f21c5, state=null
+2024-10-21 20:27:39 DEBUG [main] o.s.w.c.s.GenericWebApplicationContext - Refreshing org.springframework.web.context.support.GenericWebApplicationContext@672b72ba
+2024-10-21 20:27:40 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-10-21 20:27:40 INFO  [main] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 90 ms. Found 6 JPA repository interfaces.
+2024-10-21 20:27:40 INFO  [main] o.s.cloud.context.scope.GenericScope - BeanFactory id=72e2262f-fea2-3595-95a4-050367bb10a1
+2024-10-21 20:27:40 WARN  [main] o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$DeferringLoadBalancerInterceptorConfig' of type [org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$DeferringLoadBalancerInterceptorConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [lbRestClientPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2024-10-21 20:27:40 WARN  [main] o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'deferringLoadBalancerInterceptor' of type [org.springframework.cloud.client.loadbalancer.DeferringLoadBalancerInterceptor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected into a currently created BeanPostProcessor [lbRestClientPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies.
+2024-10-21 20:27:41 INFO  [main] o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-10-21 20:27:41 INFO  [main] org.hibernate.Version - HHH000412: Hibernate ORM core version 6.5.2.Final
+2024-10-21 20:27:41 INFO  [main] o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2024-10-21 20:27:41 INFO  [main] o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-10-21 20:27:41 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2024-10-21 20:27:41 INFO  [main] com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7e0b68e5
+2024-10-21 20:27:41 INFO  [main] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2024-10-21 20:27:41 WARN  [main] org.hibernate.orm.deprecation - HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2024-10-21 20:27:41 WARN  [main] org.hibernate.orm.deprecation - HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2024-10-21 20:27:42 INFO  [main] o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-10-21 20:27:42 INFO  [main] o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-10-21 20:27:42 INFO  [main] o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2024-10-21 20:27:42 WARN  [main] o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-10-21 20:27:42 DEBUG [main] o.s.s.c.a.a.c.AuthenticationConfiguration$DefaultPasswordEncoderAuthenticationManagerBuilder - No authenticationProviders and no parentAuthenticationManager defined. Returning null.
+2024-10-21 20:27:43 DEBUG [main] o.s.w.s.m.m.a.RequestMappingHandlerMapping - 33 mappings in 'requestMappingHandlerMapping'
+2024-10-21 20:27:43 DEBUG [main] o.s.w.s.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui*/*swagger-initializer.js, /swagger-ui*/**] in 'resourceHandlerMapping'
+2024-10-21 20:27:43 INFO  [main] o.s.b.a.e.web.EndpointLinksResolver - Exposing 18 endpoints beneath base path '/actuator'
+2024-10-21 20:27:43 DEBUG [main] o.s.s.web.DefaultSecurityFilterChain - Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, LogoutFilter, BearerTokenAuthenticationFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, ExceptionTranslationFilter, AuthorizationFilter
+2024-10-21 20:27:43 DEBUG [main] o.s.w.s.m.m.a.RequestMappingHandlerAdapter - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2024-10-21 20:27:43 DEBUG [main] o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver - ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2024-10-21 20:27:43 INFO  [main] o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
+2024-10-21 20:27:43 WARN  [main] o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2024-10-21 20:27:44 INFO  [main] o.s.c.n.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
+2024-10-21 20:27:44 INFO  [main] c.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
+2024-10-21 20:27:44 INFO  [main] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-21 20:27:44 INFO  [main] c.netflix.discovery.DiscoveryClient - Disable delta property : false
+2024-10-21 20:27:44 INFO  [main] c.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+2024-10-21 20:27:44 INFO  [main] c.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+2024-10-21 20:27:44 INFO  [main] c.netflix.discovery.DiscoveryClient - Application is null : false
+2024-10-21 20:27:44 INFO  [main] c.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+2024-10-21 20:27:44 INFO  [main] c.netflix.discovery.DiscoveryClient - Application version is -1: true
+2024-10-21 20:27:44 INFO  [main] c.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+2024-10-21 20:27:44 DEBUG [main] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/
+2024-10-21 20:27:44 DEBUG [main] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-21 20:27:44 DEBUG [main] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-21 20:27:44 DEBUG [main] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-21 20:27:44 INFO  [main] c.netflix.discovery.DiscoveryClient - The response status is 200
+2024-10-21 20:27:44 INFO  [main] c.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
+2024-10-21 20:27:44 INFO  [main] c.n.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
+2024-10-21 20:27:44 INFO  [main] c.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1729517264231 with initial instances count: 2
+2024-10-21 20:27:44 INFO  [main] o.s.c.n.e.s.EurekaServiceRegistry - Registering application PRODUCTS with eureka with status UP
+2024-10-21 20:27:44 INFO  [main] c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1729517264234, current=UP, previous=STARTING]
+2024-10-21 20:27:44 INFO  [DiscoveryClient-InstanceInfoReplicator-%d] c.netflix.discovery.DiscoveryClient - DiscoveryClient_PRODUCTS/192.168.1.4:products:8081: registering service...
+2024-10-21 20:27:44 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - HTTP POST http://localhost:8070/eureka/apps/PRODUCTS
+2024-10-21 20:27:44 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-21 20:27:44 INFO  [main] c.o.p.ProductsApplicationTests - Started ProductsApplicationTests in 6.861 seconds (process running for 7.527)
+2024-10-21 20:27:44 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - Writing [InstanceInfo [instanceId = 192.168.1.4:products:8081, appName = PRODUCTS, hostName = 192.168.1.4, status = UP, ipAddr = 192.168.1.4, port = 8081, securePort = 443, dataCenterInfo = com.netflix.appinfo.MyDataCenterInfo@595dda6d] as "application/json"
+2024-10-21 20:27:44 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - Response 204 NO_CONTENT
+2024-10-21 20:27:44 INFO  [DiscoveryClient-InstanceInfoReplicator-%d] c.netflix.discovery.DiscoveryClient - DiscoveryClient_PRODUCTS/192.168.1.4:products:8081 - registration status: 204
+2024-10-21 20:27:45 DEBUG [SpringApplicationShutdownHook] o.s.w.c.s.GenericWebApplicationContext - Closing org.springframework.web.context.support.GenericWebApplicationContext@672b72ba, started on Mon Oct 21 20:27:39 ICT 2024
+2024-10-21 20:27:45 INFO  [SpringApplicationShutdownHook] o.s.c.n.e.s.EurekaServiceRegistry - Unregistering application PRODUCTS with eureka with status DOWN
+2024-10-21 20:27:45 INFO  [SpringApplicationShutdownHook] c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1729517265697, current=DOWN, previous=UP]
+2024-10-21 20:27:45 INFO  [DiscoveryClient-InstanceInfoReplicator-%d] c.netflix.discovery.DiscoveryClient - DiscoveryClient_PRODUCTS/192.168.1.4:products:8081: registering service...
+2024-10-21 20:27:45 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - HTTP POST http://localhost:8070/eureka/apps/PRODUCTS
+2024-10-21 20:27:45 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-21 20:27:45 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - Writing [InstanceInfo [instanceId = 192.168.1.4:products:8081, appName = PRODUCTS, hostName = 192.168.1.4, status = DOWN, ipAddr = 192.168.1.4, port = 8081, securePort = 443, dataCenterInfo = com.netflix.appinfo.MyDataCenterInfo@595dda6d] as "application/json"
+2024-10-21 20:27:45 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - Response 204 NO_CONTENT
+2024-10-21 20:27:45 INFO  [DiscoveryClient-InstanceInfoReplicator-%d] c.netflix.discovery.DiscoveryClient - DiscoveryClient_PRODUCTS/192.168.1.4:products:8081 - registration status: 204
+2024-10-21 20:27:45 INFO  [SpringApplicationShutdownHook] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-21 20:27:45 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-21 20:27:45 INFO  [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-21 20:27:45 INFO  [SpringApplicationShutdownHook] c.netflix.discovery.DiscoveryClient - Shutting down DiscoveryClient ...
+2024-10-21 20:27:48 INFO  [SpringApplicationShutdownHook] c.netflix.discovery.DiscoveryClient - Unregistering ...
+2024-10-21 20:27:48 DEBUG [SpringApplicationShutdownHook] o.s.web.client.RestTemplate - HTTP DELETE http://localhost:8070/eureka/apps/PRODUCTS/192.168.1.4:products:8081
+2024-10-21 20:27:48 DEBUG [SpringApplicationShutdownHook] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-21 20:27:48 DEBUG [SpringApplicationShutdownHook] o.s.web.client.RestTemplate - Response 404 NOT_FOUND
+2024-10-21 20:27:48 INFO  [SpringApplicationShutdownHook] c.netflix.discovery.DiscoveryClient - DiscoveryClient_PRODUCTS/192.168.1.4:products:8081 - deregister  status: 404
+2024-10-21 20:27:48 INFO  [SpringApplicationShutdownHook] c.netflix.discovery.DiscoveryClient - Completed shut down of DiscoveryClient

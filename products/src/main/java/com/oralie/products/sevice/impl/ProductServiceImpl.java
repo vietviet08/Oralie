@@ -1,5 +1,6 @@
 package com.oralie.products.sevice.impl;
 
+import com.oralie.products.dto.request.ProductImageRequest;
 import com.oralie.products.dto.request.ProductOptionRequest;
 import com.oralie.products.dto.request.ProductRequest;
 import com.oralie.products.dto.response.*;
@@ -7,6 +8,7 @@ import com.oralie.products.exception.ResourceAlreadyExistException;
 import com.oralie.products.exception.ResourceNotFoundException;
 import com.oralie.products.model.*;
 import com.oralie.products.repository.*;
+import com.oralie.products.sevice.ProductImageService;
 import com.oralie.products.sevice.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,6 +31,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductCategoryRepository productCategoryRepository;
     private final ProductOptionRepository productOptionRepository;
     private final ProductImageRepository productImageRepository;
+    private final ProductImageService productImageService;
 
     @Override
     public ListResponse<ProductResponse> getAllProducts(int page, int size, String sortBy, String sort, String search, String category) {
@@ -132,6 +135,10 @@ public class ProductServiceImpl implements ProductService {
 
         Product productSaved = productRepository.save(product);
 
+        List<ProductImageResponse> productImageResponses  = productImageService.uploadFile(productRequest.getImages(), productSaved.getId());
+
+        productSaved.setImages(mapToProductImageList(productImageResponses, productSaved));
+
         List<ProductOption> productOptionList = mapToProductOptionList(productRequest.getOptions(), productSaved);
 
         List<ProductCategory> productCategoryList = new ArrayList<>();
@@ -144,22 +151,22 @@ public class ProductServiceImpl implements ProductService {
             productCategoryList.add(productCategory);
         }
 
-        List<ProductImage> productImageList = new ArrayList<>();
-        if (productRequest.getImagesUrl() != null) {
-            for (String urlImage : productRequest.getImagesUrl()) {
-                ProductImage productImage = ProductImage.builder()
-                        .url(urlImage)
-                        .product(productSaved)
-                        .name("Image" + productRequest.getImagesUrl().indexOf(urlImage))
-                        .type("image")
-                        .build();
-                productImageList.add(productImage);
-            }
-        }
+//        List<ProductImage> productImageList = new ArrayList<>();
+//        if (productImageSaved != null) {
+//            for (String urlImage : productImageSaved.stream().map(ProductImage::getUrl).toList()) {
+//                ProductImage productImage = ProductImage.builder()
+//                        .url(urlImage)
+//                        .product(productSaved)
+//                        .name("Image" + productRequest.getImagesUrl().indexOf(urlImage))
+//                        .type("image")
+//                        .build();
+//                productImageList.add(productImage);
+//            }
+//        }
 
         productSaved.setOptions(productOptionList);
         productSaved.setProductCategories(productCategoryList);
-        productSaved.setImages(productImageList);
+//        productSaved.setImages(productImageList);
 
         return mapToProductResponse(productRepository.save(productSaved));
 
@@ -218,28 +225,59 @@ public class ProductServiceImpl implements ProductService {
 
         //check old images if they are still in the list keep them else delete them and new images add them
         List<ProductImage> productImageListOld = product.getImages();
-        List<String> imagesUrl = productRequest.getImagesUrl();
+        ProductImageRequest productImageNew = productRequest.getImages();
 
-        for (ProductImage productImage : productImageListOld) {
-            if (!imagesUrl.contains(productImage.getUrl())) {
-                productImageRepository.delete(productImage);
-            }
-        }
+
         List<ProductImage> productImageList = new ArrayList<>();
-        if (productRequest.getImagesUrl() != null) {
-            for (String urlImage : productRequest.getImagesUrl()) {
-                boolean isExist = productImageListOld.stream().anyMatch(productImage -> productImage.getUrl().equals(urlImage));
-                if (isExist) {
-                    ProductImage productImage = ProductImage.builder()
-                            .url(urlImage)
-                            .product(productSaved)
-                            .name("Image" + productRequest.getImagesUrl().indexOf(urlImage))
-                            .type("image")
+        if (productImageNew != null && productImageNew.getFile() != null) {
+            List<String> newImageUrls = productImageService.uploadFile(productImageNew, product.getId())
+                    .stream()
+                    .map(ProductImageResponse::getUrl)
+                    .toList();
+
+            for (ProductImage oldImage : productImageListOld) {
+                if (!newImageUrls.contains(oldImage.getUrl())) {
+                    productImageRepository.delete(oldImage);
+                } else {
+                    productImageList.add(oldImage);
+                }
+            }
+
+            for (String newImageUrl : newImageUrls) {
+                if (productImageListOld.stream().noneMatch(oldImage -> oldImage.getUrl().equals(newImageUrl))) {
+                    ProductImage newImage = ProductImage.builder()
+                            .url(newImageUrl)
+                            .product(product)
+                            .name(productImageNew.getName())
+                            .type(productImageNew.getType())
                             .build();
-                    productImageList.add(productImage);
+                    productImageList.add(newImage);
                 }
             }
         }
+
+//        List<String> imagesUrl = productRequest.getImagesUrl();
+//
+//        for (ProductImage productImage : productImageListOld) {
+//            if (!imagesUrl.contains(productImage.getUrl())) {
+//                productImageRepository.delete(productImage);
+//            }
+//        }
+//        List<ProductImage> productImageList = new ArrayList<>();
+//        if (productRequest.getImagesUrl() != null) {
+//            for (String urlImage : productRequest.getImagesUrl()) {
+//                boolean isExist = productImageListOld.stream().anyMatch(productImage -> productImage.getUrl().equals(urlImage));
+//                if (isExist) {
+//                    ProductImage productImage = ProductImage.builder()
+//                            .url(urlImage)
+//                            .product(productSaved)
+//                            .name("Image" + productRequest.getImagesUrl().indexOf(urlImage))
+//                            .type("image")
+//                            .build();
+//                    productImageList.add(productImage);
+//                }
+//            }
+//        }
 
         productImageRepository.saveAll(productImageList);
 
@@ -363,6 +401,18 @@ public class ProductServiceImpl implements ProductService {
                         .name(productImage.getName())
                         .url(productImage.getUrl())
                         .type(productImage.getType())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    private List<ProductImage> mapToProductImageList(List<ProductImageResponse> productImageRequests, Product product) {
+        return productImageRequests.stream()
+                .map(productImageRequest -> ProductImage.builder()
+                        .id(productImageRequest.getId())
+                        .name(productImageRequest.getName())
+                        .type(productImageRequest.getType())
+                        .url(productImageRequest.getUrl())
+                        .product(product)
                         .build())
                 .collect(Collectors.toList());
     }

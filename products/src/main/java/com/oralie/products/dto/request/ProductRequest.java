@@ -38,7 +38,7 @@ public class ProductRequest {
 
         private Long brandId;
 
-        private List<String> imagesUrl;
+        private ProductImageRequest images;
 
         private List<ProductOptionRequest> options;
 
