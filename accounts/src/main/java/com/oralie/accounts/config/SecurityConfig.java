@@ -32,23 +32,23 @@ import java.util.stream.Collectors;
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers(
-//                                "/",
-//                                "/login",
-//                                "/store/**",
-//                                "/store/accounts/register",
-//                                "/accounts/build-version",
-//                                "/accounts/contact-info",
-//                                "/accounts/java-version",
-//                                "/actuator/**",
-//                                "/v3/api-docs/**",
-//                                "/swagger-ui.html",
-//                                "/swagger-ui",
-//                                "/swagger-ui/**").permitAll()
-//                        .requestMatchers("/dash/**").hasRole("ADMIN")
-//                        .requestMatchers("/store/accounts/**").hasRole("CUSTOMER")
-//                        .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/login",
+                                "/store/**",
+                                "/store/accounts/register",
+                                "/accounts/build-version",
+                                "/accounts/contact-info",
+                                "/accounts/java-version",
+                                "/actuator/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui",
+                                "/swagger-ui/**").permitAll()
+                        .requestMatchers("/dash/**").hasRole("ADMIN")
+                        .requestMatchers("/store/accounts/**").hasRole("CUSTOMER")
+                        .anyRequest().authenticated()
+//                                .anyRequest().permitAll()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()).authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
                 .build();

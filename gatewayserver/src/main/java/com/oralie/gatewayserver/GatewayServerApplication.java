@@ -44,6 +44,20 @@ public class GatewayServerApplication {
                         )
                         .uri("lb://ACCOUNTS")
                 )
+                .route(r -> r
+                        .path("/aggregate/accounts-service/swagger-ui/**")
+                        .filters(f -> f
+                                .rewritePath("/aggregate/accounts-service/swagger-ui/(?<remaining>.*)", "/swagger-ui/${remaining}")
+                        )
+                        .uri("lb://ACCOUNTS")
+                )
+                .route(r -> r
+                        .path("/webjars/**")
+                        .filters(f -> f
+                                .rewritePath("/webjars/(?<remaining>.*)", "/webjars/${remaining}")
+                        )
+                        .uri("lb://ACCOUNTS")  // Replace with your service
+                )
                 .route(p -> p
                         .path("/api/products/**")
                         .filters(f -> f.tokenRelay()
@@ -71,6 +85,13 @@ public class GatewayServerApplication {
                                 )
                         )
 
+                        .uri("lb://CARTS")
+                )
+                .route(r -> r
+                        .path("/aggregate/carts-service/v3/api-docs/**")
+                        .filters(f -> f
+                                .rewritePath("/aggregate/carts-service/v3/api-docs/(?<remaining>.*)", "/v3/api-docs/${remaining}")
+                        )
                         .uri("lb://CARTS")
                 )
                 .route(p -> p

@@ -51,12 +51,18 @@ services:
 
 springdoc:
   api-docs:
+    enabled: true
     path: /v3/api-docs
   swagger-ui:
-    path: /swagger-ui.html
+    enabled: true
+    path: /swagger-ui/index.html
     urls:
       - name: "accounts-service"
         url: "/aggregate/accounts-service/v3/api-docs"
+      - name: "products-service"
+        url: "/aggregate/products-service/v3/api-docs"
+      - name: "carts-service"
+        url: "/aggregate/carts-service/v3/api-docs"
 
 info:
   app:

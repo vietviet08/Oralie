@@ -109,7 +109,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse createProduct(ProductRequest productRequest) {
 
         if (productRepository.existsByName(productRequest.getName())) {
-            throw new ResourceAlreadyExistException("Product already exists by name is "+ productRequest.getName());
+            throw new ResourceAlreadyExistException("Product already exists by name is " + productRequest.getName());
         } else if (productRepository.existsBySlug(productRequest.getSlug())) {
             throw new ResourceAlreadyExistException("Product already exists by slug is " + productRequest.getSlug());
         }
@@ -135,7 +135,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product productSaved = productRepository.save(product);
 
-        List<ProductImageResponse> productImageResponses  = productImageService.uploadFile(productRequest.getImages(), productSaved.getId());
+        List<ProductImageResponse> productImageResponses = productImageService.uploadFile(productRequest.getImages(), productSaved.getId());
 
         productSaved.setImages(mapToProductImageList(productImageResponses, productSaved));
 
