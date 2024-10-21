@@ -466,3 +466,6 @@
 2024-10-21 22:34:23 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
 2024-10-21 22:35:23 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
 2024-10-21 22:36:23 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-21 22:37:23 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-21 22:38:23 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-21 22:38:35 INFO  [http-nio-8070-exec-8] c.n.e.r.AbstractInstanceRegistry - Registered instance CARTS/192.168.1.4:carts:8082 with status DOWN (replication=false)
