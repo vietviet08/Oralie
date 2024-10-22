@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: notification
+  mail:
+    default-encoding: utf-8
+    host: smtp.gmail.com
+    port: 587
+    username: vietnq.23ceb@vku.udn.vn
+    password: vkdwgrcpqrmigwuv
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        debug: true
+    test-connection: false
+    protocol: smtp
+
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: notification
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer:
+          key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+          value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        schema.registry.url: http://localhost:8088
