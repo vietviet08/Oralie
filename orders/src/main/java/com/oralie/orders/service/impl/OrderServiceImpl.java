@@ -2,6 +2,7 @@ package com.oralie.orders.service.impl;
 
 import com.oralie.orders.constant.OrderStatus;
 import com.oralie.orders.constant.PaymentStatus;
+import com.oralie.orders.dto.entity.OrderPlaceEvent;
 import com.oralie.orders.dto.request.OrderRequest;
 import com.oralie.orders.dto.request.PayPalInfoRequest;
 import com.oralie.orders.dto.response.ListResponse;
@@ -18,11 +19,14 @@ import com.oralie.orders.repository.client.CartFeignClient;
 import com.oralie.orders.service.OrderService;
 import com.oralie.orders.service.PayPalService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +38,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-
+    private static final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
+    private final KafkaTemplate<String, OrderPlaceEvent> kafkaTemplate;
     private final OrderRepository orderRepository;
     private final PayPalService payPalService;
     private final CartFeignClient cartFeignClient;
@@ -112,6 +117,19 @@ public class OrderServiceImpl implements OrderService {
         }
 
         orderRepository.save(order);
+
+        OrderPlaceEvent orderPlacedEvent = OrderPlaceEvent.builder()
+                .orderId(order.getId())
+                .userId(order.getUserId())
+                .email(order.getAddress().getEmail())
+                .totalPrice(order.getTotalPrice())
+                .build();
+
+        log.info("Start- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
+
+        kafkaTemplate.send("order-placed", orderPlacedEvent);
+
+        log.info("End- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
 
         //subtract quantity product in inventory service
 

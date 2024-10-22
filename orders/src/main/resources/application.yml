@@ -26,6 +26,18 @@ spring:
       circuitbreaker:
         enabled: true
 
+  kafka:
+    bootstrap-servers: localhost:9092
+    template:
+      default-topic: orders
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        schema:
+          registry:
+            url: http://localhost:8088
+
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -120,6 +132,8 @@ paypal:
   client-id: AWgfD0pzzu5uEWJiCrg6HDeY2JnLgXxoTxsnHVkmXCK-TJ-T7lQixe1vcZU5WPjTsCLUkcOi-piRWGKT
   client-secret: EMbibNim6DQs6l4k4aGm9_SgDvUH1ezYP6sBuqp3aNF2ccYZdo1apZ0v2ajL95Sc0g2gfUy2IpcAgpy7
   mode: sandbox
+
+
 
 server:
   port: 8083
