@@ -128,6 +128,12 @@ services:
       KAFKA_CLUSTERS_BOOTSTRAPSERVERS: broker:29092
       KAFKA_CLUSTERS_SCHEMAREGISTRY: http://schema-registry:8081
       DYNAMIC_CONFIG_ENABLED: 'true'
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8089" ]
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
 
   redis:
     image: redis
@@ -492,10 +498,17 @@ services:
         condition: service_healthy
       configserver:
         condition: service_healthy
+      kafka-ui:
+        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "orders"
       OTEL_SERVICE_NAME: "orders"
       SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
+      KAFKA_BOOTSTRAP_SERVERS: localhost:9092
+      KAFKA_TEMPLATE_DEFAULT_TOPIC: orders
+      KAFKA_PRODUCER_KEY_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
+      KAFKA_PRODUCER_VALUE_SERIALIZER: org.springframework.kafka.support.serializer.JsonSerializer
+      KAFKA_PRODUCER_PROPERTIES_SCHEMA_REGISTRY_URL: http://localhost:8088
     extends:
       file: common-config.yml
       service: microservice-service-config
@@ -528,17 +541,31 @@ services:
       file: common-config.yml
       service: microservice-eurekaserver-config
 
-#  notification:
-#    image: "vietquoc2408/notification-oralie:latest"
-#    container_name: notification-oralie-ms
-#    ports:
-#      - "9010:9010"
-#    environment:
-#      SPRING_APPLICATION_NAME: "notification"
-#      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: "kafka:9092"
-#    extends:
-#      file: common-config.yml
-#      service: network-deploy-service
+  notification:
+    image: "vietquoc2408/notification-oralie:latest"
+    container_name: notification-oralie-ms
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_APPLICATION_NAME: "notification"
+      SPRING_MAIL_HOST: sandbox.smtp.mailtrap.io
+      SPRING_MAIL_PORT: "2525"
+      SPRING_MAIL_USERNAME: "vietnq.23ceb@vku.udn.vn"
+      SPRING_MAIL_PASSWORD: "vkdwgrcpqrmigwuv"
+      SPRING_MAIL_PROTOCOL: "smtp"
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: "localhost:9092"
+      SPRING_KAFKA_CONSUMER_GROUP_ID: "notification"
+      SPRING_KAFKA_CONSUMER_KEY_DESERIALIZER: org.apache.kafka.common.serialization.StringDeserializer
+      SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_KEY_DELEGATE_CLASS: org.apache.kafka.common.serialization.StringDeserializer
+      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_VALUE_DELEGATE_CLASS: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      SPRING_KAFKA_CONSUMER_PROPERTIES_SCHEMA_REGISTRY_URL: "http://localhost:8088"
+    depends_on:
+      kafka-ui:
+        condition: service_healthy
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
 volumes:
   postgres_data:
