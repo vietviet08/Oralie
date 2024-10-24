@@ -17,13 +17,6 @@ pipeline {
         stage('Build Services') {
 
             parallel {
-                stage('Clean up Docker repository') {
-                    steps {
-                        script {
-                            sh 'docker system prune -af'
-                        }
-                    }
-                }
 
                 stage('Build Config Server') {
                     steps {
@@ -128,6 +121,29 @@ pipeline {
                         }
                     }
                 }
+
+                 stage('Build Order Service') {
+                    steps {
+                        script {
+                            dir('notification') {
+                                sh """
+                                    if docker images | grep '${DOCKERHUB_REPO}/notification-oralie'; then
+                                        docker rmi -f ${DOCKERHUB_REPO}/notification-oralie:latest
+                                    fi
+                                    docker build -t ${DOCKERHUB_REPO}/notification-oralie:latest .
+                                """
+                            }
+                        }
+                    }
+                }
+
+                stage('Clean up Docker repository') {
+                    steps {
+                        script {
+                            sh 'docker system prune -af'
+                        }
+                    }
+                }
             }
         }
 
@@ -151,6 +167,8 @@ pipeline {
                     sh "docker push ${DOCKERHUB_REPO}/carts-oralie:latest"
 
                     sh "docker push ${DOCKERHUB_REPO}/orders-oralie:latest"
+
+                    sh "docker push ${DOCKERHUB_REPO}/notification-oralie:latest"
 
                     sh 'docker logout'
                 }
