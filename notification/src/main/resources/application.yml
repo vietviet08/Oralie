@@ -30,7 +30,6 @@ spring:
         spring.deserializer:
           key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
           value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
-        schema.registry.url: http://localhost:8088
 
 
 logging:

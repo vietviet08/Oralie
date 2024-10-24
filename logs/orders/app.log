@@ -370,3 +370,31 @@ Caused by: java.net.ConnectException: Connection refused
 2024-10-24 19:11:18 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
 2024-10-24 19:11:18 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
 2024-10-24 19:11:18 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-24 19:11:48 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/192.168.1.4:orders:8083?status=UP&lastDirtyTimestamp=1729771698854
+2024-10-24 19:11:48 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-24 19:11:48 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-24 19:11:48 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-24 19:11:48 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-24 19:11:48 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-24 19:11:48 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-24 19:12:18 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/192.168.1.4:orders:8083?status=UP&lastDirtyTimestamp=1729771698854
+2024-10-24 19:12:18 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-24 19:12:18 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-24 19:12:18 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-24 19:12:18 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-24 19:12:18 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-24 19:12:18 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-24 19:12:44 INFO  [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-10-24 19:12:44 INFO  [Thread-7] o.s.c.n.e.s.EurekaServiceRegistry - Unregistering application ORDERS with eureka with status DOWN
+2024-10-24 19:12:44 INFO  [Thread-7] c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1729771964105, current=DOWN, previous=UP]
+2024-10-24 19:12:44 INFO  [DiscoveryClient-InstanceInfoReplicator-%d] c.netflix.discovery.DiscoveryClient - DiscoveryClient_ORDERS/192.168.1.4:orders:8083: registering service...
+2024-10-24 19:12:44 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - HTTP POST http://localhost:8070/eureka/apps/ORDERS
+2024-10-24 19:12:44 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-24 19:12:44 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - Writing [InstanceInfo [instanceId = 192.168.1.4:orders:8083, appName = ORDERS, hostName = 192.168.1.4, status = DOWN, ipAddr = 192.168.1.4, port = 8083, securePort = 443, dataCenterInfo = com.netflix.appinfo.MyDataCenterInfo@5471739d] as "application/json"
+2024-10-24 19:12:44 INFO  [Thread-7] o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8083"]
+2024-10-24 19:12:44 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - Response 204 NO_CONTENT
+2024-10-24 19:12:44 INFO  [DiscoveryClient-InstanceInfoReplicator-%d] c.netflix.discovery.DiscoveryClient - DiscoveryClient_ORDERS/192.168.1.4:orders:8083 - registration status: 204
+2024-10-24 19:12:44 INFO  [Thread-7] o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2024-10-24 19:12:44 INFO  [Thread-7] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2024-10-24 19:12:44 INFO  [Thread-7] com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2024-10-24 19:12:44 INFO  [Thread-7] c.netflix.discovery.DiscoveryClient - Shutting down DiscoveryClient ...
