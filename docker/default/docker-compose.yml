@@ -81,33 +81,30 @@ services:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
 
-  broker:
-    image: confluentinc/cp-kafka:7.5.0
-    container_name: broker
+  kafka:
+    image: docker.io/bitnami/kafka:3.7
     ports:
       - "9092:9092"
       - "29092:29092"
+    volumes:
+      - "kafka_data:/bitnami"
     depends_on:
       - zookeeper
     environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker:29092,PLAINTEXT_HOST://localhost:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-
-  schema-registry:
-    image: confluentinc/cp-schema-registry:7.5.0
-    hostname: schema-registry
-    container_name: schema-registry
-    depends_on:
-      - broker
-    ports:
-      - "8088:8081"
-    environment:
-      SCHEMA_REGISTRY_HOST_NAME: schema-registry
-      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: 'broker:29092'
-      SCHEMA_REGISTRY_LISTENERS: http://schema-registry:8081
+      - KAFKA_CFG_NODE_ID=0
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   kafka-ui:
     container_name: kafka-ui
@@ -115,19 +112,12 @@ services:
     ports:
       - "8089:8080"
     depends_on:
-      - broker
-      - schema-registry
+      - kafka
     environment:
       KAFKA_CLUSTERS_NAME: local
-      KAFKA_CLUSTERS_BOOTSTRAPSERVERS: broker:29092
-      KAFKA_CLUSTERS_SCHEMAREGISTRY: http://schema-registry:8081
+      KAFKA_CLUSTERS_BOOTSTRAPSERVERS: kafka:29092
+      KAFKA_CLUSTERS_ZOOKEEPER: zookeeper:2181
       DYNAMIC_CONFIG_ENABLED: 'true'
-    healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8089" ]
-      interval: 20s
-      timeout: 5s
-      retries: 20
-      start_period: 10s
 
   redis:
     image: redis
@@ -492,8 +482,6 @@ services:
         condition: service_healthy
       configserver:
         condition: service_healthy
-      kafka-ui:
-        condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "orders"
       OTEL_SERVICE_NAME: "orders"
@@ -502,7 +490,6 @@ services:
       KAFKA_TEMPLATE_DEFAULT_TOPIC: orders
       KAFKA_PRODUCER_KEY_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
       KAFKA_PRODUCER_VALUE_SERIALIZER: org.springframework.kafka.support.serializer.JsonSerializer
-      KAFKA_PRODUCER_PROPERTIES_SCHEMA_REGISTRY_URL: http://localhost:8088
     extends:
       file: common-config.yml
       service: microservice-service-config
@@ -554,9 +541,6 @@ services:
       SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_KEY_DELEGATE_CLASS: org.apache.kafka.common.serialization.StringDeserializer
       SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_VALUE_DELEGATE_CLASS: io.confluent.kafka.serializers.KafkaAvroDeserializer
       SPRING_KAFKA_CONSUMER_PROPERTIES_SCHEMA_REGISTRY_URL: "http://localhost:8088"
-    depends_on:
-      kafka-ui:
-        condition: service_healthy
     extends:
       file: common-config.yml
       service: network-deploy-service
