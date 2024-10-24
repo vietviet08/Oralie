@@ -18,6 +18,14 @@ pipeline {
 
             parallel {
 
+                 stage('Clean up Docker repository') {
+                    steps {
+                        script {
+                            sh 'docker system prune -af'
+                        }
+                    }
+                }
+
                 stage('Build Config Server') {
                     steps {
                         script {
@@ -136,14 +144,6 @@ pipeline {
                         }
                     }
                 }
-
-                stage('Clean up Docker repository') {
-                    steps {
-                        script {
-                            sh 'docker system prune -af'
-                        }
-                    }
-                }
             }
         }
 
@@ -170,6 +170,14 @@ pipeline {
                     sh "docker push ${DOCKERHUB_REPO}/notification-oralie:latest"
 
                     sh 'docker logout'
+                }
+            }
+        }
+
+        stage('Clean up Docker repository') {
+            steps {
+                script {
+                    sh 'docker system prune -af'
                 }
             }
         }
