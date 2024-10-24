@@ -122,7 +122,7 @@ pipeline {
                     }
                 }
 
-                 stage('Build Order Service') {
+                 stage('Build Notification Service') {
                     steps {
                         script {
                             dir('notification') {
