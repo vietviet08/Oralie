@@ -297,3 +297,15 @@ Identify and stop the process that's listening on port 8070 or configure this ap
 2024-10-24 19:11:35 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
 2024-10-24 19:12:35 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
 2024-10-24 19:12:44 INFO  [http-nio-8070-exec-9] c.n.e.r.AbstractInstanceRegistry - Registered instance ORDERS/192.168.1.4:orders:8083 with status DOWN (replication=false)
+2024-10-24 19:12:47 INFO  [http-nio-8070-exec-10] c.n.e.r.AbstractInstanceRegistry - Cancelled instance ORDERS/192.168.1.4:orders:8083 (replication=false)
+2024-10-24 19:12:50 INFO  [http-nio-8070-exec-4] c.n.e.r.AbstractInstanceRegistry - Registered instance ORDERS/192.168.1.4:orders:8083 with status UP (replication=false)
+2024-10-24 19:13:35 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-24 19:14:15 INFO  [SpringApplicationShutdownHook] o.s.c.n.e.s.EurekaServiceRegistry - Unregistering application EUREKASERVER with eureka with status DOWN
+2024-10-24 19:14:15 INFO  [SpringApplicationShutdownHook] o.s.c.n.e.s.EurekaServerBootstrap - Shutting down Eureka Server..
+2024-10-24 19:14:15 INFO  [SpringApplicationShutdownHook] c.n.e.DefaultEurekaServerContext - Shutting down ...
+2024-10-24 19:14:15 INFO  [SpringApplicationShutdownHook] c.n.e.DefaultEurekaServerContext - Shut down
+2024-10-24 19:14:15 INFO  [SpringApplicationShutdownHook] o.s.c.n.e.s.EurekaServerBootstrap - Eureka Service is now shutdown...
+2024-10-24 19:14:15 INFO  [SpringApplicationShutdownHook] c.n.e.DefaultEurekaServerContext - Shutting down ...
+2024-10-24 19:14:15 INFO  [SpringApplicationShutdownHook] c.n.e.DefaultEurekaServerContext - Shut down
+2024-10-24 19:14:15 INFO  [SpringApplicationShutdownHook] c.netflix.discovery.DiscoveryClient - Shutting down DiscoveryClient ...
+2024-10-24 19:14:15 INFO  [SpringApplicationShutdownHook] c.netflix.discovery.DiscoveryClient - Completed shut down of DiscoveryClient
