@@ -1,122 +1,79 @@
-2024-10-21 19:02:38 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
-2024-10-21 19:02:38 INFO  [main] c.o.c.ConfigServerApplication - Starting ConfigServerApplication using Java 21.0.4 with PID 166560 (/home/vietquoc/Public/workspace/Oralie/configserver/target/classes started by vietquoc in /home/vietquoc/Public/workspace/Oralie)
-2024-10-21 19:02:38 INFO  [main] c.o.c.ConfigServerApplication - The following 1 profile is active: "git"
-2024-10-21 19:02:38 INFO  [main] o.s.cloud.context.scope.GenericScope - BeanFactory id=529d9564-2395-3f62-b380-1e9a64f36527
-2024-10-21 19:02:39 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8071 (http)
-2024-10-21 19:02:39 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8071"]
-2024-10-21 19:02:39 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
-2024-10-21 19:02:39 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.28]
-2024-10-21 19:02:39 INFO  [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2024-10-21 19:02:39 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 783 ms
-2024-10-21 19:02:41 INFO  [main] o.s.b.a.e.web.EndpointLinksResolver - Exposing 17 endpoints beneath base path '/actuator'
-2024-10-21 19:02:41 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8071"]
-2024-10-21 19:02:41 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8071 (http) with context path '/'
-2024-10-21 19:02:41 INFO  [main] c.o.c.ConfigServerApplication - Started ConfigServerApplication in 3.887 seconds (process running for 4.77)
-2024-10-21 19:03:05 INFO  [http-nio-8071-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-10-21 19:03:05 INFO  [http-nio-8071-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2024-10-21 19:03:05 INFO  [http-nio-8071-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2024-10-21 19:03:06 INFO  [http-nio-8071-exec-1] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/eurekaserver.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:03:32 INFO  [http-nio-8071-exec-2] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:03:33 INFO  [http-nio-8071-exec-3] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products-prod.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:03:33 INFO  [http-nio-8071-exec-3] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:04:00 INFO  [http-nio-8071-exec-4] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/gatewayserver.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:05:28 INFO  [http-nio-8071-exec-8] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/gatewayserver.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:08:24 INFO  [http-nio-8071-exec-10] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/gatewayserver.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:08:35 INFO  [http-nio-8071-exec-1] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:08:36 INFO  [http-nio-8071-exec-2] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products-prod.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:08:36 INFO  [http-nio-8071-exec-2] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:08:49 INFO  [http-nio-8071-exec-4] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/gatewayserver.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:11:29 INFO  [http-nio-8071-exec-7] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/gatewayserver.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:12:00 INFO  [http-nio-8071-exec-8] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/gatewayserver.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:12:10 INFO  [http-nio-8071-exec-9] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/gatewayserver.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:18:49 INFO  [http-nio-8071-exec-1] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/gatewayserver.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 19:19:41 INFO  [http-nio-8071-exec-3] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/gatewayserver.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:27:38 INFO  [http-nio-8071-exec-5] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:27:39 INFO  [http-nio-8071-exec-6] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products-prod.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:27:39 INFO  [http-nio-8071-exec-6] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:27:40 INFO  [http-nio-8071-exec-7] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:27:41 INFO  [http-nio-8071-exec-8] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products-prod.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:27:41 INFO  [http-nio-8071-exec-8] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:27:48 INFO  [http-nio-8071-exec-9] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:27:49 INFO  [http-nio-8071-exec-10] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products-prod.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:27:49 INFO  [http-nio-8071-exec-10] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/products.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:45:40 INFO  [http-nio-8071-exec-3] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/gatewayserver.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:50:35 INFO  [http-nio-8071-exec-5] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/accounts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:50:36 INFO  [http-nio-8071-exec-6] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/accounts-prod.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:50:36 INFO  [http-nio-8071-exec-6] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/accounts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:53:20 INFO  [http-nio-8071-exec-8] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:53:21 INFO  [http-nio-8071-exec-9] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:55:56 INFO  [http-nio-8071-exec-10] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:55:57 INFO  [http-nio-8071-exec-2] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:56:49 INFO  [http-nio-8071-exec-4] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/gatewayserver.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:58:10 INFO  [http-nio-8071-exec-6] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:58:11 INFO  [http-nio-8071-exec-7] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:58:52 INFO  [http-nio-8071-exec-9] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:58:53 INFO  [http-nio-8071-exec-1] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:59:11 INFO  [http-nio-8071-exec-2] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:59:12 INFO  [http-nio-8071-exec-3] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:59:39 INFO  [http-nio-8071-exec-5] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 20:59:40 INFO  [http-nio-8071-exec-6] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 21:00:28 INFO  [http-nio-8071-exec-8] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 21:00:29 INFO  [http-nio-8071-exec-9] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 21:00:39 INFO  [http-nio-8071-exec-10] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 21:00:40 INFO  [http-nio-8071-exec-2] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-801107883722020938/carts.yml]' via location 'file:/tmp/config-repo-801107883722020938/'
-2024-10-21 21:02:09 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
-2024-10-21 21:02:09 INFO  [main] c.o.c.ConfigServerApplication - Starting ConfigServerApplication using Java 21.0.4 with PID 251494 (/home/vietquoc/Public/workspace/Oralie/configserver/target/classes started by vietquoc in /home/vietquoc/Public/workspace/Oralie)
-2024-10-21 21:02:09 INFO  [main] c.o.c.ConfigServerApplication - The following 1 profile is active: "git"
-2024-10-21 21:02:09 INFO  [main] o.s.cloud.context.scope.GenericScope - BeanFactory id=529d9564-2395-3f62-b380-1e9a64f36527
-2024-10-21 21:02:09 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8071 (http)
-2024-10-21 21:02:09 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8071"]
-2024-10-21 21:02:09 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
-2024-10-21 21:02:09 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.28]
-2024-10-21 21:02:09 INFO  [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-2024-10-21 21:02:09 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 764 ms
-2024-10-21 21:02:12 INFO  [main] o.s.b.a.e.web.EndpointLinksResolver - Exposing 17 endpoints beneath base path '/actuator'
-2024-10-21 21:02:12 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8071"]
-2024-10-21 21:02:12 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8071 (http) with context path '/'
-2024-10-21 21:02:12 INFO  [main] c.o.c.ConfigServerApplication - Started ConfigServerApplication in 3.557 seconds (process running for 4.4)
-2024-10-21 21:02:20 INFO  [http-nio-8071-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-2024-10-21 21:02:20 INFO  [http-nio-8071-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-2024-10-21 21:02:20 INFO  [http-nio-8071-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
-2024-10-21 21:02:21 INFO  [http-nio-8071-exec-1] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/eurekaserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:02:33 INFO  [http-nio-8071-exec-2] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/carts.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:02:33 INFO  [http-nio-8071-exec-4] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/carts.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:02:48 INFO  [http-nio-8071-exec-3] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/products.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:02:49 INFO  [http-nio-8071-exec-5] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/products-prod.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:02:49 INFO  [http-nio-8071-exec-5] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/products.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:02:54 INFO  [http-nio-8071-exec-6] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/accounts.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:02:55 INFO  [http-nio-8071-exec-7] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/accounts-prod.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:02:55 INFO  [http-nio-8071-exec-7] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/accounts.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:03:24 INFO  [http-nio-8071-exec-9] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:08:53 INFO  [http-nio-8071-exec-3] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:08:55 INFO  [http-nio-8071-exec-5] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:14:11 INFO  [http-nio-8071-exec-7] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:19:09 INFO  [http-nio-8071-exec-9] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:25:26 INFO  [http-nio-8071-exec-1] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:26:05 INFO  [http-nio-8071-exec-2] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:27:25 INFO  [http-nio-8071-exec-3] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:28:30 INFO  [http-nio-8071-exec-6] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:28:52 INFO  [http-nio-8071-exec-8] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:32:06 INFO  [http-nio-8071-exec-10] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:32:20 INFO  [http-nio-8071-exec-2] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:33:34 INFO  [http-nio-8071-exec-3] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:33:51 INFO  [http-nio-8071-exec-6] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:35:07 INFO  [http-nio-8071-exec-8] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:40:14 INFO  [http-nio-8071-exec-10] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:40:56 INFO  [http-nio-8071-exec-2] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:42:16 INFO  [http-nio-8071-exec-3] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:42:26 INFO  [http-nio-8071-exec-6] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:45:48 INFO  [http-nio-8071-exec-8] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:47:05 INFO  [http-nio-8071-exec-10] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:47:19 INFO  [http-nio-8071-exec-2] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:51:11 INFO  [http-nio-8071-exec-3] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:55:22 INFO  [http-nio-8071-exec-6] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/gatewayserver.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:55:31 INFO  [http-nio-8071-exec-7] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/carts.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:55:32 INFO  [http-nio-8071-exec-8] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/carts.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:55:33 INFO  [http-nio-8071-exec-9] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/accounts.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:55:34 INFO  [http-nio-8071-exec-10] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/accounts-prod.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:55:34 INFO  [http-nio-8071-exec-10] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/accounts.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:55:39 INFO  [http-nio-8071-exec-1] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/carts.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 21:55:39 INFO  [http-nio-8071-exec-2] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/carts.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 22:38:39 INFO  [http-nio-8071-exec-6] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/carts.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
-2024-10-21 22:38:40 INFO  [http-nio-8071-exec-7] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-178438738875113349/carts.yml]' via location 'file:/tmp/config-repo-178438738875113349/'
+2024-10-24 12:02:37 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-24 12:02:37 INFO  [main] c.o.c.ConfigServerApplication - Starting ConfigServerApplication using Java 21.0.4 with PID 64016 (/home/vietquoc/Public/workspace/Oralie/configserver/target/classes started by vietquoc in /home/vietquoc/Public/workspace/Oralie)
+2024-10-24 12:02:37 INFO  [main] c.o.c.ConfigServerApplication - The following 1 profile is active: "git"
+2024-10-24 12:02:38 INFO  [main] o.s.cloud.context.scope.GenericScope - BeanFactory id=529d9564-2395-3f62-b380-1e9a64f36527
+2024-10-24 12:02:38 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8071 (http)
+2024-10-24 12:02:38 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8071"]
+2024-10-24 12:02:38 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-24 12:02:38 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.28]
+2024-10-24 12:02:38 INFO  [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-24 12:02:38 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 847 ms
+2024-10-24 12:02:41 INFO  [main] o.s.b.a.e.web.EndpointLinksResolver - Exposing 17 endpoints beneath base path '/actuator'
+2024-10-24 12:02:41 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8071"]
+2024-10-24 12:02:41 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8071 (http) with context path '/'
+2024-10-24 12:02:41 INFO  [main] c.o.c.ConfigServerApplication - Started ConfigServerApplication in 3.903 seconds (process running for 4.901)
+2024-10-24 12:02:51 INFO  [http-nio-8071-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-24 12:02:51 INFO  [http-nio-8071-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-24 12:02:51 INFO  [http-nio-8071-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2024-10-24 12:02:52 INFO  [http-nio-8071-exec-1] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-16541425546187019755/eurekaserver.yml]' via location 'file:/tmp/config-repo-16541425546187019755/'
+2024-10-24 12:03:54 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-24 12:03:54 INFO  [main] c.o.c.ConfigServerApplication - Starting ConfigServerApplication using Java 21.0.4 with PID 65008 (/home/vietquoc/Public/workspace/Oralie/configserver/target/classes started by vietquoc in /home/vietquoc/Public/workspace/Oralie)
+2024-10-24 12:03:54 INFO  [main] c.o.c.ConfigServerApplication - The following 1 profile is active: "git"
+2024-10-24 12:03:54 INFO  [main] o.s.cloud.context.scope.GenericScope - BeanFactory id=529d9564-2395-3f62-b380-1e9a64f36527
+2024-10-24 12:03:54 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8071 (http)
+2024-10-24 12:03:54 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8071"]
+2024-10-24 12:03:54 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-24 12:03:54 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.28]
+2024-10-24 12:03:54 INFO  [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-24 12:03:54 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 729 ms
+2024-10-24 12:03:57 INFO  [main] o.s.b.a.e.web.EndpointLinksResolver - Exposing 17 endpoints beneath base path '/actuator'
+2024-10-24 12:03:57 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8071"]
+2024-10-24 12:03:57 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8071 (http) with context path '/'
+2024-10-24 12:03:57 INFO  [main] c.o.c.ConfigServerApplication - Started ConfigServerApplication in 3.489 seconds (process running for 4.302)
+2024-10-24 12:04:02 INFO  [http-nio-8071-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-24 12:04:02 INFO  [http-nio-8071-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-24 12:04:02 INFO  [http-nio-8071-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2024-10-24 12:04:03 INFO  [http-nio-8071-exec-1] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-12672456914375365663/eurekaserver.yml]' via location 'file:/tmp/config-repo-12672456914375365663/'
+2024-10-24 19:04:48 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-24 19:04:48 INFO  [main] c.o.c.ConfigServerApplication - Starting ConfigServerApplication using Java 21.0.4 with PID 207022 (/home/vietquoc/Public/workspace/Oralie/configserver/target/classes started by vietquoc in /home/vietquoc/Public/workspace/Oralie)
+2024-10-24 19:04:48 INFO  [main] c.o.c.ConfigServerApplication - The following 1 profile is active: "git"
+2024-10-24 19:04:48 INFO  [main] o.s.cloud.context.scope.GenericScope - BeanFactory id=529d9564-2395-3f62-b380-1e9a64f36527
+2024-10-24 19:04:49 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8071 (http)
+2024-10-24 19:04:49 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8071"]
+2024-10-24 19:04:49 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-24 19:04:49 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.28]
+2024-10-24 19:04:49 INFO  [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-24 19:04:49 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 771 ms
+2024-10-24 19:04:51 INFO  [main] o.s.b.a.e.web.EndpointLinksResolver - Exposing 17 endpoints beneath base path '/actuator'
+2024-10-24 19:04:51 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8071"]
+2024-10-24 19:04:51 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8071 (http) with context path '/'
+2024-10-24 19:04:51 INFO  [main] c.o.c.ConfigServerApplication - Started ConfigServerApplication in 3.781 seconds (process running for 4.357)
+2024-10-24 19:05:05 INFO  [http-nio-8071-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-24 19:05:05 INFO  [http-nio-8071-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-24 19:05:05 INFO  [http-nio-8071-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 8 ms
+2024-10-24 19:05:05 INFO  [http-nio-8071-exec-1] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-8346888496890607874/eurekaserver.yml]' via location 'file:/tmp/config-repo-8346888496890607874/'
+2024-10-24 19:05:06 INFO  [http-nio-8071-exec-2] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-8346888496890607874/eurekaserver.yml]' via location 'file:/tmp/config-repo-8346888496890607874/'
+2024-10-24 19:06:15 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-24 19:06:15 INFO  [main] c.o.c.ConfigServerApplication - Starting ConfigServerApplication using Java 21.0.4 with PID 208040 (/home/vietquoc/Public/workspace/Oralie/configserver/target/classes started by vietquoc in /home/vietquoc/Public/workspace/Oralie)
+2024-10-24 19:06:15 INFO  [main] c.o.c.ConfigServerApplication - The following 1 profile is active: "git"
+2024-10-24 19:06:15 INFO  [main] o.s.cloud.context.scope.GenericScope - BeanFactory id=529d9564-2395-3f62-b380-1e9a64f36527
+2024-10-24 19:06:15 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8071 (http)
+2024-10-24 19:06:15 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8071"]
+2024-10-24 19:06:15 INFO  [main] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-24 19:06:15 INFO  [main] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.28]
+2024-10-24 19:06:15 INFO  [main] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-24 19:06:15 INFO  [main] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 651 ms
+2024-10-24 19:06:18 INFO  [main] o.s.b.a.e.web.EndpointLinksResolver - Exposing 17 endpoints beneath base path '/actuator'
+2024-10-24 19:06:18 INFO  [main] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8071"]
+2024-10-24 19:06:18 INFO  [main] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8071 (http) with context path '/'
+2024-10-24 19:06:18 INFO  [main] c.o.c.ConfigServerApplication - Started ConfigServerApplication in 3.543 seconds (process running for 3.991)
+2024-10-24 19:06:32 INFO  [http-nio-8071-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-24 19:06:32 INFO  [http-nio-8071-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-24 19:06:32 INFO  [http-nio-8071-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2024-10-24 19:06:33 INFO  [http-nio-8071-exec-1] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-477187198558741479/eurekaserver.yml]' via location 'file:/tmp/config-repo-477187198558741479/'
+2024-10-24 19:06:44 INFO  [http-nio-8071-exec-2] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-477187198558741479/orders.yml]' via location 'file:/tmp/config-repo-477187198558741479/'
+2024-10-24 19:06:44 INFO  [http-nio-8071-exec-3] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-477187198558741479/orders-prod.yml]' via location 'file:/tmp/config-repo-477187198558741479/'
+2024-10-24 19:06:44 INFO  [http-nio-8071-exec-3] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-477187198558741479/orders.yml]' via location 'file:/tmp/config-repo-477187198558741479/'
+2024-10-24 19:08:12 INFO  [http-nio-8071-exec-5] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-477187198558741479/orders.yml]' via location 'file:/tmp/config-repo-477187198558741479/'
+2024-10-24 19:08:13 INFO  [http-nio-8071-exec-7] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-477187198558741479/orders-prod.yml]' via location 'file:/tmp/config-repo-477187198558741479/'
+2024-10-24 19:08:13 INFO  [http-nio-8071-exec-7] o.s.c.c.s.e.NativeEnvironmentRepository - Adding property source: Config resource 'file [/tmp/config-repo-477187198558741479/orders.yml]' via location 'file:/tmp/config-repo-477187198558741479/'

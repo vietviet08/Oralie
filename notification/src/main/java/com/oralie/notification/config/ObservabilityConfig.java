@@ -9,16 +9,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.thymeleaf.TemplateEngine;
 
-@Configuration
+//@Configuration
+//@RequiredArgsConstructor
 public class ObservabilityConfig {
 
-    @Bean
-    ObservationRegistry observationRegistry() {
-        return ObservationRegistry.create();
-    }
-
-    @Bean
-    ObservedAspect observedAspect(ObservationRegistry registry) {
-        return new ObservedAspect(registry);
-    }
+//    private final ConcurrentKafkaListenerContainerFactory concurrentKafkaListenerContainerFactory;
+//
+//    @PostConstruct
+//    public void setObservationForKafkaTemplate() {
+//        concurrentKafkaListenerContainerFactory.getContainerProperties().setObservationEnabled(true);
+//    }
+//
+//    @Bean
+//    ObservedAspect observedAspect(ObservationRegistry registry) {
+//        return new ObservedAspect(registry);
+//    }
 }
