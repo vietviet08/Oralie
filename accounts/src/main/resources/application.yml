@@ -82,7 +82,7 @@ info:
 idp:
   url: http://localhost:7080
   client-id: store_client
-  client-secret: CNue4JyndWNpq4IldHEjbLJt7xeXfy7n
+  client-secret: XdOVzE0vxhGcvUsiw6eiYqMGlsf35wIj
 
 logging:
   level:

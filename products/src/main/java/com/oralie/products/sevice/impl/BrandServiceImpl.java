@@ -10,7 +10,6 @@ import com.oralie.products.model.Brand;
 import com.oralie.products.repository.BrandRepository;
 import com.oralie.products.sevice.BrandService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.results.graph.basic.BasicResultGraphNode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -89,7 +88,7 @@ public class BrandServiceImpl implements BrandService {
                 .id(brand.getId())
                 .name(brand.getName())
                 .description(brand.getDescription())
-                .urlImage(brand.getImageUrl())
+                .imageUrl(brand.getImageUrl())
                 .isActive(brand.getIsActive())
                 .build();
 

@@ -3,6 +3,7 @@ package com.oralie.accounts.controller;
 import com.oralie.accounts.constant.AccountConstant;
 import com.oralie.accounts.dto.AccountsContactDto;
 import com.oralie.accounts.dto.ValidationGroups;
+import com.oralie.accounts.dto.entity.request.AccountKeyCloakRequest;
 import com.oralie.accounts.dto.entity.request.AccountRequest;
 import com.oralie.accounts.dto.entity.response.AccountResponse;
 import com.oralie.accounts.dto.entity.response.ListResponse;
@@ -47,6 +48,19 @@ public class AccountController {
 
 
     //store
+    @PostMapping("/store/accounts/register-keycloak")
+    private ResponseEntity<ResponseDto<?>> registerAccount(
+            @RequestBody
+            AccountKeyCloakRequest accountRequest) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseDto.builder()
+                        .statusMessage(AccountConstant.ACCOUNT_CREATED)
+                        .statusCode(HttpStatus.OK.toString())
+                        .data(accountService.createAccount(accountRequest))
+                        .build());
+    }
+
     @PostMapping("/store/accounts/register")
     private ResponseEntity<ResponseDto<?>> registerAccount(
             @RequestBody

@@ -55,6 +55,7 @@ services:
     volumes:
       #      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
       - ../../keycloak/themes/oralie/theme:/opt/keycloak/themes
+#      - ../libs/providers:/opt/keycloak/providers
     extends:
       file: common-config.yml
       service: network-deploy-service

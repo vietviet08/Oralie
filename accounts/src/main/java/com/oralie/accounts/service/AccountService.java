@@ -1,5 +1,6 @@
 package com.oralie.accounts.service;
 
+import com.oralie.accounts.dto.entity.request.AccountKeyCloakRequest;
 import com.oralie.accounts.dto.entity.request.AccountRequest;
 import com.oralie.accounts.dto.entity.response.AccountResponse;
 import com.oralie.accounts.dto.entity.response.ListResponse;
@@ -8,6 +9,7 @@ import com.oralie.accounts.dto.identity.AssignRole;
 import java.util.List;
 
 public interface AccountService {
+    AccountResponse createAccount(AccountKeyCloakRequest accountRequest);
     AccountResponse createAccount(AccountRequest accountRequest);
     AccountResponse updateAccount(AccountRequest accountRequest, boolean isCustomer);
     void deleteAccount(String username);

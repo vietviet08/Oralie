@@ -17,5 +17,7 @@ public class AccountResponse {
     private String email;
     private List<UserAddressDto> address;
     private String fullName;
+    private String firstName;
+    private String lastName;
     private boolean gender;
 }

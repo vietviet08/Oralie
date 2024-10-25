@@ -1,6 +1,7 @@
 package com.oralie.accounts.service.impl;
 
 import com.oralie.accounts.dto.UserAddressDto;
+import com.oralie.accounts.dto.entity.request.AccountKeyCloakRequest;
 import com.oralie.accounts.dto.entity.request.AccountRequest;
 import com.oralie.accounts.dto.entity.response.AccountResponse;
 import com.oralie.accounts.dto.entity.response.ListResponse;
@@ -61,6 +62,19 @@ public class AccountServiceImpl implements AccountService {
                 .build());
 
         return token.getAccessToken();
+    }
+
+    @Override
+    public AccountResponse createAccount(AccountKeyCloakRequest accountRequest) {
+        Account account = Account.builder()
+                .username(accountRequest.getUsername())
+                .email(accountRequest.getEmail())
+                .firstName(accountRequest.getFirstName())
+                .lastName(accountRequest.getLastName())
+                .build();
+
+        Account accountSave = accountsRepository.save(account);
+        return mapToAccountResponse(accountSave);
     }
 
     @Override
@@ -240,7 +254,7 @@ public class AccountServiceImpl implements AccountService {
             Account account = accountsRepository.findByUsername(username)
                     .orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
             String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-            if(!account.getUserId().equals(userId)) {
+            if (!account.getUserId().equals(userId)) {
                 throw new ResourceNotFoundException("Account not found", "username", username);
             }
             identityClient.updatePassword(
@@ -316,6 +330,8 @@ public class AccountServiceImpl implements AccountService {
         account.setEmail(accountRequest.getEmail());
         account.setAddress(null);
         account.setFullName(accountRequest.getFirstName() + " " + accountRequest.getLastName());
+        account.setFirstName(accountRequest.getFirstName());
+        account.setLastName(accountRequest.getLastName());
         account.setGender(accountRequest.getGender());
         return account;
     }
@@ -326,6 +342,8 @@ public class AccountServiceImpl implements AccountService {
                 .email(account.getEmail())
                 .address(account.getAddress() != null ? mapToListUserAddressDto(account.getAddress()) : null)
                 .fullName(account.getFullName())
+                .firstName(account.getFirstName())
+                .lastName(account.getLastName())
                 .gender(account.getGender())
                 .build();
     }
@@ -337,6 +355,8 @@ public class AccountServiceImpl implements AccountService {
                         .email(account.getEmail())
                         .address(account.getAddress() != null ? mapToListUserAddressDto(account.getAddress()) : null)
                         .fullName(account.getFullName())
+                        .firstName(account.getFirstName())
+                        .lastName(account.getLastName())
                         .gender(account.getGender())
                         .build())
                 .toList();
@@ -352,4 +372,6 @@ public class AccountServiceImpl implements AccountService {
                         .city(userAddress.getCity()).build())
                 .toList();
     }
+
+
 }

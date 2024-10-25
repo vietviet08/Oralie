@@ -109,6 +109,23 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-server-spi</artifactId>
+            <version>25.0.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-server-spi-private</artifactId>
+            <version>25.0.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.keycloak</groupId>
+            <artifactId>keycloak-core</artifactId>
+            <version>25.0.4</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -143,6 +160,8 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
+                    <classifier>plain</classifier>
+                    <mainClass>com.oralie.accounts.AccountsApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

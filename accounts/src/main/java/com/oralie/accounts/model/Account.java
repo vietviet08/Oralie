@@ -14,6 +14,7 @@ import java.util.Set;
 @Setter
 @ToString
 @Entity
+@Builder
 @Table(name = "account")
 public class Account extends BaseEntity {
     @Id
@@ -36,6 +37,11 @@ public class Account extends BaseEntity {
     private List<UserAddress> address;
 
     private String fullName;
+
+    private String firstName;
+
+    private String lastName;
+
     private Boolean gender;
 
 }
