@@ -20,6 +20,7 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Configuration
@@ -62,8 +63,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.POST, "api/*/dash/**").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.PUT, "api/*/dash/**").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.DELETE, "api/*/dash/**").hasRole("ADMIN")
-
-
+                        
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2ResourceServerSpec -> oauth2ResourceServerSpec

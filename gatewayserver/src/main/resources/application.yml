@@ -12,6 +12,18 @@ spring:
       httpclient:
         connect-timeout: 1000
         response-timeout: 10s
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
+
   servlet:
     multipart:
       enabled: true

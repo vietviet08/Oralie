@@ -24,7 +24,7 @@ import java.util.Map;
 )
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+//@RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
 public class ProductController {
 
     private final ProductContactDto accountsContactDto;
