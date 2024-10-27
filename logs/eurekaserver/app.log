@@ -232,3 +232,4 @@
 2024-10-27 14:17:24 INFO  [http-nio-8070-exec-2] c.n.e.r.AbstractInstanceRegistry - Registered instance GATEWAYSERVER/192.168.1.4:gatewayserver:8072 with status DOWN (replication=false)
 2024-10-27 14:17:27 INFO  [http-nio-8070-exec-1] c.n.e.r.AbstractInstanceRegistry - Cancelled instance GATEWAYSERVER/192.168.1.4:gatewayserver:8072 (replication=false)
 2024-10-27 14:17:28 INFO  [http-nio-8070-exec-6] c.n.e.r.AbstractInstanceRegistry - Registered instance GATEWAYSERVER/192.168.1.4:gatewayserver:8072 with status UP (replication=false)
+2024-10-27 14:18:22 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
