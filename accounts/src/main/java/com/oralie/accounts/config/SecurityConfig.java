@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 @Configuration
 @EnableWebSecurity
- public class SecurityConfig {
+public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -34,22 +34,22 @@ import java.util.stream.Collectors;
                 .csrf(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(
-                                "/",
-                                "/login",
-                                "/store/**",
-                                "/store/accounts/register",
-                                "/accounts/build-version",
-                                "/accounts/contact-info",
-                                "/accounts/java-version",
-                                "/actuator/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui.html",
-                                "/swagger-ui",
-                                "/swagger-ui/**").permitAll()
-                        .requestMatchers("/dash/**").hasRole("ADMIN")
-                        .requestMatchers("/store/accounts/**").hasRole("CUSTOMER")
-                        .anyRequest().authenticated()
+                                .requestMatchers(
+                                        "/",
+                                        "/login",
+                                        "/store/**",
+                                        "/store/accounts/register",
+                                        "/accounts/build-version",
+                                        "/accounts/contact-info",
+                                        "/accounts/java-version",
+                                        "/actuator/**",
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui.html",
+                                        "/swagger-ui",
+                                        "/swagger-ui/**").permitAll()
+                                .requestMatchers("/dash/**").hasRole("ADMIN")
+                                .requestMatchers("/store/accounts/**").hasRole("CUSTOMER")
+                                .anyRequest().authenticated()
 //                                .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -65,7 +65,7 @@ import java.util.stream.Collectors;
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverterForKeycloak() {
         Converter<Jwt, Collection
-                        <GrantedAuthority>> jwtGrantedAuthoritiesConverter = jwt -> {
+                <GrantedAuthority>> jwtGrantedAuthoritiesConverter = jwt -> {
             Map<String, Collection<String>> realmAccess = jwt.getClaim("realm_access");
             Collection<String> roles = realmAccess.get("roles");
             return roles.stream()

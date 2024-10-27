@@ -30,8 +30,17 @@ import java.util.List;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
-    private final String[] freeResourceUrls = {"/swagger-ui.html", "/swagger-ui/index.html", "/webjars/swagger-ui/index.html", "/swagger-ui/**", "/v3/api-docs/**",
-            "/api-docs-resources/**", "/api-docs/**", "/aggregate/**", "/actuator/**"};
+    private final String[] freeResourceUrls = {
+            "/swagger-ui.html",
+            "/swagger-ui/index.html",
+            "/webjars/swagger-ui/index.html",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/api-docs-resources/**",
+            "/api-docs/**",
+            "/aggregate/**",
+            "/actuator/**"
+    };
 
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) throws Exception {

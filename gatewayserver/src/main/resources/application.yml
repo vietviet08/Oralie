@@ -7,19 +7,19 @@ spring:
     gateway:
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-#      globalcors:
-#        cors-configurations:
-#          '[/**]':
-#            allowedOrigins:
-#              - "http://localhost:3000"
-#            allow-credentials: true
-#            allowedHeaders: "*"
-#            allowedMethods:
-#              - GET
-#              - POST
-#              - DELETE
-#              - PUT
-#              - OPTIONS
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:3000"
+            allow-credentials: true
+            allowedHeaders: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - DELETE
+              - PUT
+              - OPTIONS
       discovery:
         locator:
           enabled: false
@@ -84,6 +84,8 @@ springdoc:
         url: "/aggregate/products-service/v3/api-docs"
       - name: "carts-service"
         url: "/aggregate/carts-service/v3/api-docs"
+      - name: "orders-service"
+        url: "/aggregate/orders-service/v3/api-docs"
 
 info:
   app:

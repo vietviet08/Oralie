@@ -36,7 +36,7 @@ public class RouteConfig {
                 .route(r -> r
                         .path("/aggregate/accounts-service/v3/api-docs/**")
                         .filters(f -> f
-                                .rewritePath("/aggregate/accounts-service/v3/api-docs/(?<remaining>.*)", "/v3/api-docs/${remaining}")
+                                .rewritePath("/aggregate/accounts-service/v3/api-docs", "/v3/api-docs")
                         )
                         .uri("lb://ACCOUNTS")
                 )
@@ -68,7 +68,7 @@ public class RouteConfig {
                 .route(r -> r
                         .path("/aggregate/products-service/v3/api-docs/**")
                         .filters(f -> f
-                                .rewritePath("/aggregate/products-service/v3/api-docs/(?<remaining>.*)", "/v3/api-docs/${remaining}")
+                                .rewritePath("/aggregate/products-service/v3/api-docs", "/v3/api-docs")
                         )
                         .uri("lb://PRODUCTS")
                 )
@@ -86,7 +86,7 @@ public class RouteConfig {
                 .route(r -> r
                         .path("/aggregate/carts-service/v3/api-docs/**")
                         .filters(f -> f
-                                .rewritePath("/aggregate/carts-service/v3/api-docs/(?<remaining>.*)", "/v3/api-docs/${remaining}")
+                                .rewritePath("/aggregate/carts-service/v3/api-docs", "/v3/api-docs")
                         )
                         .uri("lb://CARTS")
                 )
@@ -101,6 +101,13 @@ public class RouteConfig {
 
                         .uri("lb://ORDERS")
                 )
+                .route(r -> r
+                        .path("/aggregate/orders-service/v3/api-docs/**")
+                        .filters(f -> f
+                                .rewritePath("/aggregate/orders-service/v3/api-docs", "/v3/api-docs")
+                        )
+                        .uri("lb://ORDERS")
+                )
                 .route(p -> p
                         .path("/api/payment/**")
                         .filters(f -> f.tokenRelay()
@@ -110,6 +117,13 @@ public class RouteConfig {
                                 )
                         )
 
+                        .uri("lb://PAYMENT")
+                )
+                .route(r -> r
+                        .path("/aggregate/payment-service/v3/api-docs/**")
+                        .filters(f -> f
+                                .rewritePath("/aggregate/payment-service/v3/api-docs", "/v3/api-docs")
+                        )
                         .uri("lb://PAYMENT")
                 )
                 .route(p -> p
@@ -123,6 +137,13 @@ public class RouteConfig {
 
                         .uri("lb://INVENTORY")
                 )
+                .route(r -> r
+                        .path("/aggregate/inventory-service/v3/api-docs/**")
+                        .filters(f -> f
+                                .rewritePath("/aggregate/inventory-service/v3/api-docs", "/v3/api-docs")
+                        )
+                        .uri("lb://INVENTORY")
+                )
                 .route(p -> p
                         .path("/api/rates/**")
                         .filters(f -> f.tokenRelay()
@@ -132,6 +153,13 @@ public class RouteConfig {
                                 )
                         )
 
+                        .uri("lb://RATES")
+                )
+                .route(r -> r
+                        .path("/aggregate/rates-service/v3/api-docs/**")
+                        .filters(f -> f
+                                .rewritePath("/aggregate/rates-service/v3/api-docs", "/v3/api-docs")
+                        )
                         .uri("lb://RATES")
                 )
                 .build();
