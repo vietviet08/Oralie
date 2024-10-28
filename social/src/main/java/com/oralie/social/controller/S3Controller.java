@@ -39,4 +39,20 @@ public class S3Controller {
                 .body(new InputStreamResource(content));
     }
 
+    @PostMapping("/store/download/{fileName}")
+    public ResponseEntity<InputStreamResource> downloadFile(@PathVariable String fileName) {
+        var s3Object = s3Service.getFile(fileName);
+        var content = s3Object.getObjectContent();
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+fileName+"\"")
+                .body(new InputStreamResource(content));
+    }
+
+    @DeleteMapping("/store/delete/{fileName}")
+    public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
+        s3Service.deleteFile(fileName);
+        return new ResponseEntity<>("Deleted", HttpStatus.NO_CONTENT);
+    }
+
 }

@@ -7,7 +7,9 @@ import com.oralie.products.exception.ResourceAlreadyExistException;
 import com.oralie.products.exception.ResourceNotFoundException;
 import com.oralie.products.model.Brand;
 import com.oralie.products.model.Category;
+import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.repository.CategoryRepository;
+import com.oralie.products.repository.client.S3FeignClient;
 import com.oralie.products.sevice.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,8 +17,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +28,7 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final S3FeignClient s3FeignClient;
 
     @Override
     public ListResponse<CategoryResponse> getAllCategories(int page, int size, String sortBy, String sort) {
@@ -54,14 +59,14 @@ public class CategoryServiceImpl implements CategoryService {
             throw new ResourceAlreadyExistException("Category already exists with name " + categoryRequest.getName());
         }
         Category parentCategory = null;
-        if(categoryRequest.getParentId() != null && !categoryRepository.existsById(categoryRequest.getParentId())) {
+        if (categoryRequest.getParentId() != null && !categoryRepository.existsById(categoryRequest.getParentId())) {
             throw new ResourceNotFoundException("Parent category not found", "id", categoryRequest.getParentId() + "");
-        }else if(categoryRequest.getParentId() != null){
-             parentCategory = categoryRepository.findById(categoryRequest.getParentId()).orElseThrow(() -> new ResourceNotFoundException("Parent category not found", "id", categoryRequest.getParentId() + ""));
+        } else if (categoryRequest.getParentId() != null) {
+            parentCategory = categoryRepository.findById(categoryRequest.getParentId()).orElseThrow(() -> new ResourceNotFoundException("Parent category not found", "id", categoryRequest.getParentId() + ""));
         }
 
         String slug = categoryRequest.getSlug();
-        if(categoryRequest.getSlug() == null || categoryRequest.getSlug().isEmpty()){
+        if (categoryRequest.getSlug() == null || categoryRequest.getSlug().isEmpty()) {
             slug = categoryRequest.getName().toLowerCase().replace(" ", "-");
         }
 
@@ -90,7 +95,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         String slug = categoryRequest.getSlug();
-        if(categoryRequest.getSlug() == null || categoryRequest.getSlug().isEmpty()){
+        if (categoryRequest.getSlug() == null || categoryRequest.getSlug().isEmpty()) {
             slug = categoryRequest.getName().toLowerCase().replace(" ", "-");
         }
 
@@ -102,6 +107,32 @@ public class CategoryServiceImpl implements CategoryService {
         category.setParentCategory(categoryRequest.getParentId() != null ? parentCategory : null);
         categoryRepository.save(category);
         return mapToCategoryResponse(category);
+    }
+
+    @Override
+    public FileMetadata uploadImage(MultipartFile file, Long id) {
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
+
+        FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.createAttachments(List.of(file)).getBody()).get(0);
+
+        category.setImage(fileMetadata.getUrl());
+
+        categoryRepository.save(category);
+
+        return fileMetadata;
+    }
+
+    @Override
+    public void deleteImage(Long id) {
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
+
+        if (category.getImage() != null) {
+            s3FeignClient.deleteFile(category.getImage());
+        }
+
+        category.setImage(null);
+
+        categoryRepository.save(category);
     }
 
     @Override
