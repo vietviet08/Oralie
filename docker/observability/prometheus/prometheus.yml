@@ -19,6 +19,10 @@ scrape_configs:
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ 'orders:8083' ]
+  - job_name: 'social'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'orders:8084' ]
   - job_name: 'gatewayserver'
     metrics_path: '/actuator/prometheus'
     static_configs:

@@ -11,8 +11,8 @@ services:
       interval: 10s
       retries: 10
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: keycloak
     ports:
       - "5432:5432"
@@ -26,8 +26,8 @@ services:
     image: dpage/pgadmin4:6.20
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: vietnq.23ceb@vku.udn.vn
-      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     ports:
       - "5050:80"
     volumes:
@@ -44,14 +44,14 @@ services:
     environment:
       JAVA_OPTS_APPEND: -Dkeycloak.profile.feature.upload_scripts=enabled
       KC_DB: postgres
-      KC_DB_USERNAME: postgres
-      KC_DB_PASSWORD: postgres
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       KC_DB_URL: jdbc:postgresql://postgres/keycloak
       KC_HEALTH_ENABLED: "true"
       KC_HTTP_ENABLED: "true"
       KC_METRICS_ENABLED: "true"
-      KEYCLOAK_ADMIN: admin
-      KEYCLOAK_ADMIN_PASSWORD: admin
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
     volumes:
       #      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
       - ../../keycloak/themes/oralie/theme:/opt/keycloak/themes
@@ -495,6 +495,31 @@ services:
       file: common-config.yml
       service: microservice-service-config
 
+  social:
+    image: "vietquoc2408/social-oralie:latest"
+    container_name: social-oralie-ms
+    ports:
+      - "8084:8084"
+    healthcheck:
+      test: "curl --fail --silent localhost:8084/actuator/health/readiness | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "social"
+      OTEL_SERVICE_NAME: "social"
+      AWS_REGION: ${AWS_REGION}
+      AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+    extends:
+      file: common-config.yml
+      service: microservice-service-config
+
   gatewayserver:
     image: "vietquoc2408/gatewayserver-oralie:latest"
     container_name: gatewayserver-oralie-ms
@@ -530,10 +555,10 @@ services:
       - "8084:8084"
     environment:
       SPRING_APPLICATION_NAME: "notification"
-      SPRING_MAIL_HOST: sandbox.smtp.mailtrap.io
-      SPRING_MAIL_PORT: "2525"
-      SPRING_MAIL_USERNAME: "vietnq.23ceb@vku.udn.vn"
-      SPRING_MAIL_PASSWORD: "vkdwgrcpqrmigwuv"
+      SPRING_MAIL_HOST: ${MAIL_HOST}
+      SPRING_MAIL_PORT: ${MAIL_PORT}
+      SPRING_MAIL_USERNAME: ${USERNAME_MAIL}
+      SPRING_MAIL_PASSWORD: ${PASSWORD_MAIL}
       SPRING_MAIL_PROTOCOL: "smtp"
       SPRING_KAFKA_BOOTSTRAP_SERVERS: "localhost:9092"
       SPRING_KAFKA_CONSUMER_GROUP_ID: "notification"

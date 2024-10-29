@@ -1,5 +1,11 @@
 package com.oralie.orders.service.impl;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.oned.EAN13Writer;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.oralie.orders.constant.OrderStatus;
 import com.oralie.orders.constant.PaymentStatus;
 import com.oralie.orders.dto.entity.OrderPlaceEvent;
@@ -22,6 +28,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +37,11 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -63,7 +75,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponse createOrder(OrderRequest orderRequest) throws PaymentProcessingException {
+    public OrderResponse placeOrder(OrderRequest orderRequest) throws PaymentProcessingException {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Order order = Order.builder()
@@ -187,6 +199,38 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(OrderStatus.CANCELLED);
         orderRepository.save(order);
         return "Order cancelled successfully";
+    }
+
+    @Override
+    public InputStreamResource generateQRCodeImage(String qrcode) throws WriterException, IOException {
+
+        log.info("Generating QR Code for: {}", qrcode);
+
+        QRCodeWriter barcodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = barcodeWriter.encode(qrcode, BarcodeFormat.QR_CODE, 200, 200);
+
+        BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(qrImage, "png", baos);
+        ByteArrayInputStream imageStream = new ByteArrayInputStream(baos.toByteArray());
+
+        return new InputStreamResource(imageStream);
+    }
+
+    @Override
+    public InputStreamResource generateBarCodeImage(String barCode) throws WriterException, IOException {
+
+        log.info("Generating Bar Code for: {}", barCode);
+
+        EAN13Writer barcodeWriter = new EAN13Writer();
+        BitMatrix bitMatrix = barcodeWriter.encode(barCode, BarcodeFormat.EAN_13, 300, 150);
+
+        BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(qrImage, "png", baos);
+        ByteArrayInputStream imageStream = new ByteArrayInputStream(baos.toByteArray());
+
+        return new InputStreamResource(imageStream);
     }
 
     private OrderResponse mapToOrderResponse(Order order) {

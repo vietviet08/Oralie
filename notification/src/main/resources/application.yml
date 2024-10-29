@@ -8,8 +8,8 @@ spring:
     default-encoding: utf-8
     host: smtp.gmail.com
     port: 587
-    username: vietnq.23ceb@vku.udn.vn
-    password: vkdwgrcpqrmigwuv
+    username: ${USERNAME_MAIL}
+    password: ${PASSWORD_MAIL}
     properties:
       mail:
         smtp:

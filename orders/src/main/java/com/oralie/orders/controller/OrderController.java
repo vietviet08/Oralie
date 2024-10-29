@@ -8,17 +8,29 @@ import com.oralie.orders.dto.response.OrderResponse;
 import com.oralie.orders.exception.PaymentProcessingException;
 import com.oralie.orders.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(consumes = "application/json", produces = "application/json")
+//@RequestMapping(consumes = "application/json", produces = "application/json")
 public class OrderController {
+
+    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 
     private final Environment environment;
 
@@ -29,6 +41,8 @@ public class OrderController {
 
     private final OrderService orderService;
 
+
+    //dash
     @GetMapping("/dash/orders")
     public ResponseEntity<ListResponse<OrderResponse>> getOrdersInDash(
             @RequestParam(required = false, defaultValue = "0") int page,
@@ -49,11 +63,12 @@ public class OrderController {
     }
 
 
+    //store
     @PostMapping("/store/orders")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest) throws PaymentProcessingException {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(orderService.createOrder(orderRequest));
+                .body(orderService.placeOrder(orderRequest));
     }
 
     @GetMapping("/store/orders")
@@ -90,7 +105,28 @@ public class OrderController {
                 .body(orderService.cancelOrder(orderId));
     }
 
+    @PostMapping(path = "/store/orders/qrcode")
+    public ResponseEntity<InputStreamResource> generateQRCodeImage(@RequestParam String qrCode) throws Exception {
 
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + qrCode + "\"")
+                .body(orderService.generateQRCodeImage(qrCode));
+
+    }
+
+    @PostMapping(path = "/store/orders/bar-code", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<InputStreamResource> generateBarcode(@RequestParam String barCode) throws Exception {
+        log.info("generateBarcode request: {}", barCode);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + barCode + "\"")
+                .body(orderService.generateBarCodeImage(barCode));
+
+    }
+
+    //info
     @GetMapping("/orders/build-version")
     public ResponseEntity<String> getBuildVersion() {
         return ResponseEntity
