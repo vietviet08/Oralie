@@ -2,9 +2,12 @@ package com.oralie.social.controller;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.S3ClientOptions;
+import com.oralie.social.dto.SocialContactDto;
 import com.oralie.social.dto.s3.FileMetadata;
 import com.oralie.social.service.S3Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,7 +23,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class S3Controller {
 
+    private final Environment environment;
+
+    @Value("${info.app.version}")
+    private String build;
+
+    private final SocialContactDto socialContactDto;
+
     private final S3Service s3Service;
+
     private final AmazonS3 s3client;
 
     @PostMapping("/store/upload")
@@ -53,6 +64,29 @@ public class S3Controller {
     public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
         s3Service.deleteFile(fileName);
         return new ResponseEntity<>("Deleted", HttpStatus.NO_CONTENT);
+    }
+
+    //info
+    @GetMapping("/social/build-version")
+    public ResponseEntity<String> getBuildVersion() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(build);
+    }
+
+    @GetMapping("/social/java-version")
+    public ResponseEntity<String> getJavaVersion() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(environment.getProperty("JAVA_HOME"));
+    }
+
+
+    @GetMapping("/social/contact-info")
+    public ResponseEntity<SocialContactDto> getProductsContactDto() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(socialContactDto);
     }
 
 }

@@ -6,6 +6,14 @@ spring:
   config:
     import: "optional:configserver:http://localhost:8071/"
 
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+  packages-to-scan:
+    - com.oralie.social
+
 management:
   endpoints:
     web:
