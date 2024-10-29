@@ -5,5 +5,7 @@ import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 
 public interface PayPalService {
-    Payment createPayment(PayPalInfoRequest payPalInfoRequest) throws PayPalRESTException;
+    Payment placePaypalPayment(PayPalInfoRequest payPalInfoRequest) throws PayPalRESTException;
+
+    Payment executePayment(String paymentId, String payerId) throws PayPalRESTException;
 }

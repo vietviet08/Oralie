@@ -7,6 +7,7 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.EAN13Writer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.oralie.orders.constant.OrderStatus;
+import com.oralie.orders.constant.PayPalConstant;
 import com.oralie.orders.constant.PaymentStatus;
 import com.oralie.orders.dto.entity.OrderPlaceEvent;
 import com.oralie.orders.dto.request.OrderRequest;
@@ -27,7 +28,6 @@ import com.oralie.orders.service.PayPalService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -43,7 +43,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -80,7 +79,6 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = Order.builder()
                 .userId(userId)
-                .cartId(1L)
                 .address(OrderAddress.builder()
                         .addressDetail(orderRequest.getAddress().getAddressDetail())
                         .city(orderRequest.getAddress().getCity())
@@ -109,16 +107,16 @@ public class OrderServiceImpl implements OrderService {
         if ("PAYPAL".equalsIgnoreCase(orderRequest.getPaymentMethod())) {
             try {
                 PayPalInfoRequest payPalInfoRequest = PayPalInfoRequest.builder()
-                        .currency("USD")
+                        .currency(PayPalConstant.PAYPAL_CURRENCY)
                         .total(order.getTotalPrice())
                         .description("Order payment")
                         .method("paypal")
-                        .intent("sale")
-                        .cancelUrl("http://localhost:3000/cancel")
-                        .successUrl("http://localhost:3000/success")
+                        .intent(PayPalConstant.PAYPAL_INTENT)
+                        .cancelUrl(PayPalConstant.PAYPAL_CANCEL_URL)
+                        .successUrl(PayPalConstant.PAYPAL_SUCCESS_URL)
                         .build();
 
-                payPalService.createPayment(payPalInfoRequest);
+                payPalService.placePaypalPayment(payPalInfoRequest);
 
                 order.setPaymentStatus(PaymentStatus.COMPLETED);
                 //need create payment model to store payment entity
@@ -146,7 +144,7 @@ public class OrderServiceImpl implements OrderService {
         //subtract quantity product in inventory service
 
 
-        //clear cart in cart service
+        //clear cart in cart service | need using kafka to send event to cart service & inventory also
         cartFeignClient.clearCart();
 
         return mapToOrderResponse(order);

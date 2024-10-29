@@ -19,8 +19,11 @@ public class OrderItem extends BaseEntity {
     private Long id;
 
     private Long productId;
+
     private String productName;
+
     private int quantity;
+
     private Double totalPrice;
 
     @ManyToOne( fetch = FetchType.LAZY)

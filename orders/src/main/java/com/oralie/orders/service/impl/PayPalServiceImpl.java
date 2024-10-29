@@ -19,7 +19,7 @@ public class PayPalServiceImpl implements PayPalService {
     private final APIContext apiContext;
 
     @Override
-    public Payment createPayment(PayPalInfoRequest payPalInfoRequest) throws PayPalRESTException {
+    public Payment placePaypalPayment(PayPalInfoRequest payPalInfoRequest) throws PayPalRESTException {
         Amount amount = new Amount();
         amount.setCurrency(payPalInfoRequest.getCurrency());
         amount.setTotal(String.format(Locale.forLanguageTag(payPalInfoRequest.getCurrency()), "%.2f", payPalInfoRequest.getTotal())); // 9.99$ - 9,99€
@@ -48,10 +48,7 @@ public class PayPalServiceImpl implements PayPalService {
         return payment.create(apiContext);
     }
 
-    public Payment executePayment(
-            String paymentId,
-            String payerId
-    ) throws PayPalRESTException {
+    public Payment executePayment(String paymentId, String payerId) throws PayPalRESTException {
         Payment payment = new Payment();
         payment.setId(paymentId);
 

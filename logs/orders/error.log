@@ -146,3 +146,33 @@ com.netflix.discovery.shared.transport.TransportException: Cannot execute reques
 	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
 	at org.springframework.boot.SpringApplicationShutdownHook.run(SpringApplicationShutdownHook.java:114)
 	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-10-29 09:36:26 ERROR [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 2 of constructor in com.oralie.orders.controller.OrderController required a bean of type 'com.oralie.orders.service.OrderService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.oralie.orders.service.OrderService' in your configuration.
+
+2024-10-29 09:36:31 ERROR [restartedMain] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 2 of constructor in com.oralie.orders.controller.OrderController required a bean of type 'com.oralie.orders.service.OrderService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'com.oralie.orders.service.OrderService' in your configuration.
+

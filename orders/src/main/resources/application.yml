@@ -129,7 +129,8 @@ paypal:
   client-secret: ${PAYPAL_CLIENT_SECRET}
   mode: sandbox
 
-
+store:
+  url: http://localhost:3000
 
 server:
   port: 8083

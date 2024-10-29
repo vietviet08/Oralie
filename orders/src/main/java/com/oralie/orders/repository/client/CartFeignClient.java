@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 public interface CartFeignClient {
 
     @PutMapping(value = "/store/carts/clear", consumes = "application/json")
-    public ResponseEntity<CartResponse> clearCart();
+    ResponseEntity<CartResponse> clearCart();
 
 }
