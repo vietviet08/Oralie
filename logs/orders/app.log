@@ -9561,3 +9561,230 @@ Consider defining a bean of type 'com.oralie.orders.service.OrderService' in you
 2024-10-29 21:43:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
 2024-10-29 21:43:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
 2024-10-29 21:43:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:44:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:44:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:44:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:44:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:44:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:44:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:44:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:44:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:44:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:44:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:44:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:44:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:44:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:44:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:44:44 INFO  [http-nio-8083-exec-1] o.a.c.c.C.[Tomcat-2].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2024-10-29 21:44:44 INFO  [http-nio-8083-exec-1] o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2024-10-29 21:44:44 DEBUG [http-nio-8083-exec-1] o.s.web.servlet.DispatcherServlet - Detected StandardServletMultipartResolver
+2024-10-29 21:44:44 DEBUG [http-nio-8083-exec-1] o.s.web.servlet.DispatcherServlet - Detected AcceptHeaderLocaleResolver
+2024-10-29 21:44:44 DEBUG [http-nio-8083-exec-1] o.s.web.servlet.DispatcherServlet - Detected FixedThemeResolver
+2024-10-29 21:44:44 DEBUG [http-nio-8083-exec-1] o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@1b8a3e46
+2024-10-29 21:44:44 DEBUG [http-nio-8083-exec-1] o.s.web.servlet.DispatcherServlet - Detected org.springframework.web.servlet.support.SessionFlashMapManager@522e30dc
+2024-10-29 21:44:44 DEBUG [http-nio-8083-exec-1] o.s.web.servlet.DispatcherServlet - enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+2024-10-29 21:44:44 INFO  [http-nio-8083-exec-1] o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+2024-10-29 21:44:44 DEBUG [http-nio-8083-exec-1] o.s.security.web.FilterChainProxy - Securing GET /v3/api-docs
+2024-10-29 21:44:44 DEBUG [http-nio-8083-exec-1] o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2024-10-29 21:44:44 DEBUG [http-nio-8083-exec-1] o.s.security.web.FilterChainProxy - Secured GET /v3/api-docs
+2024-10-29 21:44:44 DEBUG [http-nio-8083-exec-1] o.s.web.servlet.DispatcherServlet - GET "/v3/api-docs", parameters={}
+2024-10-29 21:44:44 DEBUG [http-nio-8083-exec-1] o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to org.springdoc.webmvc.api.OpenApiWebMvcResource#openapiJson(HttpServletRequest, String, Locale)
+2024-10-29 21:44:45 INFO  [http-nio-8083-exec-1] o.s.api.AbstractOpenApiResource - Init duration for springdoc-openapi is: 328 ms
+2024-10-29 21:44:45 DEBUG [http-nio-8083-exec-1] o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json', given [application/json, */*] and supported [application/json]
+2024-10-29 21:44:45 DEBUG [http-nio-8083-exec-1] o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [{123, 34, 111, 112, 101, 110, 97, 112, 105, 34, 58, 34, 51, 46, 48, 46, 49, 34, 44, 34, 105, 110, 10 (truncated)...]
+2024-10-29 21:44:45 DEBUG [http-nio-8083-exec-1] o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2024-10-29 21:44:58 DEBUG [http-nio-8083-exec-2] o.s.security.web.FilterChainProxy - Securing GET /v3/api-docs
+2024-10-29 21:44:58 DEBUG [http-nio-8083-exec-2] o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2024-10-29 21:44:58 DEBUG [http-nio-8083-exec-2] o.s.security.web.FilterChainProxy - Secured GET /v3/api-docs
+2024-10-29 21:44:58 DEBUG [http-nio-8083-exec-2] o.s.web.servlet.DispatcherServlet - GET "/v3/api-docs", parameters={}
+2024-10-29 21:44:58 DEBUG [http-nio-8083-exec-2] o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to org.springdoc.webmvc.api.OpenApiWebMvcResource#openapiJson(HttpServletRequest, String, Locale)
+2024-10-29 21:44:58 DEBUG [http-nio-8083-exec-2] o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json', given [application/json, */*] and supported [application/json]
+2024-10-29 21:44:58 DEBUG [http-nio-8083-exec-2] o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [{123, 34, 111, 112, 101, 110, 97, 112, 105, 34, 58, 34, 51, 46, 48, 46, 49, 34, 44, 34, 105, 110, 10 (truncated)...]
+2024-10-29 21:44:58 DEBUG [http-nio-8083-exec-2] o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2024-10-29 21:45:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:45:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:45:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:45:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:45:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:45:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:45:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:45:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:45:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:45:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:45:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:45:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:45:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:45:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:46:05 INFO  [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-29 21:46:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:46:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:46:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:46:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:46:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:46:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:46:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:46:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:46:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:46:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:46:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:46:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:46:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:46:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:47:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:47:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:47:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:47:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:47:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:47:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:47:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:47:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:47:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:47:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:47:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:47:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:47:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:47:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:48:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:48:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:48:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:48:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:48:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:48:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:48:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:48:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:48:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:48:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:48:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:48:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:48:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:48:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:49:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:49:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:49:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:49:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:49:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:49:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:49:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:49:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:49:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:49:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:49:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:49:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:49:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:49:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:50:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:50:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:50:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:50:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:50:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:50:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:50:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:50:10 DEBUG [http-nio-8083-exec-4] o.s.security.web.FilterChainProxy - Securing GET /v3/api-docs
+2024-10-29 21:50:10 DEBUG [http-nio-8083-exec-4] o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2024-10-29 21:50:10 DEBUG [http-nio-8083-exec-4] o.s.security.web.FilterChainProxy - Secured GET /v3/api-docs
+2024-10-29 21:50:10 DEBUG [http-nio-8083-exec-4] o.s.web.servlet.DispatcherServlet - GET "/v3/api-docs", parameters={}
+2024-10-29 21:50:10 DEBUG [http-nio-8083-exec-4] o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to org.springdoc.webmvc.api.OpenApiWebMvcResource#openapiJson(HttpServletRequest, String, Locale)
+2024-10-29 21:50:10 DEBUG [http-nio-8083-exec-4] o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json', given [application/json, */*] and supported [application/json]
+2024-10-29 21:50:10 DEBUG [http-nio-8083-exec-4] o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [{123, 34, 111, 112, 101, 110, 97, 112, 105, 34, 58, 34, 51, 46, 48, 46, 49, 34, 44, 34, 105, 110, 10 (truncated)...]
+2024-10-29 21:50:10 DEBUG [http-nio-8083-exec-4] o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2024-10-29 21:50:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:50:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:50:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:50:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:50:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:50:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:50:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:50:42 DEBUG [http-nio-8083-exec-5] o.s.security.web.FilterChainProxy - Securing GET /v3/api-docs
+2024-10-29 21:50:42 DEBUG [http-nio-8083-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter - Set SecurityContextHolder to anonymous SecurityContext
+2024-10-29 21:50:42 DEBUG [http-nio-8083-exec-5] o.s.security.web.FilterChainProxy - Secured GET /v3/api-docs
+2024-10-29 21:50:42 DEBUG [http-nio-8083-exec-5] o.s.web.servlet.DispatcherServlet - GET "/v3/api-docs", parameters={}
+2024-10-29 21:50:42 DEBUG [http-nio-8083-exec-5] o.s.w.s.m.m.a.RequestMappingHandlerMapping - Mapped to org.springdoc.webmvc.api.OpenApiWebMvcResource#openapiJson(HttpServletRequest, String, Locale)
+2024-10-29 21:50:42 DEBUG [http-nio-8083-exec-5] o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json', given [application/json, */*] and supported [application/json]
+2024-10-29 21:50:42 DEBUG [http-nio-8083-exec-5] o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Writing [{123, 34, 111, 112, 101, 110, 97, 112, 105, 34, 58, 34, 51, 46, 48, 46, 49, 34, 44, 34, 105, 110, 10 (truncated)...]
+2024-10-29 21:50:42 DEBUG [http-nio-8083-exec-5] o.s.web.servlet.DispatcherServlet - Completed 200 OK
+2024-10-29 21:51:05 INFO  [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-29 21:51:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:51:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:51:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:51:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:51:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:51:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:51:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:51:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:51:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:51:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:51:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:51:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:51:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:51:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:52:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:52:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:52:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:52:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:52:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:52:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:52:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:52:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:52:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:52:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:52:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:52:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:52:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:52:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:53:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:53:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:53:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:53:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:53:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:53:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:53:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:53:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:53:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:53:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:53:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:53:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:53:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:53:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:54:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:54:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:54:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:54:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:54:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:54:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:54:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:54:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:54:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:54:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:54:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:54:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:54:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:54:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:55:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:55:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:55:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:55:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:55:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:55:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:55:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:55:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:55:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:55:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:55:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:55:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:55:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:55:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:56:05 INFO  [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-29 21:56:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:56:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:56:05 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:56:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:56:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:56:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:56:05 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:56:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/ORDERS/localhost:orders:8083?status=UP&lastDirtyTimestamp=1730212265084
+2024-10-29 21:56:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:56:35 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:56:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:56:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:56:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:56:35 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]

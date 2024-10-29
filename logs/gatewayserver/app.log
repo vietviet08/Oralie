@@ -6581,3 +6581,1053 @@ Caused by: java.net.ConnectException: Connection refused: no further information
 2024-10-29 21:49:18 DEBUG [SpringApplicationShutdownHook] o.s.web.client.RestTemplate - Response 200 OK
 2024-10-29 21:49:18 INFO  [SpringApplicationShutdownHook] c.netflix.discovery.DiscoveryClient - DiscoveryClient_GATEWAYSERVER/localhost:gatewayserver:8072 - deregister  status: 200
 2024-10-29 21:49:18 INFO  [SpringApplicationShutdownHook] c.netflix.discovery.DiscoveryClient - Completed shut down of DiscoveryClient
+2024-10-29 21:49:24 INFO  [background-preinit] o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.1.Final
+2024-10-29 21:49:24 INFO  [restartedMain] c.o.g.GatewayServerApplication - Starting GatewayServerApplication using Java 21.0.1 with PID 34864 (D:\DA\DACS2\Ecommerce-Microservice\BE-Oralie\gatewayserver\target\classes started by DELL in D:\DA\DACS2\Ecommerce-Microservice\BE-Oralie)
+2024-10-29 21:49:24 DEBUG [restartedMain] c.o.g.GatewayServerApplication - Running with Spring Boot v3.3.3, Spring v6.1.12
+2024-10-29 21:49:24 INFO  [restartedMain] c.o.g.GatewayServerApplication - No active profile set, falling back to 1 default profile: "default"
+2024-10-29 21:49:24 INFO  [restartedMain] o.s.c.c.c.ConfigServerConfigDataLoader - Fetching config from server at : http://localhost:8071/
+2024-10-29 21:49:24 INFO  [restartedMain] o.s.c.c.c.ConfigServerConfigDataLoader - Located environment: name=gatewayserver, profiles=[default], label=null, version=5e75527d83d283f5f4392a100b98766f6a6182de, state=null
+2024-10-29 21:49:24 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2024-10-29 21:49:24 INFO  [restartedMain] o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2024-10-29 21:49:25 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Multiple Spring Data modules found, entering strict repository configuration mode
+2024-10-29 21:49:25 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2024-10-29 21:49:25 INFO  [restartedMain] o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+2024-10-29 21:49:25 INFO  [restartedMain] o.s.cloud.context.scope.GenericScope - BeanFactory id=0b09ebe9-a8b2-3f40-ad80-6a781c61cb30
+2024-10-29 21:49:26 WARN  [restartedMain] o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$DeferringLoadBalancerInterceptorConfig' of type [org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$DeferringLoadBalancerInterceptorConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [lbRestClientPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2024-10-29 21:49:26 WARN  [restartedMain] o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'deferringLoadBalancerInterceptor' of type [org.springframework.cloud.client.loadbalancer.DeferringLoadBalancerInterceptor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected into a currently created BeanPostProcessor [lbRestClientPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies.
+2024-10-29 21:49:26 WARN  [restartedMain] o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [loadBalancerWebClientBuilderBeanPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2024-10-29 21:49:26 WARN  [restartedMain] o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig' of type [org.springframework.cloud.client.loadbalancer.reactive.LoadBalancerBeanPostProcessorAutoConfiguration$ReactorDeferringLoadBalancerFilterConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected into a currently created BeanPostProcessor [loadBalancerWebClientBuilderBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies.
+2024-10-29 21:49:26 WARN  [restartedMain] o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'reactorDeferringLoadBalancerExchangeFilterFunction' of type [org.springframework.cloud.client.loadbalancer.reactive.DeferringLoadBalancerExchangeFilterFunction] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected into a currently created BeanPostProcessor [loadBalancerWebClientBuilderBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies.
+2024-10-29 21:49:26 DEBUG [restartedMain] o.s.w.r.r.m.a.RequestMappingHandlerMapping - 12 mappings in 'requestMappingHandlerMapping'
+2024-10-29 21:49:27 INFO  [restartedMain] o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2024-10-29 21:49:28 INFO  [restartedMain] o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [After]
+2024-10-29 21:49:28 INFO  [restartedMain] o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Before]
+2024-10-29 21:49:28 INFO  [restartedMain] o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Between]
+2024-10-29 21:49:28 INFO  [restartedMain] o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Cookie]
+2024-10-29 21:49:28 INFO  [restartedMain] o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Header]
+2024-10-29 21:49:28 INFO  [restartedMain] o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Host]
+2024-10-29 21:49:28 INFO  [restartedMain] o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Method]
+2024-10-29 21:49:28 INFO  [restartedMain] o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Path]
+2024-10-29 21:49:28 INFO  [restartedMain] o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Query]
+2024-10-29 21:49:28 INFO  [restartedMain] o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [ReadBody]
+2024-10-29 21:49:28 INFO  [restartedMain] o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [RemoteAddr]
+2024-10-29 21:49:28 INFO  [restartedMain] o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [XForwardedRemoteAddr]
+2024-10-29 21:49:28 INFO  [restartedMain] o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [Weight]
+2024-10-29 21:49:28 INFO  [restartedMain] o.s.c.g.r.RouteDefinitionRouteLocator - Loaded RoutePredicateFactory [CloudFoundryRouteService]
+2024-10-29 21:49:28 DEBUG [restartedMain] o.s.w.r.h.SimpleUrlHandlerMapping - Patterns [/webjars/**, /**, /swagger-ui/webjars/**] in 'resourceHandlerMapping'
+2024-10-29 21:49:29 INFO  [restartedMain] o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2024-10-29 21:49:30 INFO  [restartedMain] o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2024-10-29 21:49:30 INFO  [restartedMain] o.s.b.a.e.web.EndpointLinksResolver - Exposing 31 endpoints beneath base path '/actuator'
+2024-10-29 21:49:30 DEBUG [restartedMain] o.s.w.r.r.m.a.ControllerMethodResolver - ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 @ExceptionHandler
+2024-10-29 21:49:30 DEBUG [restartedMain] o.s.w.s.a.HttpWebHandlerAdapter - enableLoggingRequestDetails='false': form data and headers will be masked to prevent unsafe logging of potentially sensitive data
+2024-10-29 21:49:30 WARN  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - Unable to start LiveReload server
+2024-10-29 21:49:30 INFO  [restartedMain] o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
+2024-10-29 21:49:30 WARN  [restartedMain] o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2024-10-29 21:49:30 INFO  [restartedMain] o.s.c.n.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
+2024-10-29 21:49:30 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
+2024-10-29 21:49:30 INFO  [restartedMain] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-29 21:49:30 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Disable delta property : false
+2024-10-29 21:49:30 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+2024-10-29 21:49:30 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+2024-10-29 21:49:30 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Application is null : false
+2024-10-29 21:49:30 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+2024-10-29 21:49:30 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Application version is -1: true
+2024-10-29 21:49:30 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+2024-10-29 21:49:31 DEBUG [restartedMain] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/
+2024-10-29 21:49:31 DEBUG [restartedMain] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:49:31 DEBUG [restartedMain] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:49:31 DEBUG [restartedMain] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:49:31 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - The response status is 200
+2024-10-29 21:49:31 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
+2024-10-29 21:49:31 INFO  [restartedMain] c.n.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
+2024-10-29 21:49:31 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1730213371099 with initial instances count: 3
+2024-10-29 21:49:31 INFO  [restartedMain] o.s.c.n.e.s.EurekaServiceRegistry - Registering application GATEWAYSERVER with eureka with status UP
+2024-10-29 21:49:31 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1730213371102, current=UP, previous=STARTING]
+2024-10-29 21:49:31 INFO  [DiscoveryClient-InstanceInfoReplicator-%d] c.netflix.discovery.DiscoveryClient - DiscoveryClient_GATEWAYSERVER/localhost:gatewayserver:8072: registering service...
+2024-10-29 21:49:31 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - HTTP POST http://localhost:8070/eureka/apps/GATEWAYSERVER
+2024-10-29 21:49:31 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:49:31 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - Writing [InstanceInfo [instanceId = localhost:gatewayserver:8072, appName = GATEWAYSERVER, hostName = 192.168.56.1, status = UP, ipAddr = 192.168.56.1, port = 8072, securePort = 443, dataCenterInfo = com.netflix.appinfo.MyDataCenterInfo@7034b1e2] as "application/json"
+2024-10-29 21:49:31 DEBUG [DiscoveryClient-InstanceInfoReplicator-%d] o.s.web.client.RestTemplate - Response 204 NO_CONTENT
+2024-10-29 21:49:31 INFO  [DiscoveryClient-InstanceInfoReplicator-%d] c.netflix.discovery.DiscoveryClient - DiscoveryClient_GATEWAYSERVER/localhost:gatewayserver:8072 - registration status: 204
+2024-10-29 21:49:31 INFO  [restartedMain] o.s.b.w.e.netty.NettyWebServer - Netty started on port 8072 (http)
+2024-10-29 21:49:31 INFO  [restartedMain] o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 8072
+2024-10-29 21:49:32 INFO  [restartedMain] o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2024-10-29 21:49:33 INFO  [restartedMain] o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2024-10-29 21:49:33 INFO  [restartedMain] c.o.g.GatewayServerApplication - Started GatewayServerApplication in 11.111 seconds (process running for 12.075)
+2024-10-29 21:49:33 WARN  [boundedElastic-1] o.s.b.a.d.r.RedisReactiveHealthIndicator - Redis health check failed
+org.springframework.data.redis.RedisConnectionFailureException: Unable to connect to Redis
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory$ExceptionTranslatingConnectionProvider.translateException(LettuceConnectionFactory.java:1847)
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory$ExceptionTranslatingConnectionProvider.getConnection(LettuceConnectionFactory.java:1778)
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory$SharedConnection.getNativeConnection(LettuceConnectionFactory.java:1580)
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory$SharedConnection.lambda$getConnection$0(LettuceConnectionFactory.java:1560)
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory.doInLock(LettuceConnectionFactory.java:1521)
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory$SharedConnection.getConnection(LettuceConnectionFactory.java:1557)
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory.getSharedReactiveConnection(LettuceConnectionFactory.java:1268)
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory.getReactiveConnection(LettuceConnectionFactory.java:1143)
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory.getReactiveConnection(LettuceConnectionFactory.java:119)
+	at reactor.core.publisher.MonoSupplier.call(MonoSupplier.java:67)
+	at reactor.core.publisher.FluxSubscribeOnCallable$CallableSubscribeOnSubscription.run(FluxSubscribeOnCallable.java:228)
+	at reactor.core.scheduler.SchedulerTask.call(SchedulerTask.java:68)
+	at reactor.core.scheduler.SchedulerTask.call(SchedulerTask.java:28)
+	at java.base/java.util.concurrent.FutureTask.run$$$capture(FutureTask.java:317)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+Caused by: io.lettuce.core.RedisConnectionException: Unable to connect to localhost/<unresolved>:6379
+	at io.lettuce.core.RedisConnectionException.create(RedisConnectionException.java:78)
+	at io.lettuce.core.RedisConnectionException.create(RedisConnectionException.java:56)
+	at io.lettuce.core.AbstractRedisClient.getConnection(AbstractRedisClient.java:350)
+	at io.lettuce.core.RedisClient.connect(RedisClient.java:215)
+	at org.springframework.data.redis.connection.lettuce.StandaloneConnectionProvider.lambda$getConnection$1(StandaloneConnectionProvider.java:112)
+	at java.base/java.util.Optional.orElseGet(Optional.java:364)
+	at org.springframework.data.redis.connection.lettuce.StandaloneConnectionProvider.getConnection(StandaloneConnectionProvider.java:112)
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory$ExceptionTranslatingConnectionProvider.getConnection(LettuceConnectionFactory.java:1776)
+	... 17 common frames omitted
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: no further information: localhost/127.0.0.1:6379
+Caused by: java.net.ConnectException: Connection refused: no further information
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:682)
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:973)
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:336)
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:339)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:776)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:994)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-10-29 21:49:35 DEBUG [reactor-http-nio-2] o.s.w.s.a.HttpWebHandlerAdapter - [1a460fd1-1] HTTP GET "/swagger-ui/webjars/swagger-ui/index.html?urls.primaryName=products-service"
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'POST /logout'
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/swagger-ui/webjars/swagger-ui/index.html'; against '/swagger-ui/**'
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /api-docs/**'
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /aggregate/**'
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /actuator/**'
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/swagger-ui/webjars/swagger-ui/index.html' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:49:35 DEBUG [parallel-1] o.s.w.r.h.SimpleUrlHandlerMapping - [1a460fd1-1] Mapped to ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2024-10-29 21:49:35 DEBUG [reactor-http-nio-2] o.s.w.s.a.HttpWebHandlerAdapter - [1a460fd1-1] Completed 200 OK
+2024-10-29 21:49:35 DEBUG [reactor-http-nio-2] o.s.w.s.a.HttpWebHandlerAdapter - [1a460fd1-2] HTTP GET "/swagger-ui/webjars/swagger-ui/swagger-ui.css"
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:49:35 DEBUG [reactor-http-nio-3] o.s.w.s.a.HttpWebHandlerAdapter - [0f48d038-3] HTTP GET "/swagger-ui/webjars/swagger-ui/index.css"
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'POST /logout'
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:49:35 DEBUG [reactor-http-nio-5] o.s.w.s.a.HttpWebHandlerAdapter - [242e6d4b-4] HTTP GET "/swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js"
+2024-10-29 21:49:35 DEBUG [reactor-http-nio-4] o.s.w.s.a.HttpWebHandlerAdapter - [1dc0221c-5] HTTP GET "/swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js"
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/swagger-ui/webjars/swagger-ui/swagger-ui.css'; against '/swagger-ui/**'
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:49:35 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-6] HTTP GET "/swagger-ui/webjars/swagger-ui/swagger-initializer.js"
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /api-docs/**'
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /aggregate/**'
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /actuator/**'
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/swagger-ui/webjars/swagger-ui/swagger-ui.css' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'POST /logout'
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'POST /logout'
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'POST /logout'
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'POST /logout'
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/swagger-ui/webjars/swagger-ui/index.css'; against '/swagger-ui/**'
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js'; against '/swagger-ui/**'
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js'; against '/swagger-ui/**'
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /api-docs/**'
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /api-docs/**'
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/swagger-ui/webjars/swagger-ui/swagger-initializer.js'; against '/swagger-ui/**'
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /api-docs/**'
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /aggregate/**'
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /aggregate/**'
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /actuator/**'
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /actuator/**'
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /aggregate/**'
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/swagger-ui/webjars/swagger-ui/index.css' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /actuator/**'
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /api-docs/**'
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /aggregate/**'
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /actuator/**'
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/swagger-ui/webjars/swagger-ui/swagger-initializer.js' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:49:35 DEBUG [parallel-2] o.s.w.r.h.SimpleUrlHandlerMapping - [1a460fd1-2] Mapped to ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:49:35 DEBUG [parallel-3] o.s.w.r.h.SimpleUrlHandlerMapping - [0f48d038-3] Mapped to ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2024-10-29 21:49:35 DEBUG [parallel-5] o.s.w.r.h.SimpleUrlHandlerMapping - [242e6d4b-4] Mapped to ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2024-10-29 21:49:35 DEBUG [parallel-6] o.s.w.r.h.SimpleUrlHandlerMapping - [70acdc3f-6] Mapped to ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2024-10-29 21:49:35 DEBUG [parallel-4] o.s.w.r.h.SimpleUrlHandlerMapping - [1dc0221c-5] Mapped to ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2024-10-29 21:49:35 DEBUG [reactor-http-nio-3] o.s.w.s.a.HttpWebHandlerAdapter - [0f48d038-3] Completed 200 OK
+2024-10-29 21:49:35 DEBUG [reactor-http-nio-2] o.s.w.s.a.HttpWebHandlerAdapter - [1a460fd1-2] Completed 200 OK
+2024-10-29 21:49:35 DEBUG [reactor-http-nio-5] o.s.w.s.a.HttpWebHandlerAdapter - [242e6d4b-4] Completed 200 OK
+2024-10-29 21:49:35 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-6] Completed 200 OK
+2024-10-29 21:49:35 DEBUG [reactor-http-nio-4] o.s.w.s.a.HttpWebHandlerAdapter - [1dc0221c-5] Completed 200 OK
+2024-10-29 21:49:36 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-7] HTTP GET "/swagger-ui/webjars/swagger-ui/favicon-32x32.png"
+2024-10-29 21:49:36 DEBUG [reactor-http-nio-4] o.s.w.s.a.HttpWebHandlerAdapter - [1dc0221c-8] HTTP GET "/v3/api-docs/swagger-config"
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'POST /logout'
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'POST /logout'
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /swagger-ui/**'
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/swagger-ui/webjars/swagger-ui/favicon-32x32.png'; against '/swagger-ui/**'
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/v3/api-docs/swagger-config'; against '/v3/api-docs/**'
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /api-docs/**'
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /aggregate/**'
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /api-docs/**'
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /actuator/**'
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /aggregate/**'
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /actuator/**'
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/v3/api-docs/swagger-config' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/swagger-ui/webjars/swagger-ui/favicon-32x32.png' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:49:36 DEBUG [parallel-8] o.s.w.r.h.SimpleUrlHandlerMapping - [70acdc3f-7] Mapped to ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.w.r.r.m.a.RequestMappingHandlerMapping - [1dc0221c-8] Mapped to org.springdoc.webflux.ui.SwaggerConfigResource#getSwaggerUiConfig(ServerHttpRequest)
+2024-10-29 21:49:36 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-7] Completed 200 OK
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.w.r.r.m.a.ResponseBodyResultHandler - [1dc0221c-8] Using 'application/json' given [*/*] and supported [application/json]
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.w.r.r.m.a.ResponseBodyResultHandler - [1dc0221c-8] 0..1 [java.util.Map<java.lang.String, java.lang.Object>]
+2024-10-29 21:49:36 DEBUG [parallel-7] org.springframework.web.HttpLogging - [1dc0221c-8] Encoding [{configUrl=/v3/api-docs/swagger-config, oauth2RedirectUrl=http://localhost:8072/swagger-ui/webjars/s (truncated)...]
+2024-10-29 21:49:36 DEBUG [parallel-7] o.s.w.s.a.HttpWebHandlerAdapter - [1dc0221c-8] Completed 200 OK
+2024-10-29 21:49:36 DEBUG [reactor-http-nio-4] o.s.w.s.a.HttpWebHandlerAdapter - [1dc0221c-9] HTTP GET "/aggregate/products-service/v3/api-docs"
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'POST /logout'
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui/**'
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /api-docs/**'
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/aggregate/products-service/v3/api-docs'; against '/aggregate/**'
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /actuator/**'
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/aggregate/products-service/v3/api-docs' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:49:36 DEBUG [parallel-9] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:49:37 DEBUG [reactor-http-nio-8] org.springframework.web.HttpLogging - [1dc0221c-9] Resolved [ConnectTimeoutException: connection timed out after 1000 ms: /192.168.56.1:8081] for HTTP GET /aggregate/products-service/v3/api-docs
+2024-10-29 21:49:37 ERROR [reactor-http-nio-8] o.s.b.a.w.r.e.AbstractErrorWebExceptionHandler - [1dc0221c-9]  500 Server Error for HTTP GET "/aggregate/products-service/v3/api-docs"
+io.netty.channel.ConnectTimeoutException: connection timed out after 1000 ms: /192.168.56.1:8081
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:263)
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Error has been observed at the following site(s):
+	*__checkpoint ⇢ org.springframework.cloud.gateway.filter.WeightCalculatorWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ AuthorizationWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ ExceptionTranslationWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ LogoutWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ ServerRequestCacheWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ SecurityContextServerWebExchangeWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ AuthenticationWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ ReactorContextWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ CorsWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ HttpHeaderWriterWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ ServerWebExchangeReactorContextWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ org.springframework.security.web.server.WebFilterChainProxy [DefaultWebFilterChain]
+	*__checkpoint ⇢ HTTP GET "/aggregate/products-service/v3/api-docs" [ExceptionHandlingWebHandler]
+Original Stack Trace:
+		at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:263)
+		at io.netty.util.concurrent.PromiseTask.runTask(PromiseTask.java:98)
+		at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:156)
+		at io.netty.util.concurrent.AbstractEventExecutor.runTask$$$capture(AbstractEventExecutor.java:173)
+		at io.netty.util.concurrent.AbstractEventExecutor.runTask(AbstractEventExecutor.java)
+		at io.netty.util.concurrent.AbstractEventExecutor.safeExecute$$$capture(AbstractEventExecutor.java:166)
+		at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java)
+		at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:469)
+		at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:569)
+		at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:994)
+		at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+		at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+		at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-10-29 21:49:37 DEBUG [reactor-http-nio-8] org.springframework.web.HttpLogging - [1dc0221c-9] Encoding [{timestamp=Tue Oct 29 21:49:37 ICT 2024, path=/aggregate/products-service/v3/api-docs, status=500, e (truncated)...]
+2024-10-29 21:49:37 DEBUG [reactor-http-nio-8] o.s.w.s.a.HttpWebHandlerAdapter - [1dc0221c-9] Completed 500 INTERNAL_SERVER_ERROR
+2024-10-29 21:49:39 DEBUG [reactor-http-nio-4] o.s.w.s.a.HttpWebHandlerAdapter - [1dc0221c-10] HTTP GET "/aggregate/social-service/v3/api-docs"
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'POST /logout'
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /swagger-ui/**'
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /api-docs/**'
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/aggregate/social-service/v3/api-docs'; against '/aggregate/**'
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /actuator/**'
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/aggregate/social-service/v3/api-docs' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:49:39 DEBUG [parallel-12] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:49:39 DEBUG [reactor-http-nio-4] o.s.w.s.a.HttpWebHandlerAdapter - [1dc0221c-10] Completed 200 OK
+2024-10-29 21:49:44 DEBUG [reactor-http-nio-4] o.s.w.s.a.HttpWebHandlerAdapter - [1dc0221c-11] HTTP GET "/aggregate/products-service/v3/api-docs"
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'POST /logout'
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui/**'
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /api-docs/**'
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/aggregate/products-service/v3/api-docs'; against '/aggregate/**'
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /actuator/**'
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/aggregate/products-service/v3/api-docs' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:49:44 DEBUG [parallel-16] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:49:45 DEBUG [reactor-http-nio-10] org.springframework.web.HttpLogging - [1dc0221c-11] Resolved [ConnectTimeoutException: connection timed out after 1000 ms: /192.168.56.1:8081] for HTTP GET /aggregate/products-service/v3/api-docs
+2024-10-29 21:49:45 ERROR [reactor-http-nio-10] o.s.b.a.w.r.e.AbstractErrorWebExceptionHandler - [1dc0221c-11]  500 Server Error for HTTP GET "/aggregate/products-service/v3/api-docs"
+io.netty.channel.ConnectTimeoutException: connection timed out after 1000 ms: /192.168.56.1:8081
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:263)
+	Suppressed: reactor.core.publisher.FluxOnAssembly$OnAssemblyException: 
+Error has been observed at the following site(s):
+	*__checkpoint ⇢ org.springframework.cloud.gateway.filter.WeightCalculatorWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ AuthorizationWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ ExceptionTranslationWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ LogoutWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ ServerRequestCacheWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ SecurityContextServerWebExchangeWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ AuthenticationWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ ReactorContextWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ CorsWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ HttpHeaderWriterWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ ServerWebExchangeReactorContextWebFilter [DefaultWebFilterChain]
+	*__checkpoint ⇢ org.springframework.security.web.server.WebFilterChainProxy [DefaultWebFilterChain]
+	*__checkpoint ⇢ HTTP GET "/aggregate/products-service/v3/api-docs" [ExceptionHandlingWebHandler]
+Original Stack Trace:
+		at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe$1.run(AbstractNioChannel.java:263)
+		at io.netty.util.concurrent.PromiseTask.runTask(PromiseTask.java:98)
+		at io.netty.util.concurrent.ScheduledFutureTask.run(ScheduledFutureTask.java:156)
+		at io.netty.util.concurrent.AbstractEventExecutor.runTask$$$capture(AbstractEventExecutor.java:173)
+		at io.netty.util.concurrent.AbstractEventExecutor.runTask(AbstractEventExecutor.java)
+		at io.netty.util.concurrent.AbstractEventExecutor.safeExecute$$$capture(AbstractEventExecutor.java:166)
+		at io.netty.util.concurrent.AbstractEventExecutor.safeExecute(AbstractEventExecutor.java)
+		at io.netty.util.concurrent.SingleThreadEventExecutor.runAllTasks(SingleThreadEventExecutor.java:469)
+		at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:569)
+		at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:994)
+		at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+		at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+		at java.base/java.lang.Thread.run(Thread.java:1583)
+2024-10-29 21:49:45 DEBUG [reactor-http-nio-10] org.springframework.web.HttpLogging - [1dc0221c-11] Encoding [{timestamp=Tue Oct 29 21:49:45 ICT 2024, path=/aggregate/products-service/v3/api-docs, status=500, e (truncated)...]
+2024-10-29 21:49:45 DEBUG [reactor-http-nio-10] o.s.w.s.a.HttpWebHandlerAdapter - [1dc0221c-11] Completed 500 INTERNAL_SERVER_ERROR
+2024-10-29 21:50:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:50:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:50:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:50:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:50:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:50:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:50:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:50:07 DEBUG [reactor-http-nio-4] o.s.w.s.a.HttpWebHandlerAdapter - [1dc0221c-12] HTTP GET "/swagger-ui/webjars/swagger-ui/index.html?urls.primaryName=products-service"
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'POST /logout'
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/swagger-ui/webjars/swagger-ui/index.html'; against '/swagger-ui/**'
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /aggregate/**'
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.html' doesn't match 'null /actuator/**'
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/swagger-ui/webjars/swagger-ui/index.html' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:07 DEBUG [parallel-18] o.s.w.r.h.SimpleUrlHandlerMapping - [1dc0221c-12] Mapped to ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2024-10-29 21:50:07 DEBUG [reactor-http-nio-4] o.s.w.s.a.HttpWebHandlerAdapter - [1dc0221c-12] Completed 200 OK
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-4] o.s.w.s.a.HttpWebHandlerAdapter - [1dc0221c-13] HTTP GET "/swagger-ui/webjars/swagger-ui/swagger-ui.css"
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-14] HTTP GET "/swagger-ui/webjars/swagger-ui/index.css"
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-5] o.s.w.s.a.HttpWebHandlerAdapter - [242e6d4b-15] HTTP GET "/swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js"
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-2] o.s.w.s.a.HttpWebHandlerAdapter - [1a460fd1-16] HTTP GET "/swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js"
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-3] o.s.w.s.a.HttpWebHandlerAdapter - [0f48d038-17] HTTP GET "/swagger-ui/webjars/swagger-ui/swagger-initializer.js"
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'POST /logout'
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'POST /logout'
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'POST /logout'
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'POST /logout'
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js'; against '/swagger-ui/**'
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'POST /logout'
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/swagger-ui/webjars/swagger-ui/swagger-ui.css'; against '/swagger-ui/**'
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/swagger-ui/webjars/swagger-ui/index.css'; against '/swagger-ui/**'
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /aggregate/**'
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /aggregate/**'
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/swagger-ui/webjars/swagger-ui/swagger-initializer.js'; against '/swagger-ui/**'
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui.css' doesn't match 'null /actuator/**'
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' doesn't match 'null /actuator/**'
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js'; against '/swagger-ui/**'
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/swagger-ui/webjars/swagger-ui/swagger-ui-bundle.js' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /aggregate/**'
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/swagger-ui/webjars/swagger-ui/swagger-ui.css' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/index.css' doesn't match 'null /actuator/**'
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /aggregate/**'
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-initializer.js' doesn't match 'null /actuator/**'
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/swagger-ui/webjars/swagger-ui/swagger-initializer.js' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/swagger-ui/webjars/swagger-ui/index.css' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /aggregate/**'
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' doesn't match 'null /actuator/**'
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/swagger-ui/webjars/swagger-ui/swagger-ui-standalone-preset.js' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:08 DEBUG [parallel-1] o.s.w.r.h.SimpleUrlHandlerMapping - [242e6d4b-15] Mapped to ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2024-10-29 21:50:08 DEBUG [parallel-3] o.s.w.r.h.SimpleUrlHandlerMapping - [0f48d038-17] Mapped to ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2024-10-29 21:50:08 DEBUG [parallel-19] o.s.w.r.h.SimpleUrlHandlerMapping - [1dc0221c-13] Mapped to ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2024-10-29 21:50:08 DEBUG [parallel-2] o.s.w.r.h.SimpleUrlHandlerMapping - [1a460fd1-16] Mapped to ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2024-10-29 21:50:08 DEBUG [parallel-20] o.s.w.r.h.SimpleUrlHandlerMapping - [70acdc3f-14] Mapped to ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-3] o.s.w.s.a.HttpWebHandlerAdapter - [0f48d038-17] Completed 200 OK
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-4] o.s.w.s.a.HttpWebHandlerAdapter - [1dc0221c-13] Completed 200 OK
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-14] Completed 200 OK
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-2] o.s.w.s.a.HttpWebHandlerAdapter - [1a460fd1-16] Completed 200 OK
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-5] o.s.w.s.a.HttpWebHandlerAdapter - [242e6d4b-15] Completed 200 OK
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-5] o.s.w.s.a.HttpWebHandlerAdapter - [242e6d4b-18] HTTP GET "/v3/api-docs/swagger-config"
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-19] HTTP GET "/swagger-ui/webjars/swagger-ui/favicon-32x32.png"
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'POST /logout'
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /swagger-ui/**'
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/v3/api-docs/swagger-config'; against '/v3/api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /aggregate/**'
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /v3/api-docs/swagger-config' doesn't match 'null /actuator/**'
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/v3/api-docs/swagger-config' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'POST /logout'
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.w.r.r.m.a.RequestMappingHandlerMapping - [242e6d4b-18] Mapped to org.springdoc.webflux.ui.SwaggerConfigResource#getSwaggerUiConfig(ServerHttpRequest)
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/swagger-ui/webjars/swagger-ui/favicon-32x32.png'; against '/swagger-ui/**'
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /aggregate/**'
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /swagger-ui/webjars/swagger-ui/favicon-32x32.png' doesn't match 'null /actuator/**'
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/swagger-ui/webjars/swagger-ui/favicon-32x32.png' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.w.r.r.m.a.ResponseBodyResultHandler - [242e6d4b-18] Using 'application/json' given [*/*] and supported [application/json]
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.w.r.r.m.a.ResponseBodyResultHandler - [242e6d4b-18] 0..1 [java.util.Map<java.lang.String, java.lang.Object>]
+2024-10-29 21:50:08 DEBUG [parallel-5] o.s.w.r.h.SimpleUrlHandlerMapping - [70acdc3f-19] Mapped to ResourceWebHandler [classpath [META-INF/resources/webjars/]]
+2024-10-29 21:50:08 DEBUG [parallel-4] org.springframework.web.HttpLogging - [242e6d4b-18] Encoding [{configUrl=/v3/api-docs/swagger-config, oauth2RedirectUrl=http://localhost:8072/swagger-ui/webjars/s (truncated)...]
+2024-10-29 21:50:08 DEBUG [parallel-4] o.s.w.s.a.HttpWebHandlerAdapter - [242e6d4b-18] Completed 200 OK
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-19] Completed 200 OK
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-20] HTTP GET "/aggregate/products-service/v3/api-docs"
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'POST /logout'
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui/**'
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/aggregate/products-service/v3/api-docs'; against '/aggregate/**'
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /actuator/**'
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/aggregate/products-service/v3/api-docs' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:08 DEBUG [parallel-6] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:08 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-20] Completed 200 OK
+2024-10-29 21:50:10 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-21] HTTP GET "/aggregate/orders-service/v3/api-docs"
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'POST /logout'
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /swagger-ui/**'
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/aggregate/orders-service/v3/api-docs'; against '/aggregate/**'
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /actuator/**'
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/aggregate/orders-service/v3/api-docs' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:10 DEBUG [parallel-9] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:10 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-21] Completed 200 OK
+2024-10-29 21:50:12 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-22] HTTP GET "/aggregate/products-service/v3/api-docs"
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'POST /logout'
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui/**'
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/aggregate/products-service/v3/api-docs'; against '/aggregate/**'
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /actuator/**'
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/aggregate/products-service/v3/api-docs' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:12 DEBUG [parallel-13] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:13 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-22] Completed 200 OK
+2024-10-29 21:50:17 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-23] HTTP GET "/aggregate/social-service/v3/api-docs"
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'POST /logout'
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /swagger-ui/**'
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/aggregate/social-service/v3/api-docs'; against '/aggregate/**'
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/social-service/v3/api-docs' doesn't match 'null /actuator/**'
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/aggregate/social-service/v3/api-docs' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:17 DEBUG [parallel-17] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:17 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-23] Completed 200 OK
+2024-10-29 21:50:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:50:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:50:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:50:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:50:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:50:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:50:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:50:37 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-24] HTTP GET "/aggregate/accounts-service/v3/api-docs"
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/accounts-service/v3/api-docs' doesn't match 'POST /logout'
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/accounts-service/v3/api-docs' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/accounts-service/v3/api-docs' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/accounts-service/v3/api-docs' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/accounts-service/v3/api-docs' doesn't match 'null /swagger-ui/**'
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/accounts-service/v3/api-docs' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/accounts-service/v3/api-docs' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/accounts-service/v3/api-docs' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/aggregate/accounts-service/v3/api-docs'; against '/aggregate/**'
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/accounts-service/v3/api-docs' doesn't match 'null /actuator/**'
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/aggregate/accounts-service/v3/api-docs' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:37 WARN  [parallel-1] o.s.c.l.core.RoundRobinLoadBalancer - No servers available for service: ACCOUNTS
+2024-10-29 21:50:37 DEBUG [parallel-1] org.springframework.web.HttpLogging - [70acdc3f-24] Resolved [NotFoundException: 503 SERVICE_UNAVAILABLE "Unable to find instance for ACCOUNTS"] for HTTP GET /aggregate/accounts-service/v3/api-docs
+2024-10-29 21:50:37 DEBUG [parallel-1] org.springframework.web.HttpLogging - [70acdc3f-24] Encoding [{timestamp=Tue Oct 29 21:50:37 ICT 2024, path=/aggregate/accounts-service/v3/api-docs, status=503, e (truncated)...]
+2024-10-29 21:50:37 DEBUG [parallel-1] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-24] Completed 503 SERVICE_UNAVAILABLE
+2024-10-29 21:50:39 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-25] HTTP GET "/aggregate/carts-service/v3/api-docs"
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/carts-service/v3/api-docs' doesn't match 'POST /logout'
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/carts-service/v3/api-docs' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/carts-service/v3/api-docs' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/carts-service/v3/api-docs' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/carts-service/v3/api-docs' doesn't match 'null /swagger-ui/**'
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/carts-service/v3/api-docs' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/carts-service/v3/api-docs' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/carts-service/v3/api-docs' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/aggregate/carts-service/v3/api-docs'; against '/aggregate/**'
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/carts-service/v3/api-docs' doesn't match 'null /actuator/**'
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/aggregate/carts-service/v3/api-docs' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:39 DEBUG [parallel-3] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:39 WARN  [parallel-3] o.s.c.l.core.RoundRobinLoadBalancer - No servers available for service: CARTS
+2024-10-29 21:50:39 DEBUG [parallel-3] org.springframework.web.HttpLogging - [70acdc3f-25] Resolved [NotFoundException: 503 SERVICE_UNAVAILABLE "Unable to find instance for CARTS"] for HTTP GET /aggregate/carts-service/v3/api-docs
+2024-10-29 21:50:39 DEBUG [parallel-3] org.springframework.web.HttpLogging - [70acdc3f-25] Encoding [{timestamp=Tue Oct 29 21:50:39 ICT 2024, path=/aggregate/carts-service/v3/api-docs, status=503, erro (truncated)...]
+2024-10-29 21:50:40 DEBUG [parallel-3] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-25] Completed 503 SERVICE_UNAVAILABLE
+2024-10-29 21:50:42 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-26] HTTP GET "/aggregate/orders-service/v3/api-docs"
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'POST /logout'
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /swagger-ui/**'
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/aggregate/orders-service/v3/api-docs'; against '/aggregate/**'
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/orders-service/v3/api-docs' doesn't match 'null /actuator/**'
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/aggregate/orders-service/v3/api-docs' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:42 DEBUG [parallel-5] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:42 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-26] Completed 200 OK
+2024-10-29 21:50:47 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-27] HTTP GET "/aggregate/products-service/v3/api-docs"
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.w.s.s.DefaultWebSessionManager - Created new WebSession.
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/logout', method=POST}
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'POST /logout'
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - No matches found
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui.html', method=null}
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui.html'
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/index.html', method=null}
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui/index.html'
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/webjars/swagger-ui/index.html', method=null}
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /webjars/swagger-ui/index.html'
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/swagger-ui/**', method=null}
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /swagger-ui/**'
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/v3/api-docs/**', method=null}
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /v3/api-docs/**'
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs-resources/**', method=null}
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /api-docs-resources/**'
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/api-docs/**', method=null}
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /api-docs/**'
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/aggregate/**', method=null}
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Checking match of request : '/aggregate/products-service/v3/api-docs'; against '/aggregate/**'
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - Trying to match using PathMatcherServerWebExchangeMatcher{pattern='/actuator/**', method=null}
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.PathPatternParserServerWebExchangeMatcher - Request 'GET /aggregate/products-service/v3/api-docs' doesn't match 'null /actuator/**'
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.u.m.OrServerWebExchangeMatcher - matched
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.a.DelegatingReactiveAuthorizationManager - Checking authorization on '/aggregate/products-service/v3/api-docs' using org.springframework.security.config.web.server.ServerHttpSecurity$AuthorizeExchangeSpec$Access$$Lambda/0x00000260016964c8@30721503
+2024-10-29 21:50:47 DEBUG [parallel-8] o.s.s.w.s.a.AuthorizationWebFilter - Authorization successful
+2024-10-29 21:50:47 DEBUG [reactor-http-nio-6] o.s.w.s.a.HttpWebHandlerAdapter - [70acdc3f-27] Completed 200 OK
+2024-10-29 21:51:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:51:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:51:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:51:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:51:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:51:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:51:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:51:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:51:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:51:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:51:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:51:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:51:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:51:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:52:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:52:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:52:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:52:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:52:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:52:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:52:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:52:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:52:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:52:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:52:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:52:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:52:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:52:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:53:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:53:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:53:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:53:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:53:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:53:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:53:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:53:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:53:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:53:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:53:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:53:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:53:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:53:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:54:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:54:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:54:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:54:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:54:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:54:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:54:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:54:30 INFO  [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-29 21:54:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:54:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:54:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:54:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:54:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:54:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:54:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:55:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:55:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:55:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:55:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:55:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:55:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:55:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:55:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:55:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:55:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:55:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:55:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:55:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:55:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:56:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:56:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:56:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:56:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:56:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:56:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:56:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:56:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:56:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:56:31 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:56:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:56:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:56:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:56:31 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]
+2024-10-29 21:57:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - HTTP PUT http://localhost:8070/eureka/apps/GATEWAYSERVER/localhost:gatewayserver:8072?status=UP&lastDirtyTimestamp=1730213371102
+2024-10-29 21:57:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:57:01 DEBUG [DiscoveryClient-HeartbeatExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:57:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - HTTP GET http://localhost:8070/eureka/apps/delta
+2024-10-29 21:57:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Accept=[application/json, application/*+json]
+2024-10-29 21:57:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Response 200 OK
+2024-10-29 21:57:01 DEBUG [DiscoveryClient-CacheRefreshExecutor-%d] o.s.web.client.RestTemplate - Reading to [org.springframework.cloud.netflix.eureka.http.EurekaApplications]

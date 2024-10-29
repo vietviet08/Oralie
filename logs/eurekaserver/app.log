@@ -1171,3 +1171,30 @@
 2024-10-29 21:42:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
 2024-10-29 21:43:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
 2024-10-29 21:44:15 INFO  [http-nio-8070-exec-3] c.n.e.r.AbstractInstanceRegistry - Registered instance PRODUCTS/localhost:products:8081 with status UP (replication=false)
+2024-10-29 21:44:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-29 21:45:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-29 21:46:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-29 21:47:56 WARN  [Eureka-PeerNodesUpdater] c.n.eureka.cluster.PeerEurekaNodes - The replica size seems to be empty. Check the route 53 DNS Registry
+2024-10-29 21:47:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-29 21:48:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-29 21:49:15 INFO  [http-nio-8070-exec-4] c.n.e.r.AbstractInstanceRegistry - Registered instance GATEWAYSERVER/localhost:gatewayserver:8072 with status DOWN (replication=false)
+2024-10-29 21:49:18 INFO  [http-nio-8070-exec-6] c.n.e.r.AbstractInstanceRegistry - Cancelled instance GATEWAYSERVER/localhost:gatewayserver:8072 (replication=false)
+2024-10-29 21:49:31 INFO  [http-nio-8070-exec-2] c.n.e.r.AbstractInstanceRegistry - Registered instance GATEWAYSERVER/localhost:gatewayserver:8072 with status UP (replication=false)
+2024-10-29 21:49:33 INFO  [http-nio-8070-exec-9] c.n.e.r.AbstractInstanceRegistry - Registered instance PRODUCTS/localhost:products:8081 with status DOWN (replication=false)
+2024-10-29 21:49:37 INFO  [http-nio-8070-exec-6] c.n.e.r.AbstractInstanceRegistry - Cancelled instance PRODUCTS/localhost:products:8081 (replication=false)
+2024-10-29 21:49:47 INFO  [http-nio-8070-exec-10] c.n.e.r.AbstractInstanceRegistry - Registered instance PRODUCTS/localhost:products:8081 with status UP (replication=false)
+2024-10-29 21:49:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-29 21:50:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-29 21:51:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-29 21:52:04 INFO  [http-nio-8070-exec-7] c.n.e.r.AbstractInstanceRegistry - Registered instance SOCIAL/localhost:social:8084 with status DOWN (replication=false)
+2024-10-29 21:52:07 INFO  [http-nio-8070-exec-10] c.n.e.r.AbstractInstanceRegistry - Cancelled instance SOCIAL/localhost:social:8084 (replication=false)
+2024-10-29 21:52:13 INFO  [http-nio-8070-exec-3] c.n.e.r.AbstractInstanceRegistry - Registered instance SOCIAL/localhost:social:8084 with status UP (replication=false)
+2024-10-29 21:52:14 INFO  [http-nio-8070-exec-4] c.n.e.r.AbstractInstanceRegistry - Registered instance SOCIAL/localhost:social:8084 with status DOWN (replication=false)
+2024-10-29 21:52:17 INFO  [http-nio-8070-exec-6] c.n.e.r.AbstractInstanceRegistry - Cancelled instance SOCIAL/localhost:social:8084 (replication=false)
+2024-10-29 21:52:23 INFO  [http-nio-8070-exec-2] c.n.e.r.AbstractInstanceRegistry - Registered instance SOCIAL/localhost:social:8084 with status UP (replication=false)
+2024-10-29 21:52:56 INFO  [ReplicaAwareInstanceRegistry - RenewalThresholdUpdater] c.n.e.r.PeerAwareInstanceRegistryImpl - Current renewal threshold is : 8
+2024-10-29 21:52:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-29 21:53:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 1ms
+2024-10-29 21:54:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-29 21:55:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-29 21:56:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
