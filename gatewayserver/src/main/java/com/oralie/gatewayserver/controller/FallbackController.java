@@ -40,4 +40,9 @@ public class FallbackController {
     public Mono<String> ratesServiceFallback() {
         return Mono.just("Rates Service is taking too long to respond or is down. Please try again later.");
     }
+
+    @GetMapping("/socialServiceFallback")
+    public Mono<String> socialServiceFallback() {
+        return Mono.just("Social Service is taking too long to respond or is down. Please try again later.");
+    }
 }

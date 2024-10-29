@@ -1167,3 +1167,7 @@
 2024-10-29 21:40:54 INFO  [http-nio-8070-exec-4] c.n.e.r.AbstractInstanceRegistry - Cancelled instance SOCIAL/localhost:social:8084 (replication=false)
 2024-10-29 21:40:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
 2024-10-29 21:41:00 INFO  [http-nio-8070-exec-8] c.n.e.r.AbstractInstanceRegistry - Registered instance SOCIAL/localhost:social:8084 with status UP (replication=false)
+2024-10-29 21:41:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-29 21:42:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-29 21:43:56 INFO  [Eureka-EvictionTimer] c.n.e.r.AbstractInstanceRegistry - Running the evict task with compensationTime 0ms
+2024-10-29 21:44:15 INFO  [http-nio-8070-exec-3] c.n.e.r.AbstractInstanceRegistry - Registered instance PRODUCTS/localhost:products:8081 with status UP (replication=false)

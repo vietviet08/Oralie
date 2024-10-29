@@ -5,6 +5,7 @@ import com.amazonaws.services.s3.S3ClientOptions;
 import com.oralie.social.dto.SocialContactDto;
 import com.oralie.social.dto.s3.FileMetadata;
 import com.oralie.social.service.S3Service;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -19,6 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@Tag(
+        name = "The API of S3 Service",
+        description = "This API allows you to upload, download and delete files from S3 bucket"
+)
 @RestController
 @RequiredArgsConstructor
 public class S3Controller {

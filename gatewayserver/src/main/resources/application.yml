@@ -86,6 +86,8 @@ springdoc:
         url: "/aggregate/carts-service/v3/api-docs"
       - name: "orders-service"
         url: "/aggregate/orders-service/v3/api-docs"
+      - name: "social-service"
+        url: "/aggregate/social-service/v3/api-docs"
 
 info:
   app:
