@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: rates
+
+server:
+  port: 8084

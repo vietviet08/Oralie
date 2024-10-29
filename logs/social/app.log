@@ -3124,3 +3124,67 @@ com.amazonaws.services.s3.model.AmazonS3Exception: The authorization header is m
 2024-10-29 21:52:24 INFO  [restartedMain] o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
 2024-10-29 21:52:24 INFO  [restartedMain] com.oralie.social.SocialApplication - Started SocialApplication in 6.94 seconds (process running for 35042.237)
 2024-10-29 21:52:24 INFO  [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged
+2024-10-29 21:57:23 INFO  [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-29 22:02:23 INFO  [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-29 22:07:23 INFO  [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-29 22:12:23 INFO  [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-29 22:17:23 INFO  [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-29 22:22:23 INFO  [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-29 22:27:23 INFO  [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-29 22:32:23 INFO  [AsyncResolver-bootstrap-executor-%d] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-29 22:36:36 INFO  [File Watcher] o.s.b.d.a.LocalDevToolsAutoConfiguration$RestartingClassPathChangeChangedEventListener - Restarting due to 1 class path change (0 additions, 0 deletions, 1 modification)
+2024-10-29 22:36:36 INFO  [Thread-69] o.s.c.n.e.s.EurekaServiceRegistry - Unregistering application SOCIAL with eureka with status DOWN
+2024-10-29 22:36:36 INFO  [Thread-69] c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1730216196905, current=DOWN, previous=UP]
+2024-10-29 22:36:36 INFO  [DiscoveryClient-InstanceInfoReplicator-%d] c.netflix.discovery.DiscoveryClient - DiscoveryClient_SOCIAL/localhost:social:8084: registering service...
+2024-10-29 22:36:36 INFO  [Thread-69] o.a.coyote.http11.Http11NioProtocol - Stopping ProtocolHandler ["http-nio-8084"]
+2024-10-29 22:36:36 INFO  [DiscoveryClient-InstanceInfoReplicator-%d] c.netflix.discovery.DiscoveryClient - DiscoveryClient_SOCIAL/localhost:social:8084 - registration status: 204
+2024-10-29 22:36:36 INFO  [Thread-69] c.netflix.discovery.DiscoveryClient - Shutting down DiscoveryClient ...
+2024-10-29 22:36:39 INFO  [Thread-69] c.netflix.discovery.DiscoveryClient - Unregistering ...
+2024-10-29 22:36:39 INFO  [Thread-69] c.netflix.discovery.DiscoveryClient - DiscoveryClient_SOCIAL/localhost:social:8084 - deregister  status: 200
+2024-10-29 22:36:39 INFO  [Thread-69] c.netflix.discovery.DiscoveryClient - Completed shut down of DiscoveryClient
+2024-10-29 22:36:42 INFO  [restartedMain] com.oralie.social.SocialApplication - Starting SocialApplication using Java 21.0.1 with PID 27916 (D:\DA\DACS2\Ecommerce-Microservice\BE-Oralie\social\target\classes started by DELL in D:\DA\DACS2\Ecommerce-Microservice\BE-Oralie)
+2024-10-29 22:36:42 DEBUG [restartedMain] com.oralie.social.SocialApplication - Running with Spring Boot v3.3.5, Spring v6.1.14
+2024-10-29 22:36:42 INFO  [restartedMain] com.oralie.social.SocialApplication - The following 1 profile is active: "prod"
+2024-10-29 22:36:42 INFO  [restartedMain] o.s.c.c.c.ConfigServerConfigDataLoader - Fetching config from server at : http://localhost:8071/
+2024-10-29 22:36:42 INFO  [restartedMain] o.s.c.c.c.ConfigServerConfigDataLoader - Located environment: name=social, profiles=[default], label=null, version=5e75527d83d283f5f4392a100b98766f6a6182de, state=null
+2024-10-29 22:36:42 INFO  [restartedMain] o.s.c.c.c.ConfigServerConfigDataLoader - Fetching config from server at : http://localhost:8071/
+2024-10-29 22:36:42 INFO  [restartedMain] o.s.c.c.c.ConfigServerConfigDataLoader - Located environment: name=social, profiles=[prod], label=null, version=5e75527d83d283f5f4392a100b98766f6a6182de, state=null
+2024-10-29 22:36:43 INFO  [restartedMain] o.s.cloud.context.scope.GenericScope - BeanFactory id=ca0cc9e5-adef-3e14-b5fa-25591db039d3
+2024-10-29 22:36:43 WARN  [restartedMain] o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$DeferringLoadBalancerInterceptorConfig' of type [org.springframework.cloud.client.loadbalancer.LoadBalancerAutoConfiguration$DeferringLoadBalancerInterceptorConfig] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [lbRestClientPostProcessor] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2024-10-29 22:36:43 WARN  [restartedMain] o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'deferringLoadBalancerInterceptor' of type [org.springframework.cloud.client.loadbalancer.DeferringLoadBalancerInterceptor] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected/applied to a currently created BeanPostProcessor [lbRestClientPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies/advisors. If this bean does not have to be post-processed, declare it with ROLE_INFRASTRUCTURE.
+2024-10-29 22:36:43 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8086 (http)
+2024-10-29 22:36:43 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8086"]
+2024-10-29 22:36:43 INFO  [restartedMain] o.a.catalina.core.StandardService - Starting service [Tomcat]
+2024-10-29 22:36:43 INFO  [restartedMain] o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.31]
+2024-10-29 22:36:43 INFO  [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2024-10-29 22:36:43 INFO  [restartedMain] o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 381 ms
+2024-10-29 22:36:44 INFO  [restartedMain] o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2024-10-29 22:36:44 INFO  [restartedMain] o.s.b.a.e.web.EndpointLinksResolver - Exposing 19 endpoints beneath base path '/actuator'
+2024-10-29 22:36:44 INFO  [restartedMain] o.s.b.d.a.OptionalLiveReloadServer - LiveReload server is running on port 35729
+2024-10-29 22:36:45 INFO  [restartedMain] o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2024-10-29 22:36:45 INFO  [restartedMain] o.s.c.n.e.c.DiscoveryClientOptionalArgsConfiguration - Eureka HTTP Client uses RestTemplate.
+2024-10-29 22:36:45 WARN  [restartedMain] o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger - Spring Cloud LoadBalancer is currently working with the default cache. While this cache implementation is useful for development and tests, it's recommended to use Caffeine cache in production.You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
+2024-10-29 22:36:45 INFO  [restartedMain] o.s.c.n.eureka.InstanceInfoFactory - Setting initial instance status as: STARTING
+2024-10-29 22:36:45 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Initializing Eureka in region us-east-1
+2024-10-29 22:36:45 INFO  [restartedMain] c.n.d.s.r.aws.ConfigClusterResolver - Resolving eureka endpoints via configuration
+2024-10-29 22:36:45 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Disable delta property : false
+2024-10-29 22:36:45 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Single vip registry refresh property : null
+2024-10-29 22:36:45 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Force full registry fetch : false
+2024-10-29 22:36:45 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Application is null : false
+2024-10-29 22:36:45 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Registered Applications size is zero : true
+2024-10-29 22:36:45 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Application version is -1: true
+2024-10-29 22:36:45 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Getting all instance registry info from the eureka server
+2024-10-29 22:36:45 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - The response status is 200
+2024-10-29 22:36:45 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Starting heartbeat executor: renew interval is: 30
+2024-10-29 22:36:45 INFO  [restartedMain] c.n.discovery.InstanceInfoReplicator - InstanceInfoReplicator onDemand update allowed rate per min is 4
+2024-10-29 22:36:45 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Discovery Client initialized at timestamp 1730216205435 with initial instances count: 4
+2024-10-29 22:36:45 INFO  [restartedMain] o.s.c.n.e.s.EurekaServiceRegistry - Registering application SOCIAL with eureka with status UP
+2024-10-29 22:36:45 INFO  [restartedMain] c.netflix.discovery.DiscoveryClient - Saw local status change event StatusChangeEvent [timestamp=1730216205436, current=UP, previous=STARTING]
+2024-10-29 22:36:45 INFO  [DiscoveryClient-InstanceInfoReplicator-%d] c.netflix.discovery.DiscoveryClient - DiscoveryClient_SOCIAL/localhost:social:8086: registering service...
+2024-10-29 22:36:45 INFO  [restartedMain] o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8086"]
+2024-10-29 22:36:45 INFO  [restartedMain] o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8086 (http) with context path '/'
+2024-10-29 22:36:45 INFO  [restartedMain] o.s.c.n.e.s.EurekaAutoServiceRegistration - Updating port to 8086
+2024-10-29 22:36:45 INFO  [DiscoveryClient-InstanceInfoReplicator-%d] c.netflix.discovery.DiscoveryClient - DiscoveryClient_SOCIAL/localhost:social:8086 - registration status: 204
+2024-10-29 22:36:46 INFO  [restartedMain] o.s.cloud.commons.util.InetUtils - Cannot determine local hostname
+2024-10-29 22:36:46 INFO  [restartedMain] com.oralie.social.SocialApplication - Started SocialApplication in 6.432 seconds (process running for 37704.14)
+2024-10-29 22:36:46 INFO  [restartedMain] o.s.b.d.a.ConditionEvaluationDeltaLoggingListener - Condition evaluation unchanged

@@ -1,3 +1,6 @@
+server:
+  port: 8086
+
 spring:
   application:
     name: social
@@ -62,10 +65,6 @@ logging:
       oralie:
         social: DEBUG
 
-server:
-  port: 8084
-
-
 aws:
   region:
     static: ${AWS_REGION}
@@ -74,3 +73,4 @@ aws:
   credentials:
     accessKey: ${AWS_ACCESS_KEY}
     secretKey: ${AWS_SECRET_KEY}
+
