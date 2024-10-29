@@ -162,6 +162,24 @@ public class RouteConfig {
                         )
                         .uri("lb://RATES")
                 )
+                .route(p -> p
+                        .path("/api/social/**")
+                        .filters(f -> f.tokenRelay()
+                                .rewritePath("/api/social/?(?<remaining>.*)", "/${remaining}")
+                                .circuitBreaker(c -> c.setName("SOCIAL-CIRCUIT-BREAKER")
+                                        .setFallbackUri("forward:/socialServiceFallback")
+                                )
+                        )
+
+                        .uri("lb://SOCIAL")
+                )
+                .route(r -> r
+                        .path("/aggregate/social-service/v3/api-docs/**")
+                        .filters(f -> f
+                                .rewritePath("/aggregate/social-service/v3/api-docs", "/v3/api-docs")
+                        )
+                        .uri("lb://SOCIAL")
+                )
                 .build();
     }
 

@@ -7,7 +7,9 @@ import com.oralie.products.dto.response.*;
 import com.oralie.products.exception.ResourceAlreadyExistException;
 import com.oralie.products.exception.ResourceNotFoundException;
 import com.oralie.products.model.*;
+import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.repository.*;
+import com.oralie.products.repository.client.S3FeignClient;
 import com.oralie.products.sevice.ProductImageService;
 import com.oralie.products.sevice.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +18,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +37,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductOptionRepository productOptionRepository;
     private final ProductImageRepository productImageRepository;
     private final ProductImageService productImageService;
+    private final S3FeignClient s3FeignClient;
 
     @Override
     public ListResponse<ProductResponse> getAllProducts(int page, int size, String sortBy, String sort, String search, String category) {
@@ -106,6 +112,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductResponse createProduct(ProductRequest productRequest) {
 
         if (productRepository.existsByName(productRequest.getName())) {
@@ -163,6 +170,22 @@ public class ProductServiceImpl implements ProductService {
 //                productImageList.add(productImage);
 //            }
 //        }
+        if(productRequest.getImages() != null) {
+            List<MultipartFile> images = productRequest.getImages().getFile();
+            List<FileMetadata> fileMetadataList = s3FeignClient.createAttachments(images).getBody();
+
+            List<ProductImage> productImageList = new ArrayList<>();
+            for (FileMetadata fileMetadata : fileMetadataList) {
+                ProductImage productImage = ProductImage.builder()
+                        .url(fileMetadata.getUrl())
+                        .product(productSaved)
+                        .name(fileMetadata.getName())
+                        .type(fileMetadata.getMime())
+                        .build();
+                productImageList.add(productImage);
+            }
+            productSaved.setImages(productImageList);
+        }
 
         productSaved.setOptions(productOptionList);
         productSaved.setProductCategories(productCategoryList);
@@ -173,6 +196,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
 
         Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
@@ -228,11 +252,18 @@ public class ProductServiceImpl implements ProductService {
         ProductImageRequest productImageNew = productRequest.getImages();
 
 
+
         List<ProductImage> productImageList = new ArrayList<>();
         if (productImageNew != null && productImageNew.getFile() != null) {
-            List<String> newImageUrls = productImageService.uploadFile(productImageNew, product.getId())
+            List<MultipartFile> images = productImageNew.getFile();
+//            List<String> newImageUrls = productImageService.uploadFile(productImageNew, product.getId())
+//                    .stream()
+//                    .map(ProductImageResponse::getUrl)
+//                    .toList();
+
+            List<String> newImageUrls = Objects.requireNonNull(s3FeignClient.createAttachments(images).getBody())
                     .stream()
-                    .map(ProductImageResponse::getUrl)
+                    .map(FileMetadata::getUrl)
                     .toList();
 
             for (ProductImage oldImage : productImageListOld) {

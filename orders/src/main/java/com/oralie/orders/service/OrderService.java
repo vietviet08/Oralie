@@ -1,18 +1,21 @@
 package com.oralie.orders.service;
 
+import com.google.zxing.WriterException;
 import com.oralie.orders.dto.request.OrderRequest;
 import com.oralie.orders.dto.response.ListResponse;
 import com.oralie.orders.dto.response.OrderItemResponse;
 import com.oralie.orders.dto.response.OrderResponse;
 import com.oralie.orders.exception.PaymentProcessingException;
+import org.springframework.core.io.InputStreamResource;
 
-import java.util.List;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public interface OrderService {
 
     ListResponse<OrderResponse> getAllOrders(int page, int size, String sortBy, String sort);
 
-    OrderResponse createOrder(OrderRequest orderRequest) throws PaymentProcessingException;
+    OrderResponse placeOrder(OrderRequest orderRequest) throws PaymentProcessingException;
 
     ListResponse<OrderResponse> getOrdersByUserId(String userId, int page, int size, String sortBy, String sort);
 
@@ -23,5 +26,9 @@ public interface OrderService {
     OrderResponse updateOrderStatus(Long orderId, String status);
 
     String cancelOrder(Long orderId);
+
+    InputStreamResource generateQRCodeImage(String qrcode) throws WriterException, IOException;
+
+    InputStreamResource generateBarCodeImage(String barCode) throws WriterException, IOException;
 
 }

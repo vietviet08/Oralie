@@ -1,6 +1,13 @@
 package com.oralie.orders.service.impl;
 
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.oned.EAN13Writer;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.oralie.orders.constant.OrderStatus;
+import com.oralie.orders.constant.PayPalConstant;
 import com.oralie.orders.constant.PaymentStatus;
 import com.oralie.orders.dto.entity.OrderPlaceEvent;
 import com.oralie.orders.dto.request.OrderRequest;
@@ -21,7 +28,7 @@ import com.oralie.orders.service.PayPalService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,9 +36,14 @@ import org.springframework.data.domain.Sort;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,12 +75,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderResponse createOrder(OrderRequest orderRequest) throws PaymentProcessingException {
+    @Transactional
+    public OrderResponse placeOrder(OrderRequest orderRequest) throws PaymentProcessingException {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Order order = Order.builder()
                 .userId(userId)
-                .cartId(1L)
                 .address(OrderAddress.builder()
                         .addressDetail(orderRequest.getAddress().getAddressDetail())
                         .city(orderRequest.getAddress().getCity())
@@ -97,16 +109,16 @@ public class OrderServiceImpl implements OrderService {
         if ("PAYPAL".equalsIgnoreCase(orderRequest.getPaymentMethod())) {
             try {
                 PayPalInfoRequest payPalInfoRequest = PayPalInfoRequest.builder()
-                        .currency("USD")
+                        .currency(PayPalConstant.PAYPAL_CURRENCY)
                         .total(order.getTotalPrice())
                         .description("Order payment")
                         .method("paypal")
-                        .intent("sale")
-                        .cancelUrl("http://localhost:3000/cancel")
-                        .successUrl("http://localhost:3000/success")
+                        .intent(PayPalConstant.PAYPAL_INTENT)
+                        .cancelUrl(PayPalConstant.PAYPAL_CANCEL_URL)
+                        .successUrl(PayPalConstant.PAYPAL_SUCCESS_URL)
                         .build();
 
-                payPalService.createPayment(payPalInfoRequest);
+                payPalService.placePaypalPayment(payPalInfoRequest);
 
                 order.setPaymentStatus(PaymentStatus.COMPLETED);
                 //need create payment model to store payment entity
@@ -134,7 +146,7 @@ public class OrderServiceImpl implements OrderService {
         //subtract quantity product in inventory service
 
 
-        //clear cart in cart service
+        //clear cart in cart service | need using kafka to send event to cart service & inventory also
         cartFeignClient.clearCart();
 
         return mapToOrderResponse(order);
@@ -187,6 +199,38 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(OrderStatus.CANCELLED);
         orderRepository.save(order);
         return "Order cancelled successfully";
+    }
+
+    @Override
+    public InputStreamResource generateQRCodeImage(String qrcode) throws WriterException, IOException {
+
+        log.info("Generating QR Code for: {}", qrcode);
+
+        QRCodeWriter barcodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = barcodeWriter.encode(qrcode, BarcodeFormat.QR_CODE, 200, 200);
+
+        BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(qrImage, "png", baos);
+        ByteArrayInputStream imageStream = new ByteArrayInputStream(baos.toByteArray());
+
+        return new InputStreamResource(imageStream);
+    }
+
+    @Override
+    public InputStreamResource generateBarCodeImage(String barCode) throws WriterException, IOException {
+
+        log.info("Generating Bar Code for: {}", barCode);
+
+        EAN13Writer barcodeWriter = new EAN13Writer();
+        BitMatrix bitMatrix = barcodeWriter.encode(barCode, BarcodeFormat.EAN_13, 300, 150);
+
+        BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(qrImage, "png", baos);
+        ByteArrayInputStream imageStream = new ByteArrayInputStream(baos.toByteArray());
+
+        return new InputStreamResource(imageStream);
     }
 
     private OrderResponse mapToOrderResponse(Order order) {

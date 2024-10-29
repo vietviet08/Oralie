@@ -3,6 +3,8 @@ package com.oralie.products.sevice;
 import com.oralie.products.dto.request.CategoryRequest;
 import com.oralie.products.dto.response.CategoryResponse;
 import com.oralie.products.dto.response.ListResponse;
+import com.oralie.products.model.s3.FileMetadata;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,4 +19,8 @@ public interface CategoryService {
     CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest);
 
     void deleteCategory(Long id);
+
+    FileMetadata uploadImage(MultipartFile file, Long id);
+
+    void deleteImage(Long id);
 }

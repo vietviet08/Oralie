@@ -3,6 +3,8 @@ package com.oralie.products.sevice;
 import com.oralie.products.dto.request.BrandRequest;
 import com.oralie.products.dto.response.BrandResponse;
 import com.oralie.products.dto.response.ListResponse;
+import com.oralie.products.model.s3.FileMetadata;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -17,4 +19,7 @@ public interface BrandService {
 
     void deleteBrand(Long id);
 
+    FileMetadata uploadImage(MultipartFile file, Long id);
+
+    void deleteImage(Long id);
 }

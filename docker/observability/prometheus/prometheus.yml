@@ -1,37 +1,63 @@
 global:
-  scrape_interval:     5s # Set the scrape interval to every 5 seconds.
+  scrape_interval: 5s # Set the scrape interval to every 5 seconds.
   evaluation_interval: 5s # Evaluate rules every 5 seconds.
 
 scrape_configs:
+  #accounts 8080
   - job_name: 'accounts'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ 'accounts:8080' ]
+  #products 8081
   - job_name: 'products'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ 'products:8081' ]
+  #carts 8082
   - job_name: 'carts'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ 'carts:8082' ]
+  #orders 8083
   - job_name: 'orders'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ 'orders:8083' ]
-  - job_name: 'gatewayserver'
+  #rates 8084
+  - job_name: 'rates'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: [ 'gatewayserver:8072' ]
+      - targets: [ 'rates:8084' ]
+  #payment 8085
+  - job_name: 'payment'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'payment:8085' ]
+  #social 8086
+  - job_name: 'social'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'orders:8086' ]
+  #notification 8087
+  - job_name: 'notification'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'notification:8087' ]
+
+
+  #eurekaserver 8070
   - job_name: 'eurekaserver'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ 'eurekaserver:8070' ]
+  #configserver 8071
   - job_name: 'configserver'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets: [ 'configserver:8071' ]
-  - job_name: 'notification'
+  #gatewayserver 8072
+  - job_name: 'gatewayserver'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: [ 'notification:8084' ]
+      - targets: [ 'gatewayserver:8072' ]
+

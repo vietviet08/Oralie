@@ -3,6 +3,8 @@ package com.oralie.products.controller;
 import com.oralie.products.dto.request.CategoryRequest;
 import com.oralie.products.dto.response.CategoryResponse;
 import com.oralie.products.dto.response.ListResponse;
+import com.oralie.products.model.s3.FileMetadata;
+import com.oralie.products.repository.client.S3FeignClient;
 import com.oralie.products.sevice.CategoryService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Tag(
         name = "CRUD REST APIs for Category",
@@ -59,6 +64,21 @@ public class CategoryController {
     @DeleteMapping("/dash/categories/{id}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
+    @PostMapping("/store/categories/upload-image")
+    public ResponseEntity<FileMetadata> uploadImage(@RequestParam("image") MultipartFile file, @RequestParam("id") Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(categoryService.uploadImage(file, id));
+    }
+
+    @DeleteMapping("/store/categories/delete-image/{id}")
+    public ResponseEntity<Void> deleteImage(@PathVariable Long id) {
+        categoryService.deleteImage(id);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .build();

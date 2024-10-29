@@ -1,24 +1,41 @@
 package com.oralie.orders.controller;
 
+import com.oralie.orders.constant.PayPalConstant;
 import com.oralie.orders.dto.OrderContactDto;
 import com.oralie.orders.dto.request.OrderRequest;
+import com.oralie.orders.dto.request.PayPalInfoRequest;
 import com.oralie.orders.dto.response.ListResponse;
 import com.oralie.orders.dto.response.OrderItemResponse;
 import com.oralie.orders.dto.response.OrderResponse;
 import com.oralie.orders.exception.PaymentProcessingException;
 import com.oralie.orders.service.OrderService;
+import com.oralie.orders.service.PayPalService;
+import com.paypal.api.payments.Links;
+import com.paypal.api.payments.Payment;
+import com.paypal.base.rest.PayPalRESTException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(consumes = "application/json", produces = "application/json")
+//@RequestMapping(consumes = "application/json", produces = "application/json")
 public class OrderController {
+
+    private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 
     private final Environment environment;
 
@@ -29,6 +46,10 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    private final PayPalService payPalService;
+
+
+    //dash
     @GetMapping("/dash/orders")
     public ResponseEntity<ListResponse<OrderResponse>> getOrdersInDash(
             @RequestParam(required = false, defaultValue = "0") int page,
@@ -49,11 +70,49 @@ public class OrderController {
     }
 
 
+    //store
     @PostMapping("/store/orders")
     public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest) throws PaymentProcessingException {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(orderService.createOrder(orderRequest));
+                .body(orderService.placeOrder(orderRequest));
+    }
+
+    //response url to front & client use url to redirect page
+    @PostMapping("/store/orders/paypal")
+    public ResponseEntity<Map<String, String>> createOrderWithPayPal(@RequestBody PayPalInfoRequest payPalInfoRequest) throws PaymentProcessingException, PayPalRESTException {
+
+        Payment payment = payPalService.placePaypalPayment(payPalInfoRequest);
+
+        for (Links links: payment.getLinks()) {
+            if (links.getRel().equals("approval_url")) {
+                Map<String, String> response = new HashMap<>();
+                response.put("approvalUrl", links.getHref());
+                return ResponseEntity.ok(response);
+            }
+        }
+        throw new PaymentProcessingException("Approval URL not found");
+    }
+
+    //when client redirect to success page, call this api to execute payment
+    @GetMapping("/store/payment/success")
+    public ResponseEntity<String> paymentSuccess(
+            @RequestParam("paymentId") String paymentId,
+            @RequestParam("PayerID") String payerId
+    ) {
+        try {
+            Payment payment = payPalService.executePayment(paymentId, payerId);
+            if (payment.getState().equals("approved")) {
+                return ResponseEntity
+                        .status(HttpStatus.OK)
+                        .body(PayPalConstant.SUCCESS_MESSAGE);
+            }
+        } catch (PayPalRESTException e) {
+            log.error("Error the payment please try again", e);
+        }
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(PayPalConstant.ERROR_MESSAGE);
     }
 
     @GetMapping("/store/orders")
@@ -90,7 +149,28 @@ public class OrderController {
                 .body(orderService.cancelOrder(orderId));
     }
 
+    @PostMapping(path = "/store/orders/qrcode")
+    public ResponseEntity<InputStreamResource> generateQRCodeImage(@RequestParam String qrCode) throws Exception {
 
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + qrCode + "\"")
+                .body(orderService.generateQRCodeImage(qrCode));
+
+    }
+
+    @PostMapping(path = "/store/orders/bar-code", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<InputStreamResource> generateBarcode(@RequestParam String barCode) throws Exception {
+        log.info("generateBarcode request: {}", barCode);
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.IMAGE_PNG)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + barCode + "\"")
+                .body(orderService.generateBarCodeImage(barCode));
+
+    }
+
+    //info
     @GetMapping("/orders/build-version")
     public ResponseEntity<String> getBuildVersion() {
         return ResponseEntity
