@@ -67,14 +67,10 @@ logging:
 
 aws:
   region:
-    static: ap-southeast-1
-#    static: ${AWS_REGION}
+    static: ${AWS_REGION}
   bucket:
-#    name: ${AWS_BUCKET_NAME}
-    name: oralie-bucket
+    name: ${AWS_BUCKET_NAME}
   credentials:
-    accessKey: AKIAZKDIDJ2SBJPDTMQX
-    secretKey: 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
-#    accessKey: ${AWS_ACCESS_KEY}
-#    secretKey: ${AWS_SECRET_KEY}
+    accessKey: ${AWS_ACCESS_KEY}
+    secretKey: ${AWS_SECRET_KEY}
 
