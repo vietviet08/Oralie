@@ -47,15 +47,31 @@ public class CategoryController {
                 .body(categoryService.getCategoryById(id));
     }
 
-    @PostMapping("/dash/categories")
-    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest) {
+    @PostMapping(value = "/dash/categories" , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<CategoryResponse> createCategory(
+            @RequestPart(value = "image") MultipartFile image,
+            @RequestPart(value = "name") String name,
+            @RequestPart(value = "slug") String slug,
+            @RequestPart(value = "description") String description,
+            @RequestPart(value = "isDeleted") boolean isDeleted,
+            @RequestPart(value = "parentId") Long parentId
+
+    ) {
+        CategoryRequest categoryRequest = CategoryRequest.builder()
+                .name(name)
+                .slug(slug)
+                .description(description)
+                .isDeleted(isDeleted)
+                .parentId(parentId)
+                .image(image)
+                .build();
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(categoryService.createCategory(categoryRequest));
     }
 
     @PutMapping("/dash/categories/{id}")
-    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest categoryRequest) {
+    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id, @RequestPart CategoryRequest categoryRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.updateCategory(id, categoryRequest));

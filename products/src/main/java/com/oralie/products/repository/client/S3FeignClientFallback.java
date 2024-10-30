@@ -10,8 +10,18 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Component
-public class S3CallBack implements S3FeignClient {
+public class S3FeignClientFallback implements S3FeignClient {
 
+
+    @Override
+    public ResponseEntity<FileMetadata> uploadImage(MultipartFile image) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
+    }
+
+    @Override
+    public ResponseEntity<List<FileMetadata>> uploadImages(List<MultipartFile> files) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
+    }
 
     @Override
     public ResponseEntity<List<FileMetadata>> createAttachments(List<MultipartFile> files) {

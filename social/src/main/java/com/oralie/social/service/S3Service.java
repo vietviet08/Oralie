@@ -11,6 +11,8 @@ import java.util.List;
 public interface S3Service {
     Bucket createBucket(String bucketName);
 
+    FileMetadata uploadImage(MultipartFile image);
+
     List<FileMetadata> uploadFile(List<MultipartFile> files);
 
     S3Object getFile(String keyName);
