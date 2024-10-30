@@ -75,10 +75,10 @@
     </#if>
 <#--    other oauth2-->
     <#if social.providers??>
-      <p class="para">${msg("selectAlternative")}</p>
+      <p class="para">${msg("")}</p>
       <div id="social-providers">
         <#list social.providers as p>
-          <input class="social-link-style" type="button" onclick="location.href='${p.loginUrl}';" value="${p.displayName}"/>
+          <input class="social-link-style" type="button" onclick="location.href='${p.loginUrl}';"/>
         </#list>
       </div>
     </#if>
