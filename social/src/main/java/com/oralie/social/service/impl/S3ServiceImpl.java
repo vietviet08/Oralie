@@ -40,6 +40,15 @@ public class S3ServiceImpl implements S3Service {
     }
 
     @Override
+    public FileMetadata uploadImage(MultipartFile image) {
+        if (image == null) {
+            return null;
+        }
+        String fileKey = "oralie-file-" + image.getOriginalFilename();
+        return put(BUCKET_NAME, fileKey, image, true);
+    }
+
+    @Override
     public List<FileMetadata> uploadFile(List<MultipartFile> files) {
         return files.stream()
                 .map(file -> {
