@@ -13,10 +13,14 @@ import com.oralie.products.repository.BrandRepository;
 import com.oralie.products.repository.client.S3FeignClient;
 import com.oralie.products.sevice.BrandService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,8 +32,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BrandServiceImpl implements BrandService {
 
+    private static final Logger log = LoggerFactory.getLogger(BrandServiceImpl.class);
+
     private final BrandRepository brandRepository;
 
+    @Qualifier("com.oralie.products.repository.client.S3FeignClient")
     private final S3FeignClient s3FeignClient;
 
     @Override
@@ -61,9 +68,18 @@ public class BrandServiceImpl implements BrandService {
         Brand brand = Brand.builder()
                 .name(brandRequest.getName())
                 .description(brandRequest.getDescription())
-                .imageUrl(brandRequest.getUrlImage())
                 .isActive(brandRequest.getIsActive())
                 .build();
+
+        ResponseEntity<FileMetadata> fileMetadataResponseEntity = s3FeignClient.uploadImage(brandRequest.getImage());
+
+        log.info("File metadata: {}", fileMetadataResponseEntity.getBody());
+        log.info("Http status: {}", fileMetadataResponseEntity.getStatusCode());
+
+        if (fileMetadataResponseEntity.getBody() != null && fileMetadataResponseEntity.getBody().getUrl() != null) {
+            brand.setImage(fileMetadataResponseEntity.getBody().getUrl());
+        } else brand.setImage("");
+
         brandRepository.save(brand);
         return mapToBrandResponse(brand);
     }
@@ -73,8 +89,16 @@ public class BrandServiceImpl implements BrandService {
         Brand brand = brandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Brand not found", "id", id + ""));
         brand.setName(brandRequest.getName());
         brand.setDescription(brandRequest.getDescription());
-        brand.setImageUrl(brandRequest.getUrlImage());
         brand.setIsActive(brandRequest.getIsActive());
+
+        if (brandRequest.getImage() != null && !brandRequest.getImage().isEmpty()) {
+            if (brand.getImage() != null) {
+                s3FeignClient.deleteFile(brand.getImage());
+            }
+            FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.createAttachments(List.of(brandRequest.getImage())).getBody()).get(0);
+            brand.setImage(fileMetadata.getUrl());
+        }
+
         brandRepository.save(brand);
         return mapToBrandResponse(brand);
     }
@@ -96,7 +120,7 @@ public class BrandServiceImpl implements BrandService {
 
         FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.createAttachments(List.of(file)).getBody()).get(0);
 
-        brand.setImageUrl(fileMetadata.getUrl());
+        brand.setImage(fileMetadata.getUrl());
 
         brandRepository.save(brand);
 
@@ -107,11 +131,11 @@ public class BrandServiceImpl implements BrandService {
     public void deleteImage(Long id) {
         Brand brand = brandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
 
-        if (brand.getImageUrl() != null) {
-            s3FeignClient.deleteFile(brand.getImageUrl());
+        if (brand.getImage() != null) {
+            s3FeignClient.deleteFile(brand.getImage());
         }
 
-        brand.setImageUrl(null);
+        brand.setImage(null);
 
         brandRepository.save(brand);
     }
@@ -122,7 +146,7 @@ public class BrandServiceImpl implements BrandService {
                 .id(brand.getId())
                 .name(brand.getName())
                 .description(brand.getDescription())
-                .imageUrl(brand.getImageUrl())
+                .image(brand.getImage())
                 .isActive(brand.getIsActive())
                 .build();
 

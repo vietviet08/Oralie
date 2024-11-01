@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @AllArgsConstructor
@@ -19,7 +20,8 @@ public class BrandRequest {
 
     @Size(min = 4, max = 1000, message = "Description must be between 4 and 1000 characters")
     private String description;
-    private String urlImage;
+
+    private MultipartFile image;
 
     @NotBlank(message = "isActive is required")
     private Boolean isActive;

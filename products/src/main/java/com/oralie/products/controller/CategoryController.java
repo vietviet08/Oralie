@@ -47,12 +47,8 @@ public class CategoryController {
                 .body(categoryService.getCategoryById(id));
     }
 
-    @PostMapping(value = "/dash/categories"
-            , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
-    )
-    public ResponseEntity<CategoryResponse> createCategory(
-            @ModelAttribute CategoryRequest categoryRequest
-    ) {
+    @PostMapping(value = "/dash/categories", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<CategoryResponse> createCategory(@ModelAttribute CategoryRequest categoryRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.createCategory(categoryRequest));

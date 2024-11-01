@@ -29,7 +29,7 @@ public class Brand {
     @Column(length = 1000)
     private String description;
 
-    private String imageUrl;
+    private String image;
 
     private Boolean isActive = true;
 }

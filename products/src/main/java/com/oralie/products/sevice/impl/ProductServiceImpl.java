@@ -376,7 +376,7 @@ public class ProductServiceImpl implements ProductService {
                 .id(brand.getId())
                 .name(brand.getName())
                 .description(brand.getDescription())
-                .imageUrl(brand.getImageUrl())
+                .image(brand.getImage())
                 .isActive(brand.getIsActive())
                 .build();
     }

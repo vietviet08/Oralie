@@ -30,7 +30,6 @@ public class BrandController {
 
     private final BrandService brandService;
 
-    private final S3FeignClient s3FeignClient;
 
     @GetMapping("/dash/brands")
     public ResponseEntity<ListResponse<BrandResponse>> getAllBrands(
@@ -51,8 +50,8 @@ public class BrandController {
                 .body(brandService.getBrandById(id));
     }
 
-    @PostMapping("/dash/brands")
-    public ResponseEntity<BrandResponse> createBrand(@RequestBody BrandRequest brandRequest) {
+    @PostMapping(value = "/dash/brands" , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<BrandResponse> createBrand(@ModelAttribute BrandRequest brandRequest) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(brandService.createBrand(brandRequest));

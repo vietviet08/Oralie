@@ -96,7 +96,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         if (fileMetadataResponseEntity.getBody() != null && fileMetadataResponseEntity.getBody().getUrl() != null) {
             category.setImage(fileMetadataResponseEntity.getBody().getUrl());
-        }
+        } else category.setImage("");
 
         categoryRepository.save(category);
 

@@ -13,6 +13,6 @@ public class BrandResponse {
     private Long id;
     private String name;
     private String description;
-    private String imageUrl;
+    private String image;
     private Boolean isActive;
 }
