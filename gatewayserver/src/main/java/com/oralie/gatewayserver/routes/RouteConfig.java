@@ -25,7 +25,7 @@ public class RouteConfig {
                 .route(p -> p
                         .path("/api/accounts/**")
                         .filters(f -> f.tokenRelay()
-                                .rewritePath("/api/accounts/?(?<remaining>.*)", "/${remaining}")
+                                .rewritePath("/api/accounts/(?<segment>.*)", "/${segment}")
                                 .circuitBreaker(c -> c.setName("ACCOUNTS-CIRCUIT-BREAKER")
                                         .setFallbackUri("forward:/accountsServiceFallback")
                                 )
@@ -43,21 +43,21 @@ public class RouteConfig {
                 .route(r -> r
                         .path("/aggregate/accounts-service/swagger-ui/**")
                         .filters(f -> f
-                                .rewritePath("/aggregate/accounts-service/swagger-ui/(?<remaining>.*)", "/swagger-ui/${remaining}")
+                                .rewritePath("/aggregate/accounts-service/swagger-ui/(?<segment>.*)", "/swagger-ui/${segment}")
                         )
                         .uri("lb://ACCOUNTS")
                 )
                 .route(r -> r
                         .path("/webjars/**")
                         .filters(f -> f
-                                .rewritePath("/webjars/(?<remaining>.*)", "/webjars/${remaining}")
+                                .rewritePath("/webjars/(?<segment>.*)", "/webjars/${segment}")
                         )
-                        .uri("lb://ACCOUNTS")  // Replace with your service
+                        .uri("lb://ACCOUNTS")
                 )
                 .route(p -> p
                         .path("/api/products/**")
                         .filters(f -> f.tokenRelay()
-                                .rewritePath("/api/products/?(?<remaining>.*)", "/${remaining}")
+                                .rewritePath("/api/products/(?<segment>.*)", "/${segment}")
                                 .circuitBreaker(c -> c.setName("PRODUCTS-CIRCUIT-BREAKER")
                                         .setFallbackUri("forward:/productsServiceFallback")
                                 )
@@ -75,7 +75,7 @@ public class RouteConfig {
                 .route(p -> p
                         .path("/api/carts/**")
                         .filters(f -> f.tokenRelay()
-                                .rewritePath("/api/carts/?(?<remaining>.*)", "/${remaining}")
+                                .rewritePath("/api/carts/(?<segment>.*)", "/${segment}")
                                 .circuitBreaker(c -> c.setName("CARTS-CIRCUIT-BREAKER")
                                         .setFallbackUri("forward:/cartsServiceFallback")
                                 )
@@ -93,7 +93,7 @@ public class RouteConfig {
                 .route(p -> p
                         .path("/api/orders/**")
                         .filters(f -> f.tokenRelay()
-                                .rewritePath("/api/orders/?(?<remaining>.*)", "/${remaining}")
+                                .rewritePath("/api/orders/(?<segment>.*)", "/${segment}")
                                 .circuitBreaker(c -> c.setName("ORDERS-CIRCUIT-BREAKER")
                                         .setFallbackUri("forward:/ordersServiceFallback")
                                 )
@@ -111,7 +111,7 @@ public class RouteConfig {
                 .route(p -> p
                         .path("/api/payment/**")
                         .filters(f -> f.tokenRelay()
-                                .rewritePath("/api/payment/?(?<remaining>.*)", "/${remaining}")
+                                .rewritePath("/api/payment/(?<segment>.*)", "/${segment}")
                                 .circuitBreaker(c -> c.setName("PAYMENT-CIRCUIT-BREAKER")
                                         .setFallbackUri("forward:/paymentServiceFallback")
                                 )
@@ -129,7 +129,7 @@ public class RouteConfig {
                 .route(p -> p
                         .path("/api/inventory/**")
                         .filters(f -> f.tokenRelay()
-                                .rewritePath("/api/inventory/?(?<remaining>.*)", "/${remaining}")
+                                .rewritePath("/api/inventory/(?<segment>.*)", "/${segment}")
                                 .circuitBreaker(c -> c.setName("INVENTORY-CIRCUIT-BREAKER")
                                         .setFallbackUri("forward:/inventoryServiceFallback")
                                 )
@@ -147,7 +147,7 @@ public class RouteConfig {
                 .route(p -> p
                         .path("/api/rates/**")
                         .filters(f -> f.tokenRelay()
-                                .rewritePath("/api/rates/?(?<remaining>.*)", "/${remaining}")
+                                .rewritePath("/api/rates/(?<segment>.*)", "/${segment}")
                                 .circuitBreaker(c -> c.setName("RATES-CIRCUIT-BREAKER")
                                         .setFallbackUri("forward:/ratesServiceFallback")
                                 )
@@ -165,7 +165,7 @@ public class RouteConfig {
                 .route(p -> p
                         .path("/api/social/**")
                         .filters(f -> f.tokenRelay()
-                                .rewritePath("/api/social/?(?<remaining>.*)", "/${remaining}")
+                                .rewritePath("/api/social/(?<segment>.*)", "/${segment}")
                                 .circuitBreaker(c -> c.setName("SOCIAL-CIRCUIT-BREAKER")
                                         .setFallbackUri("forward:/socialServiceFallback")
                                 )

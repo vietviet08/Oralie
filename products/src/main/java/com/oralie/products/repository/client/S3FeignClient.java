@@ -14,21 +14,23 @@ import java.util.List;
 @FeignClient(name = "social", fallback = S3FeignClientFallback.class)
 public interface S3FeignClient {
 
-    @PostMapping(value = "/store/upload-image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/store/social/upload-image"
+            , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
+    )
     public ResponseEntity<FileMetadata> uploadImage(@RequestPart(value = "image") MultipartFile image);
 
-    @PostMapping("/store/upload-images")
+    @PostMapping("/store/social/upload-images")
     public ResponseEntity<List<FileMetadata>> uploadImages(@RequestPart(value = "images") List<MultipartFile> files);
 
-    @PostMapping("/store/upload")
+    @PostMapping("/store/social/upload")
     public ResponseEntity<List<FileMetadata>> createAttachments(@RequestPart(value = "files") List<MultipartFile> files);
 
-    @GetMapping("/store/view/{fileName}")
+    @GetMapping("/store/social/view/{fileName}")
     public ResponseEntity<InputStreamResource> viewFile(@PathVariable String fileName);
 
-    @PostMapping("/store/download/{fileName}")
+    @PostMapping("/store/social/download/{fileName}")
     public ResponseEntity<InputStreamResource> downloadFile(@PathVariable String fileName);
 
-    @DeleteMapping("/store/delete/{fileName}")
+    @DeleteMapping("/store/social/delete/{fileName}")
     public ResponseEntity<String> deleteFile(@PathVariable String fileName);
 }

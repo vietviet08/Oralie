@@ -34,6 +34,8 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+
+    @Qualifier("com.oralie.products.repository.client.S3FeignClient")
     private final S3FeignClient s3FeignClient;
 
     @Override
@@ -80,11 +82,9 @@ public class CategoryServiceImpl implements CategoryService {
         System.out.println(categoryRequest.getImage());
 
         ResponseEntity<FileMetadata> fileMetadataResponseEntity = s3FeignClient.uploadImage(categoryRequest.getImage());
-//        if (categoryRequest.getImage() != null && !categoryRequest.getImage().isEmpty()) {
 
         log.info("File metadata: {}", fileMetadataResponseEntity.getBody());
         log.info("Http status: {}", fileMetadataResponseEntity.getStatusCode());
-//        }
 
         Category category = Category.builder()
                 .name(categoryRequest.getName())
@@ -94,7 +94,6 @@ public class CategoryServiceImpl implements CategoryService {
                 .parentCategory(categoryRequest.getParentId() != null ? parentCategory : null)
                 .build();
 
-//        assert fileMetadataResponseEntity != null;
         if (fileMetadataResponseEntity.getBody() != null && fileMetadataResponseEntity.getBody().getUrl() != null) {
             category.setImage(fileMetadataResponseEntity.getBody().getUrl());
         }
@@ -117,13 +116,13 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
 
-//        if (categoryRequest.getImage() != null && !categoryRequest.getImage().isEmpty()) {
-//            if (category.getImage() != null) {
-//                s3FeignClient.deleteFile(category.getImage());
-//            }
-//            FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.createAttachments(List.of(categoryRequest.getImage())).getBody()).get(0);
-//            category.setImage(fileMetadata.getUrl());
-//        }
+        if (categoryRequest.getImage() != null && !categoryRequest.getImage().isEmpty()) {
+            if (category.getImage() != null) {
+                s3FeignClient.deleteFile(category.getImage());
+            }
+            FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.createAttachments(List.of(categoryRequest.getImage())).getBody()).get(0);
+            category.setImage(fileMetadata.getUrl());
+        }
 
         String slug = categoryRequest.getSlug();
         if (categoryRequest.getSlug() == null || categoryRequest.getSlug().isEmpty()) {
@@ -141,29 +140,28 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public FileMetadata uploadImage(MultipartFile file, Long id) {
-//        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
-//
-//        FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.createAttachments(List.of(file)).getBody()).get(0);
-//
-//        category.setImage(fileMetadata.getUrl());
-//
-//        categoryRepository.save(category);
-//
-//        return fileMetadata;
-        return null;
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
+
+        FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.createAttachments(List.of(file)).getBody()).get(0);
+
+        category.setImage(fileMetadata.getUrl());
+
+        categoryRepository.save(category);
+
+        return fileMetadata;
     }
 
     @Override
     public void deleteImage(Long id) {
-//        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
-//
-//        if (category.getImage() != null) {
-//            s3FeignClient.deleteFile(category.getImage());
-//        }
-//
-//        category.setImage(null);
-//
-//        categoryRepository.save(category);
+        Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
+
+        if (category.getImage() != null) {
+            s3FeignClient.deleteFile(category.getImage());
+        }
+
+        category.setImage(null);
+
+        categoryRepository.save(category);
 
     }
 

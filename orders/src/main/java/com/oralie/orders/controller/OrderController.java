@@ -32,7 +32,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-//@RequestMapping(consumes = "application/json", produces = "application/json")
+@RequestMapping(consumes = "application/json", produces = "application/json")
 public class OrderController {
 
     private static final Logger log = LoggerFactory.getLogger(OrderController.class);
