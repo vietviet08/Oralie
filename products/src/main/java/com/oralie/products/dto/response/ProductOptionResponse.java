@@ -16,5 +16,5 @@ import java.util.Set;
 public class ProductOptionResponse {
     private Long id;
     private String name;
-    private Set<String> value;
+    private String value;
 }

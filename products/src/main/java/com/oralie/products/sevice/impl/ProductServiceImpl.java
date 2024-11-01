@@ -13,6 +13,9 @@ import com.oralie.products.repository.client.S3FeignClient;
 import com.oralie.products.sevice.ProductImageService;
 import com.oralie.products.sevice.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +33,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+    private static final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
+
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
@@ -37,6 +42,8 @@ public class ProductServiceImpl implements ProductService {
     private final ProductOptionRepository productOptionRepository;
     private final ProductImageRepository productImageRepository;
     private final ProductImageService productImageService;
+
+    @Qualifier("com.oralie.products.repository.client.S3FeignClient")
     private final S3FeignClient s3FeignClient;
 
     @Override
@@ -120,6 +127,7 @@ public class ProductServiceImpl implements ProductService {
         } else if (productRepository.existsBySlug(productRequest.getSlug())) {
             throw new ResourceAlreadyExistException("Product already exists by slug is " + productRequest.getSlug());
         }
+        Brand brand = brandRepository.findById(productRequest.getBrandId()).orElseThrow(() -> new ResourceNotFoundException("Brand not found", "id", productRequest.getBrandId() + ""));
 
         Product product = Product.builder()
                 .name(productRequest.getName())
@@ -127,7 +135,7 @@ public class ProductServiceImpl implements ProductService {
                 .price(productRequest.getPrice())
                 .discount(productRequest.getDiscount())
 //                .productCategories(productCategoryList)
-                .brand(brandRepository.findById(productRequest.getBrandId()).orElseThrow(() -> new ResourceNotFoundException("Brand not found", "id", productRequest.getBrandId() + "")))
+                .brand(brand)
                 .sku(productRequest.getSku())
 //                .images(productImageList)
 //                .options(mapToProductOptionList(productRequest.getOptions()))
@@ -142,9 +150,36 @@ public class ProductServiceImpl implements ProductService {
 
         Product productSaved = productRepository.save(product);
 
-        List<ProductImageResponse> productImageResponses = productImageService.uploadFile(productRequest.getImages(), productSaved.getId());
+        log.info("Starting upload images by S3 service");
+        List<ProductImage> productImageList = new ArrayList<>();
+        try {
 
-        productSaved.setImages(mapToProductImageList(productImageResponses, productSaved));
+            var fileMetadataList = s3FeignClient.uploadImages(productRequest.getImages());
+
+            log.info("Status s3 service after upload images: {}", fileMetadataList.getStatusCode());
+
+            if (fileMetadataList.getBody() != null) {
+                for (FileMetadata fileMetadata : fileMetadataList.getBody()) {
+                    ProductImage productImage = ProductImage.builder()
+                            .url(fileMetadata.getUrl())
+                            .product(productSaved)
+                            .name(fileMetadata.getName())
+                            .type(fileMetadata.getMime())
+                            .build();
+                    productImageList.add(productImage);
+                }
+            }
+
+        } catch (Exception e) {
+            log.error("Error uploading images by S3 service: {}", e.getMessage());
+        }
+
+        log.info("Images uploaded successfully");
+
+        productSaved.setImages(productImageList);
+
+//        List<ProductImageResponse> productImageResponses = productImageService.uploadFile(productRequest.getImages(), productSaved.getId());
+//        productSaved.setImages(mapToProductImageList(productImageResponses, productSaved));
 
         List<ProductOption> productOptionList = mapToProductOptionList(productRequest.getOptions(), productSaved);
 
@@ -170,22 +205,24 @@ public class ProductServiceImpl implements ProductService {
 //                productImageList.add(productImage);
 //            }
 //        }
-        if(productRequest.getImages() != null) {
-            List<MultipartFile> images = productRequest.getImages().getFile();
-            List<FileMetadata> fileMetadataList = s3FeignClient.createAttachments(images).getBody();
-
-            List<ProductImage> productImageList = new ArrayList<>();
-            for (FileMetadata fileMetadata : fileMetadataList) {
-                ProductImage productImage = ProductImage.builder()
-                        .url(fileMetadata.getUrl())
-                        .product(productSaved)
-                        .name(fileMetadata.getName())
-                        .type(fileMetadata.getMime())
-                        .build();
-                productImageList.add(productImage);
-            }
-            productSaved.setImages(productImageList);
-        }
+//
+        //s3 service
+//        if (productRequest.getImages() != null) {
+//            List<MultipartFile> images = productRequest.getImages();
+//            List<FileMetadata> fileMetadataList = s3FeignClient.createAttachments(images).getBody();
+//
+//            List<ProductImage> productImageList = new ArrayList<>();
+//            for (FileMetadata fileMetadata : fileMetadataList) {
+//                ProductImage productImage = ProductImage.builder()
+//                        .url(fileMetadata.getUrl())
+//                        .product(productSaved)
+//                        .name(fileMetadata.getName())
+//                        .type(fileMetadata.getMime())
+//                        .build();
+//                productImageList.add(productImage);
+//            }
+//            productSaved.setImages(productImageList);
+//        }
 
         productSaved.setOptions(productOptionList);
         productSaved.setProductCategories(productCategoryList);
@@ -249,19 +286,19 @@ public class ProductServiceImpl implements ProductService {
 
         //check old images if they are still in the list keep them else delete them and new images add them
         List<ProductImage> productImageListOld = product.getImages();
-        ProductImageRequest productImageNew = productRequest.getImages();
-
+        List<MultipartFile> productImageNew = productRequest.getImages();
 
 
         List<ProductImage> productImageList = new ArrayList<>();
-        if (productImageNew != null && productImageNew.getFile() != null) {
-            List<MultipartFile> images = productImageNew.getFile();
-//            List<String> newImageUrls = productImageService.uploadFile(productImageNew, product.getId())
+        if (productImageNew != null) {
+            //            List<String> newImageUrls = productImageService.uploadFile(productImageNew, product.getId())
 //                    .stream()
 //                    .map(ProductImageResponse::getUrl)
 //                    .toList();
 
-            List<String> newImageUrls = Objects.requireNonNull(s3FeignClient.createAttachments(images).getBody())
+            List<FileMetadata> fileMetadataList = s3FeignClient.createAttachments(productImageNew).getBody();
+
+            List<String> newImageUrls = Objects.requireNonNull(fileMetadataList)
                     .stream()
                     .map(FileMetadata::getUrl)
                     .toList();
@@ -269,18 +306,27 @@ public class ProductServiceImpl implements ProductService {
             for (ProductImage oldImage : productImageListOld) {
                 if (!newImageUrls.contains(oldImage.getUrl())) {
                     productImageRepository.delete(oldImage);
+                    log.info("Deleting image by S3 service");
+                    try {
+                        s3FeignClient.deleteFile(oldImage.getUrl());
+                    } catch (Exception e) {
+                        log.error("Error deleting image by S3 service: {}", e.getMessage());
+                    }
+                    log.info("Image deleted successfully");
                 } else {
                     productImageList.add(oldImage);
                 }
             }
 
-            for (String newImageUrl : newImageUrls) {
-                if (productImageListOld.stream().noneMatch(oldImage -> oldImage.getUrl().equals(newImageUrl))) {
+            for (FileMetadata newImageUrl : fileMetadataList) {
+                boolean exists = productImageListOld.stream()
+                        .anyMatch(oldImage -> oldImage.getUrl().equals(newImageUrl.getUrl()));
+                if (!exists) {
                     ProductImage newImage = ProductImage.builder()
-                            .url(newImageUrl)
+                            .url(newImageUrl.getUrl())
                             .product(product)
-                            .name(productImageNew.getName())
-                            .type(productImageNew.getType())
+                            .name(newImageUrl.getName())
+                            .type(newImageUrl.getMime())
                             .build();
                     productImageList.add(newImage);
                 }

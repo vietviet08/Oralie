@@ -23,5 +23,5 @@ public class ProductOptionRequest {
 
     @NotBlank(message = "Value is required")
     @Size(min = 1, max = 120, message = "Value must be between 1 and 120 characters")
-    private Set<String> value;
+    private String value;
 }

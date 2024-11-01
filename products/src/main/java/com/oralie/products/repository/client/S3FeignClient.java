@@ -17,10 +17,10 @@ public interface S3FeignClient {
     @PostMapping(value = "/store/social/upload-image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<FileMetadata> uploadImage(@RequestPart(value = "image") MultipartFile image);
 
-    @PostMapping("/store/social/upload-images")
+    @PostMapping(value = "/store/social/upload-images", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<List<FileMetadata>> uploadImages(@RequestPart(value = "images") List<MultipartFile> files);
 
-    @PostMapping("/store/social/upload")
+    @PostMapping(value = "/store/social/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<List<FileMetadata>> createAttachments(@RequestPart(value = "files") List<MultipartFile> files);
 
     @GetMapping("/store/social/view/{fileName}")

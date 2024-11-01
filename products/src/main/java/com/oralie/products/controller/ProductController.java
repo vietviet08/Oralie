@@ -104,15 +104,15 @@ public class ProductController {
 //    }
 
     // dash
-    @PostMapping("/dash/products")
-    public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest productRequest) {
+    @PostMapping(value = "/dash/products", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ProductResponse> createProduct(@ModelAttribute ProductRequest productRequest) {
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .body(productService.createProduct(productRequest));
     }
 
-    @PutMapping("/dash/products/{id}")
-    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @RequestBody ProductRequest productRequest) {
+    @PutMapping(value = "/dash/products/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @ModelAttribute ProductRequest productRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.updateProduct(id, productRequest));

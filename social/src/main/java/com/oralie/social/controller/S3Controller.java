@@ -47,14 +47,14 @@ public class S3Controller {
         return new ResponseEntity<>(s3Service.uploadImage(image), HttpStatus.OK);
     }
 
-    @PostMapping("/store/social/upload-images")
+    @PostMapping(value = "/store/social/upload-images", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<List<FileMetadata>> uploadImages(@RequestPart(value = "images") List<MultipartFile> files) {
         s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
         return new ResponseEntity<>(s3Service.uploadFile(files), HttpStatus.OK);
     }
 
 
-    @PostMapping("/store/social/upload")
+    @PostMapping(value = "/store/social/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<List<FileMetadata>> createAttachments(@RequestPart(value = "files") List<MultipartFile> files) {
         s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
         return new ResponseEntity<>(s3Service.uploadFile(files), HttpStatus.OK);

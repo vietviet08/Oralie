@@ -23,8 +23,7 @@ public class ProductOption {
 
     private String name;
 
-    @ElementCollection
-    private Set<String> value;
+    private String value;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
