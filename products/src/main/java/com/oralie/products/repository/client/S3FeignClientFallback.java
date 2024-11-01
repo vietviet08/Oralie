@@ -40,6 +40,6 @@ public class S3FeignClientFallback implements S3FeignClient {
 
     @Override
     public ResponseEntity<String> deleteFile(String fileName) {
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body("Service is not available");
     }
 }

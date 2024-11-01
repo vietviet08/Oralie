@@ -66,7 +66,7 @@ public class S3Controller {
         var content = s3Object.getObjectContent();
         return ResponseEntity.ok()
                 .contentType(MediaType.IMAGE_PNG)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+fileName+"\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
                 .body(new InputStreamResource(content));
     }
 
@@ -76,14 +76,14 @@ public class S3Controller {
         var content = s3Object.getObjectContent();
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+fileName+"\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(new InputStreamResource(content));
     }
 
-    @DeleteMapping("/store/social/delete/{fileName}")
+    @DeleteMapping(value = "/store/social/delete/{fileName}")
     public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
         s3Service.deleteFile(fileName);
-        return new ResponseEntity<>("Deleted", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Deleted the images successfully", HttpStatus.NO_CONTENT);
     }
 
     //info

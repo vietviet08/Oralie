@@ -118,10 +118,20 @@ public class CategoryServiceImpl implements CategoryService {
 
         if (categoryRequest.getImage() != null && !categoryRequest.getImage().isEmpty()) {
             if (category.getImage() != null) {
-                s3FeignClient.deleteFile(category.getImage());
+                log.info("Starting delete old image: {}", category.getImage());
+
+                var responseS3 = s3FeignClient.deleteFile(category.getImage());
+
+                log.info("Status from s3FeignClient: {}", responseS3.getStatusCode());
+                log.info("Message from s3FeignClient: {}", responseS3.getBody());
+                log.info("Deleted old image: {}", category.getImage());
             }
-            FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.createAttachments(List.of(categoryRequest.getImage())).getBody()).get(0);
-            category.setImage(fileMetadata.getUrl());
+            FileMetadata fileMetadata = s3FeignClient.uploadImage(categoryRequest.getImage()).getBody();
+
+            log.info("File metadata new image: {}", fileMetadata);
+
+            if (fileMetadata != null && fileMetadata.getUrl() != null)
+                category.setImage(fileMetadata.getUrl());
         }
 
         String slug = categoryRequest.getSlug();

@@ -1,7 +1,9 @@
 package com.oralie.social.service.impl;
 
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
+import com.oralie.social.constant.SocialConstant;
 import com.oralie.social.dto.s3.FileMetadata;
 import com.oralie.social.service.S3Service;
 import lombok.RequiredArgsConstructor;
@@ -70,8 +72,26 @@ public class S3ServiceImpl implements S3Service {
 
     @Override
     public void deleteFile(String keyName) {
-        DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(BUCKET_NAME, keyName);
-        amazonS3.deleteObject(deleteObjectRequest);
+        try {
+            log.info("Deleting file from S3: {}", keyName);
+
+            if (keyName == null) {
+                return;
+            } else if (keyName.contains(SocialConstant.URL_STORAGE)) {
+                keyName = keyName.replace(SocialConstant.URL_STORAGE, "");
+            }
+
+            log.info("Deleting file from S3: {}", keyName);
+
+            DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(BUCKET_NAME, keyName);
+            amazonS3.deleteObject(deleteObjectRequest);
+        } catch (AmazonServiceException e) {
+
+            log.error("Error deleting file from S3", e);
+
+        }
+
+        log.info("File deleted from S3: {}", keyName);
     }
 
     @Override

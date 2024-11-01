@@ -54,8 +54,8 @@ public class CategoryController {
                 .body(categoryService.createCategory(categoryRequest));
     }
 
-    @PutMapping("/dash/categories/{id}")
-    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id, @RequestPart CategoryRequest categoryRequest) {
+    @PutMapping(value = "/dash/categories/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id, @ModelAttribute CategoryRequest categoryRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.updateCategory(id, categoryRequest));

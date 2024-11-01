@@ -57,8 +57,8 @@ public class BrandController {
                 .body(brandService.createBrand(brandRequest));
     }
 
-    @PutMapping("/dash/brands/{id}")
-    public ResponseEntity<BrandResponse> updateBrand(@PathVariable Long id, @RequestBody BrandRequest brandRequest) {
+    @PutMapping(value = "/dash/brands/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<BrandResponse> updateBrand(@PathVariable Long id, @ModelAttribute BrandRequest brandRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(brandService.updateBrand(id, brandRequest));

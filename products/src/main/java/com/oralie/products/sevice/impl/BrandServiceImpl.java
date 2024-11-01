@@ -93,9 +93,18 @@ public class BrandServiceImpl implements BrandService {
 
         if (brandRequest.getImage() != null && !brandRequest.getImage().isEmpty()) {
             if (brand.getImage() != null) {
-                s3FeignClient.deleteFile(brand.getImage());
+                log.info("Deleting previous update image brand: {}", brand.getImage());
+                var responseS3 = s3FeignClient.deleteFile(brand.getImage());
+
+                log.info("Status from S3: {}", responseS3.getStatusCode());
+                log.info("Message from S3: {}", responseS3.getBody());
+
+                log.info("Deleted previous update image brand: {}", brand.getImage());
             }
-            FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.createAttachments(List.of(brandRequest.getImage())).getBody()).get(0);
+            FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.uploadImage(brandRequest.getImage()).getBody());
+
+            log.info("File metadata after update image brand: {}", fileMetadata);
+
             brand.setImage(fileMetadata.getUrl());
         }
 
