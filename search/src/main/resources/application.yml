@@ -1,0 +1,77 @@
+spring:
+  application:
+    name: search
+  data:
+    elasticsearch:
+      url: http://localhost:9200
+      username: elastic
+      password: changeme
+      repositories:
+        enabled: true
+
+  profiles:
+    active: "prod"
+
+  config:
+    import: "optional:configserver:http://localhost:8071/"
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+  packages-to-scan:
+    - com.oralie.search
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+    shutdown:
+      enabled: true
+  info:
+    env:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
+
+endpoints:
+  shutdown:
+    enabled: true
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka/
+
+info:
+  app:
+    name: "search"
+    description: "Search application"
+    version: "1.0.0"
+
+logging:
+  level:
+    com:
+      oralie:
+        search: DEBUG
+    org.elasticsearch: DEBUG
+
+
+server:
+  port: 8088
