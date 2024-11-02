@@ -1,7 +1,6 @@
 package com.oralie.social.controller;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.S3ClientOptions;
 import com.oralie.social.dto.SocialContactDto;
 import com.oralie.social.dto.s3.FileMetadata;
 import com.oralie.social.service.S3Service;
@@ -14,7 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,9 +37,7 @@ public class S3Controller {
 
     private final AmazonS3 s3client;
 
-    @PostMapping(value = "/store/social/upload-image"
-            , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}
-    )
+    @PostMapping(value = "/store/social/upload-image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<FileMetadata> uploadImage(@RequestPart(value = "image") MultipartFile image) {
         s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
         return new ResponseEntity<>(s3Service.uploadImage(image), HttpStatus.OK);
@@ -50,14 +46,13 @@ public class S3Controller {
     @PostMapping(value = "/store/social/upload-images", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<List<FileMetadata>> uploadImages(@RequestPart(value = "images") List<MultipartFile> files) {
         s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
-        return new ResponseEntity<>(s3Service.uploadFile(files), HttpStatus.OK);
+        return new ResponseEntity<>(s3Service.uploadImages(files), HttpStatus.OK);
     }
 
-
-    @PostMapping(value = "/store/social/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/dash/social/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<List<FileMetadata>> createAttachments(@RequestPart(value = "files") List<MultipartFile> files) {
         s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
-        return new ResponseEntity<>(s3Service.uploadFile(files), HttpStatus.OK);
+        return new ResponseEntity<>(s3Service.uploadImages(files), HttpStatus.OK);
     }
 
     @GetMapping("/store/social/view/{fileName}")
@@ -80,7 +75,7 @@ public class S3Controller {
                 .body(new InputStreamResource(content));
     }
 
-    @DeleteMapping(value = "/store/social/delete/{fileName}")
+    @DeleteMapping(value = "/store/dash/delete/{fileName}")
     public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
         s3Service.deleteFile(fileName);
         return new ResponseEntity<>("Deleted the images successfully", HttpStatus.NO_CONTENT);

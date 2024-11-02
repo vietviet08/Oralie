@@ -12,7 +12,6 @@ import java.util.List;
 @Component
 public class S3FeignClientFallback implements S3FeignClient {
 
-
     @Override
     public ResponseEntity<FileMetadata> uploadImage(MultipartFile image) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(null);

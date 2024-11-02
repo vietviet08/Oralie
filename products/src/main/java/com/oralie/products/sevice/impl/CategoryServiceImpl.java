@@ -11,6 +11,7 @@ import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.repository.CategoryRepository;
 import com.oralie.products.repository.client.S3FeignClient;
 import com.oralie.products.sevice.CategoryService;
+import com.oralie.products.sevice.SocialService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,7 +36,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    @Qualifier("com.oralie.products.repository.client.S3FeignClient")
+    private final SocialService socialService;
+
+    @Qualifier("s3FeignClientFallback")
     private final S3FeignClient s3FeignClient;
 
     @Override
@@ -81,10 +84,11 @@ public class CategoryServiceImpl implements CategoryService {
 
         System.out.println(categoryRequest.getImage());
 
-        ResponseEntity<FileMetadata> fileMetadataResponseEntity = s3FeignClient.uploadImage(categoryRequest.getImage());
+//        ResponseEntity<FileMetadata> fileMetadataResponseEntity = s3FeignClient.uploadImage(categoryRequest.getImage());
+//
+//        log.info("File metadata: {}", fileMetadataResponseEntity.getBody());
+//        log.info("Http status: {}", fileMetadataResponseEntity.getStatusCode());
 
-        log.info("File metadata: {}", fileMetadataResponseEntity.getBody());
-        log.info("Http status: {}", fileMetadataResponseEntity.getStatusCode());
 
         Category category = Category.builder()
                 .name(categoryRequest.getName())
@@ -93,10 +97,18 @@ public class CategoryServiceImpl implements CategoryService {
                 .isDeleted(categoryRequest.getIsDeleted())
                 .parentCategory(categoryRequest.getParentId() != null ? parentCategory : null)
                 .build();
+        FileMetadata fileMetadata = socialService.uploadImage(categoryRequest.getImage());
 
-        if (fileMetadataResponseEntity.getBody() != null && fileMetadataResponseEntity.getBody().getUrl() != null) {
-            category.setImage(fileMetadataResponseEntity.getBody().getUrl());
-        } else category.setImage("");
+        log.info("File metadata category created: {}", fileMetadata);
+
+        if (fileMetadata != null && fileMetadata.getUrl() != null) {
+            category.setImage(fileMetadata.getUrl());
+        }
+
+        //
+//        if (fileMetadataResponseEntity.getBody() != null && fileMetadataResponseEntity.getBody().getUrl() != null) {
+//            category.setImage(fileMetadataResponseEntity.getBody().getUrl());
+//        } else category.setImage("");
 
         categoryRepository.save(category);
 
@@ -126,7 +138,9 @@ public class CategoryServiceImpl implements CategoryService {
                 log.info("Message from s3FeignClient: {}", responseS3.getBody());
                 log.info("Deleted old image: {}", category.getImage());
             }
-            FileMetadata fileMetadata = s3FeignClient.uploadImage(categoryRequest.getImage()).getBody();
+//            FileMetadata fileMetadata = s3FeignClient.uploadImage(categoryRequest.getImage()).getBody();
+
+            FileMetadata fileMetadata = socialService.uploadImage(categoryRequest.getImage());
 
             log.info("File metadata new image: {}", fileMetadata);
 

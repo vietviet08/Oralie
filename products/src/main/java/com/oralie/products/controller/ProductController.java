@@ -1,6 +1,9 @@
 package com.oralie.products.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oralie.products.dto.ProductContactDto;
+import com.oralie.products.dto.request.ProductOptionRequest;
 import com.oralie.products.dto.request.ProductRequest;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.dto.response.ProductResponse;
@@ -16,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 @Tag(
@@ -61,7 +65,7 @@ public class ProductController {
             @RequestParam(required = false) String categoryName,
             @RequestParam(required = false) String brandName
     ) {
-        if(brandName == null) {
+        if (brandName == null) {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(productService.getAllProductsByCategory(page, size, sortBy, sort, categoryName));

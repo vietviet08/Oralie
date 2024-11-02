@@ -12,6 +12,7 @@ import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.repository.BrandRepository;
 import com.oralie.products.repository.client.S3FeignClient;
 import com.oralie.products.sevice.BrandService;
+import com.oralie.products.sevice.SocialService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,8 @@ public class BrandServiceImpl implements BrandService {
     private static final Logger log = LoggerFactory.getLogger(BrandServiceImpl.class);
 
     private final BrandRepository brandRepository;
+
+    private final SocialService socialService;
 
     @Qualifier("com.oralie.products.repository.client.S3FeignClient")
     private final S3FeignClient s3FeignClient;
@@ -70,15 +73,22 @@ public class BrandServiceImpl implements BrandService {
                 .description(brandRequest.getDescription())
                 .isActive(brandRequest.getIsActive())
                 .build();
+//
+//        ResponseEntity<FileMetadata> fileMetadataResponseEntity = s3FeignClient.uploadImage(brandRequest.getImage());
+//
+//        log.info("File metadata: {}", fileMetadataResponseEntity.getBody());
+//        log.info("Http status: {}", fileMetadataResponseEntity.getStatusCode());
 
-        ResponseEntity<FileMetadata> fileMetadataResponseEntity = s3FeignClient.uploadImage(brandRequest.getImage());
+//        if (fileMetadataResponseEntity.getBody() != null && fileMetadataResponseEntity.getBody().getUrl() != null) {
+//            brand.setImage(fileMetadataResponseEntity.getBody().getUrl());
+//        } else brand.setImage("");
 
-        log.info("File metadata: {}", fileMetadataResponseEntity.getBody());
-        log.info("Http status: {}", fileMetadataResponseEntity.getStatusCode());
+        FileMetadata fileMetadata = socialService.uploadImage(brandRequest.getImage());
 
-        if (fileMetadataResponseEntity.getBody() != null && fileMetadataResponseEntity.getBody().getUrl() != null) {
-            brand.setImage(fileMetadataResponseEntity.getBody().getUrl());
-        } else brand.setImage("");
+        log.info("File metadata brand created: {}", fileMetadata);
+        if (fileMetadata != null && fileMetadata.getUrl() != null) {
+            brand.setImage(fileMetadata.getUrl());
+        }
 
         brandRepository.save(brand);
         return mapToBrandResponse(brand);
@@ -101,7 +111,9 @@ public class BrandServiceImpl implements BrandService {
 
                 log.info("Deleted previous update image brand: {}", brand.getImage());
             }
-            FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.uploadImage(brandRequest.getImage()).getBody());
+//            FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.uploadImage(brandRequest.getImage()).getBody());
+
+            FileMetadata fileMetadata = socialService.uploadImage(brandRequest.getImage());
 
             log.info("File metadata after update image brand: {}", fileMetadata);
 

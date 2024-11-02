@@ -1,9 +1,9 @@
 package com.oralie.products.repository.client;
 
+import com.oralie.products.config.FeignSupportConfig;
 import com.oralie.products.model.s3.FileMetadata;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@FeignClient(name = "social", fallback = S3FeignClientFallback.class)
+@FeignClient(name = "social",
+        fallback = S3FeignClientFallback.class)
 public interface S3FeignClient {
 
     @PostMapping(value = "/store/social/upload-image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -20,7 +21,7 @@ public interface S3FeignClient {
     @PostMapping(value = "/store/social/upload-images", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<List<FileMetadata>> uploadImages(@RequestPart(value = "images") List<MultipartFile> files);
 
-    @PostMapping(value = "/store/social/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/dash/social/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<List<FileMetadata>> createAttachments(@RequestPart(value = "files") List<MultipartFile> files);
 
     @GetMapping("/store/social/view/{fileName}")
@@ -29,6 +30,6 @@ public interface S3FeignClient {
     @PostMapping("/store/social/download/{fileName}")
     public ResponseEntity<InputStreamResource> downloadFile(@PathVariable String fileName);
 
-    @DeleteMapping(value = "/store/social/delete/{fileName}")
+    @DeleteMapping(value = "/dash/social/delete/{fileName}")
     public ResponseEntity<String> deleteFile(@PathVariable String fileName);
 }

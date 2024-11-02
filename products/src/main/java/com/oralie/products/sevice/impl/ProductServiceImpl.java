@@ -12,6 +12,7 @@ import com.oralie.products.repository.*;
 import com.oralie.products.repository.client.S3FeignClient;
 import com.oralie.products.sevice.ProductImageService;
 import com.oralie.products.sevice.ProductService;
+import com.oralie.products.sevice.SocialService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -35,6 +37,8 @@ public class ProductServiceImpl implements ProductService {
 
     private static final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
 
+    private final SocialService socialService;
+
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
@@ -43,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductImageRepository productImageRepository;
     private final ProductImageService productImageService;
 
-    @Qualifier("com.oralie.products.repository.client.S3FeignClient")
+    @Qualifier("s3FeignClientFallback")
     private final S3FeignClient s3FeignClient;
 
     @Override
@@ -136,11 +140,11 @@ public class ProductServiceImpl implements ProductService {
                 .discount(productRequest.getDiscount())
 //                .productCategories(productCategoryList)
                 .brand(brand)
-                .sku(productRequest.getSku())
+                .sku(productRequest.getSku().toUpperCase())
 //                .images(productImageList)
 //                .options(mapToProductOptionList(productRequest.getOptions()))
                 .quantity(productRequest.getQuantity())
-                .slug(productRequest.getSlug())
+                .slug(productRequest.getSlug().isBlank() ? productRequest.getName().toLowerCase().replace(" ", "-") : productRequest.getSlug())
                 .isAvailable(productRequest.getIsAvailable())
                 .isDeleted(productRequest.getIsDeleted())
                 .isDiscounted(productRequest.getIsDiscounted())
@@ -154,12 +158,15 @@ public class ProductServiceImpl implements ProductService {
         List<ProductImage> productImageList = new ArrayList<>();
         try {
 
-            var fileMetadataList = s3FeignClient.uploadImages(productRequest.getImages());
 
-            log.info("Status s3 service after upload images: {}", fileMetadataList.getStatusCode());
+//            var fileMetadataList = s3FeignClient.uploadImages(productRequest.getImages());
+//
+//            log.info("Status s3 service after upload images: {}", fileMetadataList.getStatusCode());
 
-            if (fileMetadataList.getBody() != null) {
-                for (FileMetadata fileMetadata : fileMetadataList.getBody()) {
+            List<FileMetadata> fileMetadataList = socialService.uploadImages(productRequest.getImages());
+
+            if (fileMetadataList != null) {
+                for (FileMetadata fileMetadata : fileMetadataList) {
                     ProductImage productImage = ProductImage.builder()
                             .url(fileMetadata.getUrl())
                             .product(productSaved)
@@ -296,7 +303,9 @@ public class ProductServiceImpl implements ProductService {
 //                    .map(ProductImageResponse::getUrl)
 //                    .toList();
 
-            List<FileMetadata> fileMetadataList = s3FeignClient.createAttachments(productImageNew).getBody();
+//            List<FileMetadata> fileMetadataList = s3FeignClient.createAttachments(productImageNew).getBody();
+
+            List<FileMetadata> fileMetadataList = socialService.uploadImages(productImageNew);
 
             List<String> newImageUrls = Objects.requireNonNull(fileMetadataList)
                     .stream()

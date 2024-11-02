@@ -15,8 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,13 +53,21 @@ public class S3ServiceImpl implements S3Service {
     }
 
     @Override
-    public List<FileMetadata> uploadFile(List<MultipartFile> files) {
-        return files.stream()
-                .map(file -> {
-                    String fileKey = "oralie-file-" + file.getOriginalFilename();
-                    return put(BUCKET_NAME, fileKey, file, true);
-                })
-                .collect(Collectors.toList());
+    public List<FileMetadata> uploadImages(List<MultipartFile> files) {
+        List<FileMetadata> fileMetadata = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            String fileKey = "oralie-file-" + file.getOriginalFilename();
+            fileMetadata.add(put(BUCKET_NAME, fileKey, file, true));
+        }
+
+        return fileMetadata;
+//        return files.stream()
+//                .map(file -> {
+//                    String fileKey = "oralie-file-" + file.getOriginalFilename();
+//                    return put(BUCKET_NAME, fileKey, file, true);
+//                })
+//                .collect(Collectors.toList());
     }
 
     @Override
