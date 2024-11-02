@@ -5,24 +5,17 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
-import org.springframework.security.web.server.util.matcher.ServerWebExchangeMatchers;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
-import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import reactor.core.publisher.Mono;
 
-import java.util.AbstractCollection;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,95 +38,80 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain securityFilterChain(ServerHttpSecurity http) throws Exception {
         http.csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .cors(cors -> cors.configurationSource(request -> {
-                    var corsConfig = new org.springframework.web.cors.CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("http://localhost:3000"));
-                    corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-                    corsConfig.setExposedHeaders(List.of("Content-Disposition"));
-                    corsConfig.setAllowedHeaders(List.of("*"));
-                    corsConfig.setAllowCredentials(true);
-
-                    return corsConfig;
-                }))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeExchange(authorizeExchangeSpec -> authorizeExchangeSpec
+                        .pathMatchers(freeResourceUrls).permitAll()
 
-                                .pathMatchers(freeResourceUrls).permitAll()
+                        // Info services
+                        .pathMatchers(HttpMethod.GET, "/api/accounts/accounts/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/products/products/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/carts/carts/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/orders/orders/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/payment/payment/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/inventory/inventory/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/rates/rates/**").permitAll()
 
-                                //info services
-                                .pathMatchers(HttpMethod.GET, "/api/accounts/accounts/**").permitAll()
-                                .pathMatchers(HttpMethod.GET, "/api/products/products/**").permitAll()
-                                .pathMatchers(HttpMethod.GET, "/api/carts/carts/**").permitAll()
-                                .pathMatchers(HttpMethod.GET, "/api/orders/orders/**").permitAll()
-                                .pathMatchers(HttpMethod.GET, "/api/payment/payment/**").permitAll()
-                                .pathMatchers(HttpMethod.GET, "/api/inventory/inventory/**").permitAll()
-                                .pathMatchers(HttpMethod.GET, "/api/rates/rates/**").permitAll()
+                        // Store permit all
+                        .pathMatchers(HttpMethod.GET, "/api/products/store/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/carts/store/**").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/api/social/store/social/upload-images").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/api/social/store/social/upload-image").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/social/store/**").permitAll()
+                        .pathMatchers(HttpMethod.POST, "/api/social/store/**").permitAll()
 
-                                //store permit all
-                                .pathMatchers(HttpMethod.GET, "/api/products/store/**").permitAll()
+                        // Store has role
+                        .pathMatchers(HttpMethod.GET, "/api/accounts/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.POST, "/api/accounts/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.PUT, "/api/accounts/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.DELETE, "/api/accounts/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.GET, "/api/carts/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.POST, "/api/carts/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.PUT, "/api/carts/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.DELETE, "/api/carts/store/**").hasRole("CUSTOMER")
 
-                                .pathMatchers(HttpMethod.GET, "/api/carts/store/**").permitAll()
+                        // Dash
+                        .pathMatchers(HttpMethod.POST, "/api/products/dash/products").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.GET, "/api/products/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "/api/products/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/products/dash/**").hasRole("ADMIN")
 
-                                .pathMatchers(HttpMethod.POST, "/api/social/store/social/upload-images").permitAll()
-                                .pathMatchers(HttpMethod.POST, "/api/social/store/social/upload-image").permitAll()
-                                .pathMatchers(HttpMethod.GET, "/api/social/store/**").permitAll()
-                                .pathMatchers(HttpMethod.POST, "/api/social/store/**").permitAll()
+                        .pathMatchers(HttpMethod.DELETE, "/api/products/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.GET, "/api/accounts/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "/api/accounts/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/accounts/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "/api/accounts/dash/**").hasRole("ADMIN")
 
-                                //store has role
-                                .pathMatchers(HttpMethod.GET, "/api/accounts/store/**").hasRole("CUSTOMER")
-                                .pathMatchers(HttpMethod.POST, "/api/accounts/store/**").hasRole("CUSTOMER")
-                                .pathMatchers(HttpMethod.PUT, "/api/accounts/store/**").hasRole("CUSTOMER")
-                                .pathMatchers(HttpMethod.DELETE, "/api/accounts/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.GET, "/api/orders/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "/api/orders/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/orders/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "/api/orders/dash/**").hasRole("ADMIN")
 
-                                .pathMatchers(HttpMethod.GET, "/api/carts/store/**").hasRole("CUSTOMER")
-                                .pathMatchers(HttpMethod.POST, "/api/carts/store/**").hasRole("CUSTOMER")
-                                .pathMatchers(HttpMethod.PUT, "/api/carts/store/**").hasRole("CUSTOMER")
-                                .pathMatchers(HttpMethod.DELETE, "/api/carts/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.GET, "/api/carts/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "/api/carts/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/carts/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "/api/carts/dash/**").hasRole("ADMIN")
 
-                                //dash
-                                .pathMatchers(HttpMethod.POST, "/api/products/dash/products").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.GET, "/api/payment/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "/api/payment/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/payment/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "/api/payment/dash/**").hasRole("ADMIN")
 
-                                .pathMatchers(HttpMethod.GET, "/api/products/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.POST, "/api/products/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.PUT, "/api/products/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.DELETE, "/api/products/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.GET, "/api/social/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "/api/social/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/social/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "/api/social/dash/**").hasRole("ADMIN")
 
-                                .pathMatchers(HttpMethod.GET, "/api/accounts/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.POST, "/api/accounts/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.PUT, "/api/accounts/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.DELETE, "/api/accounts/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.GET, "/api/inventory/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "/api/inventory/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/inventory/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "/api/inventory/dash/**").hasRole("ADMIN")
 
-                                .pathMatchers(HttpMethod.GET, "/api/orders/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.POST, "/api/orders/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.PUT, "/api/orders/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.DELETE, "/api/orders/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.GET, "/api/rates/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.POST, "/api/rates/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/rates/dash/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "/api/rates/dash/**").hasRole("ADMIN")
 
-                                .pathMatchers(HttpMethod.GET, "/api/carts/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.POST, "/api/carts/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.PUT, "/api/carts/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.DELETE, "/api/carts/dash/**").hasRole("ADMIN")
-
-                                .pathMatchers(HttpMethod.GET, "/api/payment/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.POST, "/api/payment/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.PUT, "/api/payment/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.DELETE, "/api/payment/dash/**").hasRole("ADMIN")
-
-//                        .pathMatchers(HttpMethod.POST, "/api/social/dash/social/upload-images").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.GET, "/api/social/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.POST, "/api/social/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.PUT, "/api/social/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.DELETE, "/api/social/dash/**").hasRole("ADMIN")
-
-                                .pathMatchers(HttpMethod.GET, "/api/inventory/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.POST, "/api/inventory/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.PUT, "/api/inventory/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.DELETE, "/api/inventory/dash/**").hasRole("ADMIN")
-
-                                .pathMatchers(HttpMethod.GET, "/api/rates/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.POST, "/api/rates/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.PUT, "/api/rates/dash/**").hasRole("ADMIN")
-                                .pathMatchers(HttpMethod.DELETE, "/api/rates/dash/**").hasRole("ADMIN")
-
-                                .anyExchange().authenticated()
+                        .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2ResourceServerSpec -> oauth2ResourceServerSpec
                         .jwt(jwtSpec -> jwtSpec.jwtAuthenticationConverter(converter()))
@@ -147,4 +125,16 @@ public class SecurityConfig {
         return new ReactiveJwtAuthenticationConverterAdapter(jwtAuthenticationConverter);
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.applyPermitDefaultValues();
+        corsConfig.setAllowedOrigins(Collections.singletonList("*"));
+        corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfig.setAllowedHeaders(Collections.singletonList("*"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+        return source;
+    }
 }

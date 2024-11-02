@@ -35,7 +35,7 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
                 .getTokenValue();
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_SOCIAL)
-                .path("/store/social/upload-image")
+                .path("/dash/social/upload-image")
                 .buildAndExpand()
                 .toUri();
 
@@ -58,14 +58,13 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
         return response.getBody();
     }
 
-    @Retry(name = "restRetry")
     @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleFileMetadataFallback")
     public List<FileMetadata> uploadImages(List<MultipartFile> images) {
         final String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
                 .getTokenValue();
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_SOCIAL)
-                .path("/store/social/upload-images")
+                .path("/dash/social/upload-images")
                 .buildAndExpand()
                 .toUri();
 
@@ -86,6 +85,31 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
                 requestEntity,
                 new ParameterizedTypeReference<List<FileMetadata>>() {
                 }
+        );
+
+        return response.getBody();
+    }
+
+    @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleFileMetadataFallback")
+    public String deleteFile(String fileName) {
+        final String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .getTokenValue();
+        final URI url = UriComponentsBuilder
+                .fromHttpUrl(URL_SOCIAL)
+                .path("/dash/social/delete/{fileName}")
+                .buildAndExpand(fileName)
+                .toUri();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBearerAuth(jwt);
+
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.DELETE,
+                requestEntity,
+                String.class
         );
 
         return response.getBody();

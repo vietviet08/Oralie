@@ -47,12 +47,14 @@ public class ProductServiceImpl implements ProductService {
     private final ProductImageRepository productImageRepository;
     private final ProductImageService productImageService;
 
-    @Qualifier("s3FeignClientFallback")
-    private final S3FeignClient s3FeignClient;
+    // @Qualifier("s3FeignClientFallback")
+    // private final S3FeignClient s3FeignClient;
 
     @Override
-    public ListResponse<ProductResponse> getAllProducts(int page, int size, String sortBy, String sort, String search, String category) {
-        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+    public ListResponse<ProductResponse> getAllProducts(int page, int size, String sortBy, String sort, String search,
+            String category) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
         Page<Product> pageProducts = productRepository.findAll(pageable);
         List<Product> products = pageProducts.getContent();
@@ -69,8 +71,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ListResponse<ProductResponse> getAllProductsByCategory(int page, int size, String sortBy, String sort, String categoryName) {
-        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+    public ListResponse<ProductResponse> getAllProductsByCategory(int page, int size, String sortBy, String sort,
+            String categoryName) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
         Page<Product> pageProducts = productRepository.findAllByCategoryName(pageable, categoryName);
         List<Product> products = pageProducts.getContent();
@@ -87,8 +91,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ListResponse<ProductResponse> getAllProductsByBrand(int page, int size, String sortBy, String sort, String categoryName, String brandName) {
-        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+    public ListResponse<ProductResponse> getAllProductsByBrand(int page, int size, String sortBy, String sort,
+            String categoryName, String brandName) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
         Page<Product> pageProducts = productRepository.findAllByBrandName(pageable, categoryName, brandName);
         List<Product> products = pageProducts.getContent();
@@ -106,19 +112,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse getProductById(Long id) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
         return mapToProductResponse(product);
     }
 
     @Override
     public ProductResponse getProductBySlugs(String categoryName, String slug) {
-        Product product = productRepository.findBySlugs(slug, categoryName).orElseThrow(() -> new ResourceNotFoundException("Product not found", "slug", slug));
+        Product product = productRepository.findBySlugs(slug, categoryName)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found", "slug", slug));
         return mapToProductResponse(product);
     }
 
     @Override
     public ProductResponse getProductBySlug(String slug) {
-        Product product = productRepository.findBySlug(slug).orElseThrow(() -> new ResourceNotFoundException("Product not found", "slug", slug));
+        Product product = productRepository.findBySlug(slug)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found", "slug", slug));
         return mapToProductResponse(product);
     }
 
@@ -131,20 +140,19 @@ public class ProductServiceImpl implements ProductService {
         } else if (productRepository.existsBySlug(productRequest.getSlug())) {
             throw new ResourceAlreadyExistException("Product already exists by slug is " + productRequest.getSlug());
         }
-        Brand brand = brandRepository.findById(productRequest.getBrandId()).orElseThrow(() -> new ResourceNotFoundException("Brand not found", "id", productRequest.getBrandId() + ""));
+        Brand brand = brandRepository.findById(productRequest.getBrandId()).orElseThrow(
+                () -> new ResourceNotFoundException("Brand not found", "id", productRequest.getBrandId() + ""));
 
         Product product = Product.builder()
                 .name(productRequest.getName())
                 .description(productRequest.getDescription())
                 .price(productRequest.getPrice())
                 .discount(productRequest.getDiscount())
-//                .productCategories(productCategoryList)
                 .brand(brand)
                 .sku(productRequest.getSku().toUpperCase())
-//                .images(productImageList)
-//                .options(mapToProductOptionList(productRequest.getOptions()))
                 .quantity(productRequest.getQuantity())
-                .slug(productRequest.getSlug().isBlank() ? productRequest.getName().toLowerCase().replace(" ", "-") : productRequest.getSlug())
+                .slug(productRequest.getSlug().isBlank() ? productRequest.getName().toLowerCase().replace(" ", "-")
+                        : productRequest.getSlug())
                 .isAvailable(productRequest.getIsAvailable())
                 .isDeleted(productRequest.getIsDeleted())
                 .isDiscounted(productRequest.getIsDiscounted())
@@ -158,10 +166,11 @@ public class ProductServiceImpl implements ProductService {
         List<ProductImage> productImageList = new ArrayList<>();
         try {
 
-
-//            var fileMetadataList = s3FeignClient.uploadImages(productRequest.getImages());
-//
-//            log.info("Status s3 service after upload images: {}", fileMetadataList.getStatusCode());
+            // var fileMetadataList =
+            // s3FeignClient.uploadImages(productRequest.getImages());
+            //
+            // log.info("Status s3 service after upload images: {}",
+            // fileMetadataList.getStatusCode());
 
             List<FileMetadata> fileMetadataList = socialService.uploadImages(productRequest.getImages());
 
@@ -185,14 +194,18 @@ public class ProductServiceImpl implements ProductService {
 
         productSaved.setImages(productImageList);
 
-//        List<ProductImageResponse> productImageResponses = productImageService.uploadFile(productRequest.getImages(), productSaved.getId());
-//        productSaved.setImages(mapToProductImageList(productImageResponses, productSaved));
+        // List<ProductImageResponse> productImageResponses =
+        // productImageService.uploadFile(productRequest.getImages(),
+        // productSaved.getId());
+        // productSaved.setImages(mapToProductImageList(productImageResponses,
+        // productSaved));
 
         List<ProductOption> productOptionList = mapToProductOptionList(productRequest.getOptions(), productSaved);
 
         List<ProductCategory> productCategoryList = new ArrayList<>();
         for (Long id : productRequest.getCategoryIds()) {
-            Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
+            Category category = categoryRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
             ProductCategory productCategory = ProductCategory.builder()
                     .category(category)
                     .product(productSaved)
@@ -200,40 +213,8 @@ public class ProductServiceImpl implements ProductService {
             productCategoryList.add(productCategory);
         }
 
-//        List<ProductImage> productImageList = new ArrayList<>();
-//        if (productImageSaved != null) {
-//            for (String urlImage : productImageSaved.stream().map(ProductImage::getUrl).toList()) {
-//                ProductImage productImage = ProductImage.builder()
-//                        .url(urlImage)
-//                        .product(productSaved)
-//                        .name("Image" + productRequest.getImagesUrl().indexOf(urlImage))
-//                        .type("image")
-//                        .build();
-//                productImageList.add(productImage);
-//            }
-//        }
-//
-        //s3 service
-//        if (productRequest.getImages() != null) {
-//            List<MultipartFile> images = productRequest.getImages();
-//            List<FileMetadata> fileMetadataList = s3FeignClient.createAttachments(images).getBody();
-//
-//            List<ProductImage> productImageList = new ArrayList<>();
-//            for (FileMetadata fileMetadata : fileMetadataList) {
-//                ProductImage productImage = ProductImage.builder()
-//                        .url(fileMetadata.getUrl())
-//                        .product(productSaved)
-//                        .name(fileMetadata.getName())
-//                        .type(fileMetadata.getMime())
-//                        .build();
-//                productImageList.add(productImage);
-//            }
-//            productSaved.setImages(productImageList);
-//        }
-
         productSaved.setOptions(productOptionList);
         productSaved.setProductCategories(productCategoryList);
-//        productSaved.setImages(productImageList);
 
         return mapToProductResponse(productRepository.save(productSaved));
 
@@ -243,17 +224,19 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
 
-        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
 
         product.setName(productRequest.getName());
         product.setDescription(productRequest.getDescription());
         product.setPrice(productRequest.getPrice());
         product.setDiscount(productRequest.getDiscount());
-//        product.setProductCategories(productCategoryList);
-        product.setBrand(brandRepository.findById(productRequest.getBrandId()).orElseThrow(() -> new ResourceNotFoundException("Brand not found", "id", productRequest.getBrandId() + "")));
+        // product.setProductCategories(productCategoryList);
+        product.setBrand(brandRepository.findById(productRequest.getBrandId()).orElseThrow(
+                () -> new ResourceNotFoundException("Brand not found", "id", productRequest.getBrandId() + "")));
         product.setSku(productRequest.getSku());
-//        product.setImages(productImageList);
-//        product.setOptions(mapToProductOptionList(productRequest.getOptions()));
+        // product.setImages(productImageList);
+        // product.setOptions(mapToProductOptionList(productRequest.getOptions()));
         product.setQuantity(productRequest.getQuantity());
         product.setSlug(productRequest.getSlug());
         product.setIsAvailable(productRequest.getIsAvailable());
@@ -266,7 +249,8 @@ public class ProductServiceImpl implements ProductService {
 
         List<ProductOption> productOptionList = mapToProductOptionList(productRequest.getOptions(), productSaved);
 
-        //check old categories if they are still in the list keep them else delete them and new categories add them
+        // check old categories if they are still in the list keep them else delete them
+        // and new categories add them
         List<ProductCategory> productCategoryListOld = product.getProductCategories();
         List<Long> categoryIds = productRequest.getCategoryIds();
 
@@ -278,8 +262,10 @@ public class ProductServiceImpl implements ProductService {
 
         List<ProductCategory> productCategoryList = new ArrayList<>();
         for (Long idCategory : productRequest.getCategoryIds()) {
-            Category category = categoryRepository.findById(idCategory).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", idCategory + ""));
-            boolean isExist = productCategoryListOld.stream().anyMatch(productCategory -> productCategory.getCategory().getId().equals(idCategory));
+            Category category = categoryRepository.findById(idCategory)
+                    .orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", idCategory + ""));
+            boolean isExist = productCategoryListOld.stream()
+                    .anyMatch(productCategory -> productCategory.getCategory().getId().equals(idCategory));
             if (isExist) {
                 ProductCategory productCategory = ProductCategory.builder()
                         .category(category)
@@ -291,19 +277,21 @@ public class ProductServiceImpl implements ProductService {
 
         productCategoryRepository.saveAll(productCategoryList);
 
-        //check old images if they are still in the list keep them else delete them and new images add them
+        // check old images if they are still in the list keep them else delete them and
+        // new images add them
         List<ProductImage> productImageListOld = product.getImages();
         List<MultipartFile> productImageNew = productRequest.getImages();
 
-
         List<ProductImage> productImageList = new ArrayList<>();
         if (productImageNew != null) {
-            //            List<String> newImageUrls = productImageService.uploadFile(productImageNew, product.getId())
-//                    .stream()
-//                    .map(ProductImageResponse::getUrl)
-//                    .toList();
+            // List<String> newImageUrls = productImageService.uploadFile(productImageNew,
+            // product.getId())
+            // .stream()
+            // .map(ProductImageResponse::getUrl)
+            // .toList();
 
-//            List<FileMetadata> fileMetadataList = s3FeignClient.createAttachments(productImageNew).getBody();
+            // List<FileMetadata> fileMetadataList =
+            // s3FeignClient.createAttachments(productImageNew).getBody();
 
             List<FileMetadata> fileMetadataList = socialService.uploadImages(productImageNew);
 
@@ -317,7 +305,8 @@ public class ProductServiceImpl implements ProductService {
                     productImageRepository.delete(oldImage);
                     log.info("Deleting image by S3 service");
                     try {
-                        s3FeignClient.deleteFile(oldImage.getUrl());
+//                        s3FeignClient.deleteFile(oldImage.getUrl());
+                    socialService.deleteFile(oldImage.getUrl());
                     } catch (Exception e) {
                         log.error("Error deleting image by S3 service: {}", e.getMessage());
                     }
@@ -342,28 +331,29 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
-//        List<String> imagesUrl = productRequest.getImagesUrl();
-//
-//        for (ProductImage productImage : productImageListOld) {
-//            if (!imagesUrl.contains(productImage.getUrl())) {
-//                productImageRepository.delete(productImage);
-//            }
-//        }
-//        List<ProductImage> productImageList = new ArrayList<>();
-//        if (productRequest.getImagesUrl() != null) {
-//            for (String urlImage : productRequest.getImagesUrl()) {
-//                boolean isExist = productImageListOld.stream().anyMatch(productImage -> productImage.getUrl().equals(urlImage));
-//                if (isExist) {
-//                    ProductImage productImage = ProductImage.builder()
-//                            .url(urlImage)
-//                            .product(productSaved)
-//                            .name("Image" + productRequest.getImagesUrl().indexOf(urlImage))
-//                            .type("image")
-//                            .build();
-//                    productImageList.add(productImage);
-//                }
-//            }
-//        }
+        // List<String> imagesUrl = productRequest.getImagesUrl();
+        //
+        // for (ProductImage productImage : productImageListOld) {
+        // if (!imagesUrl.contains(productImage.getUrl())) {
+        // productImageRepository.delete(productImage);
+        // }
+        // }
+        // List<ProductImage> productImageList = new ArrayList<>();
+        // if (productRequest.getImagesUrl() != null) {
+        // for (String urlImage : productRequest.getImagesUrl()) {
+        // boolean isExist = productImageListOld.stream().anyMatch(productImage ->
+        // productImage.getUrl().equals(urlImage));
+        // if (isExist) {
+        // ProductImage productImage = ProductImage.builder()
+        // .url(urlImage)
+        // .product(productSaved)
+        // .name("Image" + productRequest.getImagesUrl().indexOf(urlImage))
+        // .type("image")
+        // .build();
+        // productImageList.add(productImage);
+        // }
+        // }
+        // }
 
         productImageRepository.saveAll(productImageList);
 
@@ -376,7 +366,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
         productRepository.delete(product);
     }
 
@@ -459,7 +450,8 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
-    private List<ProductOption> mapToProductOptionList(List<ProductOptionRequest> productOptionRequests, Product product) {
+    private List<ProductOption> mapToProductOptionList(List<ProductOptionRequest> productOptionRequests,
+            Product product) {
         return productOptionRequests.stream()
                 .map(productOptionRequest -> ProductOption.builder()
                         .name(productOptionRequest.getName())
