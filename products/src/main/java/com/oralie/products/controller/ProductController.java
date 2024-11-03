@@ -7,6 +7,7 @@ import com.oralie.products.dto.request.ProductOptionRequest;
 import com.oralie.products.dto.request.ProductRequest;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.dto.response.ProductResponse;
+import com.oralie.products.dto.response.ProductResponseES;
 import com.oralie.products.sevice.ProductImageService;
 import com.oralie.products.sevice.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -113,6 +114,13 @@ public class ProductController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.createProduct(productRequest));
+    }
+
+    @GetMapping("/dash/products/product-es/{id}")
+    public ResponseEntity<ProductResponseES> getProductByIdES(@PathVariable("id") Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.getProductByIdES(id));
     }
 
     @PutMapping(value = "/dash/products/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})

@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "inventory")
+@Table(name = "payment")
 public class Payment extends BaseEntity {
 
     @Id

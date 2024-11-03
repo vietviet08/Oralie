@@ -3,6 +3,7 @@ package com.oralie.products.sevice;
 import com.oralie.products.dto.request.ProductRequest;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.dto.response.ProductResponse;
+import com.oralie.products.dto.response.ProductResponseES;
 import com.oralie.products.model.Product;
 
 import java.util.List;
@@ -15,6 +16,8 @@ public interface ProductService {
     ListResponse<ProductResponse> getAllProductsByBrand( int page, int size, String sortBy, String sort,String categoryName, String brandName);
 
     ProductResponse getProductById(Long id);
+
+    ProductResponseES getProductByIdES(Long id);
 
     ProductResponse getProductBySlugs(String categoryName, String slug);
 

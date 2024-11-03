@@ -118,6 +118,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductResponseES getProductByIdES(Long id) {
+        ProductResponse productResponse = productRepository.findById(id)
+                .map(this::mapToProductResponse)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
+        return mapToProductResponseES(productResponse);
+    }
+
+    @Override
     public ProductResponse getProductBySlugs(String categoryName, String slug) {
         Product product = productRepository.findBySlugs(slug, categoryName)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found", "slug", slug));
@@ -493,5 +501,26 @@ public class ProductServiceImpl implements ProductService {
                         .product(product)
                         .build())
                 .collect(Collectors.toList());
+    }
+
+    private ProductResponseES mapToProductResponseES(ProductResponse productResponse){
+        return ProductResponseES.builder()
+                .id(productResponse.getId())
+                .productName(productResponse.getName())
+                .slug(productResponse.getSlug())
+                .categories(productResponse.getProductCategories().stream().map(ProductCategoryResponse::getName).collect(Collectors.toList()))
+                .options(productResponse.getOptions().stream().map(ProductOptionResponse::getName).collect(Collectors.toList()))
+                .brand(productResponse.getBrand().getName())
+                .sku(productResponse.getSku())
+                .description(productResponse.getDescription())
+                .price(productResponse.getPrice())
+                .discount(productResponse.getDiscount())
+                .quantity(productResponse.getQuantity())
+                .isDiscounted(productResponse.getIsDiscounted())
+                .isAvailable(productResponse.getIsAvailable())
+                .isDeleted(productResponse.getIsDeleted())
+                .isFeatured(productResponse.getIsFeatured())
+                .isPromoted(productResponse.getIsPromoted())
+                .build();
     }
 }
