@@ -25,6 +25,7 @@ import com.oralie.orders.model.OrderAddress;
 import com.oralie.orders.model.OrderItem;
 import com.oralie.orders.repository.OrderRepository;
 import com.oralie.orders.repository.client.CartFeignClient;
+import com.oralie.orders.service.CartService;
 import com.oralie.orders.service.OrderService;
 import com.oralie.orders.service.PayPalService;
 import lombok.AllArgsConstructor;
@@ -64,7 +65,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final PayPalService payPalService;
 
-    private final CartFeignClient cartFeignClient;
+    private final CartService cartService;
 
     private final Gson gson;
 
@@ -178,7 +179,7 @@ public class OrderServiceImpl implements OrderService {
 
 
         //clear cart in cart service | need using kafka to send event to cart service & inventory also
-        cartFeignClient.clearCart();
+        cartService.clearCart();
 
         return mapToOrderResponse(order);
     }

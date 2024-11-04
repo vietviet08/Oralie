@@ -28,7 +28,7 @@ public class ProductDocumentServiceImpl implements ProductDocumentService {
     private final ProductDocumentRepository productDocumentRepository;
 
     @Retry(name = "productRetry")
-    @CircuitBreaker(name = "productCircuitBreaker", fallbackMethod = "getProductByIdFallback")
+    @CircuitBreaker(name = "productCircuitBreaker", fallbackMethod = "getProductResponseESFallback")
     private ProductResponseES getProductById(Long productId) {
 
         log.info("Fetching product with id: {}", productId);
@@ -100,7 +100,7 @@ public class ProductDocumentServiceImpl implements ProductDocumentService {
                 .build();
     }
 
-    protected ProductResponseES handlePaymentOrderStatusFallback(Throwable throwable) throws Throwable {
+    protected ProductResponseES getProductResponseESFallback(Throwable throwable) throws Throwable {
         handleError(throwable);
         return null;
     }
