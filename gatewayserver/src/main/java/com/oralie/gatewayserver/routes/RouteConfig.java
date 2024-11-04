@@ -30,7 +30,6 @@ public class RouteConfig {
                                         .setFallbackUri("forward:/accountsServiceFallback")
                                 )
                         )
-
                         .uri("lb://ACCOUNTS")
                 )
                 .route(r -> r
@@ -62,7 +61,6 @@ public class RouteConfig {
                                         .setFallbackUri("forward:/productsServiceFallback")
                                 )
                         )
-
                         .uri("lb://PRODUCTS")
                 )
                 .route(r -> r
@@ -80,7 +78,6 @@ public class RouteConfig {
                                         .setFallbackUri("forward:/cartsServiceFallback")
                                 )
                         )
-
                         .uri("lb://CARTS")
                 )
                 .route(r -> r
@@ -98,7 +95,6 @@ public class RouteConfig {
                                         .setFallbackUri("forward:/ordersServiceFallback")
                                 )
                         )
-
                         .uri("lb://ORDERS")
                 )
                 .route(r -> r
@@ -116,7 +112,6 @@ public class RouteConfig {
                                         .setFallbackUri("forward:/paymentServiceFallback")
                                 )
                         )
-
                         .uri("lb://PAYMENT")
                 )
                 .route(r -> r
@@ -134,7 +129,6 @@ public class RouteConfig {
                                         .setFallbackUri("forward:/inventoryServiceFallback")
                                 )
                         )
-
                         .uri("lb://INVENTORY")
                 )
                 .route(r -> r
@@ -152,7 +146,6 @@ public class RouteConfig {
                                         .setFallbackUri("forward:/ratesServiceFallback")
                                 )
                         )
-
                         .uri("lb://RATES")
                 )
                 .route(r -> r
@@ -170,7 +163,6 @@ public class RouteConfig {
                                         .setFallbackUri("forward:/socialServiceFallback")
                                 )
                         )
-
                         .uri("lb://SOCIAL")
                 )
                 .route(r -> r
@@ -179,6 +171,23 @@ public class RouteConfig {
                                 .rewritePath("/aggregate/social-service/v3/api-docs", "/v3/api-docs")
                         )
                         .uri("lb://SOCIAL")
+                )
+                .route(p -> p
+                        .path("/api/search/**")
+                        .filters(f -> f.tokenRelay()
+                                .rewritePath("/api/search/(?<segment>.*)", "/${segment}")
+                                .circuitBreaker(c -> c.setName("SEARCH-CIRCUIT-BREAKER")
+                                        .setFallbackUri("forward:/searchServiceFallback")
+                                )
+                        )
+                        .uri("lb://SEARCH")
+                )
+                .route(r -> r
+                        .path("/aggregate/search-service/v3/api-docs/**")
+                        .filters(f -> f
+                                .rewritePath("/aggregate/search-service/v3/api-docs", "/v3/api-docs")
+                        )
+                        .uri("lb://SEARCH")
                 )
                 .build();
     }

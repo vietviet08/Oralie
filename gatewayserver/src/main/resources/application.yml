@@ -3,23 +3,11 @@ spring:
     name: gatewayserver
   config:
     import: "optional:configserver:http://localhost:8071/"
+
   cloud:
     gateway:
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-#      globalcors:
-#        cors-configurations:
-#          '[/**]':
-#            allowedOrigins:
-#              - "http://localhost:3000"
-#            allow-credentials: true
-#            allowedHeaders: "*"
-#            allowedMethods:
-#              - GET
-#              - POST
-#              - DELETE
-#              - PUT
-#              - OPTIONS
       discovery:
         locator:
           enabled: false
@@ -27,23 +15,20 @@ spring:
       httpclient:
         connect-timeout: 1000
         response-timeout: 10s
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      connect-timeout: 2s
+      timeout: 1s
 
-
-#  main:
-#    allow-bean-definition-overriding: true
-#    web-application-type: reactive
 
   servlet:
     multipart:
       enabled: true
       max-file-size: 10MB
       max-request-size: 10MB
-  #  data:
-#    redis:
-#      connect-timeout: 2s
-#      host: localhost
-#      port: 6379
-#      timeout: 1s
+
   security:
     oauth2:
       resourceserver:
@@ -86,8 +71,16 @@ springdoc:
         url: "/aggregate/carts-service/v3/api-docs"
       - name: "orders-service"
         url: "/aggregate/orders-service/v3/api-docs"
+      - name: "payment-service"
+        url: "/aggregate/payment-service/v3/api-docs"
+      - name: "inventory-service"
+        url: "/aggregate/inventory-service/v3/api-docs"
+      - name: "rates-service"
+        url: "/aggregate/rates-service/v3/api-docs"
       - name: "social-service"
         url: "/aggregate/social-service/v3/api-docs"
+      - name: "search-service"
+        url: "/aggregate/search-service/v3/api-docs"
 
 info:
   app:
@@ -108,9 +101,9 @@ logging:
     level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 resilience4j.circuitbreaker:
-    configs:
-      default:
-        slidingWindowSize: 10
-        permittedNumberOfCallsInHalfOpenState: 2
-        waitDurationInOpenState: 5000
-        failureRateThreshold: 50
+  configs:
+    default:
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 2
+      waitDurationInOpenState: 5000
+      failureRateThreshold: 50
