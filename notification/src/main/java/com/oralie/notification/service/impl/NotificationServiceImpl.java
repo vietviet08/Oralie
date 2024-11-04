@@ -1,5 +1,6 @@
 package com.oralie.notification.service.impl;
 
+import com.google.gson.Gson;
 import com.oralie.notification.dto.AccountResponse;
 import com.oralie.notification.dto.OrderItemResponse;
 import com.oralie.notification.dto.OrderPlaceEvent;
@@ -38,12 +39,18 @@ public class NotificationServiceImpl implements NotificationService {
     private final AccountFeignClient accountFeignClient;
     private final OrderFeignClient orderFeignClient;
 
+    private final Gson gson;
+
+
     @Value("${spring.mail.username}")
     private String email;
 
-    @KafkaListener(topics = "order-placed")
+    @KafkaListener(topics = "order-placed-topic", groupId = "order-placed-group")
     @Override
-    public void orderPlaceListen(OrderPlaceEvent orderPlacedEvent) {
+    public void orderPlaceListen(String message) {
+
+        OrderPlaceEvent orderPlacedEvent = gson.fromJson(message, OrderPlaceEvent.class);
+
         log.info("Got Message from order-placed topic {}", orderPlacedEvent);
 
         AccountResponse customer = accountFeignClient.getAccountProfile().getBody();
@@ -51,10 +58,10 @@ public class NotificationServiceImpl implements NotificationService {
 
         try {
 
-            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessage messageMail = javaMailSender.createMimeMessage();
 
             MimeMessageHelper helper = new MimeMessageHelper(
-                    message,
+                    messageMail,
                     MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
                     StandardCharsets.UTF_8.name()
             );
@@ -92,7 +99,7 @@ public class NotificationServiceImpl implements NotificationService {
 
             helper.setText(thymeleafService.createContent("mail-orders", variable), true);
             helper.setSubject("Your order in Oralie has been placed successfully");
-            javaMailSender.send(message);
+            javaMailSender.send(messageMail);
 
         } catch (Exception e) {
             e.printStackTrace();

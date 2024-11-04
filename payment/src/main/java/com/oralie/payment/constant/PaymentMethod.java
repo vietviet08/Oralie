@@ -1,4 +1,4 @@
-package com.oralie.orders.constant;
+package com.oralie.payment.constant;
 
 public enum PaymentMethod {
     COD,

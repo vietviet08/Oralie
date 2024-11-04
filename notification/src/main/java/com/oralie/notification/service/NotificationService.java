@@ -5,7 +5,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 
 public interface NotificationService {
 
-    @KafkaListener(topics = "order-placed")
-    void orderPlaceListen(OrderPlaceEvent orderPlacedEvent);
+    @KafkaListener(topics = "order-placed-topic", groupId = "order-placed-group")
+    void orderPlaceListen(String message);
 
 }

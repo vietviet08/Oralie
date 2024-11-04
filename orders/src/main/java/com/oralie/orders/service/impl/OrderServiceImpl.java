@@ -1,5 +1,6 @@
 package com.oralie.orders.service.impl;
 
+import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -8,6 +9,7 @@ import com.google.zxing.oned.EAN13Writer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.oralie.orders.constant.OrderStatus;
 import com.oralie.orders.constant.PayPalConstant;
+import com.oralie.orders.constant.PaymentMethod;
 import com.oralie.orders.constant.PaymentStatus;
 import com.oralie.orders.dto.entity.OrderPlaceEvent;
 import com.oralie.orders.dto.request.OrderRequest;
@@ -25,6 +27,9 @@ import com.oralie.orders.repository.OrderRepository;
 import com.oralie.orders.repository.client.CartFeignClient;
 import com.oralie.orders.service.OrderService;
 import com.oralie.orders.service.PayPalService;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +38,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -51,10 +57,16 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private static final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
-    private final KafkaTemplate<String, OrderPlaceEvent> kafkaTemplate;
+
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
     private final OrderRepository orderRepository;
+
     private final PayPalService payPalService;
+
     private final CartFeignClient cartFeignClient;
+
+    private final Gson gson;
 
     @Override
     public ListResponse<OrderResponse> getAllOrders(int page, int size, String sortBy, String sort) {
@@ -106,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
                 .note(orderRequest.getNote())
                 .build();
 
-        if ("PAYPAL".equalsIgnoreCase(orderRequest.getPaymentMethod())) {
+        if (PaymentMethod.PAYPAL.name().equalsIgnoreCase(orderRequest.getPaymentMethod())) {
             try {
                 PayPalInfoRequest payPalInfoRequest = PayPalInfoRequest.builder()
                         .currency(PayPalConstant.PAYPAL_CURRENCY)
@@ -126,6 +138,23 @@ public class OrderServiceImpl implements OrderService {
             } catch (Exception e) {
                 throw new PaymentProcessingException("Payment failed: " + e.getMessage());
             }
+        } else if (PaymentMethod.COD.name().equalsIgnoreCase(orderRequest.getPaymentMethod())) {
+            order.setPaymentStatus(PaymentStatus.PENDING);
+            order.setStatus(OrderStatus.PROCESSING);
+            order.setPaymentMethod(PaymentMethod.COD.name());
+            order.setPaymentStatus(PaymentStatus.PENDING);
+
+//TODO:
+
+        } else if (PaymentMethod.BANK_TRANSFER.name().equalsIgnoreCase(orderRequest.getPaymentMethod())) {
+            order.setPaymentStatus(PaymentStatus.PENDING);
+            order.setStatus(OrderStatus.PROCESSING);
+            order.setPaymentMethod(PaymentMethod.BANK_TRANSFER.name());
+            order.setPaymentStatus(PaymentStatus.COMPLETED);
+//TODO:
+
+        } else {
+            throw new PaymentProcessingException("Invalid payment method");
         }
 
         orderRepository.save(order);
@@ -139,7 +168,9 @@ public class OrderServiceImpl implements OrderService {
 
         log.info("Start- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
 
-        kafkaTemplate.send("order-placed", orderPlacedEvent);
+
+        kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
+        ;
 
         log.info("End- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
 
@@ -150,6 +181,48 @@ public class OrderServiceImpl implements OrderService {
         cartFeignClient.clearCart();
 
         return mapToOrderResponse(order);
+    }
+
+    @Override
+    public String checkoutOrder(String orderId) {
+        Order order = orderRepository.findById(Long.parseLong(orderId))
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found", "id", orderId));
+
+        kafkaTemplate.send("checkout-order-topic", gson.toJson(PaymentOrderMessage.builder()
+                .orderId(orderId)
+                .userId(order.getUserId())
+                .totalPrice(order.getTotalPrice())
+                .currency("USD")
+                .paymentMethod(order.getPaymentMethod())
+                .build()));
+
+        return OrderStatus.PROCESSING;
+    }
+
+    @KafkaListener(topics = "order-callback-topic", groupId = "order-callback-group")
+    public void callBackOrder(String message) {
+
+        log.info("Received message: {}", message);
+
+        CallBackMessage callBackMessage = gson.fromJson(message, CallBackMessage.class);
+
+        Order order = orderRepository.findById(Long.parseLong(callBackMessage.getOrderId()))
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found", "id", callBackMessage.getOrderId()));
+
+        //TODO: update inventory service
+
+
+        order.setPaymentStatus(callBackMessage.getPaymentStatus());
+
+        orderRepository.save(order);
+
+        //TODO: send message to notification service
+        kafkaTemplate.send("notification-ordered-topic", gson.toJson(OrderPlaceEvent.builder()
+                .orderId(order.getId())
+                .userId(order.getUserId())
+                .email(order.getAddress().getEmail())
+                .totalPrice(order.getTotalPrice())
+                .build()));
     }
 
     @Override
@@ -280,5 +353,32 @@ public class OrderServiceImpl implements OrderService {
                 .collect(Collectors.toList());
     }
 
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    private static class CallBackMessage {
+        private String orderId;
+        private String paymentStatus;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    private static class PaymentOrderMessage {
+        private String orderId;
+        private String userId;
+        private Double totalPrice;
+        private String currency;
+        private String paymentMethod;
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    private static class OrderMessage {
+        private String orderId;
+        private String status;
+    }
 
 }

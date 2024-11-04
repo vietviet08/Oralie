@@ -4,9 +4,12 @@ import com.oralie.search.dto.response.ProductResponseES;
 import com.oralie.search.model.ProductDocument;
 import com.oralie.search.repository.ProductDocumentRepository;
 import com.oralie.search.service.ProductDocumentService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -18,20 +21,29 @@ import java.net.URI;
 public class ProductDocumentServiceImpl implements ProductDocumentService {
 
     private static final Logger log = LoggerFactory.getLogger(ProductDocumentServiceImpl.class);
+    private static final String URL_PRODUCT = "http://localhost:8081";
 
     private final RestClient restClient;
 
     private final ProductDocumentRepository productDocumentRepository;
-    private static final String URL_PRODUCT = "http://localhost:8081";
 
+    @Retry(name = "productRetry")
+    @CircuitBreaker(name = "productCircuitBreaker", fallbackMethod = "getProductByIdFallback")
     private ProductResponseES getProductById(Long productId) {
 
         log.info("Fetching product with id: {}", productId);
 
-        final URI url = UriComponentsBuilder.fromHttpUrl(
-                URL_PRODUCT).path("/storefront/products-es/{id}").buildAndExpand(productId).toUri();
+        final String jwtToken = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
+
+        final URI url = UriComponentsBuilder
+                .fromHttpUrl(URL_PRODUCT)
+                .path("/dash/products/products-es/{id}")
+                .buildAndExpand(productId)
+                .toUri();
+
         return restClient.get()
                 .uri(url)
+                .header("Authorization", "Bearer " + jwtToken)
                 .retrieve()
                 .body(ProductResponseES.class);
     }
@@ -86,5 +98,15 @@ public class ProductDocumentServiceImpl implements ProductDocumentService {
                 .quantity(productResponseES.getQuantity())
                 .discount(productResponseES.getDiscount())
                 .build();
+    }
+
+    protected ProductResponseES handlePaymentOrderStatusFallback(Throwable throwable) throws Throwable {
+        handleError(throwable);
+        return null;
+    }
+
+    private void handleError(Throwable throwable) throws Throwable {
+        log.error("Circuit breaker records an error. Detail {}", throwable.getMessage());
+        throw throwable;
     }
 }
