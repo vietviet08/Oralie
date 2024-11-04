@@ -10,6 +10,7 @@ import com.oralie.carts.model.CartItem;
 import com.oralie.carts.repository.CartRepository;
 import com.oralie.carts.repository.client.product.ProductFeignClient;
 import com.oralie.carts.service.CartService;
+import com.oralie.carts.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -30,6 +31,8 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
 
     private final ProductFeignClient productFeignClient;
+
+    private final ProductService productService;
 
     @Override
     public CartResponse createCart(String userId) {
@@ -143,7 +146,7 @@ public class CartServiceImpl implements CartService {
             CartItem cartItem = cartItems.stream()
                     .filter(item -> item.getProductId().equals(productId))
                     .findFirst()
-                    .orElseThrow(() -> new ResourceNotFoundException("CartItem", "productId", productId + " check cart if not null and exist productId"));
+                    .orElse(null);
             if (cartItem == null) {
                 cartItem = CartItem.builder()
                         .productId(productId)
@@ -166,6 +169,33 @@ public class CartServiceImpl implements CartService {
                 Cart cartSaved = cartRepository.save(cart);
                 return mapToCartResponse(cartSaved);
             }
+        }
+    }
+
+    @Override
+    public CartResponse updateItemInCart(String userId, Long productId, Integer quantity) {
+
+        //get product
+        ProductResponse product = productService.getProductById(productId);
+
+        //get cart items
+        Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Cart", "userId", userId));
+        Set<CartItem> cartItems = cart.getCartItems();
+
+        //update quantity for cartItem
+        CartItem cartItem = cartItems.stream()
+                .filter(item -> item.getProductId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException("CartItem", "productId", productId + " check cart if not null and exist productId"));
+        if (cartItem == null) {
+            throw new ResourceNotFoundException("CartItem", "productId", productId + " check cart if not null and exist productId");
+        } else {
+            cartItem.setQuantity(quantity);
+            cartItem.setTotalPrice(product.getPrice() * quantity);
+            cart.setQuantity(cart.getQuantity() + quantity);
+            cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
+            Cart cartSaved = cartRepository.save(cart);
+            return mapToCartResponse(cartSaved);
         }
     }
 

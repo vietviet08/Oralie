@@ -78,7 +78,6 @@ public class CartController {
 //    }
 
 
-
     @DeleteMapping("/dash/carts/{id}")
     public HttpStatus deleteCart(@PathVariable("id") Long id) {
         cartService.deleteCart(id);
@@ -93,20 +92,28 @@ public class CartController {
                 .body(cartService.getCartItemByUserId(SecurityContextHolder.getContext().getAuthentication().getName()));
     }
 
-    @PutMapping("/store/carts/remove/{idProduct}")
-    public ResponseEntity<CartResponse> removeProductInCart(@PathVariable("idProduct") Long idProduct) {
+    @PostMapping(value = "/store/carts/add/{productId}")
+    public ResponseEntity<CartResponse> addProductToCart(
+            @PathVariable("productId") Long productId,
+            @RequestParam("quantity") Integer quantity
+    ) {
+
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(cartService.removeItemFromCart(userId, idProduct));
+                .body(cartService.addItemToCart(userId, productId, quantity));
     }
 
-    @PostMapping(value = "/store/carts/add-to-cart")
-    public ResponseEntity<CartResponse> addProductToCart() {
+    @PutMapping("/store/carts/update/{productId}")
+    public ResponseEntity<CartResponse> updateItemInCart(
+            @PathVariable("productId") Long productId,
+            @RequestParam("quantity") Integer quantity
+    ) {
 
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(cartService.addItemToCart(SecurityContextHolder.getContext().getAuthentication().getName(), 1L, 1));
+                .body(cartService.addItemToCart(userId, productId, quantity));
     }
 
     @PutMapping("/store/carts/remove/{productId}")

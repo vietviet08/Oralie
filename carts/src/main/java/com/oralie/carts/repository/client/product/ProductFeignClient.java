@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "products", fallback = ProductCallback.class)
 public interface ProductFeignClient {
 
-    @GetMapping(value = "/store/products/{id}", consumes = "application/json")
+    @GetMapping(value = "/store/products/id/{id}", consumes = "application/json")
     public ResponseEntity<ProductResponse> getProductById(@PathVariable Long id);
 
 }

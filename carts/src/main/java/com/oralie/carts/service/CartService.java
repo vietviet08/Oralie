@@ -15,11 +15,11 @@ public interface CartService {
      Set<CartItemResponse> getCartItemByCartId(Long cartId);
      CartResponse updateCart(Long id, Cart cart);
      void deleteCart(Long id);
-
      CartResponse getCartByUserId(String userId);
      ListResponse<CartResponse> getAllCarts(int page, int size, String sortBy, String sort);
      Set<CartItemResponse> getCartItemByUserId(String userId);
      CartResponse addItemToCart(String userId, Long productId, Integer quantity);
+     CartResponse updateItemInCart(String userId, Long productId, Integer quantity);
      CartResponse removeItemFromCart(String userId, Long productId);
      CartResponse clearCart(String userId);
      CartResponse checkoutCart(Long cartId);
