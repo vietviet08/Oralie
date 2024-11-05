@@ -4,6 +4,7 @@ import com.oralie.carts.dto.ProductResponse;
 import com.oralie.carts.dto.response.CartItemResponse;
 import com.oralie.carts.dto.response.CartResponse;
 import com.oralie.carts.dto.response.ListResponse;
+import com.oralie.carts.dto.response.ProductBaseResponse;
 import com.oralie.carts.exception.ResourceNotFoundException;
 import com.oralie.carts.model.Cart;
 import com.oralie.carts.model.CartItem;
@@ -114,7 +115,7 @@ public class CartServiceImpl implements CartService {
 
         Cart cart = cartRepository.findByUserId(userId).orElse(null);
 
-        if (cart == null){
+        if (cart == null) {
             cart = Cart.builder()
                     .userId(userId)
                     .quantity(0)
@@ -125,7 +126,7 @@ public class CartServiceImpl implements CartService {
 
         Set<CartItem> cartItems = cart.getCartItems();
 
-        ProductResponse product = productService.getProductById(productId);
+        ProductBaseResponse product = productService.getProductById(productId);
 
         if (product == null)
             throw new ResourceNotFoundException("Product", "id", productId + "");
@@ -178,7 +179,7 @@ public class CartServiceImpl implements CartService {
     public CartResponse updateItemInCart(String userId, Long productId, Integer quantity) {
 
         //get product
-        ProductResponse product = productService.getProductById(productId);
+        ProductBaseResponse product = productService.getProductById(productId);
 
         //get cart items
         Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Cart", "userId", userId));

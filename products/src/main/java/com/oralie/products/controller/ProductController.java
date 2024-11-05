@@ -6,6 +6,7 @@ import com.oralie.products.dto.ProductContactDto;
 import com.oralie.products.dto.request.ProductOptionRequest;
 import com.oralie.products.dto.request.ProductRequest;
 import com.oralie.products.dto.response.ListResponse;
+import com.oralie.products.dto.response.ProductBaseResponse;
 import com.oralie.products.dto.response.ProductResponse;
 import com.oralie.products.dto.response.ProductResponseES;
 import com.oralie.products.sevice.ProductImageService;
@@ -108,6 +109,21 @@ public class ProductController {
 //                .body(productService.getProductOptions(id));
 //    }
 
+    @GetMapping("/store/products/product-es/{id}")
+    public ResponseEntity<ProductResponseES> getProductByIdES(@PathVariable("id") Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.getProductByIdES(id));
+    }
+
+    @GetMapping("/store/products/product-base/{productId}")
+    public ResponseEntity<ProductBaseResponse> getProductBaseById(@PathVariable("productId") Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.getProductBaseById(id));
+    }
+
+
     // dash
     @PostMapping(value = "/dash/products", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProductResponse> createProduct(@ModelAttribute ProductRequest productRequest) {
@@ -115,21 +131,6 @@ public class ProductController {
                 .status(HttpStatus.OK)
                 .body(productService.createProduct(productRequest));
     }
-
-    @GetMapping("/dash/products/product-es/{id}")
-    public ResponseEntity<ProductResponseES> getProductByIdES(@PathVariable("id") Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(productService.getProductByIdES(id));
-    }
-
-    @GetMapping("/dash/products/product-base/{productId}")
-    public ResponseEntity<ProductResponseES> getProductBaseById(@PathVariable("productId") Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(productService.getProductByIdES(id));
-    }
-
 
     @PutMapping(value = "/dash/products/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @ModelAttribute ProductRequest productRequest) {

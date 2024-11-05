@@ -29,7 +29,7 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler {
     private final WebClient webClient;
 
     @Retry(name = "productRetry")
-    @CircuitBreaker(name = "productCircuitBreaker", fallbackMethod = "handleProductResponseFallBack")
+    @CircuitBreaker(name = "productCircuitBreaker", fallbackMethod = "handleProductBaseResponseFallBack")
     public ProductBaseResponse getProductById(Long productId) {
         log.info("Fetching product with id: {}", productId);
 
@@ -55,7 +55,7 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler {
         //webflux
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_PRODUCT)
-                .path("/dash/products/product-base/{productId}")
+                .path("/store/products/product-base/{productId}")
                 .buildAndExpand(productId)
                 .toUri();
 
@@ -68,7 +68,7 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler {
     }
 
 
-    protected ProductResponse handleProductResponseFallBack(Throwable throwable) throws Throwable {
+    protected ProductBaseResponse handleProductBaseResponseFallBack(Throwable throwable) throws Throwable {
         return handleTypedFallback(throwable);
     }
 }

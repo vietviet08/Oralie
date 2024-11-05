@@ -37,7 +37,7 @@ public class ProductDocumentServiceImpl implements ProductDocumentService {
 
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_PRODUCT)
-                .path("/dash/products/products-es/{id}")
+                .path("/store/products/products-es/{id}")
                 .buildAndExpand(productId)
                 .toUri();
 
