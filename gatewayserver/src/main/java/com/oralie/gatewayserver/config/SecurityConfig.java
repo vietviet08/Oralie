@@ -64,6 +64,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.POST, "/api/accounts/store/**").hasRole("CUSTOMER")
                         .pathMatchers(HttpMethod.PUT, "/api/accounts/store/**").hasRole("CUSTOMER")
                         .pathMatchers(HttpMethod.DELETE, "/api/accounts/store/**").hasRole("CUSTOMER")
+
                         .pathMatchers(HttpMethod.GET, "/api/carts/store/**").hasRole("CUSTOMER")
                         .pathMatchers(HttpMethod.POST, "/api/carts/store/**").hasRole("CUSTOMER")
                         .pathMatchers(HttpMethod.PUT, "/api/carts/store/**").hasRole("CUSTOMER")

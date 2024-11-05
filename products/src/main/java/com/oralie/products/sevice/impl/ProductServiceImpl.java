@@ -126,6 +126,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductBaseResponse getProductBaseById(Long id) {
+        ProductResponse productResponse = productRepository.findById(id)
+                .map(this::mapToProductResponse)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
+        return mapToProductBaseResponse(productResponse);
+    }
+
+    @Override
     public ProductResponse getProductBySlugs(String categoryName, String slug) {
         Product product = productRepository.findBySlugs(slug, categoryName)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found", "slug", slug));
@@ -515,6 +523,23 @@ public class ProductServiceImpl implements ProductService {
                 .description(productResponse.getDescription())
                 .price(productResponse.getPrice())
                 .discount(productResponse.getDiscount())
+                .quantity(productResponse.getQuantity())
+                .isDiscounted(productResponse.getIsDiscounted())
+                .isAvailable(productResponse.getIsAvailable())
+                .isDeleted(productResponse.getIsDeleted())
+                .isFeatured(productResponse.getIsFeatured())
+                .isPromoted(productResponse.getIsPromoted())
+                .build();
+    }
+
+    private ProductBaseResponse mapToProductBaseResponse(ProductResponse productResponse) {
+        return ProductBaseResponse.builder()
+                .id(productResponse.getId())
+                .name(productResponse.getName())
+                .price(productResponse.getPrice())
+                .discount(productResponse.getDiscount())
+                .brand(productResponse.getBrand().getId())
+                .category(productResponse.getProductCategories().stream().map(ProductCategoryResponse::getId).collect(Collectors.toList()))
                 .quantity(productResponse.getQuantity())
                 .isDiscounted(productResponse.getIsDiscounted())
                 .isAvailable(productResponse.getIsAvailable())

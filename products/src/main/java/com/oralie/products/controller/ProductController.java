@@ -123,6 +123,14 @@ public class ProductController {
                 .body(productService.getProductByIdES(id));
     }
 
+    @GetMapping("/dash/products/product-base/{productId}")
+    public ResponseEntity<ProductResponseES> getProductBaseById(@PathVariable("productId") Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.getProductByIdES(id));
+    }
+
+
     @PutMapping(value = "/dash/products/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @ModelAttribute ProductRequest productRequest) {
         return ResponseEntity

@@ -112,22 +112,23 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartResponse addItemToCart(String userId, Long productId, Integer quantity) {
 
-        Cart cart = cartRepository.findByUserId(userId).orElse(cart = Cart.builder()
-                .userId(userId)
-                .quantity(0)
-                .totalPrice(0.0)
-                .cartItems(new HashSet<>())
-                .build());
+        Cart cart = cartRepository.findByUserId(userId).orElse(null);
+
+        if (cart == null){
+            cart = Cart.builder()
+                    .userId(userId)
+                    .quantity(0)
+                    .totalPrice(0.0)
+                    .cartItems(new HashSet<>())
+                    .build();
+        }
 
         Set<CartItem> cartItems = cart.getCartItems();
 
-        ProductResponse product = productFeignClient.getProductById(productId).getBody();
+        ProductResponse product = productService.getProductById(productId);
 
-        //need check cart null or not
-
-        if (product == null) {
+        if (product == null)
             throw new ResourceNotFoundException("Product", "id", productId + "");
-        }
         if (cartItems == null || cartItems.isEmpty()) {
             cartItems = new HashSet<>();
             CartItem cartItem = CartItem.builder()
