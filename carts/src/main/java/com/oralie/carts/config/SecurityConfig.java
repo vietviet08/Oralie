@@ -46,9 +46,8 @@ public class SecurityConfig {
                                         "/swagger-ui/**",
                                         "/aggregate/**").permitAll()
                                 .requestMatchers("/dash/**").hasRole("ADMIN")
-                                .requestMatchers("/store/products/**").hasRole("CUSTOMER")
+                                .requestMatchers("/store/carts/**").hasRole("CUSTOMER")
                                 .anyRequest().authenticated()
-//                                .anyRequest().permitAll()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()).authenticationEntryPoint(new JwtAuthenticationEntryPoint()))

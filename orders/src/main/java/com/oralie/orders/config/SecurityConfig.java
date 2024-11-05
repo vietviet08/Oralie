@@ -32,24 +32,23 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(
-                                        "/",
-                                        "/login",
-                                        "/store/**",
-                                        "/store/orders/register",
-                                        "/orders/build-version",
-                                        "/orders/contact-info",
-                                        "/orders/java-version",
-                                        "/actuator/**",
-                                        "/v3/api-docs/**",
-                                        "/swagger-ui.html",
-                                        "/swagger-ui",
-                                        "/swagger-ui/**",
-                                        "/aggregate/**").permitAll()
-                                .requestMatchers("/dash/**").hasRole("ADMIN")
-                                .requestMatchers("/store/products/**").hasRole("CUSTOMER")
-                                .anyRequest().authenticated()
-//                                .anyRequest().permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/login",
+                                "/store/**",
+                                "/store/orders/register",
+                                "/orders/build-version",
+                                "/orders/contact-info",
+                                "/orders/java-version",
+                                "/actuator/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui",
+                                "/swagger-ui/**",
+                                "/aggregate/**").permitAll()
+                        .requestMatchers("/dash/**").hasRole("ADMIN")
+                        .requestMatchers("/store/orders/**").hasRole("CUSTOMER")
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()).authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
