@@ -159,6 +159,21 @@ pipeline {
                         }
                     }
                 }
+
+                stage('Build Social Service') {
+                    steps {
+                        script {
+                            dir('search') {
+                                sh """
+                                    if docker images | grep '${DOCKERHUB_REPO}/search-oralie'; then
+                                        docker rmi -f ${DOCKERHUB_REPO}/search-oralie:latest
+                                    fi
+                                    docker build -t ${DOCKERHUB_REPO}/search-oralie:latest .
+                                """
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -185,6 +200,8 @@ pipeline {
                     sh "docker push ${DOCKERHUB_REPO}/notification-oralie:latest"
 
                     sh "docker push ${DOCKERHUB_REPO}/social-oralie:latest"
+
+                    sh "docker push ${DOCKERHUB_REPO}/search-oralie:latest"
 
                     sh 'docker logout'
                 }

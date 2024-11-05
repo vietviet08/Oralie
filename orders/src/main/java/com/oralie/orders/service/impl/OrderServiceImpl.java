@@ -28,6 +28,7 @@ import com.oralie.orders.repository.client.CartFeignClient;
 import com.oralie.orders.service.CartService;
 import com.oralie.orders.service.OrderService;
 import com.oralie.orders.service.PayPalService;
+import com.paypal.api.payments.Payment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -51,6 +52,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -131,9 +133,21 @@ public class OrderServiceImpl implements OrderService {
                         .successUrl(PayPalConstant.PAYPAL_SUCCESS_URL)
                         .build();
 
-                payPalService.placePaypalPayment(payPalInfoRequest);
+                Payment payment = payPalService.placePaypalPayment(payPalInfoRequest);
 
-                order.setPaymentStatus(PaymentStatus.COMPLETED);
+                String link = payment.getLinks().stream()
+                        .filter(links -> links.getRel().equals("approval_url"))
+                        .findFirst()
+                        .orElseThrow(() -> new PaymentProcessingException("Approval URL not found"))
+                        .getHref();
+
+                String payId = payment.getId();
+
+                order.setLinkPaypalToExecute(link);
+                order.setPayId(payId);
+                order.setPaymentStatus(PaymentStatus.PENDING);
+                order.setStatus(OrderStatus.PROCESSING);
+                order.setPaymentMethod(PaymentMethod.PAYPAL.name());
                 //need create payment model to store payment entity
 //                order.setPaymentId(paymentId);  // Store payment ID from PayPal
             } catch (Exception e) {
@@ -169,14 +183,92 @@ public class OrderServiceImpl implements OrderService {
 
         log.info("Start- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
 
-
         kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
-        ;
 
         log.info("End- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
-
         //subtract quantity product in inventory service
 
+        //clear cart in cart service | need using kafka to send event to cart service & inventory also
+        cartService.clearCart();
+
+        return mapToOrderResponse(order);
+    }
+
+    @Override
+    @Transactional
+    public OrderResponse placeOrderWithoutPayPal(OrderRequest orderRequest) throws PaymentProcessingException {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Order order = Order.builder()
+                .userId(userId)
+                .address(OrderAddress.builder()
+                        .addressDetail(orderRequest.getAddress().getAddressDetail())
+                        .city(orderRequest.getAddress().getCity())
+                        .email(orderRequest.getAddress().getEmail())
+                        .phoneNumber(orderRequest.getAddress().getPhoneNumber())
+                        .build())
+                .orderItems(orderRequest.getOrderItems().stream()
+                        .map(orderItemRequest -> OrderItem.builder()
+                                .productId(orderItemRequest.getProductId())
+                                .productName(orderItemRequest.getProductName())
+                                .quantity(orderItemRequest.getQuantity())
+                                .totalPrice(orderItemRequest.getTotalPrice())
+                                .build())
+                        .collect(Collectors.toList()))
+                .totalPrice(orderRequest.getTotalPrice())
+                .voucher(orderRequest.getVoucher())
+                .discount(orderRequest.getDiscount())
+                .shippingFee(orderRequest.getShippingFee())
+                .status(OrderStatus.PENDING)
+                .shippingMethod(orderRequest.getShippingMethod())
+                .paymentMethod(orderRequest.getPaymentMethod())
+                .paymentStatus(orderRequest.getPaymentStatus())
+                .note(orderRequest.getNote())
+                .build();
+        try {
+            PayPalInfoRequest payPalInfoRequest = PayPalInfoRequest.builder()
+                    .currency(PayPalConstant.PAYPAL_CURRENCY)
+                    .total(order.getTotalPrice())
+                    .description("Order payment")
+                    .method("paypal")
+                    .intent(PayPalConstant.PAYPAL_INTENT)
+                    .cancelUrl(PayPalConstant.PAYPAL_CANCEL_URL)
+                    .successUrl(PayPalConstant.PAYPAL_SUCCESS_URL)
+                    .build();
+
+            Payment payment = payPalService.placePaypalPayment(payPalInfoRequest);
+
+            String link = payment.getLinks().stream()
+                    .filter(links -> links.getRel().equals("approval_url"))
+                    .findFirst()
+                    .orElseThrow(() -> new PaymentProcessingException("Approval URL not found"))
+                    .getHref();
+
+            String payId = payment.getId();
+
+            order.setLinkPaypalToExecute(link);
+            order.setPayId(payId);
+            order.setPaymentStatus(PaymentStatus.PENDING);
+            order.setStatus(OrderStatus.PROCESSING);
+            order.setPaymentMethod(PaymentMethod.PAYPAL.name());
+        } catch (Exception e) {
+            throw new PaymentProcessingException("Payment failed: " + e.getMessage());
+        }
+        orderRepository.save(order);
+
+        OrderPlaceEvent orderPlacedEvent = OrderPlaceEvent.builder()
+                .orderId(order.getId())
+                .userId(order.getUserId())
+                .email(order.getAddress().getEmail())
+                .totalPrice(order.getTotalPrice())
+                .build();
+
+        log.info("Start- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
+
+        kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
+
+        log.info("End- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
+        //subtract quantity product in inventory service
 
         //clear cart in cart service | need using kafka to send event to cart service & inventory also
         cartService.clearCart();
@@ -323,6 +415,8 @@ public class OrderServiceImpl implements OrderService {
                 .paymentMethod(order.getPaymentMethod())
                 .paymentStatus(order.getPaymentStatus())
                 .note(order.getNote())
+                .linkPaypalToExecute(order.getLinkPaypalToExecute() != null ? order.getLinkPaypalToExecute() : "")
+                .payId(order.getPayId() != null ? order.getPayId() : "")
                 .build();
     }
 

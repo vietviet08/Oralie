@@ -42,8 +42,6 @@ public class ProductController {
 
     private final ProductService productService;
 
-    private final ProductImageService productImageService;
-
     @GetMapping("/store/products")
     public ResponseEntity<ListResponse<ProductResponse>> getAllProducts(
             @RequestParam(required = false, defaultValue = "0") int page,

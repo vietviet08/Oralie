@@ -76,25 +76,31 @@ public class OrderController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(orderService.placeOrder(orderRequest));
+
+        // if method is paypal will has the link success or cancel
+        // if has the link success, we need get the link and redirect to that link
+        // the link is contain name domain client not the api domain
+
+
+        // flow is order -> payment(paylpal) -> success/cancel
+        // order response contain link to payment (ex: localhost:3000/payment/paypal/scucess/.....????)
+        // client will redirect to that link to execute payment
+        // then redirect client will call api to execute payment (ex: "apigateway/api/orders/store/payment/success")
+
     }
 
     //response url to front & client use url to redirect page
+    // this api will return the link to redirect to paypal if user click on button pay with paypal not click payment button
+    // click payment button will call api create order @PostMapping("/store/orders")
     @PostMapping("/store/orders/paypal")
-    public ResponseEntity<Map<String, String>> createOrderWithPayPal(@RequestBody PayPalInfoRequest payPalInfoRequest) throws PaymentProcessingException, PayPalRESTException {
-
-        Payment payment = payPalService.placePaypalPayment(payPalInfoRequest);
-
-        for (Links links: payment.getLinks()) {
-            if (links.getRel().equals("approval_url")) {
-                Map<String, String> response = new HashMap<>();
-                response.put("approvalUrl", links.getHref());
-                return ResponseEntity.ok(response);
-            }
-        }
-        throw new PaymentProcessingException("Approval URL not found");
+    public ResponseEntity<OrderResponse> createOrderWithPayPal(@RequestBody OrderRequest orderRequest) throws PaymentProcessingException {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(orderService.placeOrderWithoutPayPal(orderRequest));
     }
 
     //when client redirect to success page, call this api to execute payment
+    // the link set in order response
     @GetMapping("/store/payment/success")
     public ResponseEntity<String> paymentSuccess(
             @RequestParam("paymentId") String paymentId,
@@ -113,6 +119,13 @@ public class OrderController {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(PayPalConstant.ERROR_MESSAGE);
+    }
+
+    @GetMapping("/store/payment/cancel")
+    public ResponseEntity<String> paymentCancel() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(PayPalConstant.CANCEL_MESSAGE);
     }
 
     @GetMapping("/store/orders")

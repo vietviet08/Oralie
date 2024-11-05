@@ -29,4 +29,8 @@ public class OrderResponse {
     private String paymentMethod;
     private String paymentStatus;
     private String note;
+
+    // PayPal(optional)
+    private String linkPaypalToExecute;
+    private String payId;
 }
