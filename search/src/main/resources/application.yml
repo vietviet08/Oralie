@@ -1,13 +1,9 @@
 spring:
   application:
     name: search
-  data:
-    elasticsearch:
-      url: http://localhost:9200
-      username: elastic
-      password: changeme
-      repositories:
-        enabled: true
+
+  elasticsearch:
+    uris: http://localhost:9200
 
   profiles:
     active: "prod"
@@ -22,6 +18,11 @@ springdoc:
     path: /swagger-ui.html
   packages-to-scan:
     - com.oralie.search
+
+elasticsearch:
+  url: localhost
+  username: elastic
+  password: changeme
 
 management:
   endpoints:

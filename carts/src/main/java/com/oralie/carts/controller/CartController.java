@@ -112,14 +112,14 @@ public class CartController {
                 .body(cartService.addItemToCart(userId, productId, quantity));
     }
 
-    @PutMapping("/store/carts/remove/{productId}")
+    @DeleteMapping("/store/carts/remove/{productId}")
     public ResponseEntity<CartResponse> removeItemInCart(@PathVariable("productId") Long productId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(cartService.removeItemFromCart(SecurityContextHolder.getContext().getAuthentication().getName(), productId));
     }
 
-    @PutMapping("/store/carts/clear")
+    @DeleteMapping("/store/carts/clear")
     public ResponseEntity<CartResponse> clearCart() {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -140,7 +140,6 @@ public class CartController {
                 .status(HttpStatus.OK)
                 .body(environment.getProperty("JAVA_HOME"));
     }
-
 
     @GetMapping("/carts/contact-info")
     public ResponseEntity<CartContactDto> getProductsContactDto() {

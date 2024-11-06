@@ -7,6 +7,6 @@ import com.oralie.search.model.ProductDocument;
 import java.util.List;
 
 public interface ProductSearchService {
-    public ListResponse<ProductDocument> searchProducts(ProductParam productParam);
+    ListResponse<ProductDocument> searchProducts(ProductParam productParam);
 
 }
