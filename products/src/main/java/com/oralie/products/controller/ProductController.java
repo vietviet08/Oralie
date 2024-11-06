@@ -1,15 +1,11 @@
 package com.oralie.products.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oralie.products.dto.ProductContactDto;
-import com.oralie.products.dto.request.ProductOptionRequest;
 import com.oralie.products.dto.request.ProductRequest;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.dto.response.ProductBaseResponse;
 import com.oralie.products.dto.response.ProductResponse;
 import com.oralie.products.dto.response.ProductResponseES;
-import com.oralie.products.sevice.ProductImageService;
 import com.oralie.products.sevice.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,10 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-import java.util.Map;
 
 @Tag(
         name = "CRUD REST APIs for Products",
@@ -123,18 +115,26 @@ public class ProductController {
 
 
     // dash
-    @PostMapping(value = "/dash/products", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/dash/products")
     public ResponseEntity<ProductResponse> createProduct(@ModelAttribute ProductRequest productRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.createProduct(productRequest));
     }
 
-    @PutMapping(value = "/dash/products/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/dash/products/{id}")
     public ResponseEntity<ProductResponse> updateProduct(@PathVariable Long id, @ModelAttribute ProductRequest productRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.updateProduct(id, productRequest));
+    }
+
+    @PutMapping("/dash/products/available/{id}")
+    public ResponseEntity<Void> updateAvailableProduct(@PathVariable Long id) {
+        productService.updateAliveProduct(id);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
     }
 
     @DeleteMapping("/dash/products/{id}")

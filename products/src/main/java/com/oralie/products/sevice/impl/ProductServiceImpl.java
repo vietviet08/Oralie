@@ -381,6 +381,16 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void updateAliveProduct(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
+        product.setIsAvailable(!product.getIsAvailable());
+        product.setIsDeleted(!product.getIsDeleted());
+        productRepository.save(product);
+    }
+
+    @Override
+    @Transactional
     public void deleteProduct(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));

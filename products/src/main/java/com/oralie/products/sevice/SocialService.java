@@ -29,6 +29,7 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
 
     private static final String URL_SOCIAL = "http://localhost:8086";
 
+    @Retry(name = "restRetry")
     @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleFileMetadataFallback")
     public FileMetadata uploadImage(MultipartFile image) {
         final String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
@@ -41,7 +42,7 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(jwt);
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("image", image.getResource());
@@ -58,6 +59,7 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
         return response.getBody();
     }
 
+    @Retry(name = "restRetry")
     @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleFileMetadataFallback")
     public List<FileMetadata> uploadImages(List<MultipartFile> images) {
         final String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
@@ -70,7 +72,7 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(jwt);
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         for (MultipartFile image : images) {
@@ -90,7 +92,8 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
         return response.getBody();
     }
 
-    @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleFileMetadataFallback")
+    @Retry(name = "restRetry")
+    @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleStringFallback")
     public String deleteFile(String fileName) {
         final String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
                 .getTokenValue();
@@ -116,6 +119,10 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
     }
 
     protected List<FileMetadata> handleFileMetadataFallback(Throwable throwable) throws Throwable {
+        return handleTypedFallback(throwable);
+    }
+
+    protected List<FileMetadata> handleStringFallback(Throwable throwable) throws Throwable {
         return handleTypedFallback(throwable);
     }
 }

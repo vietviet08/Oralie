@@ -50,18 +50,26 @@ public class BrandController {
                 .body(brandService.getBrandById(id));
     }
 
-    @PostMapping(value = "/dash/brands" , consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/dash/brands" )
     public ResponseEntity<BrandResponse> createBrand(@ModelAttribute BrandRequest brandRequest) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(brandService.createBrand(brandRequest));
     }
 
-    @PutMapping(value = "/dash/brands/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/dash/brands/{id}")
     public ResponseEntity<BrandResponse> updateBrand(@PathVariable Long id, @ModelAttribute BrandRequest brandRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(brandService.updateBrand(id, brandRequest));
+    }
+
+    @PutMapping("/dash/brands/available/{id}")
+    public ResponseEntity<Void> updateAvailableBrand(@PathVariable Long id) {
+        brandService.updateAvailable(id);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 
     @DeleteMapping("/dash/brands/{id}")

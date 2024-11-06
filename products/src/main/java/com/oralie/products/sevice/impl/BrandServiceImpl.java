@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -125,9 +126,15 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
+    @Transactional
     public void deleteBrand(Long id) {
         Brand brand = brandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Brand not found", "id", id + ""));
         if (brandRepository.existsByIdAndProductsIsEmpty(id)) {
+
+            if (brand.getImage() != null) {
+                s3FeignClient.deleteFile(brand.getImage());
+            }
+
             brandRepository.delete(brand);
         } else {
             throw new ResourceNotFoundException("Brand cannot be deleted as it contains products", "id", id + "");
@@ -146,6 +153,13 @@ public class BrandServiceImpl implements BrandService {
         brandRepository.save(brand);
 
         return fileMetadata;
+    }
+
+    @Override
+    public void updateAvailable(Long id) {
+        Brand brand = brandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Brand not found", "id", id + ""));
+        brand.setIsActive(!brand.getIsActive());
+        brandRepository.save(brand);
     }
 
     @Override

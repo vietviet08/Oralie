@@ -21,5 +21,7 @@ public interface BrandService {
 
     FileMetadata uploadImage(MultipartFile file, Long id);
 
+    void updateAvailable(Long id);
+
     void deleteImage(Long id);
 }

@@ -38,19 +38,19 @@ public class S3Controller {
 
     private final AmazonS3 s3client;
 
-    @PostMapping(value = "/dash/social/upload-image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/dash/social/upload-image")
     public ResponseEntity<FileMetadata> uploadImage(@RequestPart(value = "image") MultipartFile image) {
         s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
         return new ResponseEntity<>(s3Service.uploadImage(image), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/dash/social/upload-images", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/dash/social/upload-images")
     public ResponseEntity<List<FileMetadata>> uploadImages(@RequestPart(value = "images") List<MultipartFile> files) {
         s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
         return new ResponseEntity<>(s3Service.uploadImages(files), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/dash/social/upload", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/dash/social/upload")
     public ResponseEntity<List<FileMetadata>> createAttachments(@RequestPart(value = "files") List<MultipartFile> files) {
         s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
         return new ResponseEntity<>(s3Service.uploadImages(files), HttpStatus.OK);
@@ -79,7 +79,17 @@ public class S3Controller {
     @DeleteMapping(value = "/dash/social/delete/{fileName}")
     public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
         s3Service.deleteFile(fileName);
-        return new ResponseEntity<>("Deleted the images successfully", HttpStatus.NO_CONTENT);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body("File deleted successfully");
+    }
+
+    @DeleteMapping(value = "/dash/social/delete")
+    public ResponseEntity<String> deleteFiles(@RequestPart List<String> fileName) {
+        s3Service.deleteFiles(fileName);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body("File deleted successfully");
     }
 
     //info
@@ -96,7 +106,6 @@ public class S3Controller {
                 .status(HttpStatus.OK)
                 .body(environment.getProperty("JAVA_HOME"));
     }
-
 
     @GetMapping("/social/contact-info")
     public ResponseEntity<SocialContactDto> getProductsContactDto() {

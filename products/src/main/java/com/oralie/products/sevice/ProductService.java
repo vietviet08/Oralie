@@ -30,6 +30,8 @@ public interface ProductService {
 
     ProductResponse updateProduct(Long id, ProductRequest productRequest);
 
+    void updateAliveProduct(Long id);
+
     void deleteProduct(Long id);
 
 }

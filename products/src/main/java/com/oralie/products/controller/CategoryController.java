@@ -47,18 +47,26 @@ public class CategoryController {
                 .body(categoryService.getCategoryById(id));
     }
 
-    @PostMapping(value = "/dash/categories", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PostMapping(value = "/dash/categories")
     public ResponseEntity<CategoryResponse> createCategory(@ModelAttribute CategoryRequest categoryRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.createCategory(categoryRequest));
     }
 
-    @PutMapping(value = "/dash/categories/{id}", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PutMapping(value = "/dash/categories/{id}")
     public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id, @ModelAttribute CategoryRequest categoryRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.updateCategory(id, categoryRequest));
+    }
+
+    @PutMapping("/dash/categories/available/{id}")
+    public ResponseEntity<Void> updateAvailableCategory(@PathVariable Long id) {
+        categoryService.updateAvailable(id);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 
     @DeleteMapping("/dash/categories/{id}")
