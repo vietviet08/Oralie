@@ -52,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ListResponse<ProductResponse> getAllProducts(int page, int size, String sortBy, String sort, String search,
-            String category) {
+                                                        String category) {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
@@ -72,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ListResponse<ProductResponse> getAllProductsByCategory(int page, int size, String sortBy, String sort,
-            String categoryName) {
+                                                                  String categoryName) {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
@@ -92,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ListResponse<ProductResponse> getAllProductsByBrand(int page, int size, String sortBy, String sort,
-            String categoryName, String brandName) {
+                                                               String categoryName, String brandName) {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
@@ -182,15 +182,12 @@ public class ProductServiceImpl implements ProductService {
         List<ProductImage> productImageList = new ArrayList<>();
         try {
 
-            // var fileMetadataList =
-            // s3FeignClient.uploadImages(productRequest.getImages());
-            //
-            // log.info("Status s3 service after upload images: {}",
-            // fileMetadataList.getStatusCode());
+            List<FileMetadata> fileMetadataList = new ArrayList<>();
+            if (productRequest.getImages() != null) {
+                fileMetadataList = socialService.uploadImages(productRequest.getImages());
+            }
 
-            List<FileMetadata> fileMetadataList = socialService.uploadImages(productRequest.getImages());
-
-            if (fileMetadataList != null) {
+            if (fileMetadataList != null && !fileMetadataList.isEmpty()) {
                 for (FileMetadata fileMetadata : fileMetadataList) {
                     ProductImage productImage = ProductImage.builder()
                             .url(fileMetadata.getUrl())
@@ -322,7 +319,7 @@ public class ProductServiceImpl implements ProductService {
                     log.info("Deleting image by S3 service");
                     try {
 //                        s3FeignClient.deleteFile(oldImage.getUrl());
-                    socialService.deleteFile(oldImage.getUrl());
+                        socialService.deleteFile(oldImage.getUrl());
                     } catch (Exception e) {
                         log.error("Error deleting image by S3 service: {}", e.getMessage());
                     }
@@ -477,7 +474,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private List<ProductOption> mapToProductOptionList(List<ProductOptionRequest> productOptionRequests,
-            Product product) {
+                                                       Product product) {
         return productOptionRequests.stream()
                 .map(productOptionRequest -> ProductOption.builder()
                         .name(productOptionRequest.getName())
@@ -521,7 +518,7 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
-    private ProductResponseES mapToProductResponseES(ProductResponse productResponse){
+    private ProductResponseES mapToProductResponseES(ProductResponse productResponse) {
         return ProductResponseES.builder()
                 .id(productResponse.getId())
                 .productName(productResponse.getName())

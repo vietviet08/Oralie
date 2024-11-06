@@ -74,19 +74,16 @@ public class BrandServiceImpl implements BrandService {
                 .description(brandRequest.getDescription())
                 .isActive(brandRequest.getIsActive())
                 .build();
-//
-//        ResponseEntity<FileMetadata> fileMetadataResponseEntity = s3FeignClient.uploadImage(brandRequest.getImage());
-//
-//        log.info("File metadata: {}", fileMetadataResponseEntity.getBody());
-//        log.info("Http status: {}", fileMetadataResponseEntity.getStatusCode());
 
-//        if (fileMetadataResponseEntity.getBody() != null && fileMetadataResponseEntity.getBody().getUrl() != null) {
-//            brand.setImage(fileMetadataResponseEntity.getBody().getUrl());
-//        } else brand.setImage("");
+        FileMetadata fileMetadata = null;
+        if (brandRequest.getImage() != null && !brandRequest.getImage().isEmpty()) {
+            log.info("Creating brand image: {}", brandRequest.getImage().getOriginalFilename());
 
-        FileMetadata fileMetadata = socialService.uploadImage(brandRequest.getImage());
+            fileMetadata = socialService.uploadImage(brandRequest.getImage());
 
-        log.info("File metadata brand created: {}", fileMetadata);
+            log.info("File metadata brand created: {}", fileMetadata);
+        }
+
         if (fileMetadata != null && fileMetadata.getUrl() != null) {
             brand.setImage(fileMetadata.getUrl());
         }
@@ -105,14 +102,13 @@ public class BrandServiceImpl implements BrandService {
         if (brandRequest.getImage() != null && !brandRequest.getImage().isEmpty()) {
             if (brand.getImage() != null) {
                 log.info("Deleting previous update image brand: {}", brand.getImage());
-                var responseS3 = s3FeignClient.deleteFile(brand.getImage());
 
-                log.info("Status from S3: {}", responseS3.getStatusCode());
-                log.info("Message from S3: {}", responseS3.getBody());
+                var responseS3 = socialService.deleteFile(brand.getImage());
+
+                log.info("Message from S3: {}", responseS3);
 
                 log.info("Deleted previous update image brand: {}", brand.getImage());
             }
-//            FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.uploadImage(brandRequest.getImage()).getBody());
 
             FileMetadata fileMetadata = socialService.uploadImage(brandRequest.getImage());
 

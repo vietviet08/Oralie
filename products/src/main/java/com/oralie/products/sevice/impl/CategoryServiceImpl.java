@@ -82,14 +82,6 @@ public class CategoryServiceImpl implements CategoryService {
             slug = categoryRequest.getName().toLowerCase().replace(" ", "-");
         }
 
-        System.out.println(categoryRequest.getImage());
-
-//        ResponseEntity<FileMetadata> fileMetadataResponseEntity = s3FeignClient.uploadImage(categoryRequest.getImage());
-//
-//        log.info("File metadata: {}", fileMetadataResponseEntity.getBody());
-//        log.info("Http status: {}", fileMetadataResponseEntity.getStatusCode());
-
-
         Category category = Category.builder()
                 .name(categoryRequest.getName())
                 .slug(slug)
@@ -97,18 +89,23 @@ public class CategoryServiceImpl implements CategoryService {
                 .isDeleted(categoryRequest.getIsDeleted())
                 .parentCategory(categoryRequest.getParentId() != null ? parentCategory : null)
                 .build();
-        FileMetadata fileMetadata = socialService.uploadImage(categoryRequest.getImage());
+        FileMetadata fileMetadata = null;
+
+        if(categoryRequest.getImage() != null && !categoryRequest.getImage().isEmpty()) {
+             fileMetadata = socialService.uploadImage(categoryRequest.getImage());
+
+            log.info("File metadata category created: {}", fileMetadata);
+
+            if (fileMetadata != null && fileMetadata.getUrl() != null) {
+                category.setImage(fileMetadata.getUrl());
+            }
+        }
 
         log.info("File metadata category created: {}", fileMetadata);
 
         if (fileMetadata != null && fileMetadata.getUrl() != null) {
             category.setImage(fileMetadata.getUrl());
         }
-
-        //
-//        if (fileMetadataResponseEntity.getBody() != null && fileMetadataResponseEntity.getBody().getUrl() != null) {
-//            category.setImage(fileMetadataResponseEntity.getBody().getUrl());
-//        } else category.setImage("");
 
         categoryRepository.save(category);
 
@@ -132,13 +129,12 @@ public class CategoryServiceImpl implements CategoryService {
             if (category.getImage() != null) {
                 log.info("Starting delete old image: {}", category.getImage());
 
-                var responseS3 = s3FeignClient.deleteFile(category.getImage());
+                var responseS3 = socialService.deleteFile(category.getImage());
 
-                log.info("Status from s3FeignClient: {}", responseS3.getStatusCode());
-                log.info("Message from s3FeignClient: {}", responseS3.getBody());
+                log.info("Message from s3FeignClient: {}", responseS3);
+
                 log.info("Deleted old image: {}", category.getImage());
             }
-//            FileMetadata fileMetadata = s3FeignClient.uploadImage(categoryRequest.getImage()).getBody();
 
             FileMetadata fileMetadata = socialService.uploadImage(categoryRequest.getImage());
 
