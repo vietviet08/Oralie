@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,7 +49,12 @@ public class S3ServiceImpl implements S3Service {
         if (image == null) {
             return null;
         }
+
         String fileKey = "oralie-file-" + image.getOriginalFilename();
+        if (Objects.requireNonNull(image.getOriginalFilename()).contains(fileKey)) {
+            fileKey = image.getOriginalFilename();
+        }
+
         return put(BUCKET_NAME, fileKey, image, true);
     }
 
@@ -58,16 +64,13 @@ public class S3ServiceImpl implements S3Service {
 
         for (MultipartFile file : files) {
             String fileKey = "oralie-file-" + file.getOriginalFilename();
+            if (Objects.requireNonNull(file.getOriginalFilename()).contains(fileKey)) {
+                fileKey = file.getOriginalFilename();
+            }
             fileMetadata.add(put(BUCKET_NAME, fileKey, file, true));
         }
 
         return fileMetadata;
-//        return files.stream()
-//                .map(file -> {
-//                    String fileKey = "oralie-file-" + file.getOriginalFilename();
-//                    return put(BUCKET_NAME, fileKey, file, true);
-//                })
-//                .collect(Collectors.toList());
     }
 
     @Override

@@ -24,10 +24,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -168,8 +170,7 @@ public class ProductServiceImpl implements ProductService {
                 .brand(brand)
                 .sku(productRequest.getSku().toUpperCase())
                 .quantity(productRequest.getQuantity())
-                .slug(productRequest.getSlug().isBlank() ? productRequest.getName().toLowerCase().replace(" ", "-")
-                        : productRequest.getSlug())
+                .slug(StringUtils.hasText(productRequest.getSlug()) ? productRequest.getSlug() : productRequest.getName().toLowerCase().replace(" ", "-"))
                 .isAvailable(productRequest.getIsAvailable())
                 .isDeleted(productRequest.getIsDeleted())
                 .isDiscounted(productRequest.getIsDiscounted())
@@ -182,22 +183,18 @@ public class ProductServiceImpl implements ProductService {
         log.info("Starting upload images by S3 service");
         List<ProductImage> productImageList = new ArrayList<>();
         try {
+            List<FileMetadata> fileMetadataList = (productRequest.getImages() != null)
+                    ? socialService.uploadImages(productRequest.getImages())
+                    : Collections.emptyList();
 
-            List<FileMetadata> fileMetadataList = new ArrayList<>();
-            if (productRequest.getImages() != null) {
-                fileMetadataList = socialService.uploadImages(productRequest.getImages());
-            }
-
-            if (fileMetadataList != null && !fileMetadataList.isEmpty()) {
-                for (FileMetadata fileMetadata : fileMetadataList) {
-                    ProductImage productImage = ProductImage.builder()
-                            .url(fileMetadata.getUrl())
-                            .product(productSaved)
-                            .name(fileMetadata.getName())
-                            .type(fileMetadata.getMime())
-                            .build();
-                    productImageList.add(productImage);
-                }
+            for (FileMetadata fileMetadata : fileMetadataList) {
+                ProductImage productImage = ProductImage.builder()
+                        .url(fileMetadata.getUrl())
+                        .product(productSaved)
+                        .name(fileMetadata.getName())
+                        .type(fileMetadata.getMime())
+                        .build();
+                productImageList.add(productImage);
             }
 
         } catch (Exception e) {
@@ -254,8 +251,14 @@ public class ProductServiceImpl implements ProductService {
 
         Product productSaved = productRepository.save(product);
 
+        productSaved.getOptions().clear();
+        productSaved.getSpecifications().clear();
+
         List<ProductOption> productOptionList = mapToProductOptionList(productRequest.getOptions(), productSaved);
         List<ProductSpecification> productSpecificationList = mapToProductSpecificationsList(productRequest.getSpecifications(), productSaved);
+
+        productSaved.getOptions().addAll(productOptionList);
+        productSaved.getSpecifications().addAll(productSpecificationList);
 
         // check old categories if they are still in the list keep them else delete them
         // and new categories add them
@@ -290,7 +293,6 @@ public class ProductServiceImpl implements ProductService {
         List<ProductImage> productImageListOld = product.getImages();
         List<MultipartFile> productImageNew = productRequest.getImages();
 
-        List<ProductImage> productImageList = new ArrayList<>();
         if (productImageNew != null) {
 
             List<FileMetadata> fileMetadataList = socialService.uploadImages(productImageNew);
@@ -300,21 +302,24 @@ public class ProductServiceImpl implements ProductService {
                     .map(FileMetadata::getUrl)
                     .toList();
 
-            for (ProductImage oldImage : productImageListOld) {
-                if (!newImageUrls.contains(oldImage.getUrl())) {
-                    productImageRepository.delete(oldImage);
-                    log.info("Deleting image by S3 service");
-                    try {
-                        socialService.deleteFile(oldImage.getUrl());
-                    } catch (Exception e) {
-                        log.error("Error deleting image by S3 service: {}", e.getMessage());
+            if (productImageListOld != null && !productImageListOld.isEmpty()) {
+                productImageListOld.removeIf(oldImage -> {
+                    if (!newImageUrls.contains(oldImage.getUrl())) {
+                        productImageRepository.delete(oldImage);
+                        log.info("Deleting image by S3 service");
+                        try {
+                            socialService.deleteFile(oldImage.getUrl());
+                        } catch (Exception e) {
+                            log.error("Error deleting image by S3 service: {}", e.getMessage());
+                        }
+                        log.info("Image deleted successfully");
+                        return true;
                     }
-                    log.info("Image deleted successfully");
-                } else {
-                    productImageList.add(oldImage);
-                }
+                    return false;
+                });
             }
 
+            assert productImageListOld != null;
             for (FileMetadata newImageUrl : fileMetadataList) {
                 boolean exists = productImageListOld.stream()
                         .anyMatch(oldImage -> oldImage.getUrl().equals(newImageUrl.getUrl()));
@@ -325,17 +330,16 @@ public class ProductServiceImpl implements ProductService {
                             .name(newImageUrl.getName())
                             .type(newImageUrl.getMime())
                             .build();
-                    productImageList.add(newImage);
+                    productImageListOld.add(newImage);
                 }
             }
         }
 
-        productImageRepository.saveAll(productImageList);
+        assert productImageListOld != null;
+        productImageRepository.saveAll(productImageListOld);
+        productSaved.setImages(productImageListOld);
 
-        productSaved.setOptions(productOptionList);
-        productSaved.setSpecifications(productSpecificationList);
         productSaved.setProductCategories(productCategoryList);
-        productSaved.setImages(productImageList);
 
         return mapToProductResponse(productRepository.save(productSaved));
     }
@@ -472,7 +476,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private List<ProductSpecification> mapToProductSpecificationsList(List<ProductSpecificationRequest> productSpecificationRequests,
-                                                       Product product) {
+                                                                      Product product) {
         return productSpecificationRequests.stream()
                 .map(productSpecificationRequest -> ProductSpecification.builder()
                         .name(productSpecificationRequest.getName())

@@ -94,8 +94,8 @@ public class ProductSpecificationController {
             responseCode = "204",
             description = "Get product specification successfully - Http status NO_CONTENT"
     )
-    @DeleteMapping("/dash/products/product-specifications/{id}")
-    public ResponseEntity<Void> deleteSpecification(@PathVariable Long id, @RequestParam String specificationName) {
+    @DeleteMapping("/dash/products/product-specifications")
+    public ResponseEntity<Void> deleteSpecification(@RequestParam Long id, @RequestParam String specificationName) {
         productSpecificationService.deleteProductSpecification(id, specificationName);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
