@@ -1,5 +1,6 @@
 package com.oralie.products.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -9,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+@Schema(name = "Category Request", description = "Schema define the parameters of category to request")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

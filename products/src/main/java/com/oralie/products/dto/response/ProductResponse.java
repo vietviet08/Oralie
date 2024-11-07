@@ -4,6 +4,7 @@ import com.oralie.products.model.Brand;
 import com.oralie.products.model.ProductCategory;
 import com.oralie.products.model.ProductImage;
 import com.oralie.products.model.ProductOption;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 
+@Schema(name = "Product", description = "Schema define the request parameters for a product")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -34,6 +36,8 @@ public class ProductResponse {
     private List<ProductImageResponse> images;
 
     private List<ProductOptionResponse> options;
+
+    private List<ProductSpecificationResponse> specifications;
 
     private Double price;
 

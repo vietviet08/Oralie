@@ -6,15 +6,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Schema(name = "Brand Response", description = "Schema define the parameters of brand to response")
+@Schema(name = "Brand Request", description = "Schema define the parameters of product specification to response")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BrandResponse {
+public class ProductSpecificationResponse {
+
     private Long id;
+
     private String name;
-    private String description;
-    private String image;
-    private Boolean isActive;
+
+    private String value;
+
 }

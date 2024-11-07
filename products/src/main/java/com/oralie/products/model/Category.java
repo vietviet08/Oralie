@@ -1,12 +1,13 @@
 package com.oralie.products.model;
 
 import com.oralie.products.dto.entity.BaseEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
 
-
+@Schema(name = "Category", description = "Schema define the parameters of category")
 @Getter
 @Setter
 @ToString

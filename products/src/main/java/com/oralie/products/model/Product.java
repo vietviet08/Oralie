@@ -1,11 +1,12 @@
 package com.oralie.products.model;
 
 import com.oralie.products.dto.entity.BaseEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
-
+@Schema(name = "Product", description = "Schema define the parameters of product")
 @Getter
 @Setter
 @ToString
@@ -38,6 +39,9 @@ public class Product extends BaseEntity {
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductOption> options;
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductSpecification> specifications;
 
     @Column(unique = true)
     private String sku;

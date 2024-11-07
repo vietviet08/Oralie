@@ -1,10 +1,13 @@
 package com.oralie.products.model;
 
+import com.oralie.products.dto.entity.BaseEntity;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
 
+@Schema(name = "Brand", description = "Schema define the parameters of brand")
 @Getter
 @Setter
 @ToString
@@ -13,7 +16,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "brands")
-public class Brand {
+public class Brand extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

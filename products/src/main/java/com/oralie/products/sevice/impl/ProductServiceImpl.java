@@ -3,6 +3,7 @@ package com.oralie.products.sevice.impl;
 import com.oralie.products.dto.request.ProductImageRequest;
 import com.oralie.products.dto.request.ProductOptionRequest;
 import com.oralie.products.dto.request.ProductRequest;
+import com.oralie.products.dto.request.ProductSpecificationRequest;
 import com.oralie.products.dto.response.*;
 import com.oralie.products.exception.ResourceAlreadyExistException;
 import com.oralie.products.exception.ResourceNotFoundException;
@@ -207,13 +208,8 @@ public class ProductServiceImpl implements ProductService {
 
         productSaved.setImages(productImageList);
 
-        // List<ProductImageResponse> productImageResponses =
-        // productImageService.uploadFile(productRequest.getImages(),
-        // productSaved.getId());
-        // productSaved.setImages(mapToProductImageList(productImageResponses,
-        // productSaved));
-
         List<ProductOption> productOptionList = mapToProductOptionList(productRequest.getOptions(), productSaved);
+        List<ProductSpecification> productSpecificationList = mapToProductSpecificationsList(productRequest.getSpecifications(), productSaved);
 
         List<ProductCategory> productCategoryList = new ArrayList<>();
         for (Long id : productRequest.getCategoryIds()) {
@@ -227,6 +223,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         productSaved.setOptions(productOptionList);
+        productSaved.setSpecifications(productSpecificationList);
         productSaved.setProductCategories(productCategoryList);
 
         return mapToProductResponse(productRepository.save(productSaved));
@@ -244,12 +241,9 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(productRequest.getDescription());
         product.setPrice(productRequest.getPrice());
         product.setDiscount(productRequest.getDiscount());
-        // product.setProductCategories(productCategoryList);
         product.setBrand(brandRepository.findById(productRequest.getBrandId()).orElseThrow(
                 () -> new ResourceNotFoundException("Brand not found", "id", productRequest.getBrandId() + "")));
         product.setSku(productRequest.getSku());
-        // product.setImages(productImageList);
-        // product.setOptions(mapToProductOptionList(productRequest.getOptions()));
         product.setQuantity(productRequest.getQuantity());
         product.setSlug(productRequest.getSlug());
         product.setIsAvailable(productRequest.getIsAvailable());
@@ -261,6 +255,7 @@ public class ProductServiceImpl implements ProductService {
         Product productSaved = productRepository.save(product);
 
         List<ProductOption> productOptionList = mapToProductOptionList(productRequest.getOptions(), productSaved);
+        List<ProductSpecification> productSpecificationList = mapToProductSpecificationsList(productRequest.getSpecifications(), productSaved);
 
         // check old categories if they are still in the list keep them else delete them
         // and new categories add them
@@ -297,14 +292,6 @@ public class ProductServiceImpl implements ProductService {
 
         List<ProductImage> productImageList = new ArrayList<>();
         if (productImageNew != null) {
-            // List<String> newImageUrls = productImageService.uploadFile(productImageNew,
-            // product.getId())
-            // .stream()
-            // .map(ProductImageResponse::getUrl)
-            // .toList();
-
-            // List<FileMetadata> fileMetadataList =
-            // s3FeignClient.createAttachments(productImageNew).getBody();
 
             List<FileMetadata> fileMetadataList = socialService.uploadImages(productImageNew);
 
@@ -318,7 +305,6 @@ public class ProductServiceImpl implements ProductService {
                     productImageRepository.delete(oldImage);
                     log.info("Deleting image by S3 service");
                     try {
-//                        s3FeignClient.deleteFile(oldImage.getUrl());
                         socialService.deleteFile(oldImage.getUrl());
                     } catch (Exception e) {
                         log.error("Error deleting image by S3 service: {}", e.getMessage());
@@ -344,33 +330,10 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
-        // List<String> imagesUrl = productRequest.getImagesUrl();
-        //
-        // for (ProductImage productImage : productImageListOld) {
-        // if (!imagesUrl.contains(productImage.getUrl())) {
-        // productImageRepository.delete(productImage);
-        // }
-        // }
-        // List<ProductImage> productImageList = new ArrayList<>();
-        // if (productRequest.getImagesUrl() != null) {
-        // for (String urlImage : productRequest.getImagesUrl()) {
-        // boolean isExist = productImageListOld.stream().anyMatch(productImage ->
-        // productImage.getUrl().equals(urlImage));
-        // if (isExist) {
-        // ProductImage productImage = ProductImage.builder()
-        // .url(urlImage)
-        // .product(productSaved)
-        // .name("Image" + productRequest.getImagesUrl().indexOf(urlImage))
-        // .type("image")
-        // .build();
-        // productImageList.add(productImage);
-        // }
-        // }
-        // }
-
         productImageRepository.saveAll(productImageList);
 
         productSaved.setOptions(productOptionList);
+        productSaved.setSpecifications(productSpecificationList);
         productSaved.setProductCategories(productCategoryList);
         productSaved.setImages(productImageList);
 
@@ -407,6 +370,13 @@ public class ProductServiceImpl implements ProductService {
                         .sku(product.getSku())
                         .images(mapToProductImageResponseList(product.getImages()))
                         .options(mapToProductOptionResponseList(product.getOptions()))
+                        .specifications(product.getSpecifications().stream()
+                                .map(productSpecification -> ProductSpecificationResponse.builder()
+                                        .id(productSpecification.getId())
+                                        .name(productSpecification.getName())
+                                        .value(productSpecification.getValue())
+                                        .build())
+                                .collect(Collectors.toList()))
                         .quantity(product.getQuantity())
                         .slug(product.getSlug())
                         .isAvailable(product.getIsAvailable())
@@ -430,6 +400,13 @@ public class ProductServiceImpl implements ProductService {
                 .sku(product.getSku())
                 .images(mapToProductImageResponseList(product.getImages()))
                 .options(mapToProductOptionResponseList(product.getOptions()))
+                .specifications(product.getSpecifications().stream()
+                        .map(productSpecification -> ProductSpecificationResponse.builder()
+                                .id(productSpecification.getId())
+                                .name(productSpecification.getName())
+                                .value(productSpecification.getValue())
+                                .build())
+                        .collect(Collectors.toList()))
                 .quantity(product.getQuantity())
                 .slug(product.getSlug())
                 .isAvailable(product.getIsAvailable())
@@ -479,6 +456,27 @@ public class ProductServiceImpl implements ProductService {
                 .map(productOptionRequest -> ProductOption.builder()
                         .name(productOptionRequest.getName())
                         .value(productOptionRequest.getValue())
+                        .product(product)
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    private List<ProductSpecificationResponse> mapToProductSpecificationResponseList(List<ProductSpecification> specifications) {
+        return specifications.stream()
+                .map(productSpecification -> ProductSpecificationResponse.builder()
+                        .id(productSpecification.getId())
+                        .name(productSpecification.getName())
+                        .value(productSpecification.getValue())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    private List<ProductSpecification> mapToProductSpecificationsList(List<ProductSpecificationRequest> productSpecificationRequests,
+                                                       Product product) {
+        return productSpecificationRequests.stream()
+                .map(productSpecificationRequest -> ProductSpecification.builder()
+                        .name(productSpecificationRequest.getName())
+                        .value(productSpecificationRequest.getValue())
                         .product(product)
                         .build())
                 .collect(Collectors.toList());

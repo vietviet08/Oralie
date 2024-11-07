@@ -1,5 +1,6 @@
 package com.oralie.products.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.web.multipart.MultipartFile;
 
+@Schema(name = "Brand Request", description = "Schema define the parameters of brand to request")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
