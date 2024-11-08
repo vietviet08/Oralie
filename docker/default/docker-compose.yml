@@ -517,9 +517,9 @@ services:
     image: "vietquoc2408/social-oralie:latest"
     container_name: social-oralie-ms
     ports:
-      - "8084:8084"
+      - "8086:8086"
     healthcheck:
-      test: "curl --fail --silent localhost:8084/actuator/health/readiness | grep UP || exit 1"
+      test: "curl --fail --silent localhost:8086/actuator/health/readiness | grep UP || exit 1"
       interval: 20s
       timeout: 5s
       retries: 20
@@ -534,6 +534,50 @@ services:
       AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}
       AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
       AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+    extends:
+      file: common-config.yml
+      service: microservice-service-config
+
+  notification:
+    image: "vietquoc2408/notification-oralie:latest"
+    container_name: notification-oralie-ms
+    ports:
+      - "8087:8087"
+    environment:
+      SPRING_APPLICATION_NAME: "notification"
+      SPRING_MAIL_HOST: ${MAIL_HOST}
+      SPRING_MAIL_PORT: ${MAIL_PORT}
+      SPRING_MAIL_USERNAME: ${USERNAME_MAIL}
+      SPRING_MAIL_PASSWORD: ${PASSWORD_MAIL}
+      SPRING_MAIL_PROTOCOL: "smtp"
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: "localhost:9092"
+      SPRING_KAFKA_CONSUMER_GROUP_ID: "notification"
+      SPRING_KAFKA_CONSUMER_KEY_DESERIALIZER: org.apache.kafka.common.serialization.StringDeserializer
+      SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_KEY_DELEGATE_CLASS: org.apache.kafka.common.serialization.StringDeserializer
+      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_VALUE_DELEGATE_CLASS: io.confluent.kafka.serializers.KafkaAvroDeserializer
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
+  search:
+    image: "vietquoc2408/search-oralie:latest"
+    container_name: search-oralie-ms
+    ports:
+      - "8088:8088"
+    healthcheck:
+      test: "curl --fail --silent localhost:8088/actuator/health/readiness | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    depends_on:
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "search"
+      OTEL_SERVICE_NAME: "search"
+      SPRING_ELASTICSEARCH_URIS: "http://elasticserach:9200"
     extends:
       file: common-config.yml
       service: microservice-service-config
@@ -565,29 +609,6 @@ services:
     extends:
       file: common-config.yml
       service: microservice-eurekaserver-config
-
-  notification:
-    image: "vietquoc2408/notification-oralie:latest"
-    container_name: notification-oralie-ms
-    ports:
-      - "8084:8084"
-    environment:
-      SPRING_APPLICATION_NAME: "notification"
-      SPRING_MAIL_HOST: ${MAIL_HOST}
-      SPRING_MAIL_PORT: ${MAIL_PORT}
-      SPRING_MAIL_USERNAME: ${USERNAME_MAIL}
-      SPRING_MAIL_PASSWORD: ${PASSWORD_MAIL}
-      SPRING_MAIL_PROTOCOL: "smtp"
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: "localhost:9092"
-      SPRING_KAFKA_CONSUMER_GROUP_ID: "notification"
-      SPRING_KAFKA_CONSUMER_KEY_DESERIALIZER: org.apache.kafka.common.serialization.StringDeserializer
-      SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_KEY_DELEGATE_CLASS: org.apache.kafka.common.serialization.StringDeserializer
-      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_VALUE_DELEGATE_CLASS: io.confluent.kafka.serializers.KafkaAvroDeserializer
-      SPRING_KAFKA_CONSUMER_PROPERTIES_SCHEMA_REGISTRY_URL: "http://localhost:8088"
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
 
 volumes:
   postgres_data:
