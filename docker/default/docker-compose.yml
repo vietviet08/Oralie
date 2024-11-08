@@ -55,7 +55,7 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
     volumes:
-      #      - ./keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+      - ../../keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
       - ../../keycloak/themes/oralie/theme:/opt/keycloak/themes
 #      - ../libs/providers:/opt/keycloak/providers
     extends:
@@ -372,7 +372,7 @@ services:
 
 
   configserver:
-    image: "vietquoc2408/configserver-oralie:latest"
+    image: vietquoc2408/configserver-oralie:${LATEST_VERSION}
     container_name: configserver-oralie-ms
     ports:
       - "8071:8071"
@@ -389,7 +389,7 @@ services:
       service: microservice-base-config
 
   eurekaserver:
-    image: "vietquoc2408/eurekaserver-oralie:latest"
+    image: vietquoc2408/eurekaserver-oralie:${LATEST_VERSION}
     container_name: eurekaserver-oralie-ms
     ports:
       - "8070:8070"
@@ -407,7 +407,7 @@ services:
       service: microservice-configserver-config
 
   accounts:
-    image: "vietquoc2408/accounts-oralie:latest"
+    image: vietquoc2408/accounts-oralie:${LATEST_VERSION}
     container_name: accounts-oralie-ms
     ports:
       - "8080:8080"
@@ -431,7 +431,7 @@ services:
       service: microservice-service-config
 
   products:
-    image: "vietquoc2408/products-oralie:latest"
+    image: vietquoc2408/products-oralie:${LATEST_VERSION}
     container_name: products-oralie-ms
     ports:
       - "8081:8081"
@@ -455,7 +455,7 @@ services:
       service: microservice-service-config
 
   carts:
-    image: "vietquoc2408/carts-oralie:latest"
+    image: vietquoc2408/carts-oralie:${LATEST_VERSION}
     container_name: carts-oralie-ms
     ports:
       - "8082:8082"
@@ -479,7 +479,7 @@ services:
       service: microservice-service-config
 
   orders:
-    image: "vietquoc2408/orders-oralie:latest"
+    image: vietquoc2408/orders-oralie:${LATEST_VERSION}
     container_name: orders-oralie-ms
     ports:
       - "8083:8083"
@@ -516,7 +516,7 @@ services:
       service: microservice-service-config
 
   social:
-    image: "vietquoc2408/social-oralie:latest"
+    image: vietquoc2408/social-oralie:${LATEST_VERSION}
     container_name: social-oralie-ms
     ports:
       - "8086:8086"
@@ -541,7 +541,7 @@ services:
       service: microservice-service-config
 
   notification:
-    image: "vietquoc2408/notification-oralie:latest"
+    image: vietquoc2408/notification-oralie:${LATEST_VERSION}
     container_name: notification-oralie-ms
     ports:
       - "8087:8087"
@@ -566,7 +566,7 @@ services:
       service: network-deploy-service
 
   search:
-    image: "vietquoc2408/search-oralie:latest"
+    image: vietquoc2408/search-oralie:${LATEST_VERSION}
     container_name: search-oralie-ms
     ports:
       - "8088:8088"
@@ -588,7 +588,7 @@ services:
       service: microservice-service-config
 
   gatewayserver:
-    image: "vietquoc2408/gatewayserver-oralie:latest"
+    image: vietquoc2408/gatewayserver-oralie:${LATEST_VERSION}
     container_name: gatewayserver-oralie-ms
     ports:
       - "8072:8072"
