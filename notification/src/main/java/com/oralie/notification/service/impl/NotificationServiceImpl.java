@@ -45,7 +45,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Value("${spring.mail.username}")
     private String email;
 
-    @KafkaListener(topics = "order-placed-topic", groupId = "order-placed-group")
+    @KafkaListener(topics = "order-placed-topic", groupId = "order-group")
     @Override
     public void orderPlaceListen(String message) {
 

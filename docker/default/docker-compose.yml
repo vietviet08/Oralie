@@ -100,6 +100,9 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   kafka:
     image: confluentinc/cp-kafka:7.5.0
@@ -115,10 +118,14 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_INTERNAL://localhost:29092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
-      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+#      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+#      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   kafka-ui:
     container_name: kafka-ui
@@ -129,10 +136,12 @@ services:
       - kafka
     environment:
       KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092
       KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
       DYNAMIC_CONFIG_ENABLED: 'true'
-
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   redis:
     image: redis
@@ -582,7 +591,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "search"
       OTEL_SERVICE_NAME: "search"
-      SPRING_ELASTICSEARCH_URIS: "http://elasticserach:9200"
+      SPRING_ELASTICSEARCH_URIS: "elasticsearch:9200"
     extends:
       file: common-config.yml
       service: microservice-service-config

@@ -19,11 +19,6 @@ springdoc:
   packages-to-scan:
     - com.oralie.search
 
-elasticsearch:
-  url: localhost
-  username: elastic
-  password: changeme
-
 management:
   endpoints:
     web:
