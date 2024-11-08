@@ -5,6 +5,8 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-account')
         DOCKERHUB_REPO = 'vietquoc2408'
+        LATEST_VERSION = 'latest'
+        NEXT_VERSION = '1.0.1'
     }
 
     stages {
@@ -32,9 +34,9 @@ pipeline {
                             dir('configserver') {
                                 sh """
                                     if docker images | grep '${DOCKERHUB_REPO}/configserver-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/configserver-oralie:latest
+                                        docker rmi -f ${DOCKERHUB_REPO}/configserver-oralie:${LATEST_VERSION}
                                     fi
-                                    docker build -t ${DOCKERHUB_REPO}/configserver-oralie:latest .
+                                    docker build -t ${DOCKERHUB_REPO}/configserver-oralie:${NEXT_VERSION} .
                                 """
                             }
                         }
@@ -47,9 +49,9 @@ pipeline {
                             dir('eurekaserver') {
                                  sh """
                                      if docker images | grep '${DOCKERHUB_REPO}/eurekaserver-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/eurekaserver-oralie:latest
+                                        docker rmi -f ${DOCKERHUB_REPO}/eurekaserver-oralie:${LATEST_VERSION}
                                      fi
-                                     docker build -t ${DOCKERHUB_REPO}/eurekaserver-oralie:latest .
+                                     docker build -t ${DOCKERHUB_REPO}/eurekaserver-oralie:${NEXT_VERSION} .
                                  """
                             }
                         }
@@ -62,9 +64,9 @@ pipeline {
                             dir('gatewayserver') {
                                 sh """
                                     if docker images | grep '${DOCKERHUB_REPO}/gatewayserver-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/gatewayserver-oralie:latest
+                                        docker rmi -f ${DOCKERHUB_REPO}/gatewayserver-oralie:${LATEST_VERSION}
                                     fi
-                                    docker build -t ${DOCKERHUB_REPO}/gatewayserver-oralie:latest .
+                                    docker build -t ${DOCKERHUB_REPO}/gatewayserver-oralie:${NEXT_VERSION} .
                                 """
                             }
                         }
@@ -77,9 +79,9 @@ pipeline {
                             dir('accounts') {
                                 sh """
                                     if docker images | grep '${DOCKERHUB_REPO}/accounts-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/accounts-oralie:latest
+                                        docker rmi -f ${DOCKERHUB_REPO}/accounts-oralie:${LATEST_VERSION}
                                     fi
-                                    docker build -t ${DOCKERHUB_REPO}/accounts-oralie:latest .
+                                    docker build -t ${DOCKERHUB_REPO}/accounts-oralie:${NEXT_VERSION} .
                                 """
                             }
                         }
@@ -91,9 +93,9 @@ pipeline {
                             dir('products') {
                                 sh """
                                     if docker images | grep '${DOCKERHUB_REPO}/products-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/products-oralie:latest
+                                        docker rmi -f ${DOCKERHUB_REPO}/products-oralie:${LATEST_VERSION}
                                     fi
-                                    docker build -t ${DOCKERHUB_REPO}/products-oralie:latest .
+                                    docker build -t ${DOCKERHUB_REPO}/products-oralie:${NEXT_VERSION} .
                                 """
                             }
                         }
@@ -106,9 +108,9 @@ pipeline {
                             dir('carts') {
                                 sh """
                                     if docker images | grep '${DOCKERHUB_REPO}/carts-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/carts-oralie:latest
+                                        docker rmi -f ${DOCKERHUB_REPO}/carts-oralie:${LATEST_VERSION}
                                     fi
-                                    docker build -t ${DOCKERHUB_REPO}/carts-oralie:latest .
+                                    docker build -t ${DOCKERHUB_REPO}/carts-oralie:${NEXT_VERSION} .
                                 """
                             }
                         }
@@ -121,9 +123,9 @@ pipeline {
                             dir('orders') {
                                 sh """
                                     if docker images | grep '${DOCKERHUB_REPO}/orders-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/orders-oralie:latest
+                                        docker rmi -f ${DOCKERHUB_REPO}/orders-oralie:${LATEST_VERSION}
                                     fi
-                                    docker build -t ${DOCKERHUB_REPO}/orders-oralie:latest .
+                                    docker build -t ${DOCKERHUB_REPO}/orders-oralie:${NEXT_VERSION} .
                                 """
                             }
                         }
@@ -136,9 +138,9 @@ pipeline {
                             dir('notification') {
                                 sh """
                                     if docker images | grep '${DOCKERHUB_REPO}/notification-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/notification-oralie:latest
+                                        docker rmi -f ${DOCKERHUB_REPO}/notification-oralie:${LATEST_VERSION}
                                     fi
-                                    docker build -t ${DOCKERHUB_REPO}/notification-oralie:latest .
+                                    docker build -t ${DOCKERHUB_REPO}/notification-oralie:${NEXT_VERSION} .
                                 """
                             }
                         }
@@ -151,9 +153,9 @@ pipeline {
                             dir('social') {
                                 sh """
                                     if docker images | grep '${DOCKERHUB_REPO}/social-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/social-oralie:latest
+                                        docker rmi -f ${DOCKERHUB_REPO}/social-oralie:${LATEST_VERSION}
                                     fi
-                                    docker build -t ${DOCKERHUB_REPO}/social-oralie:latest .
+                                    docker build -t ${DOCKERHUB_REPO}/social-oralie:${NEXT_VERSION} .
                                 """
                             }
                         }
@@ -166,9 +168,9 @@ pipeline {
                             dir('search') {
                                 sh """
                                     if docker images | grep '${DOCKERHUB_REPO}/search-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/search-oralie:latest
+                                        docker rmi -f ${DOCKERHUB_REPO}/search-oralie:${LATEST_VERSION}
                                     fi
-                                    docker build -t ${DOCKERHUB_REPO}/search-oralie:latest .
+                                    docker build -t ${DOCKERHUB_REPO}/search-oralie:${NEXT_VERSION} .
                                 """
                             }
                         }
@@ -183,25 +185,25 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub-account', usernameVariable: 'DOCKERHUB_CREDENTIALS_USR', passwordVariable: 'DOCKERHUB_CREDENTIALS_PSW')]) {
                          sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
                     }
-                    sh "docker push ${DOCKERHUB_REPO}/configserver-oralie:latest"
+                    sh "docker push ${DOCKERHUB_REPO}/configserver-oralie:${NEXT_VERSION}"
 
-                    sh "docker push ${DOCKERHUB_REPO}/eurekaserver-oralie:latest"
+                    sh "docker push ${DOCKERHUB_REPO}/eurekaserver-oralie:${NEXT_VERSION}"
 
-                    sh "docker push ${DOCKERHUB_REPO}/gatewayserver-oralie:latest"
+                    sh "docker push ${DOCKERHUB_REPO}/gatewayserver-oralie:${NEXT_VERSION}"
 
-                    sh "docker push ${DOCKERHUB_REPO}/accounts-oralie:latest"
+                    sh "docker push ${DOCKERHUB_REPO}/accounts-oralie:${NEXT_VERSION}"
 
-                    sh "docker push ${DOCKERHUB_REPO}/products-oralie:latest"
+                    sh "docker push ${DOCKERHUB_REPO}/products-oralie:${NEXT_VERSION}"
 
-                    sh "docker push ${DOCKERHUB_REPO}/carts-oralie:latest"
+                    sh "docker push ${DOCKERHUB_REPO}/carts-oralie:${NEXT_VERSION}"
 
-                    sh "docker push ${DOCKERHUB_REPO}/orders-oralie:latest"
+                    sh "docker push ${DOCKERHUB_REPO}/orders-oralie:${NEXT_VERSION}"
 
-                    sh "docker push ${DOCKERHUB_REPO}/notification-oralie:latest"
+                    sh "docker push ${DOCKERHUB_REPO}/notification-oralie:${NEXT_VERSION}"
 
-                    sh "docker push ${DOCKERHUB_REPO}/social-oralie:latest"
+                    sh "docker push ${DOCKERHUB_REPO}/social-oralie:${NEXT_VERSION}"
 
-                    sh "docker push ${DOCKERHUB_REPO}/search-oralie:latest"
+                    sh "docker push ${DOCKERHUB_REPO}/search-oralie:${NEXT_VERSION}"
 
                     sh 'docker logout'
                 }
