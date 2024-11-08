@@ -160,7 +160,7 @@ pipeline {
                     }
                 }
 
-                stage('Build Social Service') {
+                stage('Build Search Service') {
                     steps {
                         script {
                             dir('search') {
