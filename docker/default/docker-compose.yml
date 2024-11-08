@@ -18,8 +18,9 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - vietquoc
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   pgadmin:
     container_name: pgadmin
@@ -32,8 +33,9 @@ services:
       - "5050:80"
     volumes:
       - pgadmin:/var/lib/pgadmin
-    networks:
-      - vietquoc
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   keycloak:
     image: quay.io/keycloak/keycloak:25.0.4
@@ -62,6 +64,7 @@ services:
 
   oralie_db:
     image: mysql
+    container_name: oralie_db
     ports:
       - "3306:3306"
     environment:
@@ -99,7 +102,8 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
-    image: docker.io/bitnami/kafka:3.7
+    image: confluentinc/cp-kafka:7.5.0
+    container_name: kafka
     ports:
       - "9092:9092"
       - "29092:29092"
@@ -108,36 +112,31 @@ services:
     depends_on:
       - zookeeper
     environment:
-      - KAFKA_CFG_NODE_ID=0
-      - KAFKA_CFG_PROCESS_ROLES=controller,broker
-      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
-      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
-      - ALLOW_PLAINTEXT_LISTENER=yes
-    extends:
-      file: common-config.yml
-      service: network-deploy-service
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper:2181'
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
   kafka-ui:
     container_name: kafka-ui
     image: provectuslabs/kafka-ui:latest
     ports:
-      - "8089:8080"
+      - "8989:8080"
     depends_on:
       - kafka
     environment:
-      KAFKA_CLUSTERS_NAME: local
-      KAFKA_CLUSTERS_BOOTSTRAPSERVERS: kafka:29092
-      KAFKA_CLUSTERS_ZOOKEEPER: zookeeper:2181
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: zookeeper:2181
       DYNAMIC_CONFIG_ENABLED: 'true'
+
 
   redis:
     image: redis
+    container_name: redis
     ports:
       - "6379:6379"
     healthcheck:
@@ -425,9 +424,7 @@ services:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: "accounts"
-      #      SPRING_RABBITMQ_HOST: "rabbit"
       OTEL_SERVICE_NAME: "accounts"
-      #      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: "kafka:9092"
       SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
     extends:
       file: common-config.yml
@@ -453,8 +450,6 @@ services:
       SPRING_APPLICATION_NAME: "products"
       OTEL_SERVICE_NAME: "products"
       SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
-      SPRING_DATASOURCE_USERNAME: "root"
-      SPRING_DATASOURCE_PASSWORD: "root"
     extends:
       file: common-config.yml
       service: microservice-service-config
@@ -503,10 +498,17 @@ services:
       SPRING_APPLICATION_NAME: "orders"
       OTEL_SERVICE_NAME: "orders"
       SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
-      KAFKA_BOOTSTRAP_SERVERS: localhost:9092
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       KAFKA_TEMPLATE_DEFAULT_TOPIC: orders
       KAFKA_PRODUCER_KEY_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
       KAFKA_PRODUCER_VALUE_SERIALIZER: org.springframework.kafka.support.serializer.JsonSerializer
+      SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET: earliest
+      SPRING_KAFKA_CONSUMER_KEY_DESERIALIZER: org.apache.kafka.common.serialization.StringDeserializer
+      SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_VALUE_DELEGATE_CLASS: org.springframework.kafka.support.serializer.JsonDeserializer
+      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_JSON_TRUSTED_PACKAGES: "*"
+      SPRING_KAFKA_PRODUCER_KEY_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
+      SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: org.springframework.kafka.support.serializer.JsonSerializer
       PAYPAL_CLIENT_ID: ${PAYPAL_CLIENT_ID}
       PAYPAL_CLIENT_SECRET: ${PAYPAL_CLIENT_SECRET}
     extends:
@@ -550,12 +552,15 @@ services:
       SPRING_MAIL_USERNAME: ${USERNAME_MAIL}
       SPRING_MAIL_PASSWORD: ${PASSWORD_MAIL}
       SPRING_MAIL_PROTOCOL: "smtp"
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: "localhost:9092"
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
       SPRING_KAFKA_CONSUMER_GROUP_ID: "notification"
+      SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET: earliest
       SPRING_KAFKA_CONSUMER_KEY_DESERIALIZER: org.apache.kafka.common.serialization.StringDeserializer
       SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_KEY_DELEGATE_CLASS: org.apache.kafka.common.serialization.StringDeserializer
-      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_VALUE_DELEGATE_CLASS: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_VALUE_DELEGATE_CLASS: org.springframework.kafka.support.serializer.JsonDeserializer
+      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_JSON_TRUSTED_PACKAGES: "*"
+      SPRING_KAFKA_PRODUCER_KEY_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
+      SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: org.springframework.kafka.support.serializer.JsonSerializer
     extends:
       file: common-config.yml
       service: network-deploy-service
@@ -595,6 +600,10 @@ services:
       carts:
         condition: service_healthy
       orders:
+        condition: service_healthy
+      social:
+        condition: service_healthy
+      search:
         condition: service_healthy
       redis:
         condition: service_healthy

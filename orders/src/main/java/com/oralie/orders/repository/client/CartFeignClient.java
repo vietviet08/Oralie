@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 
-@FeignClient(name = "carts", fallback = CartFeignClient.class)
+@FeignClient(name = "carts", fallback = CartCallBack.class)
 public interface CartFeignClient {
 
     @PutMapping(value = "/store/carts/clear", consumes = "application/json")
