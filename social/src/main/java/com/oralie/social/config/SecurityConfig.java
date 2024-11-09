@@ -81,7 +81,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtDecoder jwtDecoder() {
-        return NimbusJwtDecoder.withJwkSetUri("JWT_SET_URI").build();
+        return NimbusJwtDecoder.withJwkSetUri(JWT_SET_URI).build();
     }
 
     @Bean

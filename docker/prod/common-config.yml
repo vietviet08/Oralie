@@ -54,5 +54,6 @@ services:
     extends:
       service: microservice-eurekaserver-config
     environment:
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:7080/realms/oralie/protocol/openid-connect/certs"
       SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
       SPRING_JPA_SHOW_SQL: "true"

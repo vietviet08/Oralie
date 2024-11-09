@@ -48,7 +48,7 @@ services:
       KC_DB: postgres
       KC_DB_USERNAME: ${POSTGRES_USER}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
-      KC_DB_URL: jdbc:postgresql://postgres/keycloak
+      KC_DB_URL: jdbc:postgresql://postgres:5432/keycloak
       KC_HEALTH_ENABLED: "true"
       KC_HTTP_ENABLED: "true"
       KC_METRICS_ENABLED: "true"
@@ -57,7 +57,6 @@ services:
     volumes:
       - ../../keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
       - ../../keycloak/themes/oralie/theme:/opt/keycloak/themes
-#      - ../libs/providers:/opt/keycloak/providers
     extends:
       file: common-config.yml
       service: network-deploy-service
@@ -611,7 +610,6 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "gatewayserver"
       OTEL_SERVICE_NAME: "gatewayserver"
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:7080/realms/oralie/protocol/openid-connect/certs"
       SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
