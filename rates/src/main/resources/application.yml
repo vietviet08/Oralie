@@ -81,5 +81,8 @@ logging:
       oralie:
         products: DEBUG
 
+jwt:
+  set-uri: "http://localhost:7080/realms/oralie/protocol/openid-connect/certs"
+
 server:
   port: 8084

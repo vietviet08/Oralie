@@ -84,5 +84,8 @@ logging:
   pattern:
     level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
+jwt:
+  set-uri: "http://localhost:7080/realms/oralie/protocol/openid-connect/certs"
+
 server:
   port: 8082

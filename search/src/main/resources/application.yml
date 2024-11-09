@@ -96,5 +96,8 @@ resilience4j.ratelimiter:
       limitRefreshPeriod: 5000
       limitForPeriod: 1
 
+jwt:
+  set-uri: "http://localhost:7080/realms/oralie/protocol/openid-connect/certs"
+
 server:
   port: 8088

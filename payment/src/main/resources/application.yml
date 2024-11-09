@@ -108,5 +108,8 @@ paypal:
   client-secret: ${PAYPAL_CLIENT_SECRET}
   mode: sandbox
 
+jwt:
+  set-uri: "http://localhost:7080/realms/oralie/protocol/openid-connect/certs"
+
 server:
   port: 8085

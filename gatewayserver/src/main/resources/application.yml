@@ -1,6 +1,7 @@
 spring:
   application:
     name: gatewayserver
+
   config:
     import: "optional:configserver:http://localhost:8071/"
 
@@ -15,6 +16,7 @@ spring:
       httpclient:
         connect-timeout: 1000
         response-timeout: 10s
+
   data:
     redis:
       port: 6379

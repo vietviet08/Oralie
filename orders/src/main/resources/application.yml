@@ -138,5 +138,8 @@ paypal:
 store:
   url: http://localhost:3000
 
+jwt:
+  set-uri: "http://localhost:7080/realms/oralie/protocol/openid-connect/certs"
+
 server:
   port: 8083
