@@ -7,6 +7,7 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,9 +15,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-
-  profiles:
-    active: "prod"
 
   config:
     import: "optional:configserver:http://localhost:8071/"
@@ -134,12 +132,6 @@ paypal:
   client-id: ${PAYPAL_CLIENT_ID}
   client-secret: ${PAYPAL_CLIENT_SECRET}
   mode: sandbox
-
-store:
-  url: http://localhost:3000
-
-jwt:
-  set-uri: "http://localhost:7080/realms/oralie/protocol/openid-connect/certs"
 
 server:
   port: 8083

@@ -5,9 +5,6 @@ spring:
   elasticsearch:
     uris: http://localhost:9200
 
-  profiles:
-    active: "prod"
-
   config:
     import: "optional:configserver:http://localhost:8071/"
 
@@ -95,9 +92,6 @@ resilience4j.ratelimiter:
       timeoutDuration: 1000
       limitRefreshPeriod: 5000
       limitForPeriod: 1
-
-jwt:
-  set-uri: "http://localhost:7080/realms/oralie/protocol/openid-connect/certs"
 
 server:
   port: 8088

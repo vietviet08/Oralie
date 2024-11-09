@@ -7,6 +7,7 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -14,9 +15,6 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-
-  profiles:
-    active: "prod"
 
   config:
     import: "optional:configserver:http://localhost:8071/"
@@ -123,8 +121,6 @@ resilience4j.ratelimiter:
       timeoutDuration: 1000
       limitRefreshPeriod: 5000
       limitForPeriod: 1
-jwt:
-  set-uri: "http://localhost:7080/realms/oralie/protocol/openid-connect/certs"
 
 server:
   port: 8081

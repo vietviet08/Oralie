@@ -15,9 +15,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
-  profiles:
-    active: "prod"
-
   config:
     import: "optional:configserver:http://localhost:8071/"
 
@@ -94,9 +91,6 @@ logging:
         web: DEBUG
   pattern:
     level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
-
-jwt:
-  set-uri: "http://localhost:7080/realms/oralie/protocol/openid-connect/certs"
 
 server:
   port: 8080

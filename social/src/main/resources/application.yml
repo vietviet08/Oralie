@@ -2,12 +2,13 @@ server:
   port: 8086
 
 spring:
+
   application:
     name: social
-  profiles:
-    active: "prod"
+
   config:
     import: "optional:configserver:http://localhost:8071/"
+
   servlet:
     multipart:
       enabled: true
@@ -69,9 +70,6 @@ logging:
     com:
       oralie:
         social: DEBUG
-
-jwt:
-  set-uri: "http://localhost:7080/realms/oralie/protocol/openid-connect/certs"
 
 aws:
   region:

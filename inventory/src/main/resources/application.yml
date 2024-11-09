@@ -7,6 +7,7 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,12 +16,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
-  profiles:
-    active: "prod"
-
   config:
     import: "optional:configserver:http://localhost:8071/"
-
 
 springdoc:
   api-docs:
@@ -29,7 +26,6 @@ springdoc:
     path: /swagger-ui.html
   packages-to-scan:
     - com.oralie.inventory
-
 
 management:
   endpoints:
@@ -82,9 +78,6 @@ logging:
       springframework:
         security: DEBUG
         web: DEBUG
-
-jwt:
-  set-uri: "http://localhost:7080/realms/oralie/protocol/openid-connect/certs"
 
 server:
   port: 8085
