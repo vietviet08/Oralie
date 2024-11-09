@@ -25,11 +25,11 @@ services:
         limits:
           memory: 800m
     environment:
-      JAVA_TOOL_OPTIONS: "-javaagent:/etc/opentelemetry-javaagent.jar"
+      JAVA_TOOL_OPTIONS: -javaagent:opentelemetry-javaagent.jar
       OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo:4317
       OTEL_METRICS_EXPORTER: none
     volumes:
-      - ../libs/opentelemetry-javaagent.jar:/etc/opentelemetry-javaagent.jar
+      - ../libs/opentelemetry-javaagent.jar:/opentelemetry-javaagent.jar
 
   microservice-configserver-config:
     extends:
@@ -54,6 +54,5 @@ services:
     extends:
       service: microservice-eurekaserver-config
     environment:
-      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:7080/realms/oralie/protocol/openid-connect/certs"
       SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
       SPRING_JPA_SHOW_SQL: "true"
