@@ -1,4 +1,4 @@
-package com.oralie.products.config;
+package com.oralie.accounts.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

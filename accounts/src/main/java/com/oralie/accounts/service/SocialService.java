@@ -1,11 +1,15 @@
-package com.oralie.products.sevice;
+package com.oralie.accounts.service;
 
-import com.oralie.products.model.s3.FileMetadata;
+import com.oralie.accounts.dto.entity.FileMetadata;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -16,7 +20,6 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.io.File;
 import java.net.URI;
 import java.util.List;
 
@@ -24,10 +27,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SocialService extends AbstractCircuitBreakFallbackHandler {
-    private final RestClient restClient;
     private final RestTemplate restTemplate;
 
-    private static final String URL_SOCIAL = "http://localhost:8086";
+    @Value("${url.social}")
+    private String URL_SOCIAL;
 
     @Retry(name = "restRetry")
     @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleFileMetadataFallback")
@@ -42,6 +45,7 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(jwt);
+//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("image", image.getResource());
@@ -71,6 +75,7 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(jwt);
+//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         for (MultipartFile image : images) {

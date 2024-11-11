@@ -1,4 +1,4 @@
-package com.oralie.social.dto.s3;
+package com.oralie.accounts.dto.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

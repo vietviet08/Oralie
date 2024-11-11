@@ -15,6 +15,7 @@ public interface AccountService {
     void deleteAccount(String username);
     AssignRole assignRole(String username, String roleName);
     AccountResponse getAccountById(Long id);
+
     AccountResponse getAccount(String username);
     AccountResponse getAccountByUserId(String userId);
     ListResponse<AccountResponse> getAccounts(int page, int size, String sortBy, String sort);

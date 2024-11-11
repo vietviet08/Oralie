@@ -21,6 +21,6 @@ public class FileMetadata implements Serializable {
     private Long size;
     private String extension;
     private String url;
-    private Boolean publicAccess = false;
+    private Boolean publicAccess = true;
 }
 

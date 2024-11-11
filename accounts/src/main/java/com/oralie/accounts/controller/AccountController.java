@@ -82,6 +82,13 @@ public class AccountController {
                 .body(accountService.getAccountProfile());
     }
 
+    @GetMapping("/store/accounts/profile/image")
+    public ResponseEntity<AccountResponse> getAvatarProfile() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountService.getAccountProfile());
+    }
+
     @PutMapping("/store/accounts/profile")
     public ResponseEntity<?> updateAccountProfile(@RequestBody @Validated(ValidationGroups.OnUpdate.class) AccountRequest accountRequest) {
         try {
