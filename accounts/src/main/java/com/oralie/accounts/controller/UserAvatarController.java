@@ -17,7 +17,7 @@ public class UserAvatarController {
 
     private final UserAvatarService userAvatarService;
 
-    @GetMapping("/accounts/user-avatar")
+    @GetMapping("/accounts/profile/image")
     public ResponseEntity<UserAvatarResponse> getUserAvatar() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity
@@ -25,7 +25,7 @@ public class UserAvatarController {
                 .body(userAvatarService.findByUserId(userId));
     }
 
-    @PostMapping("/accounts/user-avatar")
+    @PostMapping("/accounts/profile/image")
     public ResponseEntity<UserAvatarResponse> saveUserAvatar(@ModelAttribute UserAvatarRequest userAvatarRequest) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity
@@ -33,7 +33,7 @@ public class UserAvatarController {
                 .body(userAvatarService.save(userId, userAvatarRequest));
     }
 
-    @PutMapping("/accounts/user-avatar")
+    @PutMapping("/accounts/profile/image")
     public ResponseEntity<UserAvatarResponse> updateUserAvatar(@ModelAttribute UserAvatarRequest userAvatarRequest) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity
@@ -41,7 +41,7 @@ public class UserAvatarController {
                 .body(userAvatarService.update(userId, userAvatarRequest));
     }
 
-    @DeleteMapping("/accounts/user-avatar")
+    @DeleteMapping("/accounts/profile/image")
     public ResponseEntity<Void> deleteUserAvatar() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         userAvatarService.deleteByUserId(userId);

@@ -4,6 +4,7 @@ import com.oralie.products.model.s3.FileMetadata;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,7 +28,8 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
     private final RestClient restClient;
     private final RestTemplate restTemplate;
 
-    private static final String URL_SOCIAL = "http://localhost:8086";
+    @Value("${url.social}")
+    private  String URL_SOCIAL;
 
     @Retry(name = "restRetry")
     @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleFileMetadataFallback")

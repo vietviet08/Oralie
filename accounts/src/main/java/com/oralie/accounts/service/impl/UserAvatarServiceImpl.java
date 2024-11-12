@@ -11,6 +11,7 @@ import com.oralie.accounts.service.UserAvatarService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -62,6 +63,10 @@ public class UserAvatarServiceImpl implements UserAvatarService {
     @Override
     public void deleteByUserId(String userId) {
         UserAvatar userAvatar = userAvatarRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found", "userId", userId));
+        String userIdReal = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (!userIdReal.equals(userId)) {
+            throw new ResourceNotFoundException("User not found", "userId", userId);
+        }
         userAvatarRepository.delete(userAvatar);
     }
 
