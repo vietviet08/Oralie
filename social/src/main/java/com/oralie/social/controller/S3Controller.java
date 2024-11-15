@@ -50,6 +50,18 @@ public class S3Controller {
         return new ResponseEntity<>(s3Service.uploadImages(files), HttpStatus.OK);
     }
 
+    @PostMapping(value = "/dash/social/upload-image-url")
+    public ResponseEntity<FileMetadata> uploadImageByUrl(@RequestBody String url) {
+        s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
+        return new ResponseEntity<>(s3Service.uploadImageByUrl(url), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/dash/social/upload-images-url")
+    public ResponseEntity<List<FileMetadata>> uploadImagesByUrl(@RequestBody List<String> urls) {
+        s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
+        return new ResponseEntity<>(s3Service.uploadImagesByUrl(urls), HttpStatus.OK);
+    }
+
     @PostMapping(value = "/dash/social/upload")
     public ResponseEntity<List<FileMetadata>> createAttachments(@RequestPart(value = "files") List<MultipartFile> files) {
         s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));

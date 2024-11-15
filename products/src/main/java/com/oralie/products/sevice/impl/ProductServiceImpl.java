@@ -145,6 +145,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse getProductBySlug(String slug) {
+        log.info("slug: {}", slug);
         Product product = productRepository.findBySlug(slug)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found", "slug", slug));
         return mapToProductResponse(product);

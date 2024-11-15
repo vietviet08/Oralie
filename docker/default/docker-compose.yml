@@ -93,6 +93,7 @@ services:
 
   zookeeper:
     image: debezium/zookeeper:2.7.3.Final
+    container_name: zookeeper
     restart: always
     ports:
       - "2181:2181"

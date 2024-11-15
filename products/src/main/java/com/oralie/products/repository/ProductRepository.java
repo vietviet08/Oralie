@@ -32,6 +32,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "JOIN pc.category c WHERE c.name = :categoryName")
     Page<Product> findAllByCategoryName(Pageable pageable, @Param("categoryName") String categoryName);
 
+    @Query("SELECT p FROM Product p WHERE p.slug = :slug")
     Optional<Product> findBySlug(String slug);
 
     @Query("SELECT p FROM Product p JOIN p.productCategories pc " +

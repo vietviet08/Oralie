@@ -9,6 +9,7 @@ import com.oralie.products.dto.response.ProductResponseES;
 import com.oralie.products.sevice.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @Tag(
         name = "CRUD REST APIs for Products",
         description = "CREATE, READ, UPDATE, DELETE Products"
@@ -74,9 +76,9 @@ public class ProductController {
                 .body(productService.getProductById(id));
     }
 
-
     @GetMapping("/store/products/{slug}")
     public ResponseEntity<ProductResponse> getProductBySlug(@PathVariable("slug") String slug) {
+        log.info("slug: {}", slug);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.getProductBySlug(slug));
@@ -112,7 +114,6 @@ public class ProductController {
                 .status(HttpStatus.OK)
                 .body(productService.getProductBaseById(id));
     }
-
 
     // dash
     @PostMapping(value = "/dash/products")
