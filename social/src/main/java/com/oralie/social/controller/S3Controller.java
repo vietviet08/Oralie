@@ -97,7 +97,7 @@ public class S3Controller {
     }
 
     @DeleteMapping(value = "/dash/social/delete")
-    public ResponseEntity<String> deleteFiles(@RequestPart List<String> fileName) {
+    public ResponseEntity<String> deleteFiles(@RequestBody List<String> fileName) {
         s3Service.deleteFiles(fileName);
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)

@@ -17,7 +17,6 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
-import java.util.List;
 
 @Configuration
 @EnableWebFluxSecurity
@@ -54,10 +53,7 @@ public class SecurityConfig {
                         // Store permit all
                         .pathMatchers(HttpMethod.GET, "/api/products/store/**").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/carts/store/**").permitAll()
-                        .pathMatchers(HttpMethod.POST, "/api/social/store/social/upload-images").permitAll()
-                        .pathMatchers(HttpMethod.POST, "/api/social/store/social/upload-image").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/social/store/**").permitAll()
-                        .pathMatchers(HttpMethod.POST, "/api/social/store/**").permitAll()
 
                         // Store has role
                         .pathMatchers(HttpMethod.GET, "/api/accounts/store/**").hasRole("CUSTOMER")
@@ -70,13 +66,20 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.PUT, "/api/carts/store/**").hasRole("CUSTOMER")
                         .pathMatchers(HttpMethod.DELETE, "/api/carts/store/**").hasRole("CUSTOMER")
 
+                        .pathMatchers(HttpMethod.GET, "/api/orders/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.POST, "/api/orders/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.PUT, "/api/orders/store/**").hasRole("CUSTOMER")
+
+                        .pathMatchers(HttpMethod.GET, "/api/payment/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.POST, "/api/payment/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.PUT, "/api/payment/store/**").hasRole("CUSTOMER")
+
                         // Dash
-                        .pathMatchers(HttpMethod.POST, "/api/products/dash/products").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.GET, "/api/products/dash/**").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.POST, "/api/products/dash/**").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.PUT, "/api/products/dash/**").hasRole("ADMIN")
-
                         .pathMatchers(HttpMethod.DELETE, "/api/products/dash/**").hasRole("ADMIN")
+
                         .pathMatchers(HttpMethod.GET, "/api/accounts/dash/**").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.POST, "/api/accounts/dash/**").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.PUT, "/api/accounts/dash/**").hasRole("ADMIN")

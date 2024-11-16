@@ -122,5 +122,9 @@ resilience4j.ratelimiter:
       limitRefreshPeriod: 5000
       limitForPeriod: 1
 
+aws:
+  bucket:
+    url: "https://oralie-bucket.s3.ap-southeast-1.amazonaws.com/"
+
 server:
   port: 8081

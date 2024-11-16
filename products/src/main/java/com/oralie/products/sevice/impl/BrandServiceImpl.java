@@ -7,7 +7,6 @@ import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.exception.ResourceAlreadyExistException;
 import com.oralie.products.exception.ResourceNotFoundException;
 import com.oralie.products.model.Brand;
-import com.oralie.products.model.Category;
 import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.repository.BrandRepository;
 import com.oralie.products.repository.client.S3FeignClient;
@@ -17,11 +16,11 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,6 +34,9 @@ import java.util.stream.Collectors;
 public class BrandServiceImpl implements BrandService {
 
     private static final Logger log = LoggerFactory.getLogger(BrandServiceImpl.class);
+
+    @Value("${aws.bucket.url}")
+    private String URL_BUCKET;
 
     private final BrandRepository brandRepository;
 
@@ -103,7 +105,10 @@ public class BrandServiceImpl implements BrandService {
             if (brand.getImage() != null) {
                 log.info("Deleting previous update image brand: {}", brand.getImage());
 
-                var responseS3 = socialService.deleteFile(brand.getImage());
+
+                String fileName = brand.getImage().replace(URL_BUCKET, "");
+
+                var responseS3 = socialService.deleteFile(fileName);
 
                 log.info("Message from S3: {}", responseS3);
 
