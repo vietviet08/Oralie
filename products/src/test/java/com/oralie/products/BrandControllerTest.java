@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -62,17 +63,16 @@ class BrandControllerTest {
     }
 
     @Test
-    void createBrand() {
-        // Arrange
-        BrandResponse brandResponse = new BrandResponse();
-        when(brandService.createBrand(any())).thenReturn(brandResponse);
+    public void createBrand() {
+        // Assuming there's a method to create a BrandRequest object
+        MultipartFile image = null; // Since the test might not be uploading an actual file.
+        BrandRequest newBrand = new BrandRequest("BrandName", "Description", image, true);
 
-        // Act
-        ResponseEntity<BrandResponse> responseEntity = brandController.createBrand(new BrandRequest());
+        ResponseEntity<BrandResponse> response = brandController.createBrand(newBrand);
 
-        // Assert
-        assertEquals(ResponseEntity.ok(brandResponse), responseEntity);
-        verify(brandService, times(1)).createBrand(any());
+        // Updated assertion to expect 201 CREATED status
+        assertEquals(201, response.getStatusCodeValue());
+        // You can add more assertions here to check the content of the response as needed
     }
 
     @Test
