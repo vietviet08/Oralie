@@ -1,10 +1,8 @@
-package com.oralie.products.sevice;
+package com.oralie.products.service;
 
 import com.oralie.products.dto.request.ProductOptionRequest;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.dto.response.ProductOptionResponse;
-
-import java.util.List;
 
 public interface ProductOptionService {
     ListResponse<ProductOptionResponse> getAllProductOptions(int page, int size, String sortBy, String sort);

@@ -1,4 +1,4 @@
-package com.oralie.products.sevice;
+package com.oralie.products.service;
 
 import com.oralie.products.dto.request.ProductCategoryRequest;
 import com.oralie.products.dto.response.ProductCategoryResponse;

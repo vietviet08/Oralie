@@ -1,12 +1,10 @@
 package com.oralie.products.controller;
 
-import com.oralie.products.model.ProductSpecification;
-import com.oralie.products.sevice.ProductSpecificationService;
+import com.oralie.products.service.ProductSpecificationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

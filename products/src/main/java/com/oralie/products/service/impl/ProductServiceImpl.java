@@ -1,4 +1,4 @@
-package com.oralie.products.sevice.impl;
+package com.oralie.products.service.impl;
 
 import com.oralie.products.dto.request.ProductOptionRequest;
 import com.oralie.products.dto.request.ProductRequest;
@@ -9,9 +9,9 @@ import com.oralie.products.exception.ResourceNotFoundException;
 import com.oralie.products.model.*;
 import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.repository.*;
-import com.oralie.products.sevice.ProductImageService;
-import com.oralie.products.sevice.ProductService;
-import com.oralie.products.sevice.SocialService;
+import com.oralie.products.service.ProductImageService;
+import com.oralie.products.service.ProductService;
+import com.oralie.products.service.SocialService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

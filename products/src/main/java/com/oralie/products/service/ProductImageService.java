@@ -1,9 +1,7 @@
-package com.oralie.products.sevice;
+package com.oralie.products.service;
 
 import com.oralie.products.dto.request.ProductImageRequest;
 import com.oralie.products.dto.response.ProductImageResponse;
-import com.oralie.products.model.ProductImage;
-import com.oralie.products.model.s3.FileMetadata;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

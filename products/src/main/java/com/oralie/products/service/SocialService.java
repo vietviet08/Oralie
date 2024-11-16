@@ -1,4 +1,4 @@
-package com.oralie.products.sevice;
+package com.oralie.products.service;
 
 import com.oralie.products.model.s3.FileMetadata;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;

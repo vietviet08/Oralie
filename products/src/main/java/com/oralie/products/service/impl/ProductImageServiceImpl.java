@@ -1,4 +1,4 @@
-package com.oralie.products.sevice.impl;
+package com.oralie.products.service.impl;
 
 import com.oralie.products.dto.CommonTypeCloudinary;
 import com.oralie.products.dto.request.ProductImageRequest;
@@ -8,8 +8,8 @@ import com.oralie.products.model.Product;
 import com.oralie.products.model.ProductImage;
 import com.oralie.products.repository.ProductImageRepository;
 import com.oralie.products.repository.ProductRepository;
-import com.oralie.products.sevice.CloudinaryService;
-import com.oralie.products.sevice.ProductImageService;
+import com.oralie.products.service.CloudinaryService;
+import com.oralie.products.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

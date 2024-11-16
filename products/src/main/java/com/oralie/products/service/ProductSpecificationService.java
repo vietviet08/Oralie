@@ -1,6 +1,4 @@
-package com.oralie.products.sevice;
-
-import org.springframework.stereotype.Service;
+package com.oralie.products.service;
 
 import java.util.Map;
 

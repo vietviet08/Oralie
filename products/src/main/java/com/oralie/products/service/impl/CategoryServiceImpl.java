@@ -1,4 +1,4 @@
-package com.oralie.products.sevice.impl;
+package com.oralie.products.service.impl;
 
 import com.oralie.products.dto.request.CategoryRequest;
 import com.oralie.products.dto.response.CategoryResponse;
@@ -8,8 +8,8 @@ import com.oralie.products.exception.ResourceNotFoundException;
 import com.oralie.products.model.Category;
 import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.repository.CategoryRepository;
-import com.oralie.products.sevice.CategoryService;
-import com.oralie.products.sevice.SocialService;
+import com.oralie.products.service.CategoryService;
+import com.oralie.products.service.SocialService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;

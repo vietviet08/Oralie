@@ -1,15 +1,12 @@
-package com.oralie.products.sevice.impl;
+package com.oralie.products.service.impl;
 
 import com.oralie.products.dto.request.ProductOptionRequest;
-import com.oralie.products.dto.response.CategoryResponse;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.dto.response.ProductOptionResponse;
 import com.oralie.products.exception.ResourceNotFoundException;
-import com.oralie.products.model.Category;
-import com.oralie.products.model.Product;
 import com.oralie.products.model.ProductOption;
 import com.oralie.products.repository.ProductOptionRepository;
-import com.oralie.products.sevice.ProductOptionService;
+import com.oralie.products.service.ProductOptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

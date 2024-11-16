@@ -1,9 +1,10 @@
 package com.oralie.products;
 
 import com.oralie.products.controller.BrandController;
+import com.oralie.products.dto.request.BrandRequest;
 import com.oralie.products.dto.response.BrandResponse;
 import com.oralie.products.dto.response.ListResponse;
-import com.oralie.products.sevice.BrandService;
+import com.oralie.products.service.BrandService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -44,4 +45,63 @@ class BrandControllerTest {
         assertEquals(ResponseEntity.ok(listResponse), responseEntity);
         verify(brandService, times(1)).getAllBrands(page, size, sortBy, sort);
     }
+
+    @Test
+    void getBrandById() {
+        // Arrange
+        Long brandId = 1L;
+        BrandResponse brandResponse = new BrandResponse();
+        when(brandService.getBrandById(brandId)).thenReturn(brandResponse);
+
+        // Act
+        ResponseEntity<BrandResponse> responseEntity = brandController.getBrandById(brandId);
+
+        // Assert
+        assertEquals(ResponseEntity.ok(brandResponse), responseEntity);
+        verify(brandService, times(1)).getBrandById(brandId);
+    }
+
+    @Test
+    void createBrand() {
+        // Arrange
+        BrandResponse brandResponse = new BrandResponse();
+        when(brandService.createBrand(any())).thenReturn(brandResponse);
+
+        // Act
+        ResponseEntity<BrandResponse> responseEntity = brandController.createBrand(new BrandRequest());
+
+        // Assert
+        assertEquals(ResponseEntity.ok(brandResponse), responseEntity);
+        verify(brandService, times(1)).createBrand(any());
+    }
+
+    @Test
+    void updateBrand() {
+        // Arrange
+        Long brandId = 1L;
+        BrandResponse brandResponse = new BrandResponse();
+        when(brandService.updateBrand(eq(brandId), any())).thenReturn(brandResponse);
+
+        // Act
+        ResponseEntity<BrandResponse> responseEntity = brandController.updateBrand(brandId, new BrandRequest());
+
+        // Assert
+        assertEquals(ResponseEntity.ok(brandResponse), responseEntity);
+        verify(brandService, times(1)).updateBrand(eq(brandId), any());
+    }
+
+    @Test
+    void deleteBrand() {
+        // Arrange
+        Long brandId = 1L;
+        doNothing().when(brandService).deleteBrand(brandId);
+
+        // Act
+        ResponseEntity<Void> responseEntity = brandController.deleteBrand(brandId);
+
+        // Assert
+        assertEquals(ResponseEntity.noContent().build(), responseEntity);
+        verify(brandService, times(1)).deleteBrand(brandId);
+    }
+
 }

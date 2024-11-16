@@ -1,23 +1,17 @@
 package com.oralie.products.controller;
 
-import com.netflix.discovery.converters.Auto;
 import com.oralie.products.dto.request.BrandRequest;
 import com.oralie.products.dto.response.BrandResponse;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.model.s3.FileMetadata;
-import com.oralie.products.repository.client.S3FeignClient;
-import com.oralie.products.sevice.BrandService;
+import com.oralie.products.service.BrandService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @Tag(
         name = "CRUD REST APIs for Brand",

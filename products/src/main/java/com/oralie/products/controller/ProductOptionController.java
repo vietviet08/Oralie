@@ -3,7 +3,7 @@ package com.oralie.products.controller;
 import com.oralie.products.dto.request.ProductOptionRequest;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.dto.response.ProductOptionResponse;
-import com.oralie.products.sevice.ProductOptionService;
+import com.oralie.products.service.ProductOptionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

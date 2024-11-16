@@ -1,10 +1,8 @@
 package com.oralie.products.controller;
 
-import com.oralie.products.dto.request.ProductImageRequest;
 import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.repository.client.S3FeignClient;
-import com.oralie.products.sevice.ProductImageService;
-import lombok.AllArgsConstructor;
+import com.oralie.products.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

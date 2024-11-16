@@ -6,7 +6,7 @@ import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.dto.response.ProductBaseResponse;
 import com.oralie.products.dto.response.ProductResponse;
 import com.oralie.products.dto.response.ProductResponseES;
-import com.oralie.products.sevice.ProductService;
+import com.oralie.products.service.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

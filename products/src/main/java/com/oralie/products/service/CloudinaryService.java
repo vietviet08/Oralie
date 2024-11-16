@@ -1,4 +1,4 @@
-package com.oralie.products.sevice;
+package com.oralie.products.service;
 
 import org.springframework.web.multipart.MultipartFile;
 

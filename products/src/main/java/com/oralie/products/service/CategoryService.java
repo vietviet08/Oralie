@@ -1,12 +1,10 @@
-package com.oralie.products.sevice;
+package com.oralie.products.service;
 
 import com.oralie.products.dto.request.CategoryRequest;
 import com.oralie.products.dto.response.CategoryResponse;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.model.s3.FileMetadata;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 public interface CategoryService {
 

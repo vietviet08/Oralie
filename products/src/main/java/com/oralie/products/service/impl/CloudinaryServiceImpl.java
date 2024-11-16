@@ -1,8 +1,7 @@
-package com.oralie.products.sevice.impl;
+package com.oralie.products.service.impl;
 
 import com.cloudinary.Cloudinary;
-import com.oralie.products.sevice.CloudinaryService;
-import lombok.AllArgsConstructor;
+import com.oralie.products.service.CloudinaryService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
