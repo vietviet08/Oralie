@@ -1,6 +1,5 @@
 package com.oralie.products.sevice.impl;
 
-import com.oralie.products.dto.request.ProductImageRequest;
 import com.oralie.products.dto.request.ProductOptionRequest;
 import com.oralie.products.dto.request.ProductRequest;
 import com.oralie.products.dto.request.ProductSpecificationRequest;
@@ -10,14 +9,12 @@ import com.oralie.products.exception.ResourceNotFoundException;
 import com.oralie.products.model.*;
 import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.repository.*;
-import com.oralie.products.repository.client.S3FeignClient;
 import com.oralie.products.sevice.ProductImageService;
 import com.oralie.products.sevice.ProductService;
 import com.oralie.products.sevice.SocialService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,7 +22,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -50,8 +46,6 @@ public class ProductServiceImpl implements ProductService {
     private final ProductImageRepository productImageRepository;
     private final ProductImageService productImageService;
 
-    // @Qualifier("s3FeignClientFallback")
-    // private final S3FeignClient s3FeignClient;
 
     @Override
     public ListResponse<ProductResponse> getAllProducts(int page, int size, String sortBy, String sort, String search,

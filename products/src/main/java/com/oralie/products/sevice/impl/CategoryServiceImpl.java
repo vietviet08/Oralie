@@ -5,22 +5,17 @@ import com.oralie.products.dto.response.CategoryResponse;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.exception.ResourceAlreadyExistException;
 import com.oralie.products.exception.ResourceNotFoundException;
-import com.oralie.products.model.Brand;
 import com.oralie.products.model.Category;
 import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.repository.CategoryRepository;
-import com.oralie.products.repository.client.S3FeignClient;
 import com.oralie.products.sevice.CategoryService;
 import com.oralie.products.sevice.SocialService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,9 +32,6 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     private final SocialService socialService;
-
-    @Qualifier("s3FeignClientFallback")
-    private final S3FeignClient s3FeignClient;
 
     @Override
     public ListResponse<CategoryResponse> getAllCategories(int page, int size, String sortBy, String sort) {
@@ -162,7 +154,7 @@ public class CategoryServiceImpl implements CategoryService {
     public FileMetadata uploadImage(MultipartFile file, Long id) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
 
-        FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.createAttachments(List.of(file)).getBody()).get(0);
+        FileMetadata fileMetadata = Objects.requireNonNull(socialService.uploadImage(file));
 
         category.setImage(fileMetadata.getUrl());
 
@@ -184,7 +176,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
 
         if (category.getImage() != null) {
-            s3FeignClient.deleteFile(category.getImage());
+            socialService.deleteFile(category.getImage());
         }
 
         category.setImage(null);

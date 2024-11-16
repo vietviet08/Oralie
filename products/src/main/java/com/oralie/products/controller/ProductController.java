@@ -17,6 +17,19 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * ProductController class provides CRUD REST API endpoints for managing products.
+ * <p>
+ * This class handles operations like creating, reading, updating, and deleting products.
+ * Additionally, it includes endpoints for retrieving product-related information based on
+ * different criteria such as category, brand, and other properties.
+ * <p>
+ * Attributes:
+ * - accountsContactDto: Contains contact information related to product accounts.
+ * - environment: Provides access to the current environment properties.
+ * - build: Holds the build version of the application.
+ * - productService: Service used to perform product-related operations.
+ */
 @Slf4j
 @Tag(
         name = "CRUD REST APIs for Products",
@@ -27,7 +40,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
 public class ProductController {
 
-    private final ProductContactDto accountsContactDto;
+    private final ProductContactDto productContactDto;
 
     private final Environment environment;
 
@@ -169,7 +182,7 @@ public class ProductController {
     public ResponseEntity<ProductContactDto> getProductsContactDto() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(accountsContactDto);
+                .body(productContactDto);
     }
 
 

@@ -9,13 +9,11 @@ import com.oralie.products.exception.ResourceNotFoundException;
 import com.oralie.products.model.Brand;
 import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.repository.BrandRepository;
-import com.oralie.products.repository.client.S3FeignClient;
 import com.oralie.products.sevice.BrandService;
 import com.oralie.products.sevice.SocialService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,8 +40,6 @@ public class BrandServiceImpl implements BrandService {
 
     private final SocialService socialService;
 
-    @Qualifier("com.oralie.products.repository.client.S3FeignClient")
-    private final S3FeignClient s3FeignClient;
 
     @Override
     public ListResponse<BrandResponse> getAllBrands(int page, int size, String sortBy, String sort) {
@@ -133,7 +129,7 @@ public class BrandServiceImpl implements BrandService {
         if (brandRepository.existsByIdAndProductsIsEmpty(id)) {
 
             if (brand.getImage() != null) {
-                s3FeignClient.deleteFile(brand.getImage());
+                socialService.deleteFile(brand.getImage());
             }
 
             brandRepository.delete(brand);
@@ -147,7 +143,7 @@ public class BrandServiceImpl implements BrandService {
     public FileMetadata uploadImage(MultipartFile file, Long id) {
         Brand brand = brandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Brand not found", "id", id + ""));
 
-        FileMetadata fileMetadata = Objects.requireNonNull(s3FeignClient.createAttachments(List.of(file)).getBody()).get(0);
+        FileMetadata fileMetadata = Objects.requireNonNull(socialService.uploadImage(file));
 
         brand.setImage(fileMetadata.getUrl());
 
@@ -168,7 +164,7 @@ public class BrandServiceImpl implements BrandService {
         Brand brand = brandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
 
         if (brand.getImage() != null) {
-            s3FeignClient.deleteFile(brand.getImage());
+            socialService.deleteFile(brand.getImage());
         }
 
         brand.setImage(null);

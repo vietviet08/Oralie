@@ -18,6 +18,11 @@ import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 
+/**
+ * Configuration class for setting up security using Spring WebFlux Security.
+ * This class defines various security policies, including allowed API endpoints,
+ * roles required for accessing endpoints, and CORS configurations.
+ */
 @Configuration
 @EnableWebFluxSecurity
 public class SecurityConfig {

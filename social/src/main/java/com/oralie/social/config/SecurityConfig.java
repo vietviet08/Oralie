@@ -35,11 +35,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         return http
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults()) // enable CORS using the default configuration
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/",
@@ -60,8 +59,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())
-                        .authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> {
+                    jwtConfigurer.jwtAuthenticationConverter(jwtAuthenticationConverterForKeycloak());
+                }).authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
                 .build();
     }
 
@@ -69,12 +69,10 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfiguration() {
         CorsConfiguration corsConfig = new CorsConfiguration();
         corsConfig.applyPermitDefaultValues();
-        corsConfig.setAllowedOrigins(Collections.singletonList("*"));
-        corsConfig.setAllowedMethods(Collections.singletonList("*"));
-        corsConfig.setAllowedHeaders(Collections.singletonList("*"));
-
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
+        corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);
         return source;
     }
@@ -86,9 +84,11 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverterForKeycloak() {
-        Converter<Jwt, Collection
-                <GrantedAuthority>> jwtGrantedAuthoritiesConverter = jwt -> {
+        Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter = jwt -> {
             Map<String, Collection<String>> realmAccess = jwt.getClaim("realm_access");
+            if (realmAccess == null || realmAccess.get("roles") == null) {
+                return Collections.emptyList();
+            }
             Collection<String> roles = realmAccess.get("roles");
             return roles.stream()
                     .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
@@ -97,8 +97,6 @@ public class SecurityConfig {
 
         var jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
-
         return jwtAuthenticationConverter;
     }
-
 }

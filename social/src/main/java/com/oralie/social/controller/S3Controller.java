@@ -6,6 +6,8 @@ import com.oralie.social.dto.s3.FileMetadata;
 import com.oralie.social.service.S3Service;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.InputStreamResource;
@@ -18,6 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+/**
+ * Controller for handling operations with S3 such as uploading, downloading, and deleting files.
+ */
 @Tag(
         name = "The API of S3 Service",
         description = "This API allows you to upload, download and delete files from S3 bucket"
@@ -26,6 +31,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
 public class S3Controller {
+
+    private static final Logger logger = LoggerFactory.getLogger(S3Controller.class);
 
     private final Environment environment;
 
@@ -40,90 +47,102 @@ public class S3Controller {
 
     @PostMapping(value = "/dash/social/upload-image")
     public ResponseEntity<FileMetadata> uploadImage(@RequestPart(value = "image") MultipartFile image) {
-        s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
-        return new ResponseEntity<>(s3Service.uploadImage(image), HttpStatus.OK);
+        logBucketNames();
+        return new ResponseEntity<>(s3Service.uploadImage(image), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/dash/social/upload-images")
     public ResponseEntity<List<FileMetadata>> uploadImages(@RequestPart(value = "images") List<MultipartFile> files) {
-        s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
-        return new ResponseEntity<>(s3Service.uploadImages(files), HttpStatus.OK);
+        logBucketNames();
+        return new ResponseEntity<>(s3Service.uploadImages(files), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/dash/social/upload-image-url")
     public ResponseEntity<FileMetadata> uploadImageByUrl(@RequestBody String url) {
-        s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
-        return new ResponseEntity<>(s3Service.uploadImageByUrl(url), HttpStatus.OK);
+        logBucketNames();
+        return new ResponseEntity<>(s3Service.uploadImageByUrl(url), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/dash/social/upload-images-url")
     public ResponseEntity<List<FileMetadata>> uploadImagesByUrl(@RequestBody List<String> urls) {
-        s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
-        return new ResponseEntity<>(s3Service.uploadImagesByUrl(urls), HttpStatus.OK);
+        logBucketNames();
+        return new ResponseEntity<>(s3Service.uploadImagesByUrl(urls), HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/dash/social/upload")
     public ResponseEntity<List<FileMetadata>> createAttachments(@RequestPart(value = "files") List<MultipartFile> files) {
-        s3client.listBuckets().forEach(bucket -> System.out.println(bucket.getName()));
-        return new ResponseEntity<>(s3Service.uploadImages(files), HttpStatus.OK);
+        logBucketNames();
+        return new ResponseEntity<>(s3Service.uploadImages(files), HttpStatus.CREATED);
     }
 
     @GetMapping("/store/social/view/{fileName}")
     public ResponseEntity<InputStreamResource> viewFile(@PathVariable String fileName) {
-        var s3Object = s3Service.getFile(fileName);
-        var content = s3Object.getObjectContent();
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_PNG)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
-                .body(new InputStreamResource(content));
+        try {
+            var s3Object = s3Service.getFile(fileName);
+            var content = s3Object.getObjectContent();
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(s3Object.getObjectMetadata().getContentType()))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+                    .body(new InputStreamResource(content));
+        } catch (Exception e) {
+            logger.error("File viewing failed", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @PostMapping("/store/social/download/{fileName}")
     public ResponseEntity<InputStreamResource> downloadFile(@PathVariable String fileName) {
-        var s3Object = s3Service.getFile(fileName);
-        var content = s3Object.getObjectContent();
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
-                .body(new InputStreamResource(content));
+        try {
+            var s3Object = s3Service.getFile(fileName);
+            var content = s3Object.getObjectContent();
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+                    .body(new InputStreamResource(content));
+        } catch (Exception e) {
+            logger.error("File download failed", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @DeleteMapping(value = "/dash/social/delete/{fileName}")
     public ResponseEntity<String> deleteFile(@PathVariable String fileName) {
-        s3Service.deleteFile(fileName);
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .body("File deleted successfully");
+        try {
+            s3Service.deleteFile(fileName);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("File deleted successfully");
+        } catch (Exception e) {
+            logger.error("File deletion failed", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting file");
+        }
     }
 
     @DeleteMapping(value = "/dash/social/delete")
     public ResponseEntity<String> deleteFiles(@RequestBody List<String> fileName) {
-        s3Service.deleteFiles(fileName);
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT)
-                .body("File deleted successfully");
+        try {
+            s3Service.deleteFiles(fileName);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Files deleted successfully");
+        } catch (Exception e) {
+            logger.error("Files deletion failed", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting files");
+        }
     }
 
-    //info
     @GetMapping("/social/build-version")
     public ResponseEntity<String> getBuildVersion() {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(build);
+        return ResponseEntity.status(HttpStatus.OK).body(build);
     }
 
     @GetMapping("/social/java-version")
     public ResponseEntity<String> getJavaVersion() {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(environment.getProperty("JAVA_HOME"));
+        return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
     }
 
     @GetMapping("/social/contact-info")
     public ResponseEntity<SocialContactDto> getProductsContactDto() {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(socialContactDto);
+        return ResponseEntity.status(HttpStatus.OK).body(socialContactDto);
     }
 
+    private void logBucketNames() {
+        s3client.listBuckets().forEach(bucket -> logger.info("Bucket name: {}", bucket.getName()));
+    }
 }
