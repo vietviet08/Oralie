@@ -540,6 +540,8 @@ public class ProductServiceImpl implements ProductService {
         return ProductBaseResponse.builder()
                 .id(productResponse.getId())
                 .name(productResponse.getName())
+                .slug(productResponse.getSlug())
+                .image(productResponse.getImages().get(0).getUrl())
                 .price(productResponse.getPrice())
                 .discount(productResponse.getDiscount())
                 .brand(productResponse.getBrand().getId())

@@ -22,6 +22,13 @@ public class CartItem extends BaseEntity {
     private Long productId;
 
     @Column(nullable = false)
+    private String productName;
+
+    private String urlImageThumbnail;
+
+    private String productSlug;
+
+    @Column(nullable = false)
     private Integer quantity;
 
     @Column(nullable = false)

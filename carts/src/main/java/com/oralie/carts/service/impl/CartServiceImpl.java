@@ -1,6 +1,5 @@
 package com.oralie.carts.service.impl;
 
-import com.oralie.carts.dto.ProductResponse;
 import com.oralie.carts.dto.response.CartItemResponse;
 import com.oralie.carts.dto.response.CartResponse;
 import com.oralie.carts.dto.response.ListResponse;
@@ -9,7 +8,6 @@ import com.oralie.carts.exception.ResourceNotFoundException;
 import com.oralie.carts.model.Cart;
 import com.oralie.carts.model.CartItem;
 import com.oralie.carts.repository.CartRepository;
-import com.oralie.carts.repository.client.product.ProductFeignClient;
 import com.oralie.carts.service.CartService;
 import com.oralie.carts.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -30,8 +27,6 @@ import java.util.stream.Collectors;
 public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
-
-    private final ProductFeignClient productFeignClient;
 
     private final ProductService productService;
 
@@ -134,6 +129,8 @@ public class CartServiceImpl implements CartService {
             cartItems = new HashSet<>();
             CartItem cartItem = CartItem.builder()
                     .productId(productId)
+                    .productName(product.getName())
+                    .urlImageThumbnail(product.getImage())
                     .quantity(quantity)
                     .price(product.getPrice())
                     .totalPrice(product.getPrice() * quantity)
@@ -153,6 +150,9 @@ public class CartServiceImpl implements CartService {
             if (cartItem == null) {
                 cartItem = CartItem.builder()
                         .productId(productId)
+                        .productName(product.getName())
+                        .urlImageThumbnail(product.getImage())
+                        .productSlug(product.getSlug())
                         .quantity(quantity)
                         .price(product.getPrice())
                         .totalPrice(product.getPrice() * quantity)
@@ -267,6 +267,10 @@ public class CartServiceImpl implements CartService {
         return CartItemResponse.builder()
                 .id(cartItem.getId())
                 .productId(cartItem.getProductId())
+                .productName(cartItem.getProductName())
+                .urlImageThumbnail(cartItem.getUrlImageThumbnail())
+                .productSlug(cartItem.getProductSlug())
+                .productSlug(cartItem.getProductSlug())
                 .quantity(cartItem.getQuantity())
                 .price(cartItem.getPrice())
                 .totalPrice(cartItem.getTotalPrice())
