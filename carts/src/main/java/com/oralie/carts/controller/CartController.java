@@ -6,8 +6,6 @@ import com.oralie.carts.dto.response.CartResponse;
 import com.oralie.carts.dto.response.ListResponse;
 import com.oralie.carts.service.CartService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.ws.rs.Path;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -82,6 +80,13 @@ public class CartController {
 
     //store
     @GetMapping("/store/carts")
+    public ResponseEntity<CartResponse> getCart() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cartService.getCartByUserId(SecurityContextHolder.getContext().getAuthentication().getName()));
+    }
+
+    @GetMapping("/store/carts/items")
     public ResponseEntity<Set<CartItemResponse>> getItemFromCart() {
         return ResponseEntity
                 .status(HttpStatus.OK)

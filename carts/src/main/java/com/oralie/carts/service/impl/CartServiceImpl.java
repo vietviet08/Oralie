@@ -55,7 +55,8 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartResponse getCartByUserId(String userId) {
-        return null;
+        Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Cart", "userId", userId));
+        return mapToCartResponse(cart);
     }
 
     @Override
