@@ -1,6 +1,6 @@
-package com.oralie.accounts.service;
+package com.oralie.rates.service;
 
-import com.oralie.accounts.dto.entity.FileMetadata;
+import com.oralie.rates.dto.FileMetadata;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -128,3 +127,4 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
         return handleTypedFallback(throwable);
     }
 }
+
