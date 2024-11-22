@@ -1,4 +1,4 @@
-package com.oralie.accounts.service;
+package com.oralie.inventory.service;
 
 import lombok.extern.slf4j.Slf4j;
 

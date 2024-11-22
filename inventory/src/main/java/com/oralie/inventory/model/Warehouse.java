@@ -10,22 +10,15 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "warehouse")
 @Entity
-@Table(name = "inventory")
-public class Inventory extends BaseEntity {
+public class Warehouse extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long productId;
+    private String name;
 
-    private String productName;
-
-    private Integer quantity;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "warehouse_id")
-    private Warehouse warehouse;
-
+    private String address;
 }

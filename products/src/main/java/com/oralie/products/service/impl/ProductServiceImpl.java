@@ -1,6 +1,7 @@
 package com.oralie.products.service.impl;
 
 import com.oralie.products.dto.request.ProductOptionRequest;
+import com.oralie.products.dto.request.ProductQuantityPost;
 import com.oralie.products.dto.request.ProductRequest;
 import com.oralie.products.dto.request.ProductSpecificationRequest;
 import com.oralie.products.dto.response.*;
@@ -340,11 +341,30 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductBaseResponse> updateQuantityProduct(List<ProductQuantityPost> productQuantityPosts) {
+        for (ProductQuantityPost productQuantityPost : productQuantityPosts) {
+            Product product = productRepository.findById(productQuantityPost.getId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", productQuantityPost.getId() + ""));
+            product.setQuantity(product.getQuantity() + productQuantityPost.getQuantity());
+            productRepository.save(product);
+        }
+        return mapToProductBaseResponseList(productRepository.findAllById(productQuantityPosts.stream()
+                .map(ProductQuantityPost::getId)
+                .collect(Collectors.toList())));
+    }
+
+    private List<ProductBaseResponse> mapToProductBaseResponseList(List<Product> allById) {
+        return allById.stream()
+                .map(this::mapToProductBaseResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void updateAliveProduct(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
-        product.setIsAvailable(!product.getIsAvailable());
-        product.setIsDeleted(!product.getIsDeleted());
+        product.setIsAvailable(!product.getIsAvailable() ? Boolean.TRUE : Boolean.FALSE);
+        product.setIsDeleted(!product.getIsDeleted() ? Boolean.TRUE : Boolean.FALSE);
         productRepository.save(product);
     }
 
@@ -533,6 +553,25 @@ public class ProductServiceImpl implements ProductService {
                 .isDeleted(productResponse.getIsDeleted())
                 .isFeatured(productResponse.getIsFeatured())
                 .isPromoted(productResponse.getIsPromoted())
+                .build();
+    }
+
+    private ProductBaseResponse mapToProductBaseResponse(Product product) {
+        return ProductBaseResponse.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .slug(product.getSlug())
+                .image(product.getImages().get(0).getUrl())
+                .price(product.getPrice())
+                .discount(product.getDiscount())
+                .brand(product.getBrand().getId())
+                .category(product.getProductCategories().stream().map(productCategory -> productCategory.getCategory().getId()).collect(Collectors.toList()))
+                .quantity(product.getQuantity())
+                .isDiscounted(product.getIsDiscounted())
+                .isAvailable(product.getIsAvailable())
+                .isDeleted(product.getIsDeleted())
+                .isFeatured(product.getIsFeatured())
+                .isPromoted(product.getIsPromoted())
                 .build();
     }
 

@@ -19,7 +19,7 @@ public class ProductBaseResponse {
     private String image;
     private String description;
     private Double price;
-    private Integer quantity;
+    private Long quantity;
     private List<Long> category;
     private Long brand;
     private Double discount;

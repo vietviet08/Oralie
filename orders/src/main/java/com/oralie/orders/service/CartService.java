@@ -6,6 +6,7 @@ import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -19,7 +20,8 @@ public class CartService extends AbstractCircuitBreakFallbackHandler{
 
     private static final Logger log = LoggerFactory.getLogger(CartService.class);
 
-    private static final String URL_ORDER = "http://localhost:8082";
+    @Value("${url.order}")
+    private String URL_ORDER;
 
     private final RestClient  restClient;
 

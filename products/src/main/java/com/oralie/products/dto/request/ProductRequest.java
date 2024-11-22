@@ -53,7 +53,7 @@ public class ProductRequest {
 
     @NotBlank(message = "Quantity is required")
     @DecimalMin(value = "0", message = "Quantity must be greater than 0")
-    private Integer quantity;
+    private Long quantity;
 
     private Boolean isDiscounted;
 

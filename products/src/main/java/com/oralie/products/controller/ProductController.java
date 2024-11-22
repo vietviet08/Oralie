@@ -1,6 +1,7 @@
 package com.oralie.products.controller;
 
 import com.oralie.products.dto.ProductContactDto;
+import com.oralie.products.dto.request.ProductQuantityPost;
 import com.oralie.products.dto.request.ProductRequest;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.dto.response.ProductBaseResponse;
@@ -16,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * ProductController class provides CRUD REST API endpoints for managing products.
@@ -149,6 +152,13 @@ public class ProductController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .build();
+    }
+
+    @PutMapping("/dash/products/updateQuantity")
+    public ResponseEntity<List<ProductBaseResponse>> updateQuantityProduct(@RequestBody List<ProductQuantityPost> productQuantityPosts) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.updateQuantityProduct(productQuantityPosts));
     }
 
     @DeleteMapping("/dash/products/{id}")

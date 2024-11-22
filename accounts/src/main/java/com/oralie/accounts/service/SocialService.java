@@ -26,6 +26,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SocialService extends AbstractCircuitBreakFallbackHandler {
+
     private final RestTemplate restTemplate;
 
     @Value("${url.social}")

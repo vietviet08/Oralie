@@ -53,7 +53,7 @@ public class Product extends BaseEntity {
 
     private Double discount;
 
-    private Integer quantity;
+    private Long quantity;
 
     private String image;
 

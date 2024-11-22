@@ -1,10 +1,13 @@
 package com.oralie.products.service;
 
+import com.oralie.products.dto.request.ProductQuantityPost;
 import com.oralie.products.dto.request.ProductRequest;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.dto.response.ProductBaseResponse;
 import com.oralie.products.dto.response.ProductResponse;
 import com.oralie.products.dto.response.ProductResponseES;
+
+import java.util.List;
 
 public interface ProductService {
 
@@ -27,6 +30,8 @@ public interface ProductService {
     ProductResponse createProduct(ProductRequest productRequest);
 
     ProductResponse updateProduct(Long id, ProductRequest productRequest);
+
+    List<ProductBaseResponse> updateQuantityProduct(List<ProductQuantityPost> productQuantityPosts);
 
     void updateAliveProduct(Long id);
 

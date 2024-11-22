@@ -1,4 +1,4 @@
-package com.oralie.products.dto.response;
+package com.oralie.inventory.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
