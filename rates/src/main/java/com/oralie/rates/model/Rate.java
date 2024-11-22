@@ -22,8 +22,11 @@ public class Rate extends BaseEntity {
 
     private String userId;
 
+    private Long productId;
+
     private String content;
 
+    @ElementCollection
     private List<String> urlFile;
 
     private Boolean isAvailable;
