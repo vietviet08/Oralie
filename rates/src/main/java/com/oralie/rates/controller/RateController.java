@@ -77,11 +77,11 @@ public class RateController {
     }
 
     @DeleteMapping(value = "/rates/store/{productId}")
-    public void deleteComment(@PathVariable Long productId) {
+    public ResponseEntity<Void> deleteComment(@PathVariable Long productId) {
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         rateService.deleteComment(productId, userId);
-//    ResponseEntity.status(HttpStatus.OK).body()
+        return ResponseEntity.status(HttpStatus.OK).body();
     }
 
     @GetMapping("/rates/build-version")

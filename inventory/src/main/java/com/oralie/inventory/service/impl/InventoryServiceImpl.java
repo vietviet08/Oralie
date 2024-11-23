@@ -23,13 +23,13 @@ public class InventoryServiceImpl implements InventoryService {
             
                 boolean existingInventory = inventoryRepository.existsByWarehouseIdAndProductId(inventory.getWareHouse().getId(), inventory.getProductId());
                 
-                if(existingInventory) throw new ResourceAlreadyExistException("inventory", "id", inventory.getId().toString()); 
+                if(existingInventory) throw new ResourceAlreadyExistException(InventoryConstant.ALREADY_EXISTING_RESOURCE + ": inventory", "id", inventory.getId().toString()); 
                 
                 WareHouse warehouse = warehouseRepostory.findById(inventory.getWareHouseId()).orElseThrow(() -> new ResourceNotFoundException("warehouse", "warehouseId", inventory.getWareHouseId.toString()));
                 
                 ProductBaseResponse product = productService.getProduct(inventory.getProductId());
                 
-                if(product == null) throw new ResourceNotFoundException("product", "productId", inventory.getProductId().toString()); 
+                if(product == null) throw new ResourceNotFoundException(InventoryConstant.RESOURCE_NOT_FOUND + " :product", "productId", inventory.getProductId().toString()); 
                 
                 return Inventory.builder()
                         .productId(inventory.getProductId())
