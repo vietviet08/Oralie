@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 @Table(name = "warehouse")
 @Entity
-public class Warehouse extends BaseEntity {
+public class WareHouse extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,7 +5,7 @@ import com.oralie.inventory.dto.response.ProductBaseResponse;
 
 public interface InventoryService {
 
-    void addProductToWareHouse(Long wareHouseId, Long productId, int quantity);
+    void addProductToWareHouse(List<InventoryRequest>  inventoryRequest);
 
-    ProductBaseResponse updateProductQuantity(InventoryRequest inventoryRequest);
+    List<ProductBaseResponse> updateProductQuantity(List<InventoryQuantityRequest> inventoryQuantityRequests);
 }

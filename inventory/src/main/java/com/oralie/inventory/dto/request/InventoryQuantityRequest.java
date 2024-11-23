@@ -7,10 +7,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class ProductQuantityPost {
-    private Long productId;
+public class InventoryQuantityRequest {
+
+    private Long inventoryId;
     private Long quantity;
+
 }

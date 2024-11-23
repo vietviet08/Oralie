@@ -26,6 +26,6 @@ public class Inventory extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_id")
-    private Warehouse warehouse;
+    private WareHouse wareHouse;
 
 }

@@ -52,7 +52,7 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler{
 
     @Retry(name = "restRetry")
     @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleProductBaseFallback")
-    public ProductBaseResponse updateProductQuantity(List<ProductQuantityPost> productQuantityPosts ) {
+    public List<ProductBaseResponse> updateProductQuantity(List<ProductQuantityPost> productQuantityPosts ) {
         final String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
                 .getTokenValue();
         final URI url = UriComponentsBuilder
@@ -66,7 +66,7 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler{
                 .headers(h -> h.setBearerAuth(jwt))
                 .body(productQuantityPosts)
                 .retrieve()
-                .body(ProductBaseResponse.class);
+                .body(List<ProductBaseResponse.class>);
 
     }
 

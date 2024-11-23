@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class InventoryRequest {
+
     private Long productId;
     private Long wareHouseId;
     private Long quantity;
