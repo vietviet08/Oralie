@@ -9,6 +9,7 @@ import com.oralie.rates.model.Rate;
 import com.oralie.rates.repository.RateRepository;
 import com.oralie.rates.service.RateService;
 import com.oralie.rates.service.SocialService;
+import com.oralie.rates.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,9 +24,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RateServiceImpl implements RateService {
 
+	private static final Logger log = LoggerFactory.getLogger(RateServiceImpl.class);
+
 	private final RateRepository rateRepository;
  	
 	private final SocialService socialService;
+
+	private final AccountService accountService;
 
 	@Override
 	public ListResponse<RateResponse> getAllRate(int page, int size, String sortBy, String sort) {
@@ -67,10 +72,21 @@ public class RateServiceImpl implements RateService {
 
 	@Override
 	public RateResponse postComment(Long productId, String userId, RateRequest rateRequest) {
-		List<FileMetadata> fileMetadatas = socialService.uploadImages(rateRequest.getFiles());
-		List<String> urls = new ArrayList<>();
-		fileMetadatas.forEach(fileMetadata -> urls.add(fileMetadata.getUrl()));
+		//check existing user
+		boolean existUser = accountService.existingAccountByUserId(userId);
 
+		if(!existUser) {
+			log.error("Not existing account by UserId: {}", userId);
+			throw new BadRequestException(RateConstant.NOT_EXISTING_USER);
+		}
+
+		List<String> urls = new ArrayList<>();
+
+		if(rateRequest.getFiles != null && !rateRequest.getFiles){
+			List<FileMetadata> fileMetadatas = socialService.uploadImages(rateRequest.getFiles());
+			fileMetadatas.forEach(fileMetadata -> urls.add(fileMetadata.getUrl()));
+		}
+		
 		Rate parentRate = rateRepository.findById(rateRequest.getParentRate()).orElse(null);
 
 		Rate rate = Rate.builder()
@@ -87,11 +103,23 @@ public class RateServiceImpl implements RateService {
 
 	@Override
 	public RateResponse updateComment(Long productId, String userId, RateRequest rateRequest) {
+		boolean existUser = accountService.existingAccountByUserId(userId);
+
+		if(!existUser) {
+			log.error("Not existing account by UserId: {}", userId);
+			throw new BadRequestException(RateConstant.NOT_EXISTING_USER);
+		}
+
+
 		Rate rate = rateRepository.findById(rateRequest.getId())
 				.orElseThrow(() -> new ResourceNotFoundException("Rate not found", "id", rateRequest.getId().toString()));
-		List<FileMetadata> fileMetadatas = socialService.uploadImages(rateRequest.getFiles());
+		
 		List<String> urls = new ArrayList<>();
-		fileMetadatas.forEach(fileMetadata -> urls.add(fileMetadata.getUrl()));
+
+		if(rateRequest.getFiles != null && !rateRequest.getFiles){
+			List<FileMetadata> fileMetadatas = socialService.uploadImages(rateRequest.getFiles());
+			fileMetadatas.forEach(fileMetadata -> urls.add(fileMetadata.getUrl()));
+		}
 
 		Rate parentRate = rateRepository.findById(rateRequest.getId()).orElse(null);
 
@@ -111,6 +139,57 @@ public class RateServiceImpl implements RateService {
 				.orElseThrow(() -> new ResourceNotFoundException("Rate not found", "userId", userId));
 		rateRepository.delete(rate);
 	}
+
+	@Override
+    public void likeComment(Long rateId, String userId){
+    	
+    	Rate rate = rateRepository.findByUserIdAndProductId(userId, productId)
+				.orElseThrow(() -> new ResourceNotFoundException("Rate not found", "userId", userId));
+		
+		boolean existUser = accountService.existingAccountByUserId(userId);
+
+		if(!existUser) {
+			log.error("Not existing account by UserId: {}", userId);
+			throw new BadRequestException(RateConstant.NOT_EXISTING_USER);
+		}
+
+		Long totalLike = rate.getTotalLike() != null ? rate.getTotalLike() : 0L;
+
+		boolean isLike = rate.getListUserLike().stream()
+        .anyMatch(userRateComment -> 
+            userRateComment.getUserId().equalsIgnoreCase(userId) && 
+            Boolean.TRUE.equals(userRateComment.getIsLike()));
+
+        isLike ? rate.setTotalLike(totalLike --) : rate.setTotalLike(totalLike ++); 
+
+    }
+
+    @Override
+    public void disLikeComment(Long rateid, String userId){
+    	Rate rate = rateRepository.findByUserIdAndProductId(userId, productId)
+				.orElseThrow(() -> new ResourceNotFoundException("Rate not found", "userId", userId));
+		
+		boolean existUser = accountService.existingAccountByUserId(userId);
+
+		if(!existUser) {
+			log.error("Not existing account by UserId: {}", userId);
+			throw new BadRequestException(RateConstant.NOT_EXISTING_USER);
+		}
+
+		Long totalDislike = rate.getTotalDislike() != null ? rate.getTotalDislike() : 0L;
+
+		boolean isDislike = rate.getListUserLike().stream()
+        .anyMatch(userRateComment -> 
+            userRateComment.getUserId().equalsIgnoreCase(userId) && 
+            Boolean.FALSE.equals(userRateComment.getIsLike()));
+
+        isDislike ? rate.setTotalLike(totalLike --) : rate.setTotalLike(totalLike ++); 
+    }
+
+    @Override
+    public double avgRateStar(Long productId){
+    	return 0.0;
+    }
 
 	private RateResponse mapToRateResponse(Rate rate) {
 		return RateResponse.builder()

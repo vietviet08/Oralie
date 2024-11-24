@@ -10,9 +10,17 @@ public interface RateService {
 
     ListResponse<RateResponse> getAllRateByProductId(Long productId, int page, int size, String sortBy, String sort);
 
+    ListResponse<RateResponse> getAllRateByUserId(String userId, int page, int size, String sortBy, String sort);
+
     RateResponse postComment(Long productId, String userId, RateRequest rateRequest);
 
     RateResponse updateComment(Long productId, String userId, RateRequest rateRequest);
 
     void deleteComment(Long productId, String userId);
+
+    void likeComment(Long rateId, String userId);
+
+    void disLikeComment(Long rateid, String userId);
+
+    double avgRateStar(Long productId);
 }

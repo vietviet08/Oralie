@@ -197,6 +197,13 @@ public class AccountController {
                         .build());
     }
 
+    @GetMapping("/dash/accounts/existing/{userId}")
+    public ResponseEntity<boolean> existingAccountByUserId(@PathVariable String userId){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(accountService.existingAccountByUserId(userId));
+    }
+
     //dash for self
     @GetMapping("/dash/profile")
     public ResponseEntity<AccountResponse> getProfile() {

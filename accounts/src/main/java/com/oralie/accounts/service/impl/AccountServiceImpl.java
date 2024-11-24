@@ -311,6 +311,11 @@ public class AccountServiceImpl implements AccountService {
             throw errorNormalizer.handleKeyCloakException(exception);
         }
     }
+    
+    @Override
+    public boolean existingAccountByUserId(String userId){
+        return accountsRepository.existsByUserId(String userId);
+    }
 
     private String extractUserId(ResponseEntity<?> response) {
         List<String> locationHeaders = response.getHeaders().get("Location");

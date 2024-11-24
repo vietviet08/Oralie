@@ -23,4 +23,6 @@ public interface AccountService {
     AccountResponse getAccountProfile();
     void changePasswordProfile(String password);
     void lockAccount(String username);
+    
+    boolean existingAccountByUserId(String userId);
 }

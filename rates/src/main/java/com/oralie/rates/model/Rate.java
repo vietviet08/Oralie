@@ -24,10 +24,19 @@ public class Rate extends BaseEntity {
 
     private Long productId;
 
+    private int rateStar;
+
     private String content;
 
     @ElementCollection
     private List<String> urlFile;
+
+    @OneToMany(mappedBy = "rate", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<UserRateComment> listUserLike; 
+
+    private Long totalLike;
+
+    private Long totalDislike;
 
     private Boolean isAvailable;
    
