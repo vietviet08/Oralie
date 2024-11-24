@@ -176,6 +176,36 @@ pipeline {
                         }
                     }
                 }
+                
+                stage('Build Rate Service') {
+                    steps {
+                        script {
+                            dir('rates') {
+                                sh """
+                                    if docker images | grep '${DOCKERHUB_REPO}/rates-oralie'; then
+                                        docker rmi -f ${DOCKERHUB_REPO}/rates-oralie:${LATEST_VERSION}
+                                    fi
+                                    docker build -t ${DOCKERHUB_REPO}/rates-oralie:${NEXT_VERSION} .
+                                """
+                            }
+                        }
+                    }
+                }
+                
+                stage('Build Inventory Service') {
+                    steps {
+                        script {
+                            dir('inventory') {
+                                sh """
+                                    if docker images | grep '${DOCKERHUB_REPO}/inventory-oralie'; then
+                                        docker rmi -f ${DOCKERHUB_REPO}/inventory-oralie:${LATEST_VERSION}
+                                    fi
+                                    docker build -t ${DOCKERHUB_REPO}/inventory-oralie:${NEXT_VERSION} .
+                                """
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -204,6 +234,10 @@ pipeline {
                     sh "docker push ${DOCKERHUB_REPO}/social-oralie:${NEXT_VERSION}"
 
                     sh "docker push ${DOCKERHUB_REPO}/search-oralie:${NEXT_VERSION}"
+                    
+                    sh "docker push ${DOCKERHUB_REPO}/rates-oralie:${NEXT_VERSION}"
+                    
+                    sh "docker push ${DOCKERHUB_REPO}/inventory-oralie:${NEXT_VERSION}"
 
                     sh 'docker logout'
                 }
