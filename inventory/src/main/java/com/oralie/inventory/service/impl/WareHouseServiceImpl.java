@@ -21,12 +21,15 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class WareHouseServiceImpl implements WareHouseService {
-    private final WareHouseRepository wareHouseRepository;
+    
+    private static final Logger log = LoggerFactory.getLogger(InventoryServiceImpl.class);
 
+    private final WareHouseRepository wareHouseRepository;
 
     @Override
     public List<WareHouseResponse> getAllWareHouses() {
         List<Warehouse> wareHouses = wareHouseRepository.findAll();
+        log.info("wareHouse size is {}, wareHouses.size().toString()");
         return mapToListWareHouseResponse(wareHouses);
     }
 

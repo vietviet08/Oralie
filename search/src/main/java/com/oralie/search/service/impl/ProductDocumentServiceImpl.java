@@ -21,6 +21,7 @@ import java.net.URI;
 public class ProductDocumentServiceImpl implements ProductDocumentService {
 
     private static final Logger log = LoggerFactory.getLogger(ProductDocumentServiceImpl.class);
+    
     private static final String URL_PRODUCT = "http://localhost:8081";
 
     private final RestClient restClient;
@@ -37,7 +38,7 @@ public class ProductDocumentServiceImpl implements ProductDocumentService {
 
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_PRODUCT)
-                .path("/store/products/products-es/{id}")
+                .path("/store/products/products-es/" + productId)
                 .buildAndExpand(productId)
                 .toUri();
 

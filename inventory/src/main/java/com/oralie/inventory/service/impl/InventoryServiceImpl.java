@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Transactional
 @RequiredArgsConstructor
 public class InventoryServiceImpl implements InventoryService {
-    
+    private static final Logger log = LoggerFactory.getLogger(InventoryServiceImpl.class);
     private final InventoryRepository inventoryRepository;    
     private final WareHouseRepository warehouseRepository;
     private final ProductService productService;

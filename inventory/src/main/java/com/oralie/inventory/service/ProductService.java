@@ -26,6 +26,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService extends AbstractCircuitBreakFallbackHandler{
 
+    private static final Logger log = LoggerFactory.getLogger(ProductService.class);
+    
     private final RestClient restClient;
 
     @Value("${url.product}")
@@ -34,43 +36,54 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler{
     @Retry(name = "restRetry")
     @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleProductBaseFallback")
     public ProductBaseResponse getProduct(Long id) {
-        final String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .getTokenValue();
+        log.info("Getting product by id: {}", id.toString());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getCredentials() == null) {
+            throw new UnauthorizedException("Authentication or JWT token is missing");
+        }
+        final String jwtToken = authentication.getCredentials().toString();
+
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_PRODUCT)
-                .path("/store/products/" + id)
-                .buildAndExpand()
+                .pathSegment("store", "products", id.toString())
+                .build()
                 .toUri();
 
         return restClient.get()
                 .uri(url)
-                .headers(h -> h.setBearerAuth(jwt))
+                .headers(headers -> headers.setBearerAuth(jwtToken))
                 .retrieve()
                 .body(ProductBaseResponse.class);
-
     }
 
     @Retry(name = "restRetry")
     @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleProductBaseFallback")
-    public List<ProductBaseResponse> updateProductQuantity(List<ProductQuantityPost> productQuantityPosts ) {
-        final String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .getTokenValue();
+    public List<ProductBaseResponse> updateProductQuantity(List<ProductQuantityPost> productQuantityPosts) {
+        log.info("Updating quantity of products: {} items", productQuantityPosts.size());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getCredentials() == null) {
+            throw new UnauthorizedException("Authentication or JWT token is missing");
+        }
+        final String jwtToken = authentication.getCredentials().toString();
+
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_PRODUCT)
-                .path("/dash/products/updateQuantity" )
-                .buildAndExpand()
+                .pathSegment("dash", "products", "updateQuantity")
+                .build()
                 .toUri();
 
         return restClient.put()
                 .uri(url)
-                .headers(h -> h.setBearerAuth(jwt))
-                .body(productQuantityPosts)
+                .headers(headers -> headers.setBearerAuth(jwtToken))
+                .bodyValue(productQuantityPosts)
                 .retrieve()
-                .body(List<ProductBaseResponse.class>);
-
+                .body(new ParameterizedTypeReference<List<ProductBaseResponse>>() {});
     }
 
-    protected ProductBaseResponse handleProductBaseFallback(Throwable throwable) throws Throwable {
+    protected ProductBaseResponse handleProductBaseFallback(Throwable throwable) {
+        log.error("Fallback triggered due to: {}", throwable.getMessage(), throwable);
         return handleTypedFallback(throwable);
     }
 }

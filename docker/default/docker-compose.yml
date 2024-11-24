@@ -541,6 +541,54 @@ services:
       file: common-config.yml
       service: microservice-service-config
 
+  rates:
+    image: vietquoc2408/rates-oralie:${LATEST_VERSION}
+    container_name: rates-oralie-ms
+    ports:
+      - "8084:8084"
+    healthcheck:
+      test: "curl --fail --silent localhost:8084/actuator/health/readiness | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    depends_on:
+      oralie_db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "rates"
+      OTEL_SERVICE_NAME: "rates"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
+    extends:
+      file: common-config.yml
+      service: microservice-service-config
+
+  inventory:
+    image: vietquoc2408/inventory-oralie:${LATEST_VERSION}
+    container_name: inventory-oralie-ms
+    ports:
+      - "8089:8089"
+    healthcheck:
+      test: "curl --fail --silent localhost:8089/actuator/health/readiness | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    depends_on:
+      oralie_db:
+        condition: service_healthy
+      configserver:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "inventory"
+      OTEL_SERVICE_NAME: "inventory"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
+    extends:
+      file: common-config.yml
+      service: microservice-service-config
+
   notification:
     image: vietquoc2408/notification-oralie:${LATEST_VERSION}
     container_name: notification-oralie-ms
