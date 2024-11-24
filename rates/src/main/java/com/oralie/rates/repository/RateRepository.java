@@ -18,4 +18,5 @@ public interface RateRepository extends JpaRepository<Rate, Long> {
     Page<Rate> findAllByProductId(Long productId, Pageable pageable);
 
     Optional<Rate> findByUserIdAndProductId(String userId, Long productId);
+    
 }

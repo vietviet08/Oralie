@@ -23,9 +23,15 @@ public class RateResponse {
 
     private List<String> urlFile;
 
+    private List<UserRateComment> listUserLike; 
+
+    private Long totalLike;
+
+    private Long totalDislike;
+
     private Boolean isAvailable;
 
     private Long parentRate;
 
-    private List<Rate> subRates;
+    private List<RateResponse> subRates;
 }

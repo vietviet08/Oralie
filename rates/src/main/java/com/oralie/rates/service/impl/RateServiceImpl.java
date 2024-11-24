@@ -94,6 +94,9 @@ public class RateServiceImpl implements RateService {
 				.productId(productId)
 				.content(rateRequest.getContent())
 				.urlFile(urls)
+				.totalLike(0L)
+				.totalDislike(0L)
+				.listUserLike(null)
 				.isAvailable(true)
 				.parentRate(parentRate)
 				.subRates(rateRequest.getSubRates())
@@ -134,17 +137,17 @@ public class RateServiceImpl implements RateService {
 	}
 
 	@Override
-	public void deleteComment(Long productId, String userId) {
-		Rate rate = rateRepository.findByUserIdAndProductId(userId, productId)
-				.orElseThrow(() -> new ResourceNotFoundException("Rate not found", "userId", userId));
+	public void deleteComment(Long rateId, String userId) {
+		Rate rate = rateRepository.findById(rateId)
+				.orElseThrow(() -> new ResourceNotFoundException("Rate not found", "rateId", rateId));
 		rateRepository.delete(rate);
 	}
 
 	@Override
-    public void likeComment(Long rateId, String userId){
+    public void likeComment(Long rateId, Long productId, String userId){
     	
-    	Rate rate = rateRepository.findByUserIdAndProductId(userId, productId)
-				.orElseThrow(() -> new ResourceNotFoundException("Rate not found", "userId", userId));
+    	Rate rate = rateRepository.findById(rateId)
+				.orElseThrow(() -> new ResourceNotFoundException("Rate not found", "rateId", rateId));
 		
 		boolean existUser = accountService.existingAccountByUserId(userId);
 
@@ -160,14 +163,32 @@ public class RateServiceImpl implements RateService {
             userRateComment.getUserId().equalsIgnoreCase(userId) && 
             Boolean.TRUE.equals(userRateComment.getIsLike()));
 
-        isLike ? rate.setTotalLike(totalLike --) : rate.setTotalLike(totalLike ++); 
+        if(isLike){
+        	rate.setTotalLike(totalLike --);
+        	rate.getListUserLike().remove(rate.getListUserLike()
+        		.stream()
+        		.filter(userLiked -> userLiked.getUserId().equals(userId))
+        	);
+        } else {
+        	rate.setTotalLike(totalLike ++);
+        	rate.getListUserLike().add(
+        		UserRateComment.builder()
+        		.userId(userId)
+        		.rate(rate)
+        		.productId(productId)
+        		.isLike(true)
+        		.build();
+        	)
+		}
 
+        rateRepository.save(rate);
     }
 
     @Override
-    public void disLikeComment(Long rateid, String userId){
-    	Rate rate = rateRepository.findByUserIdAndProductId(userId, productId)
-				.orElseThrow(() -> new ResourceNotFoundException("Rate not found", "userId", userId));
+    public void disLikeComment(Long rateid, Long productId, String userId){
+
+    	Rate rate = rateRepository.findById(rateId)
+				.orElseThrow(() -> new ResourceNotFoundException("Rate not found", "rateId", rateId));
 		
 		boolean existUser = accountService.existingAccountByUserId(userId);
 
@@ -183,12 +204,35 @@ public class RateServiceImpl implements RateService {
             userRateComment.getUserId().equalsIgnoreCase(userId) && 
             Boolean.FALSE.equals(userRateComment.getIsLike()));
 
-        isDislike ? rate.setTotalLike(totalLike --) : rate.setTotalLike(totalLike ++); 
+        if(isDislike){
+        	rate.setTotalDislike(totalDislike --);
+        	rate.getListUserLike().remove(rate.getListUserLike()
+        		.stream()
+        		.filter(userLiked -> userLiked.getUserId().equals(userId))
+        	);
+        } else {
+        	rate.setTotalDislike(totalDislike ++);
+        	rate.getListUserLike().add(
+        		UserRateComment.builder()
+        		.userId(userId)
+        		.rate(rate)
+        		.productId(productId)
+        		.isLike(false)
+        		.build();
+        	)
+		}
+		
+		rateRepository.save(rate);
     }
 
     @Override
     public double avgRateStar(Long productId){
     	return 0.0;
+    }
+
+    @Override
+    public void hideComment(Long rateId){
+
     }
 
 	private RateResponse mapToRateResponse(Rate rate) {
@@ -198,6 +242,9 @@ public class RateServiceImpl implements RateService {
 				.productId(rate.getProductId())
 				.content(rate.getContent())
 				.urlFile(rate.getUrlFile())
+				.totalLike(rate.getTotalLike())
+				.totalDislike(rate.getTotalDislike())
+				.listUserLike(rate.getTotalDislike() != null ? rate.getTotalDislike() : null)
 				.isAvailable(rate.getIsAvailable())
 				.parentRate(rate.getParentRate().getId())
 				.subRates(rate.getSubRates())
@@ -213,6 +260,9 @@ public class RateServiceImpl implements RateService {
 					.productId(rate.getProductId())
 					.content(rate.getContent())
 					.urlFile(rate.getUrlFile())
+					.totalLike(rate.getTotalLike())
+					.totalDislike(rate.getTotalDislike() != null ? rate.getTotalDislike() : null)
+					.listUserLike(rate.getListUserLike())
 					.isAvailable(rate.getIsAvailable())
 					.parentRate(rate.getParentRate().getId())
 					.subRates(rate.getSubRates())

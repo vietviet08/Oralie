@@ -16,11 +16,13 @@ public interface RateService {
 
     RateResponse updateComment(Long productId, String userId, RateRequest rateRequest);
 
-    void deleteComment(Long productId, String userId);
+    void deleteComment(Long productId, Long rateId, String userId);
 
     void likeComment(Long rateId, String userId);
 
     void disLikeComment(Long rateid, String userId);
 
     double avgRateStar(Long productId);
+
+    void hideComment(Long rateId);
 }

@@ -19,6 +19,8 @@ public class UserRateComment extends BaseEntity{
 
     private String userId;
 
+    private Long productId;
+
     private Boolean isLike;
 
     @ManyToOne(fetch = FetchType.LAZY)
