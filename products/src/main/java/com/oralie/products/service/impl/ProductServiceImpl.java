@@ -376,6 +376,10 @@ public class ProductServiceImpl implements ProductService {
         productRepository.delete(product);
     }
 
+    boolean existingProductByProductId(Long productId){
+        return productRepository.existsById(productId);
+    }
+
     private List<ProductResponse> mapToProductResponseList(List<Product> products) {
         return products.stream()
                 .map(product -> ProductResponse.builder()

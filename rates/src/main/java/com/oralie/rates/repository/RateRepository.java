@@ -19,4 +19,5 @@ public interface RateRepository extends JpaRepository<Rate, Long> {
 
     Optional<Rate> findByUserIdAndProductId(String userId, Long productId);
     
+    List<Rate> findByProductId(Long productId);
 }

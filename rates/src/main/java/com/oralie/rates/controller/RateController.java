@@ -33,6 +33,8 @@ public class RateController {
 
     private final RateService rateService;
 
+    //dash
+
     @GetMapping(value = "/rates/dash/all")
     public ResponseEntity<ListResponse<RateResponse>> getAllRate(
             @RequestParam(required = false, defaultValue = "0") int page,
@@ -43,6 +45,8 @@ public class RateController {
                 .body(rateService.getAllRate(page, size, sortBy, sort));
 
     }
+
+    //store
 
     @GetMapping(value = "/rates/store/{productId}")
     public ResponseEntity<ListResponse<RateResponse>> getAllRate(
@@ -76,14 +80,41 @@ public class RateController {
                 .body(rateService.updateComment(productId, userId, rateRequest));
     }
 
-    @DeleteMapping(value = "/rates/store/{productId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long productId) {
-
+    @DeleteMapping(value = "/rates/store/{rateId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long rateId) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        rateService.deleteComment(productId, userId);
-        return ResponseEntity.status(HttpStatus.OK).body();
+        rateService.deleteComment(rateId, userId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body();
     }
 
+    @PutMapping(value = "/rates/store/like/{productId}")
+    public ResponseEntity<Void> likeComment(@PathVariable Long productId,
+                                            @RequestParam Long rateId){
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        rateService.likeComment(rateId, productId, userId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body();
+    }
+
+    @PutMapping(value = "/rates/store/dislike/{productId}")
+    public ResponseEntity<Void> likeComment(@PathVariable Long productId,
+                                            @RequestParam Long rateId){
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        rateService.dislikeComment(rateId, productId, userId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body();
+    }
+
+    @PutMapping(value = "/rates/store/available/{rateId}")
+    public ResponseEntity<Void> likeComment(@PathVariable Long rateId){
+        rateService.updateAvailableComment(rateId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body();
+    }
+
+    @GetMapping(value = "/rates/store/avg/{productId}")
+    public ResponseEntity<Double> getAvgRateStar(@PathVariable Long productId){
+        return ResponseEntity.status(HttpStatus.OK).body(rateService.getAvgRate());
+    } 
+
+    //info service
     @GetMapping("/rates/build-version")
     public ResponseEntity<String> getBuildVersion() {
         return ResponseEntity

@@ -52,6 +52,7 @@ public class ProductController {
 
     private final ProductService productService;
 
+    //store
     @GetMapping("/store/products")
     public ResponseEntity<ListResponse<ProductResponse>> getAllProducts(
             @RequestParam(required = false, defaultValue = "0") int page,
@@ -129,6 +130,13 @@ public class ProductController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.getProductBaseById(id));
+    }
+
+    @GetMapping("/store/products/existingById/{productId}")
+    public ResponseEntity<boolean> existingProductByProductId(@PathVariable Long proudctId){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.existingProductByProductId(productId));
     }
 
     // dash

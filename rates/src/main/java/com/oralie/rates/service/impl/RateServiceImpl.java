@@ -185,7 +185,7 @@ public class RateServiceImpl implements RateService {
     }
 
     @Override
-    public void disLikeComment(Long rateid, Long productId, String userId){
+    public void dislikeComment(Long rateid, Long productId, String userId){
 
     	Rate rate = rateRepository.findById(rateId)
 				.orElseThrow(() -> new ResourceNotFoundException("Rate not found", "rateId", rateId));
@@ -226,13 +226,35 @@ public class RateServiceImpl implements RateService {
     }
 
     @Override
-    public double avgRateStar(Long productId){
-    	return 0.0;
+    public Double avgRateStar(Long productId){
+    	boolean existingProduct = productService.existingProductByProductId();
+    	
+    	if(!existingProduct) {
+    		log.error("Not found Product with productId: {}", productId.toString());
+    		throw new ResourceNotFoundException("Product", "productId", productId.toString());
+    	}
+
+    	List<Rate> rates = rateRepository.findByProductId(productId);
+    	if (rates.isEmpty()) return 0.0;
+    	return rates.stream()
+                .mapToInt(Rate::getRateStar)  
+                .average()                    
+                .orElse(0.0); 
     }
 
     @Override
-    public void hideComment(Long rateId){
-
+    public void updateAvailableComment(Long rateId){
+    	Rate rate = rateRepository.findById(rateId)
+    		.orElseThrow(() -> new ResourceNotFoundException("Rate", "rateId", rateId.toString()))
+    	
+    	String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+    	
+    	!userId.equals(rate.getUserId) ? 
+    		throw new BadRequestException(RateConstant.RATE_NOT_MATCH_USER) 
+    		: log.info("User with id: {}, hiding comment", userId);
+    	
+    	rate.setIsAvailable(!rate.getIsAvailable());
+    	rateRepository.save(rate);
     }
 
 	private RateResponse mapToRateResponse(Rate rate) {

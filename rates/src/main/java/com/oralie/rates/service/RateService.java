@@ -20,9 +20,9 @@ public interface RateService {
 
     void likeComment(Long rateId, Long productId, String userId);
 
-    void disLikeComment(Long rateid, Long productId, String userId);
+    void dislikeComment(Long rateid, Long productId, String userId);
 
-    double avgRateStar(Long productId);
+    Double avgRateStar(Long productId);
 
-    void hideComment(Long rateId);
+    void updateAvailableComment(Long rateId);
 }

@@ -1,6 +1,5 @@
 package com.oralie.rates.service;
 
-
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
@@ -20,29 +19,30 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 @RequiredArgsConstructor
-public class AccountService extends AbstractCircuitBreakFallbackHandler{
+public class ProductService extends AbstractCircuitBreakFallbackHandler{
 	
-	private static final Logger log = LoggerFactory.getLogger(AccountService.class);
-
-	private final RestClient restClient;
+	private static final Logger log = LoggerFactory.getLogger(ProductService.class);
  	
- 	@Value("${url.accounts}")
-        private String URL_ACCOUNT;
+ 	private final RestClient restClient;
+
+    @Value("${url.product}")
+    private String URL_PRODUCT;
 
 	@Retry(name = "restRetry")
-        @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleBooleanFallback")
-	public boolean existingAccountByUserId(String userId){
-	log.info("Checking user by userId: {}", userId);
+    @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleBooleanFallback")
+	public boolean existingProductByProductId(Long productId){
+		log.info("Checking product by id: {}", productId.toString());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication.getCredentials() == null) {
             throw new UnauthorizedException("Authentication or JWT token is missing");
         }
+
         final String jwtToken = authentication.getCredentials().toString();
 
         final URI url = UriComponentsBuilder
-                .fromHttpUrl(URL_ACCOUNT)
-                .pathSegment("dash", "accounts", "existing", userId)
+                .fromHttpUrl(URL_PRODUCT)
+                .pathSegment("store", "products", "existingById", productId.toString())
                 .build()
                 .toUri();
 
@@ -50,11 +50,10 @@ public class AccountService extends AbstractCircuitBreakFallbackHandler{
                 .uri(url)
                 .headers(headers -> headers.setBearerAuth(jwtToken))
                 .retrieve()
-                .body();
+                .body(ProductBaseResponse.class);
 	}
-
 	protected ProductBaseResponse handleBooleanFallback(Throwable throwable) {
-                log.error("Fallback triggered due to: {}", throwable.getMessage(), throwable);
-                return handleTypedFallback(throwable);
-        }
-}
+        log.error("Fallback triggered due to: {}", throwable.getMessage(), throwable);
+        return handleTypedFallback(throwable);
+    }
+}	
