@@ -25,11 +25,11 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler{
  	
  	private final RestClient restClient;
 
-    @Value("${url.product}")
-    private String URL_PRODUCT;
+        @Value("${url.product}")
+        private String URL_PRODUCT;
 
 	@Retry(name = "restRetry")
-    @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleBooleanFallback")
+        @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleBooleanFallback")
 	public boolean existingProductByProductId(Long productId){
 		log.info("Checking product by id: {}", productId.toString());
 
