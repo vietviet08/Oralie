@@ -10,7 +10,7 @@ public interface ProductRedisService{
 												String sort,
 												String search) throws JsonProcessingException;
 
-	void saveAllProduct(ListResponse<ProductResponse>,
+	void saveAllProduct(ListResponse<ProductResponse> listProductResponse,
 						String sortBy,
 						String sort, 
 						String search) throws JsonProcessingException;
