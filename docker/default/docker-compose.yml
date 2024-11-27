@@ -451,6 +451,10 @@ services:
       SPRING_APPLICATION_NAME: "products"
       OTEL_SERVICE_NAME: "products"
       SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
+      SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
+      SPRING_DATA_REDIS_TIMEOUT: 1s
     extends:
       file: common-config.yml
       service: microservice-service-config

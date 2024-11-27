@@ -23,6 +23,12 @@ spring:
     openfeign:
       circuitbreaker:
         enabled: true
+  data:
+    redis:
+      port: 6379
+      host: localhost
+      connect-timeout: 2s
+      timeout: 1s
 
   servlet:
     multipart:
