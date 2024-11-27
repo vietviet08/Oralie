@@ -25,10 +25,31 @@ public class RedisConfig {
     }
 
     @Bean
-    @Primary
     public RedisTemplate<Object, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         RedisTemplate<Object, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory);
+
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new Jackson2sonRedisSerializer(Object.class));
+        
+        template.setHashKeySerializer(new StringRedisSerializer());
+        template.setHashValueSerializer(new Jackson2sonRedisSerializer(Object.class));
+        
+        template.afterPropertiesSet();
+        
         return template;
+    }
+
+    @Bean
+    public ObjectMapper redisObjectMapper(){
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ISO_DATE_TIME));
+        module.addDeserializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ISO_DATE_TIME));
+    
+        ObjectMapper.regisModule(module);
+
+        return objectMapper;
     }
 }
