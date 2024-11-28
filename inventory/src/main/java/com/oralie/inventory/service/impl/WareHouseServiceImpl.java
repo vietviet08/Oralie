@@ -4,11 +4,13 @@ import com.oralie.inventory.dto.request.WareHouseRequest;
 import com.oralie.inventory.dto.response.ListResponse;
 import com.oralie.inventory.dto.response.WareHouseResponse;
 import com.oralie.inventory.exception.ResourceNotFoundException;
-import com.oralie.inventory.model.Warehouse;
+import com.oralie.inventory.model.WareHouse;
 import com.oralie.inventory.repository.WareHouseRepository;
 import com.oralie.inventory.service.WareHouseService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,14 +23,14 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class WareHouseServiceImpl implements WareHouseService {
-    
+
     private static final Logger log = LoggerFactory.getLogger(InventoryServiceImpl.class);
 
     private final WareHouseRepository wareHouseRepository;
 
     @Override
     public List<WareHouseResponse> getAllWareHouses() {
-        List<Warehouse> wareHouses = wareHouseRepository.findAll();
+        List<WareHouse> wareHouses = wareHouseRepository.findAll();
         log.info("wareHouse size is {}, wareHouses.size().toString()");
         return mapToListWareHouseResponse(wareHouses);
     }
@@ -37,8 +39,8 @@ public class WareHouseServiceImpl implements WareHouseService {
     @Override
     public ListResponse<WareHouseResponse> getAllWareHouses(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<Warehouse> pageWareHouse = wareHouseRepository.findAll(pageable);
-        List<Warehouse> warehouses = pageWareHouse.getContent();
+        Page<WareHouse> pageWareHouse = wareHouseRepository.findAll(pageable);
+        List<WareHouse> warehouses = pageWareHouse.getContent();
 
         return ListResponse
                 .<WareHouseResponse>builder()
@@ -53,36 +55,36 @@ public class WareHouseServiceImpl implements WareHouseService {
 
     @Override
     public WareHouseResponse getWareHouseById(Long id) {
-        Warehouse wareHouse = wareHouseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("WareHouse not found", "id", id.toString()));
+        WareHouse wareHouse = wareHouseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("WareHouse not found", "id", id.toString()));
         return mapToWareHouseResponse(wareHouse);
     }
 
     @Override
     public WareHouseResponse createWareHouse(WareHouseRequest wareHouseRequest) {
-        Warehouse wareHouse = Warehouse.builder()
+        WareHouse wareHouse = WareHouse.builder()
                 .name(wareHouseRequest.getName())
                 .address(wareHouseRequest.getAddress())
                 .build();
-        Warehouse savedWareHouse = wareHouseRepository.save(wareHouse);
+        WareHouse savedWareHouse = wareHouseRepository.save(wareHouse);
         return mapToWareHouseResponse(savedWareHouse);
     }
 
     @Override
     public WareHouseResponse updateWareHouse(Long id, WareHouseRequest wareHouseRequest) {
-        Warehouse wareHouse = wareHouseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("WareHouse not found", "id", id.toString()));
+        WareHouse wareHouse = wareHouseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("WareHouse not found", "id", id.toString()));
         wareHouse.setName(wareHouseRequest.getName());
         wareHouse.setAddress(wareHouseRequest.getAddress());
-        Warehouse updatedWareHouse = wareHouseRepository.save(wareHouse);
+        WareHouse updatedWareHouse = wareHouseRepository.save(wareHouse);
         return mapToWareHouseResponse(updatedWareHouse);
     }
 
     @Override
     public void deleteWareHouse(Long id) {
-        Warehouse wareHouse = wareHouseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("WareHouse not found", "id", id.toString()));
+        WareHouse wareHouse = wareHouseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("WareHouse not found", "id", id.toString()));
         wareHouseRepository.delete(wareHouse);
     }
 
-    private WareHouseResponse mapToWareHouseResponse(Warehouse wareHouse) {
+    private WareHouseResponse mapToWareHouseResponse(WareHouse wareHouse) {
         return WareHouseResponse.builder()
                 .id(wareHouse.getId())
                 .name(wareHouse.getName())
@@ -90,7 +92,7 @@ public class WareHouseServiceImpl implements WareHouseService {
                 .build();
     }
 
-    private List<WareHouseResponse> mapToListWareHouseResponse(List<Warehouse> wareHouses) {
+    private List<WareHouseResponse> mapToListWareHouseResponse(List<WareHouse> wareHouses) {
         return wareHouses.stream()
                 .map(wareHouse -> WareHouseResponse.builder()
                         .id(wareHouse.getId())

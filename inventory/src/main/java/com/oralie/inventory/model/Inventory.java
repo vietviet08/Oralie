@@ -22,7 +22,7 @@ public class Inventory extends BaseEntity {
 
     private String productName;
 
-    private Integer quantity;
+    private Long quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "warehouse_id")

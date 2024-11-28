@@ -1,6 +1,7 @@
 package com.oralie.rates.dto.response;
 
 import com.oralie.rates.model.Rate;
+import com.oralie.rates.model.UserRateComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class RateResponse {
 
     private List<String> urlFile;
 
-    private List<UserRateComment> listUserLike; 
+    private List<UserRateComment> listUserLike;
 
     private Long totalLike;
 

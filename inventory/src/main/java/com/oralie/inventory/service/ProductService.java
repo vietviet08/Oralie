@@ -5,11 +5,15 @@ import com.oralie.inventory.dto.response.ProductBaseResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -40,7 +44,8 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler{
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication.getCredentials() == null) {
-            throw new UnauthorizedException("Authentication or JWT token is missing");
+            log.error("Authentication or credentials are null");
+            return null;
         }
         final String jwtToken = authentication.getCredentials().toString();
 
@@ -64,7 +69,8 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler{
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication.getCredentials() == null) {
-            throw new UnauthorizedException("Authentication or JWT token is missing");
+            log.error("Authentication or credentials are null");
+            return null;
         }
         final String jwtToken = authentication.getCredentials().toString();
 
@@ -77,12 +83,12 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler{
         return restClient.put()
                 .uri(url)
                 .headers(headers -> headers.setBearerAuth(jwtToken))
-                .bodyValue(productQuantityPosts)
+                .body(productQuantityPosts)
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<ProductBaseResponse>>() {});
     }
 
-    protected ProductBaseResponse handleProductBaseFallback(Throwable throwable) {
+    protected ProductBaseResponse handleProductBaseFallback(Throwable throwable) throws Throwable {
         log.error("Fallback triggered due to: {}", throwable.getMessage(), throwable);
         return handleTypedFallback(throwable);
     }

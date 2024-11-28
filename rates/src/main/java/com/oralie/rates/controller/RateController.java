@@ -84,35 +84,35 @@ public class RateController {
     public ResponseEntity<Void> deleteComment(@PathVariable Long rateId) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         rateService.deleteComment(rateId, userId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
     @PutMapping(value = "/rates/store/like/{productId}")
     public ResponseEntity<Void> likeComment(@PathVariable Long productId,
-                                            @RequestParam Long rateId){
+                                            @RequestParam Long rateId) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         rateService.likeComment(rateId, productId, userId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
     @PutMapping(value = "/rates/store/dislike/{productId}")
-    public ResponseEntity<Void> likeComment(@PathVariable Long productId,
-                                            @RequestParam Long rateId){
+    public ResponseEntity<Void> dislikeComment(@PathVariable Long productId,
+                                               @RequestParam Long rateId) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         rateService.dislikeComment(rateId, productId, userId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
     @PutMapping(value = "/rates/store/available/{rateId}")
-    public ResponseEntity<Void> likeComment(@PathVariable Long rateId){
+    public ResponseEntity<Void> likeComment(@PathVariable Long rateId) {
         rateService.updateAvailableComment(rateId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
 
     @GetMapping(value = "/rates/store/avg/{productId}")
-    public ResponseEntity<Double> getAvgRateStar(@PathVariable Long productId){
-        return ResponseEntity.status(HttpStatus.OK).body(rateService.getAvgRate());
-    } 
+    public ResponseEntity<Double> getAvgRateStar(@PathVariable Long productId) {
+        return ResponseEntity.status(HttpStatus.OK).body(rateService.avgRateStar(productId));
+    }
 
     //info service
     @GetMapping("/rates/build-version")
