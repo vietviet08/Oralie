@@ -314,7 +314,7 @@ public class AccountServiceImpl implements AccountService {
     
     @Override
     public boolean existingAccountByUserId(String userId){
-        return accountsRepository.existsByUserId(String userId);
+        return accountsRepository.existsByUserId(userId);
     }
 
     private String extractUserId(ResponseEntity<?> response) {

@@ -1,12 +1,10 @@
 package com.oralie.products.service.redis.impl;
 
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.dto.response.ProductResponse;
-import com.oralie.products.repository.ProductRepository;
 import com.oralie.products.service.redis.ProductRedisService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,7 +19,6 @@ import java.util.Objects;
 public class ProductRedisServiceImpl implements ProductRedisService {
 
     private static final Logger log = LoggerFactory.getLogger(ProductRedisServiceImpl.class);
-    private final ProductRepository productRepository;
     private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper redisObjectMapper;
 
@@ -29,7 +26,6 @@ public class ProductRedisServiceImpl implements ProductRedisService {
     public void clear() {
         Objects.requireNonNull(redisTemplate.getConnectionFactory()).getConnection().flushAll();
     }
-
 
     @Override
     public ListResponse<ProductResponse> getAllProduct(int page, int size, String sortBy, String sort, String search) throws

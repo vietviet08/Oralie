@@ -1,0 +1,17 @@
+{
+  "name": "keycloak-postgres-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "database.hostname": "postgres",
+    "database.port": "5432",
+    "database.user": "postgres",
+    "database.password": "postgres",
+    "database.dbname": "keycloak",
+    "plugin.name": "pgoutput",
+    "slot.name": "debezium_slot",
+    "table.include.list": "public.user_entity",
+    "column.include.list": "user_entity.id,user_entity.username,user_entity.email,user_entity.first_name,user_entity.last_name",
+    "database.history.kafka.bootstrap.servers": "kafka:9092",
+    "database.history.kafka.topic": "schema-changes.keycloak"
+  }
+}

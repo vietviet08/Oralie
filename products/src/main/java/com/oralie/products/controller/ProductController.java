@@ -1,5 +1,6 @@
 package com.oralie.products.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oralie.products.dto.ProductContactDto;
 import com.oralie.products.dto.request.ProductQuantityPost;
 import com.oralie.products.dto.request.ProductRequest;
@@ -8,6 +9,7 @@ import com.oralie.products.dto.response.ProductBaseResponse;
 import com.oralie.products.dto.response.ProductResponse;
 import com.oralie.products.dto.response.ProductResponseES;
 import com.oralie.products.service.ProductService;
+import com.oralie.products.service.redis.ProductRedisService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +54,8 @@ public class ProductController {
 
     private final ProductService productService;
 
+    private final ProductRedisService productRedisService;
+
     //store
     @GetMapping("/store/products")
     public ResponseEntity<ListResponse<ProductResponse>> getAllProducts(
@@ -61,10 +65,18 @@ public class ProductController {
             @RequestParam(required = false, defaultValue = "asc") String sort,
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String category
-    ) {
+    ) throws JsonProcessingException {
+
+        ListResponse<ProductResponse> productResponses = productRedisService.getAllProduct(page, size, sortBy, sort, search);
+
+        if (productResponses.getData() == null) {
+            productResponses = productService.getAllProducts(page, size, sortBy, sort, search, category);
+            productRedisService.saveAllProduct(productResponses, sortBy, sort, search);
+        }
+
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(productService.getAllProducts(page, size, sortBy, sort, search, category));
+                .body(productResponses);
     }
 
     @GetMapping("/store/categories")
@@ -133,7 +145,7 @@ public class ProductController {
     }
 
     @GetMapping("/store/products/existingById/{productId}")
-    public ResponseEntity<boolean> existingProductByProductId(@PathVariable Long proudctId){
+    public ResponseEntity<Boolean> existingProductByProductId(@PathVariable Long productId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.existingProductByProductId(productId));

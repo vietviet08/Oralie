@@ -198,7 +198,7 @@ public class AccountController {
     }
 
     @GetMapping("/dash/accounts/existing/{userId}")
-    public ResponseEntity<boolean> existingAccountByUserId(@PathVariable String userId){
+    public ResponseEntity<Boolean> existingAccountByUserId(@PathVariable String userId){
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(accountService.existingAccountByUserId(userId));

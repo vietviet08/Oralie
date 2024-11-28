@@ -376,7 +376,8 @@ public class ProductServiceImpl implements ProductService {
         productRepository.delete(product);
     }
 
-    boolean existingProductByProductId(Long productId){
+    @Override
+    public boolean existingProductByProductId(Long productId){
         return productRepository.existsById(productId);
     }
 

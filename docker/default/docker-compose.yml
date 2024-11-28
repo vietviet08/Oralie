@@ -135,6 +135,42 @@ services:
       file: common-config.yml
       service: network-deploy-service
 
+  debezium:
+    image: debezium/connect:2.5
+    container_name: debezium
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      BOOTSTRAP_SERVERS: kafka:9092
+      CONFIG_STORAGE_TOPIC: debezium_configs
+      OFFSET_STORAGE_TOPIC: debezium_offsets
+      STATUS_STORAGE_TOPIC: debezium_statuses
+    ports:
+      - "9083:8083"
+    volumes:
+      - ./configs:/kafka/connect
+
+  connector-setup:
+    image: curlimages/curl:latest
+    container_name: connector-setup
+    depends_on:
+      - debezium
+    entrypoint: >
+      sh -c "
+      while ! curl -s http://debezium:9083/ | grep 'Kafka Connect'; do
+        echo 'Waiting for Debezium...';
+        sleep 5;
+      done;
+      echo 'Creating PostgreSQL connector...';
+      curl -X POST http://debezium:9083/connectors/ -H 'Content-Type: application/json' -d @/configs/postgres_connector.json;
+      echo 'Creating MySQL connector...';
+      curl -X POST http://debezium:9083/connectors/ -H 'Content-Type: application/json' -d @/configs/mysql_connector.json;
+      "
+    volumes:
+      - ./configs/postgres_connector.json:/configs/postgres_connector.json
+      - ./configs/mysql_connector.json:/configs/mysql_connector.json
+
   redis:
     image: redis
     container_name: redis

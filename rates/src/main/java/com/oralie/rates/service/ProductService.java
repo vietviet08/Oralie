@@ -33,7 +33,7 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler {
 
     private final RestClient restClient;
 
-    @Value("${url.product}")
+    @Value("${url.products}")
     private String URL_PRODUCT;
 
     @Retry(name = "restRetry")

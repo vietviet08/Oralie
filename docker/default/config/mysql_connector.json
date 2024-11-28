@@ -1,0 +1,30 @@
+{
+  "name": "mysql-sink-connector",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "connection.url": "jdbc:mysql://mysql:3306/oralie_db",
+    "connection.user": "root",
+    "connection.password": "root",
+    "topics": "public.user_entity",
+    "insert.mode": "upsert",
+    "pk.fields": "id",
+    "pk.mode": "record_key",
+    "table.name.format": "accounts",
+    "fields.mapping": {
+      "id": "user_id",
+      "username": "username",
+      "email": "email",
+      "first_name": "first_name",
+      "last_name": "last_name",
+      "gender": "gender"
+    },
+    "transforms": "createFullName",
+    "transforms.createFullName.type": "org.apache.kafka.connect.transforms.ValueTransformer",
+    "transforms.createFullName.field": "full_name",
+    "transforms.createFullName.operation": "concat",
+    "transforms.createFullName.fields": ["first_name", "last_name"],
+    "transforms.createFullName.separator": " ",
+    "auto.create": "false",
+    "auto.evolve": "false"
+  }
+}

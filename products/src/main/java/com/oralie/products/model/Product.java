@@ -1,6 +1,7 @@
 package com.oralie.products.model;
 
 import com.oralie.products.dto.entity.BaseEntity;
+import com.oralie.products.dto.entity.listener.ProductListener;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,6 +16,7 @@ import java.util.List;
 @Entity
 @Builder
 @Table(name = "products")
+@EntityListeners(ProductListener.class)
 public class Product extends BaseEntity {
 
     @Id

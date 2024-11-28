@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface RateRepository extends JpaRepository<Rate, Long> {
 
-    Page<Rate> findAllRates(Pageable pageable);
+    Page<Rate> findAll(Pageable pageable);
 
     @Query("SELECT r FROM Rate r WHERE r.productId = :productId")
     Page<Rate> findAllByProductId(Long productId, Pageable pageable);

@@ -36,7 +36,6 @@ public class RateServiceImpl implements RateService {
     private final RateRepository rateRepository;
 
     private final SocialService socialService;
-
     private final AccountService accountService;
     private final ProductService productService;
 
@@ -45,7 +44,7 @@ public class RateServiceImpl implements RateService {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
-        Page<Rate> pageRates = rateRepository.findAllRates(pageable);
+        Page<Rate> pageRates = rateRepository.findAll(pageable);
         List<Rate> rates = pageRates.getContent();
 
         return ListResponse
