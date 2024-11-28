@@ -150,6 +150,9 @@ services:
       - "9083:8083"
     volumes:
       - ./configs:/kafka/connect
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   connector-setup:
     image: curlimages/curl:latest
@@ -158,18 +161,18 @@ services:
       - debezium
     entrypoint: >
       sh -c "
-      while ! curl -s http://debezium:9083/ | grep 'Kafka Connect'; do
-        echo 'Waiting for Debezium...';
-        sleep 5;
-      done;
+      sleep 10;
       echo 'Creating PostgreSQL connector...';
-      curl -X POST http://debezium:9083/connectors/ -H 'Content-Type: application/json' -d @/configs/postgres_connector.json;
+      curl -X POST http://debezium:8083/connectors/ -H 'Content-Type: application/json' -d @/configs/postgres_connector.json;
       echo 'Creating MySQL connector...';
-      curl -X POST http://debezium:9083/connectors/ -H 'Content-Type: application/json' -d @/configs/mysql_connector.json;
+      curl -X POST http://debezium:8083/connectors/ -H 'Content-Type: application/json' -d @/configs/mysql_connector.json;
       "
     volumes:
       - ./configs/postgres_connector.json:/configs/postgres_connector.json
       - ./configs/mysql_connector.json:/configs/mysql_connector.json
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
 
   redis:
     image: redis
