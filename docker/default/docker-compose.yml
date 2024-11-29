@@ -465,7 +465,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "accounts"
       OTEL_SERVICE_NAME: "accounts"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/accounts_db"
     extends:
       file: common-config.yml
       service: microservice-service-config
@@ -489,7 +489,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "products"
       OTEL_SERVICE_NAME: "products"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/products_db"
       SPRING_DATA_REDIS_CONNECT-TIMEOUT: 2s
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
@@ -517,7 +517,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "carts"
       OTEL_SERVICE_NAME: "carts"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/carts_db"
     extends:
       file: common-config.yml
       service: microservice-service-config
@@ -541,7 +541,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "orders"
       OTEL_SERVICE_NAME: "orders"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/orders_db"
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
       KAFKA_TEMPLATE_DEFAULT_TOPIC: orders
       KAFKA_PRODUCER_KEY_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
@@ -603,7 +603,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "rates"
       OTEL_SERVICE_NAME: "rates"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/rates_db"
     extends:
       file: common-config.yml
       service: microservice-service-config
@@ -627,7 +627,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "inventory"
       OTEL_SERVICE_NAME: "inventory"
-      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/oralie_db"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/inventory_db"
     extends:
       file: common-config.yml
       service: microservice-service-config
@@ -696,6 +696,10 @@ services:
       social:
         condition: service_healthy
       search:
+        condition: service_healthy
+      rates:
+        condition: service_healthy
+      inventory:
         condition: service_healthy
       redis:
         condition: service_healthy
