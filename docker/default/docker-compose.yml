@@ -168,8 +168,8 @@ services:
       curl -X POST http://debezium:8083/connectors/ -H 'Content-Type: application/json' -d @/configs/mysql_connector.json;
       "
     volumes:
-      - ./configs/postgres_connector.json:/configs/postgres_connector.json
-      - ./configs/mysql_connector.json:/configs/mysql_connector.json
+      - ./config/postgres_connector.json:/configs/postgres_connector.json
+      - ./config/mysql_connector.json:/configs/mysql_connector.json
     extends:
       file: common-config.yml
       service: network-deploy-service
