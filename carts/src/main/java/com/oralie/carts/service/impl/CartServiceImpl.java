@@ -131,6 +131,7 @@ public class CartServiceImpl implements CartService {
             CartItem cartItem = CartItem.builder()
                     .productId(productId)
                     .productName(product.getName())
+                    .productSlug(product.getSlug())
                     .urlImageThumbnail(product.getImage())
                     .quantity(quantity)
                     .price(product.getPrice())

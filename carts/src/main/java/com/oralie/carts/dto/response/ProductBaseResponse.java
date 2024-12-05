@@ -15,8 +15,8 @@ public class ProductBaseResponse {
 
     private Long id;
     private String name;
-    private String slug;
     private String image;
+    private String slug;
     private String description;
     private Double price;
     private Long quantity;

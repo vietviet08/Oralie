@@ -7,6 +7,7 @@ import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductService extends AbstractCircuitBreakFallbackHandler {
 
-    private static final String URL_PRODUCT = "http://localhost:8081";
+    @Value("${url.products}")
+    private String URL_PRODUCT;
     private static final Logger log = LoggerFactory.getLogger(ProductService.class);
 
     private final RestClient restClient;
@@ -33,42 +35,48 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler {
     public ProductBaseResponse getProductById(Long productId) {
         log.info("Fetching product with id: {}", productId);
 
-//        final String jwtToken = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
-
         final String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
                 .getTokenValue();
 
         log.info("JWT Token: {}", jwt);
 
-//        final URI url = UriComponentsBuilder
-//                .fromHttpUrl(URL_PRODUCT)
-//                .path("/store/products/id/{id}")
-//                .buildAndExpand(productId)
-//                .toUri();
-//
-//        return restClient.get()
-//                .uri(url)
-//                .header("Authorization", "Bearer " + jwt)
-//                .retrieve()
-//                .body(ProductResponse.class);
-
-        //webflux
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_PRODUCT)
                 .path("/store/products/product-base/{productId}")
                 .buildAndExpand(productId)
                 .toUri();
 
-        return webClient.get()
-                .uri(url)
-                .header("Authorization", "Bearer " + jwt)
-                .retrieve()
-                .bodyToMono(ProductBaseResponse.class)
-                .block();
+        try {
+            return restClient.get()
+                    .uri(url)
+                    .headers(h -> h.setBearerAuth(jwt))
+                    .retrieve()
+                    .body(ProductBaseResponse.class);
+        } catch (Exception ex) {
+            log.error("Error fetching product with id: {}", productId, ex);
+            throw ex;
+        }
+
+
     }
 
 
-    protected ProductBaseResponse handleProductBaseResponseFallBack(Throwable throwable) throws Throwable {
-        return handleTypedFallback(throwable);
+    protected ProductBaseResponse handleProductBaseResponseFallBack(Long productId, Throwable throwable) {
+        log.error("Fallback method called for product id: {} due to exception: {}", productId, throwable.getMessage());
+        return new ProductBaseResponse();
     }
+
+    //webflux
+//        final URI url = UriComponentsBuilder
+//                .fromHttpUrl(URL_PRODUCT)
+//                .path("/store/products/product-base/{productId}")
+//                .buildAndExpand(productId)
+//                .toUri();
+//
+//        return webClient.get()
+//                .uri(url)
+//                .header("Authorization", "Bearer " + jwt)
+//                .retrieve()
+//                .bodyToMono(ProductBaseResponse.class)
+//                .block();
 }
