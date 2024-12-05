@@ -151,12 +151,12 @@ public class ProductController {
                 .body(productService.existingProductByProductId(productId));
     }
 
-    @GetMapping("/store/products/top8/{productId}")
+    @GetMapping("/store/products/top10/{productId}")
     public ResponseEntity<List<ProductResponse>> top8ProductRelatedCategory(@PathVariable("productId") Long productId,
                                                                             @RequestParam String categoryName) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(productService.top8ProductRelatedCategory(productId, categoryName));
+                .body(productService.top10ProductRelatedCategory(productId, categoryName));
     }
 
     // dash

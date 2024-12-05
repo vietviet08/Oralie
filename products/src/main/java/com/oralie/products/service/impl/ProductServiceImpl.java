@@ -10,7 +10,6 @@ import com.oralie.products.exception.ResourceNotFoundException;
 import com.oralie.products.model.*;
 import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.repository.*;
-import com.oralie.products.service.ProductImageService;
 import com.oralie.products.service.ProductService;
 import com.oralie.products.service.SocialService;
 import lombok.RequiredArgsConstructor;
@@ -379,8 +378,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> top8ProductRelatedCategory(Long productId, String categoryName) {
-        return mapToProductResponseList(productRepository.getTop8ProductRelatedByCategory(productId, categoryName));
+    public List<ProductResponse> top10ProductRelatedCategory(Long productId, String categoryName) {
+        return mapToProductResponseList(productRepository.getTop10ProductRelatedByCategory(productId, categoryName));
     }
 
     private List<ProductResponse> mapToProductResponseList(List<Product> products) {
