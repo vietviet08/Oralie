@@ -43,10 +43,7 @@ public class ProductServiceImpl implements ProductService {
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
     private final ProductCategoryRepository productCategoryRepository;
-    private final ProductOptionRepository productOptionRepository;
     private final ProductImageRepository productImageRepository;
-    private final ProductImageService productImageService;
-
 
     @Override
     public ListResponse<ProductResponse> getAllProducts(int page, int size, String sortBy, String sort, String search,
@@ -379,6 +376,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public boolean existingProductByProductId(Long productId){
         return productRepository.existsById(productId);
+    }
+
+    @Override
+    public List<ProductResponse> top8ProductRelatedCategory(Long productId, String categoryName) {
+        return mapToProductResponseList(productRepository.getTop8ProductRelatedByCategory(productId, categoryName));
     }
 
     private List<ProductResponse> mapToProductResponseList(List<Product> products) {

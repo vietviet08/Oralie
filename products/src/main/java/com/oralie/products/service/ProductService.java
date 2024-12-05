@@ -39,4 +39,6 @@ public interface ProductService {
 
     boolean existingProductByProductId(Long productId);
 
+    List<ProductResponse> top8ProductRelatedCategory(Long productId, String categoryName);
+
 }

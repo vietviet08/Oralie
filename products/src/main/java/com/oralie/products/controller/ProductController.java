@@ -151,6 +151,14 @@ public class ProductController {
                 .body(productService.existingProductByProductId(productId));
     }
 
+    @GetMapping("/store/products/top8/{productId}")
+    public ResponseEntity<List<ProductResponse>> top8ProductRelatedCategory(@PathVariable("productId") Long productId,
+                                                                            @RequestParam String categoryName) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.top8ProductRelatedCategory(productId, categoryName));
+    }
+
     // dash
     @PostMapping(value = "/dash/products")
     public ResponseEntity<ProductResponse> createProduct(@ModelAttribute ProductRequest productRequest) {

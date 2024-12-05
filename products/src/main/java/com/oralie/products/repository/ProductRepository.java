@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -39,6 +40,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "JOIN pc.category c WHERE p.slug = :slug AND c.name = :categoryName")
     Optional<Product> findBySlugs(String slug, String categoryName);
 
+    @Query(value = "SELECT * FROM product p " +
+            "JOIN product_categories pc ON p.product_id = pc.product_id " +
+            "JOIN category c ON pc.category_id = c.category_id " +
+            "WHERE p.product_id != :id AND c.name = :categoryName " +
+            "LIMIT 8", nativeQuery = true)
+    List<Product> getTop8ProductRelatedByCategory(@Param("id") Long id, @Param("categoryName") String categoryName);
 
     boolean existsByName(String name);
 
