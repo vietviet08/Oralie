@@ -43,7 +43,7 @@ public class ProductDocument {
 
     private Double discount;
 
-    private Integer quantity;
+    private Long quantity;
 
     private Boolean isDiscounted;
 

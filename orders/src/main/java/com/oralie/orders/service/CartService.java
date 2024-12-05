@@ -20,8 +20,8 @@ public class CartService extends AbstractCircuitBreakFallbackHandler{
 
     private static final Logger log = LoggerFactory.getLogger(CartService.class);
 
-    @Value("${url.order}")
-    private String URL_ORDER;
+    @Value("${url.carts}")
+    private String URL_CARTS;
 
     private final RestClient  restClient;
 
@@ -33,7 +33,7 @@ public class CartService extends AbstractCircuitBreakFallbackHandler{
         final String jwtToken = SecurityContextHolder.getContext().getAuthentication().getCredentials().toString();
 
         final URI url = UriComponentsBuilder
-                .fromHttpUrl(URL_ORDER)
+                .fromHttpUrl(URL_CARTS)
                 .path("/store/carts/clear")
                 .buildAndExpand()
                 .toUri();
