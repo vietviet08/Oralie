@@ -21,6 +21,8 @@ public class RateRequest {
 
     private Long productId;
 
+    private int rateStar;
+
     private String content;
 
     private List<MultipartFile> files;

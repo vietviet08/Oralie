@@ -20,11 +20,13 @@ public class RateResponse {
 
     private Long productId;
 
+    private int rateStar;
+
     private String content;
 
     private List<String> urlFile;
 
-    private List<UserRateComment> listUserLike;
+    private List<UserRateCommentResponse> listUserLike;
 
     private Long totalLike;
 

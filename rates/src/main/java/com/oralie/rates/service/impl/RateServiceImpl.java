@@ -5,6 +5,7 @@ import com.oralie.rates.dto.FileMetadata;
 import com.oralie.rates.dto.request.RateRequest;
 import com.oralie.rates.dto.response.ListResponse;
 import com.oralie.rates.dto.response.RateResponse;
+import com.oralie.rates.dto.response.UserRateCommentResponse;
 import com.oralie.rates.exception.ResourceNotFoundException;
 import com.oralie.rates.model.Rate;
 import com.oralie.rates.model.UserRateComment;
@@ -168,7 +169,7 @@ public class RateServiceImpl implements RateService {
             throw new BadRequestException(RateConstant.NOT_EXISTING_USER);
         }
 
-        Long totalLike = rate.getTotalLike() != null ? rate.getTotalLike() : 0L;
+        long totalLike = rate.getTotalLike() != null ? rate.getTotalLike() : 0L;
 
         boolean isLike = rate.getListUserLike().stream()
                 .anyMatch(userRateComment ->
@@ -176,10 +177,10 @@ public class RateServiceImpl implements RateService {
                                 Boolean.TRUE.equals(userRateComment.getIsLike()));
 
         if (isLike) {
-            rate.setTotalLike(totalLike--);
+            rate.setTotalLike(totalLike - 1);
             rate.getListUserLike().removeIf(userLiked -> userLiked.getUserId().equals(userId));
         } else {
-            rate.setTotalLike(totalLike++);
+            rate.setTotalLike(totalLike + 1);
             rate.getListUserLike().add(
                     UserRateComment.builder()
                             .userId(userId)
@@ -215,10 +216,10 @@ public class RateServiceImpl implements RateService {
                                 Boolean.FALSE.equals(userRateComment.getIsLike()));
 
         if (isDislike) {
-            rate.setTotalDislike(totalDislike--);
+            rate.setTotalDislike(totalDislike - 1);
             rate.getListUserLike().removeIf(userLiked -> userLiked.getUserId().equals(userId));
         } else {
-            rate.setTotalDislike(totalDislike++);
+            rate.setTotalDislike(totalDislike + 1);
             rate.getListUserLike().add(
                     UserRateComment.builder()
                             .userId(userId)
@@ -270,11 +271,12 @@ public class RateServiceImpl implements RateService {
                 .id(rate.getId())
                 .userId(rate.getUserId())
                 .productId(rate.getProductId())
+                .rateStar(rate.getRateStar())
                 .content(rate.getContent())
                 .urlFile(rate.getUrlFile())
                 .totalLike(rate.getTotalLike())
                 .totalDislike(rate.getTotalDislike())
-                .listUserLike(rate.getListUserLike() != null ? rate.getListUserLike() : null)
+                .listUserLike(rate.getListUserLike() != null ? mapToUserRateCommentResponse(rate.getListUserLike()) : null)
                 .isAvailable(rate.getIsAvailable())
                 .parentRate(rate.getParentRate() != null ? rate.getParentRate().getId() : null)
                 .subRates(mapToRateResponseList(rate.getSubRates()))
@@ -288,10 +290,11 @@ public class RateServiceImpl implements RateService {
                     .id(rate.getId())
                     .userId(rate.getUserId())
                     .productId(rate.getProductId())
+                    .rateStar(rate.getRateStar())
                     .content(rate.getContent())
                     .urlFile(rate.getUrlFile())
                     .totalLike(rate.getTotalLike())
-                    .listUserLike(rate.getListUserLike() != null ? rate.getListUserLike() : null)
+                    .listUserLike(rate.getListUserLike() != null ? mapToUserRateCommentResponse(rate.getListUserLike()) : null)
                     .isAvailable(rate.getIsAvailable())
                     .parentRate(rate.getParentRate() != null ? rate.getParentRate().getId() : null)
                     .subRates(mapToRateResponseList(rate.getSubRates()))
@@ -299,5 +302,20 @@ public class RateServiceImpl implements RateService {
             rateResponses.add(rateResponse);
         });
         return rateResponses;
+    }
+
+    private List<UserRateCommentResponse> mapToUserRateCommentResponse(List<UserRateComment> userRateComments  ){
+        List<UserRateCommentResponse> userRateCommentResponses = new ArrayList<>();
+        userRateComments.forEach(userRateComment -> {
+            UserRateCommentResponse userRateCommentResponse = UserRateCommentResponse.builder()
+                    .id(userRateComment.getId())
+                    .rateId(userRateComment.getRate().getId())
+                    .userId(userRateComment.getUserId())
+                    .productId(userRateComment.getProductId())
+                    .isLike(userRateComment.getIsLike())
+                    .build();
+            userRateCommentResponses.add(userRateCommentResponse);
+        });
+        return userRateCommentResponses;
     }
 }

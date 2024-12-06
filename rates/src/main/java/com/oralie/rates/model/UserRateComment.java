@@ -12,8 +12,8 @@ import lombok.*;
 @Builder
 @Entity
 @Table(name = "rate")
-public class UserRateComment extends BaseEntity{
- 	@Id
+public class UserRateComment extends BaseEntity {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
