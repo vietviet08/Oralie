@@ -71,7 +71,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         String slug = categoryRequest.getSlug();
         if (categoryRequest.getSlug() == null || categoryRequest.getSlug().isEmpty()) {
-            slug = categoryRequest.getName().toLowerCase().replace(" ", "-");
+            slug = categoryRequest.getName().toLowerCase().replaceAll("[^a-z0-9\\s-]", "").replace(" ", "-");
         }
 
         Category category = Category.builder()
@@ -83,8 +83,8 @@ public class CategoryServiceImpl implements CategoryService {
                 .build();
         FileMetadata fileMetadata = null;
 
-        if(categoryRequest.getImage() != null && !categoryRequest.getImage().isEmpty()) {
-             fileMetadata = socialService.uploadImage(categoryRequest.getImage());
+        if (categoryRequest.getImage() != null && !categoryRequest.getImage().isEmpty()) {
+            fileMetadata = socialService.uploadImage(categoryRequest.getImage());
 
             log.info("File metadata category created: {}", fileMetadata);
 
@@ -138,7 +138,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         String slug = categoryRequest.getSlug();
         if (categoryRequest.getSlug() == null || categoryRequest.getSlug().isEmpty()) {
-            slug = categoryRequest.getName().toLowerCase().replace(" ", "-");
+            slug = categoryRequest.getName().toLowerCase().replaceAll("[^a-z0-9\\s-]", "").replace(" ", "-");
         }
 
         category.setName(categoryRequest.getName());

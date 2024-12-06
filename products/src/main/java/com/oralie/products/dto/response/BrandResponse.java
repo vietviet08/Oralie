@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 public class BrandResponse {
     private Long id;
     private String name;
+    private String slug;
     private String description;
     private String image;
     private Boolean isActive;

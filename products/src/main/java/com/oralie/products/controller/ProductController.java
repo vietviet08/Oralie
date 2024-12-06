@@ -69,7 +69,7 @@ public class ProductController {
 
         ListResponse<ProductResponse> productResponses = productRedisService.getAllProduct(page, size, sortBy, sort, search);
 
-        if (productResponses.getData() == null) {
+        if (productResponses == null || productResponses.getData() == null) {
             productResponses = productService.getAllProducts(page, size, sortBy, sort, search, category);
             productRedisService.saveAllProduct(productResponses, sortBy, sort, search);
         }
@@ -80,22 +80,22 @@ public class ProductController {
     }
 
     @GetMapping("/store/categories")
-    public ResponseEntity<ListResponse<ProductResponse>> getAllProductsByBrandName(
+        public ResponseEntity<ListResponse<ProductResponse>> getAllProductsByBrandName(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sort,
-            @RequestParam(required = false) String categoryName,
-            @RequestParam(required = false) String brandName
+            @RequestParam String category,
+            @RequestParam(required = false) String brand
     ) {
-        if (brandName == null) {
+        if (brand == null) {
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(productService.getAllProductsByCategory(page, size, sortBy, sort, categoryName));
+                    .body(productService.getAllProductsByCategory(page, size, sortBy, sort, category));
         }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(productService.getAllProductsByBrand(page, size, sortBy, sort, categoryName, brandName));
+                .body(productService.getAllProductsByBrand(page, size, sortBy, sort, category, brand));
     }
 
     @GetMapping("/store/products/id/{id}")
@@ -113,15 +113,15 @@ public class ProductController {
                 .body(productService.getProductBySlug(slug));
     }
 
-    @GetMapping("/store/{categoryName}/{slug}")
-    public ResponseEntity<ProductResponse> getProductBySlugs(
-            @PathVariable String categoryName,
-            @PathVariable String slug
-    ) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(productService.getProductBySlugs(categoryName, slug));
-    }
+//    @GetMapping("/store/{categoryName}/{slug}")
+//    public ResponseEntity<ProductResponse> getProductBySlugs(
+//            @PathVariable String categoryName,
+//            @PathVariable String slug
+//    ) {
+//        return ResponseEntity
+//                .status(HttpStatus.OK)
+//                .body(productService.getProductBySlugs(categoryName, slug));
+//    }
 
 //    @GetMapping("/store/products/{id}/options")
 //    public ResponseEntity<ListResponse<ProductOptionResponse>> getProductOptions(@PathVariable Long id) {

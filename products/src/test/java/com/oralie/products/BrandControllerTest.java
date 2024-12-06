@@ -66,7 +66,7 @@ class BrandControllerTest {
     public void createBrand() {
         // Assuming there's a method to create a BrandRequest object
         MultipartFile image = null; // Since the test might not be uploading an actual file.
-        BrandRequest newBrand = new BrandRequest("BrandName", "Description", image, true);
+        BrandRequest newBrand = new BrandRequest("BrandName", "name-slug","Description", image, true);
 
         ResponseEntity<BrandResponse> response = brandController.createBrand(newBrand);
 

@@ -13,9 +13,9 @@ public interface ProductService {
 
     ListResponse<ProductResponse> getAllProducts(int page, int size, String sortBy, String sort, String search, String category);
 
-    ListResponse<ProductResponse> getAllProductsByCategory( int page, int size, String sortBy, String sort, String categoryName);
+    ListResponse<ProductResponse> getAllProductsByCategory( int page, int size, String sortBy, String sort, String categorySlug);
 
-    ListResponse<ProductResponse> getAllProductsByBrand( int page, int size, String sortBy, String sort,String categoryName, String brandName);
+    ListResponse<ProductResponse> getAllProductsByBrand( int page, int size, String sortBy, String sort,String categorySlug, String brandSlug);
 
     ProductResponse getProductById(Long id);
 

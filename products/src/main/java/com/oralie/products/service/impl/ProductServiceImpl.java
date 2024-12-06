@@ -66,11 +66,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ListResponse<ProductResponse> getAllProductsByCategory(int page, int size, String sortBy, String sort,
-                                                                  String categoryName) {
+                                                                  String categorySlug) {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
-        Page<Product> pageProducts = productRepository.findAllByCategoryName(pageable, categoryName);
+        Page<Product> pageProducts = productRepository.findAllByCategorySlug(pageable, categorySlug);
         List<Product> products = pageProducts.getContent();
 
         return ListResponse
@@ -86,11 +86,11 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ListResponse<ProductResponse> getAllProductsByBrand(int page, int size, String sortBy, String sort,
-                                                               String categoryName, String brandName) {
+                                                               String categorySlug, String brandSlug) {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
-        Page<Product> pageProducts = productRepository.findAllByBrandName(pageable, categoryName, brandName);
+        Page<Product> pageProducts = productRepository.findAllByBrandSlug(pageable, categorySlug, brandSlug);
         List<Product> products = pageProducts.getContent();
 
         return ListResponse
@@ -162,7 +162,12 @@ public class ProductServiceImpl implements ProductService {
                 .brand(brand)
                 .sku(productRequest.getSku().toUpperCase())
                 .quantity(productRequest.getQuantity())
-                .slug(StringUtils.hasText(productRequest.getSlug()) ? productRequest.getSlug() : productRequest.getName().toLowerCase().replace(" ", "-"))
+                .slug(StringUtils.hasText(productRequest.getSlug()) ?
+                        productRequest.getSlug() :
+                        productRequest.getName()
+                                .toLowerCase()
+                                .replaceAll("[^a-z0-9\\s-]", "")
+                                .replace(" ", "-"))
                 .isAvailable(productRequest.getIsAvailable())
                 .isDeleted(productRequest.getIsDeleted())
                 .isDiscounted(productRequest.getIsDiscounted())
@@ -234,7 +239,12 @@ public class ProductServiceImpl implements ProductService {
                 () -> new ResourceNotFoundException("Brand not found", "id", productRequest.getBrandId() + "")));
         product.setSku(productRequest.getSku());
         product.setQuantity(productRequest.getQuantity());
-        product.setSlug(productRequest.getSlug());
+        product.setSlug(productRequest.getSlug() != null ?
+                productRequest.getSlug() :
+                product.getName()
+                        .toLowerCase()
+                        .replaceAll("[^a-z0-9\\s-]", "")
+                        .replace(" ", "-"));
         product.setIsAvailable(productRequest.getIsAvailable());
         product.setIsDeleted(productRequest.getIsDeleted());
         product.setIsDiscounted(productRequest.getIsDiscounted());
@@ -373,7 +383,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean existingProductByProductId(Long productId){
+    public boolean existingProductByProductId(Long productId) {
         return productRepository.existsById(productId);
     }
 

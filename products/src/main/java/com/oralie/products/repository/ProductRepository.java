@@ -22,16 +22,27 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                   @Param("category") String category
     );
 
+//    @Query(value = "SELECT p FROM Product p" +
+//            " JOIN p.productCategories pc WHERE pc.category.name = :categoryName " +
+//            "AND p.brand.name = :brandName")
+//    Page<Product> findAllByBrandName(Pageable pageable,
+//                                     @Param("categoryName") String categoryName,
+//                                     @Param("brandName") String brandName);
+//
+//    @Query("SELECT p FROM Product p JOIN p.productCategories pc " +
+//            "JOIN pc.category c WHERE c.name = :categoryName")
+//    Page<Product> findAllByCategoryName(Pageable pageable, @Param("categoryName") String categoryName);
+
     @Query(value = "SELECT p FROM Product p" +
-            " JOIN p.productCategories pc WHERE pc.category.name = :categoryName " +
-            "AND p.brand.name = :brandName")
-    Page<Product> findAllByBrandName(Pageable pageable,
-                                     @Param("categoryName") String categoryName,
-                                     @Param("brandName") String brandName);
+            " JOIN p.productCategories pc WHERE pc.category.slug = :categorySlug " +
+            "AND p.brand.slug = :brandSlug")
+    Page<Product> findAllByBrandSlug(Pageable pageable,
+                                     @Param("categorySlug") String categorySlug,
+                                     @Param("brandSlug") String brandSlug);
 
     @Query("SELECT p FROM Product p JOIN p.productCategories pc " +
-            "JOIN pc.category c WHERE c.name = :categoryName")
-    Page<Product> findAllByCategoryName(Pageable pageable, @Param("categoryName") String categoryName);
+            "JOIN pc.category c WHERE c.slug = :categorySlug")
+    Page<Product> findAllByCategorySlug(Pageable pageable, @Param("categorySlug") String categorySlug);
 
     @Query("SELECT p FROM Product p WHERE p.slug = :slug")
     Optional<Product> findBySlug(String slug);

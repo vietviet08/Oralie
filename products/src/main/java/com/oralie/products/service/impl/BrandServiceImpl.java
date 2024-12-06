@@ -67,8 +67,16 @@ public class BrandServiceImpl implements BrandService {
     public BrandResponse createBrand(BrandRequest brandRequest) {
         if (brandRepository.existsByName(brandRequest.getName()))
             throw new ResourceAlreadyExistException("Brand already exists with name " + brandRequest.getName());
+
+        String slug = brandRequest.getSlug();
+
+        if(slug == null || slug.isEmpty()) {
+            slug = brandRequest.getName().toLowerCase().replaceAll("[^a-z0-9\\s-]", "").replace(" ", "-");
+        }
+
         Brand brand = Brand.builder()
                 .name(brandRequest.getName())
+                .slug(slug)
                 .description(brandRequest.getDescription())
                 .isActive(brandRequest.getIsActive())
                 .build();
@@ -96,6 +104,14 @@ public class BrandServiceImpl implements BrandService {
         brand.setName(brandRequest.getName());
         brand.setDescription(brandRequest.getDescription());
         brand.setIsActive(brandRequest.getIsActive());
+
+        String slug = brandRequest.getSlug();
+
+        if(slug == null || slug.isEmpty()) {
+            slug = brandRequest.getName().toLowerCase().replaceAll("[^a-z0-9\\s-]", "").replace(" ", "-");
+        }
+
+        brand.setSlug(slug);
 
         if (brandRequest.getImage() != null && !brandRequest.getImage().isEmpty()) {
             if (brand.getImage() != null) {
@@ -177,6 +193,7 @@ public class BrandServiceImpl implements BrandService {
         return BrandResponse.builder()
                 .id(brand.getId())
                 .name(brand.getName())
+                .slug(brand.getSlug())
                 .description(brand.getDescription())
                 .image(brand.getImage())
                 .isActive(brand.getIsActive())
