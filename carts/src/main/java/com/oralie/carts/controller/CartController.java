@@ -7,6 +7,8 @@ import com.oralie.carts.dto.response.ListResponse;
 import com.oralie.carts.service.CartService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -26,6 +29,8 @@ import java.util.Set;
 @RequiredArgsConstructor
 @RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
 public class CartController {
+
+    private static final Logger log = LoggerFactory.getLogger(CartController.class);
 
     private final Environment environment;
 
@@ -50,7 +55,7 @@ public class CartController {
     }
 
     @GetMapping("/dash/carts/{id}")
-    public ResponseEntity<Set<CartItemResponse>> getCartById(@PathVariable("id") Long id) {
+    public ResponseEntity<List<CartItemResponse>> getCartById(@PathVariable("id") Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(cartService.getCartItemByCartId(id));
@@ -87,7 +92,7 @@ public class CartController {
     }
 
     @GetMapping("/store/carts/items")
-    public ResponseEntity<Set<CartItemResponse>> getItemFromCart() {
+    public ResponseEntity<List<CartItemResponse>> getItemFromCart() {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(cartService.getCartItemByUserId(SecurityContextHolder.getContext().getAuthentication().getName()));
@@ -110,7 +115,7 @@ public class CartController {
             @PathVariable("productId") Long productId,
             @RequestParam("quantity") Integer quantity
     ) {
-
+        log.info("updateItemInCart request: {}", quantity);
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity
                 .status(HttpStatus.OK)

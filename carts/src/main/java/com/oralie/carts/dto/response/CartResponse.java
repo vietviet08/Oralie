@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -16,5 +17,5 @@ public class CartResponse {
     private String userId;
     private Integer quantity;
     private Double totalPrice;
-    private Set<CartItemResponse> cartItemResponses;
+    private List<CartItemResponse> cartItemResponses;
 }

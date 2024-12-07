@@ -6,9 +6,7 @@ import lombok.*;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 
 @Getter
@@ -33,7 +31,7 @@ public class Cart extends BaseEntity {
     private Double totalPrice;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<CartItem> cartItems  = new HashSet<>();
+    private List<CartItem> cartItems  = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {
