@@ -114,7 +114,7 @@ public class CartController {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(cartService.addItemToCart(userId, productId, quantity));
+                .body(cartService.updateItemInCart(userId, productId, quantity));
     }
 
     @DeleteMapping("/store/carts/remove/{productId}")

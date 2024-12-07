@@ -7,9 +7,11 @@ import com.oralie.carts.dto.response.ProductBaseResponse;
 import com.oralie.carts.exception.ResourceNotFoundException;
 import com.oralie.carts.model.Cart;
 import com.oralie.carts.model.CartItem;
+import com.oralie.carts.repository.CartItemRepository;
 import com.oralie.carts.repository.CartRepository;
 import com.oralie.carts.service.CartService;
 import com.oralie.carts.service.ProductService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,14 +21,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CartServiceImpl implements CartService {
 
     private final CartRepository cartRepository;
+
+    private final CartItemRepository cartItemRepository;
 
     private final ProductService productService;
 
@@ -109,76 +115,120 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartResponse addItemToCart(String userId, Long productId, Integer quantity) {
 
-        Cart cart = cartRepository.findByUserId(userId).orElse(null);
+//        Cart cart = cartRepository.findByUserId(userId).orElse(null);
+//
+//        if (cart == null) {
+//            cart = Cart.builder()
+//                    .userId(userId)
+//                    .quantity(0)
+//                    .totalPrice(0.0)
+//                    .cartItems(new HashSet<>())
+//                    .build();
+//        }
+//
+//        Set<CartItem> cartItems = cart.getCartItems();
+//
+//        ProductBaseResponse product = productService.getProductById(productId);
+//
+//        if (product == null)
+//            throw new ResourceNotFoundException("Product", "id", productId + "");
+//        if (cartItems == null || cartItems.isEmpty()) {
+//            cartItems = new HashSet<>();
+//            CartItem cartItem = CartItem.builder()
+//                    .productId(productId)
+//                    .productName(product.getName())
+//                    .productSlug(product.getSlug())
+//                    .urlImageThumbnail(product.getImage())
+//                    .quantity(quantity)
+//                    .price(product.getPrice())
+//                    .totalPrice(product.getPrice() * quantity)
+//                    .cart(cart)
+//                    .build();
+//            cartItems.add(cartItem);
+//            cart.setCartItems(cartItems);
+//            cart.setQuantity(cart.getQuantity() + quantity);
+//            cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
+//            Cart cartSaved = cartRepository.save(cart);
+//            return mapToCartResponse(cartSaved);
+//        } else {
+//            CartItem cartItem = cartItems.stream()
+//                    .filter(item -> item.getProductId().equals(productId))
+//                    .findFirst()
+//                    .orElse(null);
+//            if (cartItem == null) {
+//                cartItem = CartItem.builder()
+//                        .productId(productId)
+//                        .productName(product.getName())
+//                        .urlImageThumbnail(product.getImage())
+//                        .productSlug(product.getSlug())
+//                        .quantity(quantity)
+//                        .price(product.getPrice())
+//                        .totalPrice(product.getPrice() * quantity)
+//                        .cart(cart)
+//                        .build();
+//                cartItems.add(cartItem);
+//                cart.setCartItems(cartItems);
+//                cart.setQuantity(cart.getQuantity() + quantity);
+//                cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
+//                Cart cartSaved = cartRepository.save(cart);
+//                return mapToCartResponse(cartSaved);
+//            } else {
+//                cartItem.setQuantity(cartItem.getQuantity() + quantity);
+//                cartItem.setTotalPrice(cartItem.getTotalPrice() + product.getPrice() * quantity);
+//                cart.setQuantity(cart.getQuantity() + quantity);
+//                cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
+//                Cart cartSaved = cartRepository.save(cart);
+//                return mapToCartResponse(cartSaved);
+//            }
+//        }
 
-        if (cart == null) {
-            cart = Cart.builder()
-                    .userId(userId)
-                    .quantity(0)
-                    .totalPrice(0.0)
-                    .cartItems(new HashSet<>())
-                    .build();
-        }
+        Cart cart = cartRepository.findByUserId(userId).orElseGet(() -> Cart.builder()
+                .userId(userId)
+                .quantity(0)
+                .totalPrice(0.0)
+                .cartItems(new HashSet<>())
+                .build());
 
         Set<CartItem> cartItems = cart.getCartItems();
-
         ProductBaseResponse product = productService.getProductById(productId);
 
-        if (product == null)
+        if (product == null) {
             throw new ResourceNotFoundException("Product", "id", productId + "");
-        if (cartItems == null || cartItems.isEmpty()) {
-            cartItems = new HashSet<>();
-            CartItem cartItem = CartItem.builder()
-                    .productId(productId)
-                    .productName(product.getName())
-                    .productSlug(product.getSlug())
-                    .urlImageThumbnail(product.getImage())
-                    .quantity(quantity)
-                    .price(product.getPrice())
-                    .totalPrice(product.getPrice() * quantity)
-                    .cart(cart)
-                    .build();
-            cartItems.add(cartItem);
-            cart.setCartItems(cartItems);
-            cart.setQuantity(cart.getQuantity() + quantity);
-            cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
-            Cart cartSaved = cartRepository.save(cart);
-            return mapToCartResponse(cartSaved);
-        } else {
-            CartItem cartItem = cartItems.stream()
-                    .filter(item -> item.getProductId().equals(productId))
-                    .findFirst()
-                    .orElse(null);
-            if (cartItem == null) {
-                cartItem = CartItem.builder()
-                        .productId(productId)
-                        .productName(product.getName())
-                        .urlImageThumbnail(product.getImage())
-                        .productSlug(product.getSlug())
-                        .quantity(quantity)
-                        .price(product.getPrice())
-                        .totalPrice(product.getPrice() * quantity)
-                        .cart(cart)
-                        .build();
-                cartItems.add(cartItem);
-                cart.setCartItems(cartItems);
-                cart.setQuantity(cart.getQuantity() + quantity);
-                cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
-                Cart cartSaved = cartRepository.save(cart);
-                return mapToCartResponse(cartSaved);
-            } else {
-                cartItem.setQuantity(cartItem.getQuantity() + quantity);
-                cartItem.setTotalPrice(cartItem.getTotalPrice() + product.getPrice() * quantity);
-                cart.setQuantity(cart.getQuantity() + quantity);
-                cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
-                Cart cartSaved = cartRepository.save(cart);
-                return mapToCartResponse(cartSaved);
-            }
         }
+
+        CartItem cartItem = cartItems.stream()
+                .filter(item -> item.getProductId().equals(productId))
+                .findFirst()
+                .orElseGet(() -> {
+                    CartItem newItem = CartItem.builder()
+                            .productId(productId)
+                            .productName(product.getName())
+                            .productSlug(product.getSlug())
+                            .urlImageThumbnail(product.getImage())
+                            .quantity(quantity)
+                            .price(product.getPrice())
+                            .totalPrice(product.getPrice() * quantity)
+                            .cart(cart)
+                            .build();
+                    cartItems.add(newItem);
+                    return newItem;
+                });
+
+        if (!Objects.equals(cartItem.getQuantity(), quantity)) {
+            cartItem.setQuantity(cartItem.getQuantity() + quantity);
+            cartItem.setTotalPrice(cartItem.getTotalPrice() + product.getPrice() * quantity);
+        }
+
+        cart.setQuantity(cart.getQuantity() + quantity);
+        cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
+        Cart cartSaved = cartRepository.save(cart);
+        return mapToCartResponse(cartSaved);
+
     }
 
     @Override
     public CartResponse updateItemInCart(String userId, Long productId, Integer quantity) {
+        //quantity update can be negative
 
         //get product
         ProductBaseResponse product = productService.getProductById(productId);
@@ -195,8 +245,13 @@ public class CartServiceImpl implements CartService {
         if (cartItem == null) {
             throw new ResourceNotFoundException("CartItem", "productId", productId + " check cart if not null and exist productId");
         } else {
-            cartItem.setQuantity(quantity);
-            cartItem.setTotalPrice(product.getPrice() * quantity);
+            int oldQuantity = cartItem.getQuantity();
+            if (quantity + oldQuantity <= 0) {
+                throw new ResourceNotFoundException("Quantity", "quantity", quantity + " must be greater than 0");
+            }
+            int newQuantity = oldQuantity + quantity;
+            cartItem.setQuantity(newQuantity);
+            cartItem.setTotalPrice(product.getPrice() * newQuantity);
             cart.setQuantity(cart.getQuantity() + quantity);
             cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
             Cart cartSaved = cartRepository.save(cart);
@@ -205,26 +260,23 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse removeItemFromCart(String cartId, Long productId) {
-        Cart cart = cartRepository.findByUserId(cartId).orElseThrow(() -> new ResourceNotFoundException("Cart", "id", cartId + ""));
+    public CartResponse removeItemFromCart(String userId, Long productId) {
+        Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Cart", "userId", userId));
         Set<CartItem> cartItems = cart.getCartItems();
-        if (cartItems == null) {
-            throw new ResourceNotFoundException("CartItem", "productId", productId + " check cart if not null and exist productId");
-        }
         CartItem cartItem = cartItems.stream()
                 .filter(item -> item.getProductId().equals(productId))
                 .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("CartItem", "productId", productId + " check cart if not null and exist productId"));
-        if (cartItem == null) {
-            throw new ResourceNotFoundException("CartItem", "productId", productId + " check cart if not null and exist productId");
-        } else {
-            cartItems.remove(cartItem);
-            cart.setCartItems(cartItems);
-            cart.setQuantity(cart.getQuantity() - cartItem.getQuantity());
-            cart.setTotalPrice(cart.getTotalPrice() - cartItem.getTotalPrice());
-            Cart cartSaved = cartRepository.save(cart);
-            return mapToCartResponse(cartSaved);
-        }
+                .orElseThrow(() -> new ResourceNotFoundException("CartItem", "productId", productId + ""));
+
+        cart.setCartItems(cartItems);
+        cart.setQuantity(cart.getQuantity() - cartItem.getQuantity());
+        cart.setTotalPrice(cart.getTotalPrice() - cartItem.getTotalPrice());
+
+        cartItems.remove(cartItem);
+        cartItemRepository.delete(cartItem);
+
+        Cart cartSaved = cartRepository.save(cart);
+        return mapToCartResponse(cartSaved);
     }
 
     @Override
@@ -233,6 +285,7 @@ public class CartServiceImpl implements CartService {
         cart.setCartItems(new HashSet<>());
         cart.setQuantity(0);
         cart.setTotalPrice(0.0);
+        cartItemRepository.deleteAll();
         Cart cartSaved = cartRepository.save(cart);
         return mapToCartResponse(cartSaved);
     }

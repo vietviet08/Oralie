@@ -6,6 +6,8 @@ import lombok.*;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -18,6 +20,7 @@ import java.util.Set;
 @Table
 @Builder
 public class Cart extends BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -30,5 +33,19 @@ public class Cart extends BaseEntity {
     private Double totalPrice;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<CartItem> cartItems;
+    private Set<CartItem> cartItems  = new HashSet<>();
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CartItem cartItem = (CartItem) o;
+        return Objects.equals(id, cartItem.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 }
