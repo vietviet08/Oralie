@@ -199,6 +199,8 @@ public class CartServiceImpl implements CartService {
             throw new ResourceNotFoundException("Product", "id", productId + "");
         }
 
+        final boolean[] newCartItem = {false};
+
         CartItem cartItem = cartItems.stream()
                 .filter(item -> item.getProductId().equals(productId))
                 .findFirst()
@@ -214,10 +216,11 @@ public class CartServiceImpl implements CartService {
                             .cart(cart)
                             .build();
                     cartItems.add(newItem);
+                    newCartItem[0] = true;
                     return newItem;
                 });
 
-        if (!Objects.equals(cartItem.getQuantity(), quantity)) {
+        if (!newCartItem[0]) {
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
             cartItem.setTotalPrice(cartItem.getTotalPrice() + product.getPrice() * quantity);
         }
