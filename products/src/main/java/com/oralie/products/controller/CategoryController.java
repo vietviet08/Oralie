@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Tag(
         name = "CRUD REST APIs for Category",
         description = "CREATE, READ, UPDATE, DELETE Category"
@@ -24,7 +26,7 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("/dash/categories")
+    @GetMapping("/store/categories/all")
     public ResponseEntity<ListResponse<CategoryResponse>> getAllCategories(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
@@ -36,11 +38,26 @@ public class CategoryController {
                 .body(categoryService.getAllCategories(page, size, sortBy, sort));
     }
 
-    @GetMapping("/dash/categories/{id}")
+    @GetMapping("/store/categories/{id}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.getCategoryById(id));
+    }
+
+    @GetMapping("/store/categories/not-id/{id}")
+    public ResponseEntity<List<CategoryResponse>> getAllCategoriesNotId(@PathVariable Long id,
+                                                                        @RequestParam boolean notId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(categoryService.getAllCategoriesNotId(id, notId));
+    }
+
+    @GetMapping("/store/categories/contains-name")
+    public ResponseEntity<List<CategoryResponse>> getAllCategoryContainsName(@RequestParam String name) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(categoryService.getAllCategoryContainsName(name));
     }
 
     @PostMapping(value = "/dash/categories")

@@ -25,7 +25,7 @@ public class BrandController {
     private final BrandService brandService;
 
 
-    @GetMapping("/dash/brands")
+    @GetMapping("/store/brands")
     public ResponseEntity<ListResponse<BrandResponse>> getAllBrands(
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
@@ -37,7 +37,7 @@ public class BrandController {
                 .body(brandService.getAllBrands(page, size, sortBy, sort));
     }
 
-    @GetMapping("/dash/brands/{id}")
+    @GetMapping("/store/brands/{id}")
     public ResponseEntity<BrandResponse> getBrandById(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
