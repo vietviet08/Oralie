@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Tag(
         name = "CRUD REST APIs for Brand",
         description = "CREATE, READ, UPDATE, DELETE Brand"
@@ -36,6 +38,13 @@ public class BrandController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(brandService.getAllBrands(page, size, sortBy, sort, search));
+    }
+
+    @GetMapping("/store/brands/all")
+    public ResponseEntity<List<BrandResponse>> getAllBrands() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(brandService.getAllBrands());
     }
 
     @GetMapping("/store/brands/{id}")

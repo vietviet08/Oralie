@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -39,18 +40,20 @@ public class SecurityConfig {
                                 "/",
                                 "/login",
                                 "/store/**",
-                                "/store/inventory/register",
-                                "/inventory/build-version",
-                                "/inventory/contact-info",
-                                "/inventory/java-version",
+                                "/store/rates/register",
+                                "/rates/build-version",
+                                "/rates/contact-info",
+                                "/rates/java-version",
                                 "/actuator/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui",
                                 "/swagger-ui/**",
                                 "/aggregate/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/store/rates/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/store/rates/**").hasAnyRole("CUSTOMER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/store/rates/**").hasAnyRole("CUSTOMER", "ADMIN")
                         .requestMatchers("/dash/**").hasRole("ADMIN")
-                        .requestMatchers("/store/rates/**").hasRole("CUSTOMER")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

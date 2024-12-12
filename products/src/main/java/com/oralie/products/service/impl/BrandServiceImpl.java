@@ -67,6 +67,11 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
+    public List<BrandResponse> getAllBrands() {
+        return mapToBrandResponseList(brandRepository.findAll());
+    }
+
+    @Override
     public BrandResponse getBrandById(Long id) {
         return mapToBrandResponse(brandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Brand not found", "id", id + "")));
     }
