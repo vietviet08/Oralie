@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface CategoryService {
 
-    ListResponse<CategoryResponse> getAllCategories(int page, int size, String sortBy, String sort);
+    ListResponse<CategoryResponse> getAllCategories(int page, int size, String sortBy, String sort, String search);
 
     List<CategoryResponse> getAllCategoriesNotId(Long id, boolean notId);
 

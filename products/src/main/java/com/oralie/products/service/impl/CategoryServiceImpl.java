@@ -34,10 +34,18 @@ public class CategoryServiceImpl implements CategoryService {
     private final SocialService socialService;
 
     @Override
-    public ListResponse<CategoryResponse> getAllCategories(int page, int size, String sortBy, String sort) {
+    public ListResponse<CategoryResponse> getAllCategories(int page, int size, String sortBy, String sort, String search) {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
-        Page<Category> pageCategory = categoryRepository.findAll(pageable);
+
+        Page<Category> pageCategory;
+
+        if (search != null && !search.isEmpty()) {
+            pageCategory = categoryRepository.findByNameContainingIgnoreCase(search, pageable);
+        } else {
+            pageCategory = categoryRepository.findAll(pageable);
+        }
+
         List<Category> categories = pageCategory.getContent();
 
         return ListResponse.<CategoryResponse>builder()

@@ -7,7 +7,7 @@ import com.oralie.products.model.s3.FileMetadata;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface BrandService {
-    ListResponse<BrandResponse> getAllBrands(int page, int size, String sortBy, String sort);
+    ListResponse<BrandResponse> getAllBrands(int page, int size, String sortBy, String sort, String search);
 
     BrandResponse getBrandById(Long id);
 

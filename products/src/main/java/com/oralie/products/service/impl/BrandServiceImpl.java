@@ -7,6 +7,7 @@ import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.exception.ResourceAlreadyExistException;
 import com.oralie.products.exception.ResourceNotFoundException;
 import com.oralie.products.model.Brand;
+import com.oralie.products.model.Category;
 import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.repository.BrandRepository;
 import com.oralie.products.service.BrandService;
@@ -42,10 +43,17 @@ public class BrandServiceImpl implements BrandService {
 
 
     @Override
-    public ListResponse<BrandResponse> getAllBrands(int page, int size, String sortBy, String sort) {
+    public ListResponse<BrandResponse> getAllBrands(int page, int size, String sortBy, String sort, String search) {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
-        Page<Brand> pageBrands = brandRepository.findAll(pageable);
+        Page<Brand> pageBrands;
+
+        if (search != null && !search.isEmpty()) {
+            pageBrands = brandRepository.findByNameContainingIgnoreCase(search, pageable);
+        } else {
+            pageBrands = brandRepository.findAll(pageable);
+        }
+
         List<Brand> brands = pageBrands.getContent();
 
         return ListResponse.<BrandResponse>builder()
@@ -70,7 +78,7 @@ public class BrandServiceImpl implements BrandService {
 
         String slug = brandRequest.getSlug();
 
-        if(slug == null || slug.isEmpty()) {
+        if (slug == null || slug.isEmpty()) {
             slug = brandRequest.getName().toLowerCase().replaceAll("[^a-z0-9\\s-]", "").replace(" ", "-");
         }
 
@@ -107,7 +115,7 @@ public class BrandServiceImpl implements BrandService {
 
         String slug = brandRequest.getSlug();
 
-        if(slug == null || slug.isEmpty()) {
+        if (slug == null || slug.isEmpty()) {
             slug = brandRequest.getName().toLowerCase().replaceAll("[^a-z0-9\\s-]", "").replace(" ", "-");
         }
 

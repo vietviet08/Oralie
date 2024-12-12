@@ -31,11 +31,12 @@ public class CategoryController {
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
-            @RequestParam(required = false, defaultValue = "asc") String sort
+            @RequestParam(required = false, defaultValue = "asc") String sort,
+            @RequestParam(required = false) String search
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(categoryService.getAllCategories(page, size, sortBy, sort));
+                .body(categoryService.getAllCategories(page, size, sortBy, sort, search));
     }
 
     @GetMapping("/store/categories/{id}")

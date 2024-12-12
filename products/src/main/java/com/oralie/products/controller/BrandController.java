@@ -30,11 +30,12 @@ public class BrandController {
             @RequestParam(required = false, defaultValue = "0") int page,
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
-            @RequestParam(required = false, defaultValue = "asc") String sort
+            @RequestParam(required = false, defaultValue = "asc") String sort,
+            @RequestParam(required = false) String search
     ) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(brandService.getAllBrands(page, size, sortBy, sort));
+                .body(brandService.getAllBrands(page, size, sortBy, sort, search));
     }
 
     @GetMapping("/store/brands/{id}")
@@ -44,7 +45,7 @@ public class BrandController {
                 .body(brandService.getBrandById(id));
     }
 
-    @PostMapping(value = "/dash/brands" )
+    @PostMapping(value = "/dash/brands")
     public ResponseEntity<BrandResponse> createBrand(@ModelAttribute BrandRequest brandRequest) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
@@ -73,6 +74,7 @@ public class BrandController {
                 .status(HttpStatus.NO_CONTENT)
                 .build();
     }
+
     @PostMapping("/store/brands/upload-image")
     public ResponseEntity<FileMetadata> uploadImage(@RequestParam("image") MultipartFile file, @RequestParam("id") Long id) {
         return ResponseEntity

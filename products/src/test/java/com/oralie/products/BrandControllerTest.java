@@ -37,14 +37,14 @@ class BrandControllerTest {
         String sortBy = "id";
         String sort = "asc";
         ListResponse<BrandResponse> listResponse = new ListResponse<>();
-        when(brandService.getAllBrands(page, size, sortBy, sort)).thenReturn(listResponse);
+        when(brandService.getAllBrands(page, size, sortBy, sort, "")).thenReturn(listResponse);
 
         // Act
-        ResponseEntity<ListResponse<BrandResponse>> responseEntity = brandController.getAllBrands(page, size, sortBy, sort);
+        ResponseEntity<ListResponse<BrandResponse>> responseEntity = brandController.getAllBrands(page, size, sortBy, sort, "");
 
         // Assert
         assertEquals(ResponseEntity.ok(listResponse), responseEntity);
-        verify(brandService, times(1)).getAllBrands(page, size, sortBy, sort);
+        verify(brandService, times(1)).getAllBrands(page, size, sortBy, sort, "");
     }
 
     @Test
