@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.oralie.products.dto.ProductContactDto;
 import com.oralie.products.dto.request.ProductQuantityPost;
 import com.oralie.products.dto.request.ProductRequest;
-import com.oralie.products.dto.response.ListResponse;
-import com.oralie.products.dto.response.ProductBaseResponse;
-import com.oralie.products.dto.response.ProductResponse;
-import com.oralie.products.dto.response.ProductResponseES;
+import com.oralie.products.dto.response.*;
 import com.oralie.products.service.ProductService;
 import com.oralie.products.service.redis.ProductRedisService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -157,6 +154,13 @@ public class ProductController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.top10ProductRelatedCategory(productId, categoryName));
+    }
+
+    @GetMapping("/store/products/options/{id}")
+    public ResponseEntity<List<ProductOptionResponse>> getProductOptionsByProductId(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.getProductOptionsByProductId(id));
     }
 
     // dash

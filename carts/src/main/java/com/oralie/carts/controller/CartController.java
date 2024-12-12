@@ -114,6 +114,7 @@ public class CartController {
     @PutMapping("/store/carts/update/{productId}")
     public ResponseEntity<CartResponse> updateItemInCart(
             @PathVariable("productId") Long productId,
+            @RequestParam("itemId") Long itemId,
             @RequestParam("optionId") Long optionId,
             @RequestParam("quantity") Integer quantity
     ) {
@@ -121,7 +122,7 @@ public class CartController {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(cartService.updateItemInCart(userId, productId,optionId, quantity));
+                .body(cartService.updateItemInCart(userId, productId, itemId, optionId, quantity));
     }
 
     @DeleteMapping("/store/carts/remove/{productId}")

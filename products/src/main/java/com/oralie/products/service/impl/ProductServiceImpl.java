@@ -392,6 +392,13 @@ public class ProductServiceImpl implements ProductService {
         return mapToProductResponseList(productRepository.getTop10ProductRelatedByCategory(productId, categoryName));
     }
 
+    @Override
+    public List<ProductOptionResponse> getProductOptionsByProductId(Long id) {
+        return productRepository.findById(id)
+                .map(product -> mapToProductOptionResponseList(product.getOptions()))
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
+    }
+
     private List<ProductResponse> mapToProductResponseList(List<Product> products) {
         return products.stream()
                 .map(product -> ProductResponse.builder()

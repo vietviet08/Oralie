@@ -2,12 +2,14 @@ package com.oralie.carts.service;
 
 import com.oralie.carts.dto.ProductResponse;
 import com.oralie.carts.dto.response.ProductBaseResponse;
+import com.oralie.carts.dto.response.client.ProductOptionResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -56,12 +58,41 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler {
             log.error("Error fetching product with id: {}", productId, ex);
             throw ex;
         }
+    }
 
+    @Retry(name = "productRetry")
+    @CircuitBreaker(name = "productCircuitBreaker", fallbackMethod = "handleListProductOptionResponseFallBack")
+    public List<ProductOptionResponse> getProductOptions(Long productId) {
+        log.info("Fetching product options with id: {}", productId);
 
+        final String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .getTokenValue();
+
+        final URI url = UriComponentsBuilder
+                .fromHttpUrl(URL_PRODUCT)
+                .path("/store/products/options/{productId}")
+                .buildAndExpand(productId)
+                .toUri();
+
+        try {
+            return restClient.get()
+                    .uri(url)
+                    .headers(h -> h.setBearerAuth(jwt))
+                    .retrieve()
+                    .body(new ParameterizedTypeReference<List<ProductOptionResponse>>() {});
+        } catch (Exception ex) {
+            log.error("Error fetching product options with id: {}", productId, ex);
+            throw ex;
+        }
     }
 
 
     protected ProductBaseResponse handleProductBaseResponseFallBack(Long productId, Throwable throwable) {
+        log.error("Fallback method called for product id: {} due to exception: {}", productId, throwable.getMessage());
+        return new ProductBaseResponse();
+    }
+
+    protected ProductBaseResponse handleListProductOptionResponseFallBack(Long productId, Throwable throwable) {
         log.error("Fallback method called for product id: {} due to exception: {}", productId, throwable.getMessage());
         return new ProductBaseResponse();
     }

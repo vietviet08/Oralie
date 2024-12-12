@@ -2,10 +2,7 @@ package com.oralie.products.service;
 
 import com.oralie.products.dto.request.ProductQuantityPost;
 import com.oralie.products.dto.request.ProductRequest;
-import com.oralie.products.dto.response.ListResponse;
-import com.oralie.products.dto.response.ProductBaseResponse;
-import com.oralie.products.dto.response.ProductResponse;
-import com.oralie.products.dto.response.ProductResponseES;
+import com.oralie.products.dto.response.*;
 
 import java.util.List;
 
@@ -41,4 +38,5 @@ public interface ProductService {
 
     List<ProductResponse> top10ProductRelatedCategory(Long productId, String categoryName);
 
+    List<ProductOptionResponse> getProductOptionsByProductId(Long id);
 }

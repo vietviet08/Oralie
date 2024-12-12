@@ -4,6 +4,7 @@ import com.oralie.carts.dto.response.CartItemResponse;
 import com.oralie.carts.dto.response.CartResponse;
 import com.oralie.carts.dto.response.ListResponse;
 import com.oralie.carts.dto.response.ProductBaseResponse;
+import com.oralie.carts.dto.response.client.ProductOptionResponse;
 import com.oralie.carts.exception.ResourceNotFoundException;
 import com.oralie.carts.model.Cart;
 import com.oralie.carts.model.CartItem;
@@ -89,7 +90,7 @@ public class CartServiceImpl implements CartService {
         List<Cart> carts = pageCarts.getContent();
 
         return ListResponse.<CartResponse>builder()
-                .data(maptoCartResponseList(carts))
+                .data(mapToCartResponseList(carts))
                 .pageNo(pageCarts.getNumber())
                 .pageSize(pageCarts.getSize())
                 .totalElements((int) pageCarts.getTotalElements())
@@ -102,14 +103,14 @@ public class CartServiceImpl implements CartService {
     public List<CartItemResponse> getCartItemByUserId(String userId) {
         Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Cart", "userId", userId + ""));
         List<CartItem> cartItems = cart.getCartItems();
-        return mapToCartItemResponseSet(cartItems);
+        return mapToCartItemResponseList(cartItems);
     }
 
     @Override
     public List<CartItemResponse> getCartItemByCartId(Long cartId) {
         Cart cart = cartRepository.findById(cartId).orElseThrow(() -> new ResourceNotFoundException("Cart", "id", cartId + ""));
         List<CartItem> cartItems = cart.getCartItems();
-        return mapToCartItemResponseSet(cartItems);
+        return mapToCartItemResponseList(cartItems);
     }
 
     @Override
@@ -196,10 +197,10 @@ public class CartServiceImpl implements CartService {
         ProductBaseResponse product = productService.getProductById(productId);
 
         if (product == null ||
-            product.getOptions()
-                    .stream()
-                    .filter(option -> option.getId().equals(productOptionId))
-                    .findFirst().isEmpty()) {
+                product.getOptions()
+                        .stream()
+                        .filter(option -> option.getId().equals(productOptionId))
+                        .findFirst().isEmpty()) {
             throw new ResourceNotFoundException("Product", "id", productId + "");
         }
 
@@ -238,7 +239,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse updateItemInCart(String userId, Long productId, Long productOptionId, Integer quantity) {
+    public CartResponse updateItemInCart(String userId, Long productId, Long itemId, Long productOptionId, Integer quantity) {
         //quantity update can be negative
 
         //get product
@@ -250,7 +251,7 @@ public class CartServiceImpl implements CartService {
 
         //update quantity for cartItem
         CartItem cartItem = cartItems.stream()
-                .filter(item -> item.getProductId().equals(productId) && item.getProductOptionId().equals(productOptionId))
+                .filter(item -> item.getId().equals(itemId) && item.getProductId().equals(productId))
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("CartItem", "productId", productId + " check cart if not null and exist productId"));
         if (cartItem == null) {
@@ -258,11 +259,27 @@ public class CartServiceImpl implements CartService {
         } else {
             //this quantity calculated in client always greater than 0
 
-            cart.setQuantity(cart.getQuantity() - cartItem.getQuantity() + quantity);
-            cart.setTotalPrice(cart.getTotalPrice() - cartItem.getTotalPrice() + product.getPrice() * quantity);
+            ProductOptionResponse por = product.getOptions()
+                    .stream()
+                    .filter(option -> option.getId().equals(productOptionId))
+                    .findFirst()
+                    .orElseThrow(() -> new ResourceNotFoundException("ProductOption", "productOptionId", productOptionId + ""));
 
-            cartItem.setTotalPrice(product.getPrice() * quantity);
-            cartItem.setQuantity(quantity);
+            if (!Objects.equals(cartItem.getProductOptionId(), productOptionId) &&
+                    product.getOptions()
+                            .stream()
+                            .anyMatch(option -> option.getId().equals(productOptionId))) {
+                cartItem.setProductOptionId(productOptionId);
+            }
+            try {
+                cart.setQuantity(cart.getQuantity() - cartItem.getQuantity() + quantity);
+                cart.setTotalPrice(cart.getTotalPrice() - cartItem.getTotalPrice() + Double.parseDouble(por.getValue()) * quantity);
+
+                cartItem.setTotalPrice(Double.parseDouble(por.getValue()) * quantity);
+                cartItem.setQuantity(quantity);
+            } catch (Exception e) {
+                log.error("error: {}", e.getMessage());
+            }
 
             Cart cartSaved = cartRepository.save(cart);
             return mapToCartResponse(cartSaved);
@@ -315,25 +332,28 @@ public class CartServiceImpl implements CartService {
     private CartResponse mapToCartResponse(Cart cart) {
         return CartResponse.builder()
                 .id(cart.getId())
-                .cartItemResponses(mapToCartItemResponseSet(cart.getCartItems()))
+                .cartItemResponses(mapToCartItemResponseList(cart.getCartItems()))
                 .userId(cart.getUserId())
                 .quantity(cart.getQuantity())
                 .totalPrice(cart.getTotalPrice())
                 .build();
     }
 
-    private List<CartResponse> maptoCartResponseList(List<Cart> carts) {
+    private List<CartResponse> mapToCartResponseList(List<Cart> carts) {
         return carts.stream()
                 .map(this::mapToCartResponse)
                 .collect(Collectors.toList());
     }
 
     private CartItemResponse mapToCartItemResponse(CartItem cartItem) {
+        List<ProductOptionResponse> productOptions = productService.getProductOptions(cartItem.getProductId());
+
         return CartItemResponse.builder()
                 .id(cartItem.getId())
                 .productId(cartItem.getProductId())
                 .productName(cartItem.getProductName())
                 .productOptionId(cartItem.getProductOptionId())
+                .productOptions(productOptions)
                 .urlImageThumbnail(cartItem.getUrlImageThumbnail())
                 .productSlug(cartItem.getProductSlug())
                 .productSlug(cartItem.getProductSlug())
@@ -343,7 +363,7 @@ public class CartServiceImpl implements CartService {
                 .build();
     }
 
-    private List<CartItemResponse> mapToCartItemResponseSet(List<CartItem> cartItems) {
+    private List<CartItemResponse> mapToCartItemResponseList(List<CartItem> cartItems) {
         return cartItems.stream()
                 .map(this::mapToCartItemResponse)
                 .collect(Collectors.toList());
