@@ -13,6 +13,7 @@ public class CartItemResponse {
     private Long id;
     private Long productId;
     private String productName;
+    private Long productOptionId;
     private String urlImageThumbnail;
     private String productSlug;
     private Integer quantity;

@@ -101,25 +101,27 @@ public class CartController {
     @PostMapping(value = "/store/carts/add/{productId}")
     public ResponseEntity<CartResponse> addProductToCart(
             @PathVariable("productId") Long productId,
+            @RequestParam("optionId") Long optionId,
             @RequestParam("quantity") Integer quantity
     ) {
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(cartService.addItemToCart(userId, productId, quantity));
+                .body(cartService.addItemToCart(userId, productId, optionId, quantity));
     }
 
     @PutMapping("/store/carts/update/{productId}")
     public ResponseEntity<CartResponse> updateItemInCart(
             @PathVariable("productId") Long productId,
+            @RequestParam("optionId") Long optionId,
             @RequestParam("quantity") Integer quantity
     ) {
         log.info("updateItemInCart request: {}", quantity);
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(cartService.updateItemInCart(userId, productId, quantity));
+                .body(cartService.updateItemInCart(userId, productId,optionId, quantity));
     }
 
     @DeleteMapping("/store/carts/remove/{productId}")

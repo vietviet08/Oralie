@@ -113,7 +113,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse addItemToCart(String userId, Long productId, Integer quantity) {
+    public CartResponse addItemToCart(String userId, Long productId, Long productOptionId, Integer quantity) {
 
 //        Cart cart = cartRepository.findByUserId(userId).orElse(null);
 //
@@ -195,19 +195,24 @@ public class CartServiceImpl implements CartService {
         List<CartItem> cartItems = cart.getCartItems();
         ProductBaseResponse product = productService.getProductById(productId);
 
-        if (product == null) {
+        if (product == null ||
+            product.getOptions()
+                    .stream()
+                    .filter(option -> option.getId().equals(productOptionId))
+                    .findFirst().isEmpty()) {
             throw new ResourceNotFoundException("Product", "id", productId + "");
         }
 
         final boolean[] newCartItem = {false};
 
         CartItem cartItem = cartItems.stream()
-                .filter(item -> item.getProductId().equals(productId))
+                .filter(item -> item.getProductId().equals(productId) && item.getProductOptionId().equals(productOptionId))
                 .findFirst()
                 .orElseGet(() -> {
                     CartItem newItem = CartItem.builder()
                             .productId(productId)
                             .productName(product.getName())
+                            .productOptionId(productOptionId)
                             .productSlug(product.getSlug())
                             .urlImageThumbnail(product.getImage())
                             .quantity(quantity)
@@ -233,7 +238,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse updateItemInCart(String userId, Long productId, Integer quantity) {
+    public CartResponse updateItemInCart(String userId, Long productId, Long productOptionId, Integer quantity) {
         //quantity update can be negative
 
         //get product
@@ -245,14 +250,13 @@ public class CartServiceImpl implements CartService {
 
         //update quantity for cartItem
         CartItem cartItem = cartItems.stream()
-                .filter(item -> item.getProductId().equals(productId))
+                .filter(item -> item.getProductId().equals(productId) && item.getProductOptionId().equals(productOptionId))
                 .findFirst()
                 .orElseThrow(() -> new ResourceNotFoundException("CartItem", "productId", productId + " check cart if not null and exist productId"));
         if (cartItem == null) {
             throw new ResourceNotFoundException("CartItem", "productId", productId + " check cart if not null and exist productId");
         } else {
             //this quantity calculated in client always greater than 0
-
 
             cart.setQuantity(cart.getQuantity() - cartItem.getQuantity() + quantity);
             cart.setTotalPrice(cart.getTotalPrice() - cartItem.getTotalPrice() + product.getPrice() * quantity);
@@ -266,13 +270,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartResponse removeItemFromCart(String userId, Long productId) {
+    public CartResponse removeItemFromCart(String userId, Long itemId) {
         Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Cart", "userId", userId));
         List<CartItem> cartItems = cart.getCartItems();
         CartItem cartItem = cartItems.stream()
-                .filter(item -> item.getProductId().equals(productId))
+                .filter(item -> item.getId().equals(itemId))
                 .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("CartItem", "productId", productId + ""));
+                .orElseThrow(() -> new ResourceNotFoundException("CartItem", "itemId", itemId + ""));
 
         cart.setCartItems(cartItems);
         cart.setQuantity(cart.getQuantity() - cartItem.getQuantity());
@@ -329,6 +333,7 @@ public class CartServiceImpl implements CartService {
                 .id(cartItem.getId())
                 .productId(cartItem.getProductId())
                 .productName(cartItem.getProductName())
+                .productOptionId(cartItem.getProductOptionId())
                 .urlImageThumbnail(cartItem.getUrlImageThumbnail())
                 .productSlug(cartItem.getProductSlug())
                 .productSlug(cartItem.getProductSlug())

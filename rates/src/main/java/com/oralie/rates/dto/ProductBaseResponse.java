@@ -14,6 +14,7 @@ import java.util.List;
 public class ProductBaseResponse {
     private Long id;
     private String name;
+    private List<ProductOptionResponse> options;
     private String slug;
     private String image;
     private String description;
@@ -27,5 +28,4 @@ public class ProductBaseResponse {
     private Boolean isDeleted;
     private Boolean isFeatured;
     private Boolean isPromoted;
-
 }

@@ -1,5 +1,6 @@
 package com.oralie.carts.dto.response;
 
+import com.oralie.carts.dto.response.client.ProductOptionResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +13,9 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class ProductBaseResponse {
-
     private Long id;
     private String name;
+    private List<ProductOptionResponse> options;
     private String image;
     private String slug;
     private String description;
@@ -28,5 +29,4 @@ public class ProductBaseResponse {
     private Boolean isDeleted;
     private Boolean isFeatured;
     private Boolean isPromoted;
-
 }

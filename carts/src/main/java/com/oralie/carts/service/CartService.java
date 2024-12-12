@@ -18,9 +18,9 @@ public interface CartService {
      CartResponse getCartByUserId(String userId);
      ListResponse<CartResponse> getAllCarts(int page, int size, String sortBy, String sort);
      List<CartItemResponse> getCartItemByUserId(String userId);
-     CartResponse addItemToCart(String userId, Long productId, Integer quantity);
-     CartResponse updateItemInCart(String userId, Long productId, Integer quantity);
-     CartResponse removeItemFromCart(String userId, Long productId);
+     CartResponse addItemToCart(String userId, Long productId, Long productOptionId, Integer quantity);
+     CartResponse updateItemInCart(String userId, Long productId, Long productOptionId, Integer quantity);
+     CartResponse removeItemFromCart(String userId, Long itemId);
      CartResponse clearCart(String userId);
      CartResponse checkoutCart(Long cartId);
 }
