@@ -12,11 +12,11 @@ public interface S3Service {
 
     FileMetadata uploadImage(MultipartFile image);
 
+    List<FileMetadata> uploadImages(List<MultipartFile> files);
+
     FileMetadata uploadImageByUrl(String imageUrl);
 
     List<FileMetadata> uploadImagesByUrl(List<String> imageUrl);
-
-    List<FileMetadata> uploadImages(List<MultipartFile> files);
 
     S3Object getFile(String keyName);
 

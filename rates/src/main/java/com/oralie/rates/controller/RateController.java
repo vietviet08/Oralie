@@ -34,7 +34,6 @@ public class RateController {
     private final RateService rateService;
 
     //dash
-
     @GetMapping(value = "/dash/rates/all")
     public ResponseEntity<ListResponse<RateResponse>> getAllRate(
             @RequestParam(required = false, defaultValue = "0") int page,
@@ -47,7 +46,6 @@ public class RateController {
     }
 
     //store
-
     @GetMapping(value = "/store/rates/{productId}")
     public ResponseEntity<ListResponse<RateResponse>> getAllRate(
             @PathVariable("productId") Long productId,

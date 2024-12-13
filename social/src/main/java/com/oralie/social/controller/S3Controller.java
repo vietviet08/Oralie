@@ -90,7 +90,7 @@ public class S3Controller {
         }
     }
 
-    @PostMapping("/store/social/download/{fileName}")
+    @PostMapping("/dash/social/download/{fileName}")
     public ResponseEntity<InputStreamResource> downloadFile(@PathVariable String fileName) {
         try {
             var s3Object = s3Service.getFile(fileName);

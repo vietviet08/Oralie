@@ -61,6 +61,21 @@ public class S3ServiceImpl implements S3Service {
     }
 
     @Override
+    public List<FileMetadata> uploadImages(List<MultipartFile> files) {
+        List<FileMetadata> fileMetadata = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            String fileKey = "oralie-file-" + file.getOriginalFilename();
+            if (Objects.requireNonNull(file.getOriginalFilename()).contains(fileKey)) {
+                fileKey = file.getOriginalFilename();
+            }
+            fileMetadata.add(putByMultipartFile(BUCKET_NAME, fileKey, file, true));
+        }
+
+        return fileMetadata;
+    }
+
+    @Override
     public FileMetadata uploadImageByUrl(String imageUrl) {
         assert imageUrl != null;
         String fileKey = Paths.get(imageUrl).getFileName().toString();
@@ -80,22 +95,6 @@ public class S3ServiceImpl implements S3Service {
             } catch (MalformedURLException e) {
                 log.error("Invalid URL format: {}", url, e);
             }
-        }
-
-        return fileMetadata;
-    }
-
-
-    @Override
-    public List<FileMetadata> uploadImages(List<MultipartFile> files) {
-        List<FileMetadata> fileMetadata = new ArrayList<>();
-
-        for (MultipartFile file : files) {
-            String fileKey = "oralie-file-" + file.getOriginalFilename();
-            if (Objects.requireNonNull(file.getOriginalFilename()).contains(fileKey)) {
-                fileKey = file.getOriginalFilename();
-            }
-            fileMetadata.add(putByMultipartFile(BUCKET_NAME, fileKey, file, true));
         }
 
         return fileMetadata;

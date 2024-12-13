@@ -11,6 +11,7 @@ import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import reactor.core.publisher.Mono;
 
@@ -159,9 +160,6 @@ public class RouteConfig {
                         .path("/api/social/**")
                         .filters(f -> f.tokenRelay()
                                 .rewritePath("/api/social/(?<segment>.*)", "/${segment}")
-                                .circuitBreaker(c -> c.setName("SOCIAL-CIRCUIT-BREAKER")
-                                        .setFallbackUri("forward:/socialServiceFallback")
-                                )
                         )
                         .uri("lb://SOCIAL")
                 )
