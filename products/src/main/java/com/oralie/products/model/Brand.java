@@ -23,7 +23,7 @@ public class Brand extends BaseEntity {
     @Column(name = "brand_id")
     private Long id;
 
-    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "brand", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Product> products;
 
     @Column(unique = true)

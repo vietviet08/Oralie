@@ -130,7 +130,6 @@ public class BrandServiceImpl implements BrandService {
             if (brand.getImage() != null) {
                 log.info("Deleting previous update image brand: {}", brand.getImage());
 
-
                 String fileName = brand.getImage().replace(URL_BUCKET, "");
 
                 var responseS3 = socialService.deleteFile(fileName);
