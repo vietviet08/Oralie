@@ -264,14 +264,40 @@ public class ProductServiceImpl implements ProductService {
 
         // check old categories if they are still in the list keep them else delete them
         // and new categories add them
+//        List<ProductCategory> productCategoryListOld = product.getProductCategories();
+//        List<Long> categoryIds = productRequest.getCategoryIds();
+//
+//        for (ProductCategory productCategory : productCategoryListOld) {
+//            if (!categoryIds.contains(productCategory.getCategory().getId())) {
+//                productCategoryRepository.delete(productCategory);
+//            }
+//        }
+//
+//        List<ProductCategory> productCategoryList = new ArrayList<>();
+//        for (Long idCategory : productRequest.getCategoryIds()) {
+//            Category category = categoryRepository.findById(idCategory)
+//                    .orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", idCategory + ""));
+//            boolean isExist = productCategoryListOld.stream()
+//                    .anyMatch(productCategory -> productCategory.getCategory().getId().equals(idCategory));
+//            if (isExist) {
+//                ProductCategory productCategory = ProductCategory.builder()
+//                        .category(category)
+//                        .product(productSaved)
+//                        .build();
+//                productCategoryList.add(productCategory);
+//            }
+//        }
+
         List<ProductCategory> productCategoryListOld = product.getProductCategories();
         List<Long> categoryIds = productRequest.getCategoryIds();
 
-        for (ProductCategory productCategory : productCategoryListOld) {
+        productCategoryListOld.removeIf(productCategory -> {
             if (!categoryIds.contains(productCategory.getCategory().getId())) {
                 productCategoryRepository.delete(productCategory);
+                return true;
             }
-        }
+            return false;
+        });
 
         List<ProductCategory> productCategoryList = new ArrayList<>();
         for (Long idCategory : productRequest.getCategoryIds()) {
@@ -279,7 +305,7 @@ public class ProductServiceImpl implements ProductService {
                     .orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", idCategory + ""));
             boolean isExist = productCategoryListOld.stream()
                     .anyMatch(productCategory -> productCategory.getCategory().getId().equals(idCategory));
-            if (isExist) {
+            if (!isExist) {
                 ProductCategory productCategory = ProductCategory.builder()
                         .category(category)
                         .product(productSaved)
