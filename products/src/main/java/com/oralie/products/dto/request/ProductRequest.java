@@ -30,7 +30,7 @@ public class ProductRequest {
     @NotBlank(message = "Slug is required")
     private String slug;
 
-    @Size(min = 4, max = 1000, message = "Description must be between 4 and 1000 characters")
+    @Size(min = 4, message = "Description must be right than 4 characters")
     private String description;
 
     private String sku;

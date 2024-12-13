@@ -50,9 +50,9 @@ public class SecurityConfig {
                                 "/swagger-ui",
                                 "/swagger-ui/**",
                                 "/aggregate/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/store/rates/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/store/rates/**").hasAnyRole("CUSTOMER", "ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/store/rates/**").hasAnyRole("CUSTOMER", "ADMIN")
+                        .requestMatchers("/store/rates/**").permitAll()
+//                        .requestMatchers(HttpMethod.POST, "/store/rates/**").hasAnyRole("CUSTOMER", "ADMIN")
+//                        .requestMatchers(HttpMethod.PUT, "/store/rates/**").hasAnyRole("CUSTOMER", "ADMIN")
                         .requestMatchers("/dash/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )

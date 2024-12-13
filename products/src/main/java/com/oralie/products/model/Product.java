@@ -48,7 +48,7 @@ public class Product extends BaseEntity {
     @Column(unique = true)
     private String sku;
 
-    @Column(length = 1000)
+    @Column(columnDefinition = "LONGTEXT")
     private String description;
 
     private Double price;

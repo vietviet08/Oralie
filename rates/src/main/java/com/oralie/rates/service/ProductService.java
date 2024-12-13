@@ -41,28 +41,24 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler {
     public boolean existingProductByProductId(Long productId) {
         log.info("Checking product by id: {}", productId.toString());
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || authentication.getCredentials() == null) {
-            log.error("Authentication or credentials are null {}", RateConstant.UNAUTHORIZED);
-            return false;
-        }
-
-        final String jwtToken = authentication.getCredentials().toString();
-
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_PRODUCT)
-                .pathSegment("store", "products", "existingById", productId.toString())
-                .build()
+                .path("/store/products/existingById/{productId}")
+                .buildAndExpand(productId)
                 .toUri();
 
-        return Boolean.TRUE.equals(restClient.get()
-                .uri(url)
-                .headers(headers -> headers.setBearerAuth(jwtToken))
-                .retrieve()
-                .body(Boolean.class));
+        try {
+            return Boolean.TRUE.equals(restClient.get()
+                    .uri(url)
+                    .retrieve()
+                    .body(Boolean.class));
+        } catch (Exception ex) {
+            log.error("Error fetching product with id: {}", productId, ex);
+            throw ex;
+        }
     }
 
-    protected ProductBaseResponse handleBooleanFallback(Throwable throwable) throws Throwable {
+    protected boolean handleBooleanFallback(Throwable throwable) throws Throwable {
         log.error("Fallback triggered due to: {}", throwable.getMessage(), throwable);
         return handleTypedFallback(throwable);
     }

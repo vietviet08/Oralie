@@ -59,6 +59,7 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/api/products/store/**").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/carts/store/**").permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/social/store/**").permitAll()
+                        .pathMatchers(HttpMethod.GET, "/api/rates/store/**").permitAll()
 
                         // Store has role
                         .pathMatchers(HttpMethod.GET, "/api/accounts/store/**").hasRole("CUSTOMER")
