@@ -196,15 +196,20 @@ public class CartServiceImpl implements CartService {
         List<CartItem> cartItems = cart.getCartItems();
         ProductBaseResponse product = productService.getProductById(productId);
 
-        if (product == null ||
-                product.getOptions()
-                        .stream()
-                        .filter(option -> option.getId().equals(productOptionId))
-                        .findFirst().isEmpty()) {
+        ProductOptionResponse productOption;
+
+        if (product == null) {
             throw new ResourceNotFoundException("Product", "id", productId + "");
+        } else {
+            productOption = product.getOptions()
+                    .stream()
+                    .filter(option -> option.getId().equals(productOptionId))
+                    .findFirst()
+                    .orElseThrow(() -> new ResourceNotFoundException("ProductOption", "productOptionId", productOptionId + ""));
         }
 
         final boolean[] newCartItem = {false};
+        double totalPrice = Double.parseDouble(productOption.getValue()) * quantity;
 
         CartItem cartItem = cartItems.stream()
                 .filter(item -> item.getProductId().equals(productId) && item.getProductOptionId().equals(productOptionId))
@@ -217,8 +222,8 @@ public class CartServiceImpl implements CartService {
                             .productSlug(product.getSlug())
                             .urlImageThumbnail(product.getImage())
                             .quantity(quantity)
-                            .price(product.getPrice())
-                            .totalPrice(product.getPrice() * quantity)
+                            .price(Double.parseDouble(productOption.getValue()))
+                            .totalPrice(totalPrice)
                             .cart(cart)
                             .build();
                     cartItems.add(newItem);
@@ -228,11 +233,11 @@ public class CartServiceImpl implements CartService {
 
         if (!newCartItem[0]) {
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
-            cartItem.setTotalPrice(cartItem.getTotalPrice() + product.getPrice() * quantity);
+            cartItem.setTotalPrice(cartItem.getTotalPrice() + totalPrice);
         }
 
         cart.setQuantity(cart.getQuantity() + quantity);
-        cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
+        cart.setTotalPrice(cart.getTotalPrice() + totalPrice);
         Cart cartSaved = cartRepository.save(cart);
         return mapToCartResponse(cartSaved);
 

@@ -520,6 +520,9 @@ public class ProductServiceImpl implements ProductService {
 
     private List<ProductOption> mapToProductOptionList(List<ProductOptionRequest> productOptionRequests,
                                                        Product product) {
+        if(productOptionRequests == null) {
+            return Collections.emptyList();
+        }
         return productOptionRequests.stream()
                 .map(productOptionRequest -> ProductOption.builder()
                         .name(productOptionRequest.getName())
@@ -541,6 +544,9 @@ public class ProductServiceImpl implements ProductService {
 
     private List<ProductSpecification> mapToProductSpecificationsList(List<ProductSpecificationRequest> productSpecificationRequests,
                                                                       Product product) {
+        if(productSpecificationRequests == null) {
+            return Collections.emptyList();
+        }
         return productSpecificationRequests.stream()
                 .map(productSpecificationRequest -> ProductSpecification.builder()
                         .name(productSpecificationRequest.getName())

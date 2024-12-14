@@ -46,12 +46,26 @@ public class CategoryController {
                 .body(categoryService.getCategoryById(id));
     }
 
+    @GetMapping("/store/categories/by-name/{name}")
+    public ResponseEntity<CategoryResponse> getCategoryByName(@PathVariable String name) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(categoryService.getCategoryByName(name));
+    }
+
     @GetMapping("/store/categories/not-id/{id}")
     public ResponseEntity<List<CategoryResponse>> getAllCategoriesNotId(@PathVariable Long id,
                                                                         @RequestParam boolean notId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.getAllCategoriesNotId(id, notId));
+    }
+
+    @GetMapping("/store/categories/not-parent")
+    public ResponseEntity<List<CategoryResponse>> getAllCategoryNotParent() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(categoryService.getAllCategoryNotParent());
     }
 
     @GetMapping("/store/categories/contains-name")

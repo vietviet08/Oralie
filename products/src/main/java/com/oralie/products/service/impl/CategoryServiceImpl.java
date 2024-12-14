@@ -59,6 +59,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public CategoryResponse getCategoryByName(String name) {
+        Category category = categoryRepository.findByName(name).orElseThrow(() -> new ResourceNotFoundException("Category not found", "name", name));
+        return mapToCategoryResponse(category);
+    }
+
+    @Override
     public List<CategoryResponse> getAllCategoriesNotId(Long id, boolean notId) {
         if (notId) {
             return mapToCategoryResponseList(categoryRepository.findAllByIdNot(id));
@@ -203,6 +209,11 @@ public class CategoryServiceImpl implements CategoryService {
 
         categoryRepository.save(category);
 
+    }
+
+    @Override
+    public List<CategoryResponse> getAllCategoryNotParent() {
+        return mapToCategoryResponseList(categoryRepository.findAllByParentCategoryIsNull());
     }
 
     @Override

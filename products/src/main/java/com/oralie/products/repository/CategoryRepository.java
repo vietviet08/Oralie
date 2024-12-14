@@ -13,11 +13,13 @@ import java.util.Optional;
 public interface CategoryRepository extends JpaRepository<Category, Long> {
     boolean existsByName(String name);
 
-    Category findByName(String name);
+    Optional<Category> findByName(String name);
 
     List<Category> findAllByIdNot(Long id);
 
     List<Category> findByNameContainingIgnoreCase(String name);
 
     Page<Category> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
+    List<Category> findAllByParentCategoryIsNull();
 }

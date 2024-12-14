@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class ProductSpecificationRequest {
 
     @NotBlank(message = "Name is required")
-    @Size(min = 1, max = 120, message = "Name must be between 1 and 120 characters")
+    @Size(min = 1, max = 420, message = "Name must be between 1 and 120 characters")
     private String name;
 
     @NotBlank(message = "Value is required")

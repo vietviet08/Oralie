@@ -12,6 +12,8 @@ public interface CategoryService {
 
     ListResponse<CategoryResponse> getAllCategories(int page, int size, String sortBy, String sort, String search);
 
+    CategoryResponse getCategoryByName(String name);
+
     List<CategoryResponse> getAllCategoriesNotId(Long id, boolean notId);
 
     List<CategoryResponse> getAllCategoryContainsName(String name);
@@ -29,4 +31,6 @@ public interface CategoryService {
     void updateAvailable(Long id);
 
     void deleteImage(Long id);
+
+    List<CategoryResponse> getAllCategoryNotParent();
 }
