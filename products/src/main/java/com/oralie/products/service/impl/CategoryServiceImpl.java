@@ -217,6 +217,12 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<CategoryResponse> getAllCategorySameParent(String slug) {
+        Category category = categoryRepository.findBySlug(slug).orElseThrow(() -> new ResourceNotFoundException("Category not found", "slug", slug));
+        return mapToCategoryResponseList(categoryRepository.findAllByParentId(category.getId()));
+    }
+
+    @Override
     public void deleteCategory(Long id) {
         Category category = categoryRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", id + ""));
         categoryRepository.delete(category);

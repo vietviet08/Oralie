@@ -85,7 +85,7 @@ public class ProductController {
             @RequestParam String category,
             @RequestParam(required = false) String brand
     ) {
-        if (brand == null) {
+        if (brand == null || brand.isEmpty()) {
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(productService.getAllProductsByCategory(page, size, sortBy, sort, category));

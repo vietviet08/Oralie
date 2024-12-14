@@ -68,6 +68,13 @@ public class CategoryController {
                 .body(categoryService.getAllCategoryNotParent());
     }
 
+    @GetMapping("/store/categories/same-parent/{slug}")
+    public ResponseEntity<List<CategoryResponse>> getAllCategorySameParent(@PathVariable String slug) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(categoryService.getAllCategorySameParent(slug));
+    }
+
     @GetMapping("/store/categories/contains-name")
     public ResponseEntity<List<CategoryResponse>> getAllCategoryContainsName(@RequestParam String name) {
         return ResponseEntity

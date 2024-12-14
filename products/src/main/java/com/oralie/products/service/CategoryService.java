@@ -33,4 +33,6 @@ public interface CategoryService {
     void deleteImage(Long id);
 
     List<CategoryResponse> getAllCategoryNotParent();
+
+    List<CategoryResponse> getAllCategorySameParent(String slug);
 }

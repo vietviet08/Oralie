@@ -90,7 +90,11 @@ public class ProductServiceImpl implements ProductService {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sortObj);
-        Page<Product> pageProducts = productRepository.findAllByBrandSlug(pageable, categorySlug, brandSlug);
+
+        Page<Product> pageProducts = productRepository.findAllByBrandAndCategorySlug(pageable, categorySlug, brandSlug);
+        if (categorySlug == null || categorySlug.isEmpty()) {
+            pageProducts = productRepository.findAllByBrandSlug(pageable, brandSlug);
+        }
         List<Product> products = pageProducts.getContent();
 
         return ListResponse
@@ -520,7 +524,7 @@ public class ProductServiceImpl implements ProductService {
 
     private List<ProductOption> mapToProductOptionList(List<ProductOptionRequest> productOptionRequests,
                                                        Product product) {
-        if(productOptionRequests == null) {
+        if (productOptionRequests == null) {
             return Collections.emptyList();
         }
         return productOptionRequests.stream()
@@ -544,7 +548,7 @@ public class ProductServiceImpl implements ProductService {
 
     private List<ProductSpecification> mapToProductSpecificationsList(List<ProductSpecificationRequest> productSpecificationRequests,
                                                                       Product product) {
-        if(productSpecificationRequests == null) {
+        if (productSpecificationRequests == null) {
             return Collections.emptyList();
         }
         return productSpecificationRequests.stream()

@@ -36,9 +36,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT p FROM Product p" +
             " JOIN p.productCategories pc WHERE pc.category.slug = :categorySlug " +
             "AND p.brand.slug = :brandSlug")
-    Page<Product> findAllByBrandSlug(Pageable pageable,
+    Page<Product> findAllByBrandAndCategorySlug(Pageable pageable,
                                      @Param("categorySlug") String categorySlug,
                                      @Param("brandSlug") String brandSlug);
+
+    @Query(value = "SELECT p FROM Product p WHERE p.brand.slug = :brandSlug")
+    Page<Product> findAllByBrandSlug(Pageable pageable, @Param("brandSlug") String brandSlug);
 
     @Query("SELECT p FROM Product p JOIN p.productCategories pc " +
             "JOIN pc.category c WHERE c.slug = :categorySlug")
