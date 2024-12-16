@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 
 @Tag(
         name = "The API of Search Service",
@@ -35,11 +37,10 @@ public class SearchController {
             @RequestParam(value = "size", required = false, defaultValue = "10") Integer size,
             @RequestParam(value = "sort", required = false, defaultValue = "ASC") String sort,
             @RequestParam(value = "sortBy", required = false, defaultValue = "id") String sortBy,
-            @RequestParam(value = "category", required = false) String category,
-            @RequestParam(value = "brand", required = false) String brand,
-            @RequestParam(value = "option", required = false) String option,
-            @RequestParam(value = "priceFrom", required = false) Double priceFrom,
-            @RequestParam(value = "priceTo", required = false) Double priceTo) {
+            @RequestParam(value = "category", required = false, defaultValue = "") String category,
+            @RequestParam(value = "brand", required = false, defaultValue = "") String brand,
+            @RequestParam(value = "option", required = false, defaultValue = "") String option,
+            @RequestParam(value = "price", required = false, defaultValue = "") String price) {
 
         ProductParam productParam = ProductParam.builder()
                 .keyword(keyword)
@@ -50,12 +51,19 @@ public class SearchController {
                 .category(category)
                 .brand(brand)
                 .option(option)
-                .priceFrom(priceFrom)
-                .priceTo(priceTo)
+                .priceFrom(!price.isEmpty() ? Double.parseDouble(price.split("-")[0]) : null)
+                .priceTo(!price.isEmpty() ? Double.parseDouble(price.split("-")[1]) : null)
                 .build();
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productSearchService.searchProducts(productParam));
+    }
+
+    @GetMapping("/store/search/search-autocomplete")
+    public ResponseEntity<List<String>> searchAutoComplete(@RequestParam(value = "keyword") String keyword) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productSearchService.autoCompleteProductName(keyword));
     }
 
 }

@@ -39,7 +39,7 @@ public class SecurityConfig {
                                 "/",
                                 "/login",
                                 "/store/**",
-                                "/store/search/register",
+                                "/store/search/**",
                                 "/search/build-version",
                                 "/search/contact-info",
                                 "/search/java-version",
@@ -50,7 +50,6 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/aggregate/**").permitAll()
                         .requestMatchers("/dash/**").hasRole("ADMIN")
-                        .requestMatchers("/store/search/**").hasRole("CUSTOMER")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

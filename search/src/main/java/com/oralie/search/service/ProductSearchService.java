@@ -10,4 +10,6 @@ public interface ProductSearchService {
 
     ListResponse<ProductDocument> searchProducts(ProductParam productParam);
 
+    List<String> autoCompleteProductName(String keyword);
+
 }
