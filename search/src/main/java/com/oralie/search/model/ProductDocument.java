@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 import java.util.List;
 
@@ -13,12 +14,13 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Document(indexName = "product")
+@Setting(settingPath = "esconfig/elastic-analyzer.json")
 public class ProductDocument {
 
     @Id
     private Long id;
 
-    @Field(name = "product_name", type = FieldType.Text)
+    @Field(type = FieldType.Text, analyzer = "autocomplete_index", searchAnalyzer = "autocomplete_search")
     private String productName;
 
     @Field(type = FieldType.Text)

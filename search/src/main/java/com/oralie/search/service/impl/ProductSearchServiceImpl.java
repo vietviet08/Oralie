@@ -7,7 +7,6 @@ import com.oralie.search.constant.ProductField;
 import com.oralie.search.dto.ProductParam;
 import com.oralie.search.dto.response.ListResponse;
 import com.oralie.search.model.ProductDocument;
-import com.oralie.search.repository.ProductDocumentRepository;
 import com.oralie.search.service.ProductSearchService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang.StringUtils;
@@ -28,7 +27,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ProductSearchImpl implements ProductSearchService {
+public class ProductSearchServiceImpl implements ProductSearchService {
 
 //    private final ProductDocumentRepository productDocumentRepository;
 
@@ -36,17 +35,15 @@ public class ProductSearchImpl implements ProductSearchService {
 
     public ListResponse<ProductDocument> searchProducts(ProductParam productParam) {
         NativeQueryBuilder nativeQuery = NativeQuery.builder()
-                .withAggregation("categories", Aggregation.of(a -> a
-                        .terms(ta -> ta.field(ProductField.CATEGORIES))))
-                .withAggregation("attributes", Aggregation.of(a -> a
-                        .terms(ta -> ta.field(ProductField.ATTRIBUTES))))
+                .withAggregation("category", Aggregation.of(a -> a
+                        .terms(ta -> ta.field(ProductField.CATEGORY))))
                 .withAggregation("brands", Aggregation.of(a -> a
                         .terms(ta -> ta.field(ProductField.BRAND))))
                 .withQuery(q -> q
                         .bool(b -> b
                                 .should(s -> s
                                         .multiMatch(m -> m
-                                                .fields(ProductField.NAME, ProductField.BRAND, ProductField.CATEGORIES)
+                                                .fields(ProductField.NAME, ProductField.BRAND, ProductField.CATEGORY)
                                                 .query(productParam.getKeyword())
                                                 .fuzziness(Fuzziness.ONE.asString())
                                         )
@@ -59,16 +56,15 @@ public class ProductSearchImpl implements ProductSearchService {
         nativeQuery.withFilter(f -> f
                 .bool(b -> {
                     extractedTermsFilter(productParam.getBrand(), ProductField.BRAND, b);
-                    extractedTermsFilter(productParam.getCategory(), ProductField.CATEGORIES, b);
+                    extractedTermsFilter(productParam.getCategory(), ProductField.CATEGORY, b);
                     extractedRange(productParam.getPriceFrom(), productParam.getPriceTo(), b);
-                    b.must(m -> m.term(t -> t.field(ProductField.IS_PUBLISHED).value(true)));
                     return b;
                 })
         );
 
-        if (Objects.equals(productParam.getSortType(), "asc")) {
+        if (Objects.equals(productParam.getSortType(), "ASC")) {
             nativeQuery.withSort(Sort.by(Sort.Direction.ASC, ProductField.PRICE));
-        } else if (Objects.equals(productParam.getSortType(), "desc")) {
+        } else if (Objects.equals(productParam.getSortType(), "DESC")) {
             nativeQuery.withSort(Sort.by(Sort.Direction.DESC, ProductField.PRICE));
         } else {
             nativeQuery.withSort(Sort.by(Sort.Direction.DESC, ProductField.CREATE_ON));
@@ -77,17 +73,18 @@ public class ProductSearchImpl implements ProductSearchService {
         SearchHits<ProductDocument> searchHitsResult = elasticsearchOperations.search(nativeQuery.build(), ProductDocument.class);
         SearchPage<ProductDocument> productPage = SearchHitSupport.searchPageFor(searchHitsResult, nativeQuery.getPageable());
 
-        List<ProductDocument> products = searchHitsResult.getSearchHits().stream()
+        List<ProductDocument> products = searchHitsResult.stream()
                 .map(SearchHit::getContent)
                 .collect(Collectors.toList());
 
         ListResponse<ProductDocument> response = new ListResponse<>();
+
         response.setData(products);
-        response.setPageNo(productParam.getPageNum());
-        response.setPageSize(productParam.getPageSize());
-        response.setTotalElements((int) searchHitsResult.getTotalHits());
-        response.setTotalPages((int) Math.ceil((double) searchHitsResult.getTotalHits() / productParam.getPageSize()));
-        response.setLast(productParam.getPageNum() == response.getTotalPages() - 1);
+        response.setPageNo(productPage.getNumber());
+        response.setPageSize(productPage.getSize());
+        response.setTotalElements(productPage.getTotalPages());
+        response.setTotalPages(productPage.getTotalPages());
+        response.setLast(productPage.isLast());
 
         return response;
     }

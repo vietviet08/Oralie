@@ -5,9 +5,9 @@ import com.oralie.search.dto.response.ListResponse;
 import com.oralie.search.model.ProductDocument;
 import com.oralie.search.service.ProductSearchService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
+@Slf4j
 @Tag(
         name = "The API of Search Service",
         description = "This API provides operations for Search Service"
@@ -32,9 +33,9 @@ public class SearchController {
 
     @GetMapping("/store/search/search-product")
     public ResponseEntity<ListResponse<ProductDocument>> searchProduct(
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(value = "size", required = false, defaultValue = "10") Integer size,
+            @RequestParam(value = "keyword") String keyword,
+            @RequestParam(value = "page", defaultValue = "0") Integer page,
+            @RequestParam(value = "size", defaultValue = "10") Integer size,
             @RequestParam(value = "sort", required = false, defaultValue = "ASC") String sort,
             @RequestParam(value = "sortBy", required = false, defaultValue = "id") String sortBy,
             @RequestParam(value = "category", required = false, defaultValue = "") String category,
@@ -42,6 +43,17 @@ public class SearchController {
             @RequestParam(value = "option", required = false, defaultValue = "") String option,
             @RequestParam(value = "price", required = false, defaultValue = "") String price) {
 
+        Double priceFrom = null;
+        Double priceTo = null;
+        if (StringUtils.isNotBlank(price) && price.contains("-")) {
+            String[] priceParts = price.split("-");
+            try {
+                priceFrom = Double.parseDouble(priceParts[0]);
+                priceTo = Double.parseDouble(priceParts[1]);
+            } catch (NumberFormatException e) {
+                log.error("Error parsing price range", e);
+            }
+        }
         ProductParam productParam = ProductParam.builder()
                 .keyword(keyword)
                 .pageNum(page)
@@ -51,8 +63,8 @@ public class SearchController {
                 .category(category)
                 .brand(brand)
                 .option(option)
-                .priceFrom(!price.isEmpty() ? Double.parseDouble(price.split("-")[0]) : null)
-                .priceTo(!price.isEmpty() ? Double.parseDouble(price.split("-")[1]) : null)
+                .priceFrom(priceFrom)
+                .priceTo(priceTo)
                 .build();
         return ResponseEntity
                 .status(HttpStatus.OK)
