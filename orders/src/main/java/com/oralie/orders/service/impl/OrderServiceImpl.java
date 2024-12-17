@@ -65,8 +65,6 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
-    private final PayPalService payPalService;
-
     private final CartService cartService;
 
     private final Gson gson;
@@ -123,39 +121,7 @@ public class OrderServiceImpl implements OrderService {
                 .build();
         order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
 
-        if (PaymentMethod.PAYPAL.name().equalsIgnoreCase(orderRequest.getPaymentMethod())) {
-            try {
-                PayPalInfoRequest payPalInfoRequest = PayPalInfoRequest.builder()
-                        .currency(PayPalConstant.PAYPAL_CURRENCY)
-                        .total(order.getTotalPrice())
-                        .description("Order payment")
-                        .method("paypal")
-                        .intent(PayPalConstant.PAYPAL_INTENT)
-                        .cancelUrl(PayPalConstant.PAYPAL_CANCEL_URL)
-                        .successUrl(PayPalConstant.PAYPAL_SUCCESS_URL)
-                        .build();
-
-                Payment payment = payPalService.placePaypalPayment(payPalInfoRequest);
-
-                String link = payment.getLinks().stream()
-                        .filter(links -> links.getRel().equals("approval_url"))
-                        .findFirst()
-                        .orElseThrow(() -> new PaymentProcessingException("Approval URL not found"))
-                        .getHref();
-
-                String payId = payment.getId();
-
-                order.setLinkPaypalToExecute(link);
-                order.setPayId(payId);
-                order.setPaymentStatus(PaymentStatus.PENDING);
-                order.setStatus(OrderStatus.PROCESSING);
-                order.setPaymentMethod(PaymentMethod.PAYPAL.name());
-                //need create payment model to store payment entity
-//                order.setPaymentId(paymentId);  // Store payment ID from PayPal
-            } catch (Exception e) {
-                throw new PaymentProcessingException("Payment failed: " + e.getMessage());
-            }
-        } else if (PaymentMethod.COD.name().equalsIgnoreCase(orderRequest.getPaymentMethod())) {
+        if (PaymentMethod.COD.name().equalsIgnoreCase(orderRequest.getPaymentMethod())) {
             order.setPaymentStatus(PaymentStatus.PENDING);
             order.setStatus(OrderStatus.PROCESSING);
             order.setPaymentMethod(PaymentMethod.COD.name());
@@ -196,102 +162,6 @@ public class OrderServiceImpl implements OrderService {
         return mapToOrderResponse(order);
     }
 
-    @Override
-    @Transactional
-    public OrderResponse placeOrderWithoutPayPal(OrderRequest orderRequest) throws PaymentProcessingException {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-
-        Order order = Order.builder()
-                .userId(userId)
-                .cartId(cartService.getCartIdByUserId())
-                .address(OrderAddress.builder()
-                        .addressDetail(orderRequest.getAddress().getAddressDetail())
-                        .city(orderRequest.getAddress().getCity())
-                        .email(orderRequest.getAddress().getEmail())
-                        .phoneNumber(orderRequest.getAddress().getPhoneNumber())
-                        .build())
-                .orderItems(orderRequest.getOrderItems().stream()
-                        .map(orderItemRequest -> OrderItem.builder()
-                                .productId(orderItemRequest.getProductId())
-                                .productName(orderItemRequest.getProductName())
-                                .quantity(orderItemRequest.getQuantity())
-                                .totalPrice(orderItemRequest.getTotalPrice())
-                                .build())
-                        .collect(Collectors.toList()))
-                .totalPrice(orderRequest.getTotalPrice())
-                .voucher(orderRequest.getVoucher())
-                .discount(orderRequest.getDiscount())
-                .shippingFee(orderRequest.getShippingFee())
-                .status(OrderStatus.PENDING)
-                .shippingMethod(orderRequest.getShippingMethod())
-                .paymentMethod(orderRequest.getPaymentMethod())
-                .paymentStatus(orderRequest.getPaymentStatus())
-                .note(orderRequest.getNote())
-                .build();
-
-
-        order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
-
-        Payment payment = null;
-        String link = null;
-        String payId = null;
-
-        if (Objects.equals(order.getPaymentMethod(), PaymentMethod.PAYPAL.name())) {
-            try {
-                PayPalInfoRequest payPalInfoRequest = PayPalInfoRequest.builder()
-                        .currency(PayPalConstant.PAYPAL_CURRENCY)
-                        .total(order.getTotalPrice())
-                        .description("Order payment")
-                        .method("paypal")
-                        .intent(PayPalConstant.PAYPAL_INTENT)
-                        .cancelUrl(PayPalConstant.PAYPAL_CANCEL_URL)
-                        .successUrl(PayPalConstant.PAYPAL_SUCCESS_URL)
-                        .build();
-
-                payment = payPalService.placePaypalPayment(payPalInfoRequest);
-
-                link = payment.getLinks().stream()
-                        .filter(links -> links.getRel().equals("approval_url"))
-                        .findFirst()
-                        .orElseThrow(() -> new PaymentProcessingException("Approval URL not found"))
-                        .getHref();
-
-                payId = payment.getId();
-
-                order.setLinkPaypalToExecute(link);
-                order.setPayId(payId);
-                order.setPaymentStatus(PaymentStatus.PENDING);
-                order.setStatus(OrderStatus.PROCESSING);
-                order.setPaymentMethod(PaymentMethod.PAYPAL.name());
-
-            } catch (Exception e) {
-                log.error("Payment failed for orderId: {} error: ", order.getId(), e);
-                order.setPaymentStatus(PaymentStatus.FAILED);
-                order.setStatus(OrderStatus.FAILED);
-                orderRepository.save(order);
-                throw new PaymentProcessingException("Payment failed: " + e.getMessage());
-            }
-        }
-
-        OrderPlaceEvent orderPlacedEvent = OrderPlaceEvent.builder()
-                .orderId(order.getId())
-                .userId(order.getUserId())
-                .email(order.getAddress().getEmail())
-                .totalPrice(order.getTotalPrice())
-                .build();
-
-        log.info("Start- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
-
-//        kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
-
-        log.info("End- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
-
-        //subtract quantity product in inventory service
-
-        cartService.clearCart();
-
-        return mapToOrderResponse(order);
-    }
 
     @Override
     public String checkoutOrder(String orderId) {

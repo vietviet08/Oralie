@@ -24,7 +24,7 @@ public class BaseEntity {
 
     @CreatedDate
     @Column(updatable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "UTC")
     private LocalDateTime createdAt;
 
     @CreatedBy
@@ -32,11 +32,9 @@ public class BaseEntity {
     private String createdBy;
 
     @LastModifiedDate
-    @Column(updatable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss", timezone = "UTC")
     private LocalDateTime updatedAt;
 
     @LastModifiedBy
-    @Column(updatable = false)
     private String updatedBy;
 }

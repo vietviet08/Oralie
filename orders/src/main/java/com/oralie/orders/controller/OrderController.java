@@ -104,7 +104,7 @@ public class OrderController {
     public ResponseEntity<OrderResponse> createOrderWithPayPal(
             @RequestBody OrderRequest orderRequest) {
         try {
-            return new ResponseEntity<>(orderService.placeOrderWithoutPayPal(orderRequest), HttpStatus.OK);
+            return new ResponseEntity<>(payPalService.placeOrderWithoutPayPal(orderRequest), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

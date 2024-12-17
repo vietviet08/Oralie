@@ -18,8 +18,6 @@ public interface OrderService {
 
     OrderResponse placeOrder(OrderRequest orderRequest) throws PaymentProcessingException;
 
-    OrderResponse placeOrderWithoutPayPal(OrderRequest orderRequest) throws PaymentProcessingException;
-
     String checkoutOrder(String orderId);
 
     ListResponse<OrderResponse> getOrdersByUserId(String userId, int page, int size, String sortBy, String sort);

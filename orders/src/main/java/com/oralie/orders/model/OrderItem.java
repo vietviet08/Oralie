@@ -22,11 +22,13 @@ public class OrderItem extends BaseEntity {
 
     private String productName;
 
+    private String productImage;
+
     private int quantity;
 
     private Double totalPrice;
 
-    @ManyToOne( fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     private Order order;
 }

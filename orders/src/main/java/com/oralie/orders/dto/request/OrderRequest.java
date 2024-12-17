@@ -1,9 +1,7 @@
 package com.oralie.orders.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.util.List;
 import java.util.Set;
@@ -13,15 +11,29 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class OrderRequest {
+
+    @NotNull
     private OrderAddressRequest address;
+
+    @NotNull
     private List<OrderItemRequest> orderItems;
+
+    @NotNull
     private Double totalPrice;
+
     private String voucher;
+
     private Double discount;
+
     private Double shippingFee;
+
     private String status;
+
     private String shippingMethod;
+
     private String paymentMethod;
+
     private String paymentStatus;
+
     private String note;
 }
