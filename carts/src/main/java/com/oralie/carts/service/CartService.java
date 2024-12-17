@@ -35,4 +35,6 @@ public interface CartService {
     CartResponse clearCart(String userId);
 
     CartResponse checkoutCart(Long cartId);
+
+    Long getCartIdByUserId(String userId);
 }

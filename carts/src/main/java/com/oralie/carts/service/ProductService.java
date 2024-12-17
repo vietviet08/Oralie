@@ -30,8 +30,6 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler {
 
     private final RestClient restClient;
 
-    private final WebClient webClient;
-
     @Retry(name = "productRetry")
     @CircuitBreaker(name = "productCircuitBreaker", fallbackMethod = "handleProductBaseResponseFallBack")
     public ProductBaseResponse getProductById(Long productId) {

@@ -84,6 +84,14 @@ public class CartController {
     }
 
     //store
+    @GetMapping("/store/carts/get-cart-id")
+    public ResponseEntity<Long> getCartIdByUserId() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(cartService.getCartIdByUserId(SecurityContextHolder.getContext().getAuthentication().getName()));
+    }
+
+
     @GetMapping("/store/carts")
     public ResponseEntity<CartResponse> getCart() {
         return ResponseEntity

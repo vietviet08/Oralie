@@ -48,7 +48,6 @@ public class OrderController {
 
     private final PayPalService payPalService;
 
-
     //dash
     @GetMapping("/dash/orders")
     public ResponseEntity<ListResponse<OrderResponse>> getOrdersInDash(
@@ -92,36 +91,53 @@ public class OrderController {
     //response url to front & client use url to redirect page
     // this api will return the link to redirect to paypal if user click on button pay with paypal not click payment button
     // click payment button will call api create order @PostMapping("/store/orders")
+    @PostMapping("/store/orders/cod")
+    public ResponseEntity<OrderResponse> createOrderCOD(
+            @RequestBody OrderRequest orderRequest) {
+        try {
+            return new ResponseEntity<>(orderService.placeOrder(orderRequest), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
     @PostMapping("/store/orders/paypal")
-    public ResponseEntity<OrderResponse> createOrderWithPayPal(@RequestBody OrderRequest orderRequest) throws PaymentProcessingException {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(orderService.placeOrderWithoutPayPal(orderRequest));
+    public ResponseEntity<OrderResponse> createOrderWithPayPal(
+            @RequestBody OrderRequest orderRequest) {
+        try {
+            return new ResponseEntity<>(orderService.placeOrderWithoutPayPal(orderRequest), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     //when client redirect to success page, call this api to execute payment
     // the link set in order response
-    @GetMapping("/store/payment/success")
-    public ResponseEntity<String> paymentSuccess(
+    @GetMapping("/store/checkout/success")
+    public ResponseEntity<Payment> paymentSuccess(
             @RequestParam("paymentId") String paymentId,
             @RequestParam("PayerID") String payerId
     ) {
         try {
+//            Payment payment = payPalService.executePayment(paymentId, payerId);
+//            if (payment.getState().equals("approved")) {
+//                return ResponseEntity
+//                        .status(HttpStatus.OK)
+//                        .body(PayPalConstant.SUCCESS_MESSAGE);
+//            }
             Payment payment = payPalService.executePayment(paymentId, payerId);
-            if (payment.getState().equals("approved")) {
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .body(PayPalConstant.SUCCESS_MESSAGE);
-            }
+            return new ResponseEntity<>(payment, HttpStatus.OK);
         } catch (PayPalRESTException e) {
             log.error("Error the payment please try again", e);
         }
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(PayPalConstant.ERROR_MESSAGE);
+//        return ResponseEntity
+//                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                .body(PayPalConstant.ERROR_MESSAGE);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/store/payment/cancel")
+    @GetMapping("/store/checkout/cancel")
     public ResponseEntity<String> paymentCancel() {
         return ResponseEntity
                 .status(HttpStatus.OK)

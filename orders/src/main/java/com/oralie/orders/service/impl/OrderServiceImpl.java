@@ -96,6 +96,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = Order.builder()
                 .userId(userId)
+                .cartId(cartService.getCartIdByUserId())
                 .address(OrderAddress.builder()
                         .addressDetail(orderRequest.getAddress().getAddressDetail())
                         .city(orderRequest.getAddress().getCity())
@@ -200,6 +201,7 @@ public class OrderServiceImpl implements OrderService {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Order order = Order.builder()
+                .cartId(cartService.getCartIdByUserId())
                 .userId(userId)
                 .address(OrderAddress.builder()
                         .addressDetail(orderRequest.getAddress().getAddressDetail())
@@ -225,36 +227,52 @@ public class OrderServiceImpl implements OrderService {
                 .paymentStatus(orderRequest.getPaymentStatus())
                 .note(orderRequest.getNote())
                 .build();
-        try {
-            PayPalInfoRequest payPalInfoRequest = PayPalInfoRequest.builder()
-                    .currency(PayPalConstant.PAYPAL_CURRENCY)
-                    .total(order.getTotalPrice())
-                    .description("Order payment")
-                    .method("paypal")
-                    .intent(PayPalConstant.PAYPAL_INTENT)
-                    .cancelUrl(PayPalConstant.PAYPAL_CANCEL_URL)
-                    .successUrl(PayPalConstant.PAYPAL_SUCCESS_URL)
-                    .build();
 
-            Payment payment = payPalService.placePaypalPayment(payPalInfoRequest);
+        Payment payment = null; // Initialise here
+        String link = null;
+        String payId = null;
 
-            String link = payment.getLinks().stream()
-                    .filter(links -> links.getRel().equals("approval_url"))
-                    .findFirst()
-                    .orElseThrow(() -> new PaymentProcessingException("Approval URL not found"))
-                    .getHref();
+        if(Objects.equals(order.getPaymentMethod(), PaymentMethod.PAYPAL.name())){
+            try {
+                PayPalInfoRequest payPalInfoRequest = PayPalInfoRequest.builder()
+                        .currency(PayPalConstant.PAYPAL_CURRENCY)
+                        .total(order.getTotalPrice())
+                        .description("Order payment")
+                        .method("paypal")
+                        .intent(PayPalConstant.PAYPAL_INTENT)
+                        .cancelUrl(PayPalConstant.PAYPAL_CANCEL_URL)
+                        .successUrl(PayPalConstant.PAYPAL_SUCCESS_URL)
+                        .build();
 
-            String payId = payment.getId();
+                log.info("Payment created: {}", payPalInfoRequest);
 
-            order.setLinkPaypalToExecute(link);
-            order.setPayId(payId);
-            order.setPaymentStatus(PaymentStatus.PENDING);
-            order.setStatus(OrderStatus.PROCESSING);
-            order.setPaymentMethod(PaymentMethod.PAYPAL.name());
-        } catch (Exception e) {
-            throw new PaymentProcessingException("Payment failed: " + e.getMessage());
+                payment = payPalService.placePaypalPayment(payPalInfoRequest);
+
+                link = payment.getLinks().stream()
+                        .filter(links -> links.getRel().equals("approval_url"))
+                        .findFirst()
+                        .orElseThrow(() -> new PaymentProcessingException("Approval URL not found"))
+                        .getHref();
+
+                payId = payment.getId();
+
+                order.setLinkPaypalToExecute(link);
+                order.setPayId(payId);
+                order.setPaymentStatus(PaymentStatus.PENDING);
+                order.setStatus(OrderStatus.PROCESSING);
+                order.setPaymentMethod(PaymentMethod.PAYPAL.name());
+
+            } catch (Exception e) {
+                // Log the exception for debugging
+                log.error("Payment failed for orderId: {} error: ", order.getId(), e);
+                order.setPaymentStatus(PaymentStatus.FAILED);
+                order.setStatus(OrderStatus.FAILED);
+                orderRepository.save(order);
+                throw new PaymentProcessingException("Payment failed: " + e.getMessage());
+            }
         }
-        orderRepository.save(order);
+
+        orderRepository.save(order); // Save the order here
 
         OrderPlaceEvent orderPlacedEvent = OrderPlaceEvent.builder()
                 .orderId(order.getId())

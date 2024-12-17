@@ -327,6 +327,11 @@ public class CartServiceImpl implements CartService {
         return null;
     }
 
+    @Override
+    public Long getCartIdByUserId(String userId) {
+        return cartRepository.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("Cart", "userId", userId)).getId();
+    }
+
     private Cart mapToCart(CartResponse cartByUserId) {
         return Cart.builder()
                 .userId(cartByUserId.getUserId())
