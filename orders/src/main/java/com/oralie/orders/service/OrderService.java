@@ -6,6 +6,7 @@ import com.oralie.orders.dto.response.ListResponse;
 import com.oralie.orders.dto.response.OrderItemResponse;
 import com.oralie.orders.dto.response.OrderResponse;
 import com.oralie.orders.exception.PaymentProcessingException;
+import com.paypal.api.payments.Payment;
 import org.springframework.core.io.InputStreamResource;
 
 import java.awt.image.BufferedImage;
@@ -28,6 +29,8 @@ public interface OrderService {
     OrderResponse viewOrder(Long idOrder);
 
     OrderResponse updateOrderStatus(Long orderId, String status);
+
+    void updateOrderPaymentStatusByPayPalId(String paypalId, String status);
 
     String cancelOrder(Long orderId);
 

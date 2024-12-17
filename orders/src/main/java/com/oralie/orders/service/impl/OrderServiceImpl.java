@@ -121,6 +121,7 @@ public class OrderServiceImpl implements OrderService {
                 .paymentStatus(orderRequest.getPaymentStatus())
                 .note(orderRequest.getNote())
                 .build();
+        order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
 
         if (PaymentMethod.PAYPAL.name().equalsIgnoreCase(orderRequest.getPaymentMethod())) {
             try {
@@ -201,8 +202,8 @@ public class OrderServiceImpl implements OrderService {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Order order = Order.builder()
-                .cartId(cartService.getCartIdByUserId())
                 .userId(userId)
+                .cartId(cartService.getCartIdByUserId())
                 .address(OrderAddress.builder()
                         .addressDetail(orderRequest.getAddress().getAddressDetail())
                         .city(orderRequest.getAddress().getCity())
@@ -228,11 +229,14 @@ public class OrderServiceImpl implements OrderService {
                 .note(orderRequest.getNote())
                 .build();
 
-        Payment payment = null; // Initialise here
+
+        order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
+
+        Payment payment = null;
         String link = null;
         String payId = null;
 
-        if(Objects.equals(order.getPaymentMethod(), PaymentMethod.PAYPAL.name())){
+        if (Objects.equals(order.getPaymentMethod(), PaymentMethod.PAYPAL.name())) {
             try {
                 PayPalInfoRequest payPalInfoRequest = PayPalInfoRequest.builder()
                         .currency(PayPalConstant.PAYPAL_CURRENCY)
@@ -243,8 +247,6 @@ public class OrderServiceImpl implements OrderService {
                         .cancelUrl(PayPalConstant.PAYPAL_CANCEL_URL)
                         .successUrl(PayPalConstant.PAYPAL_SUCCESS_URL)
                         .build();
-
-                log.info("Payment created: {}", payPalInfoRequest);
 
                 payment = payPalService.placePaypalPayment(payPalInfoRequest);
 
@@ -263,7 +265,6 @@ public class OrderServiceImpl implements OrderService {
                 order.setPaymentMethod(PaymentMethod.PAYPAL.name());
 
             } catch (Exception e) {
-                // Log the exception for debugging
                 log.error("Payment failed for orderId: {} error: ", order.getId(), e);
                 order.setPaymentStatus(PaymentStatus.FAILED);
                 order.setStatus(OrderStatus.FAILED);
@@ -271,8 +272,6 @@ public class OrderServiceImpl implements OrderService {
                 throw new PaymentProcessingException("Payment failed: " + e.getMessage());
             }
         }
-
-        orderRepository.save(order); // Save the order here
 
         OrderPlaceEvent orderPlacedEvent = OrderPlaceEvent.builder()
                 .orderId(order.getId())
@@ -283,12 +282,12 @@ public class OrderServiceImpl implements OrderService {
 
         log.info("Start- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
 
-        kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
+//        kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
 
         log.info("End- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
+
         //subtract quantity product in inventory service
 
-        //clear cart in cart service | need using kafka to send event to cart service & inventory also
         cartService.clearCart();
 
         return mapToOrderResponse(order);
@@ -374,6 +373,14 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(status);
         orderRepository.save(order);
         return mapToOrderResponse(order);
+    }
+
+    @Override
+    public void updateOrderPaymentStatusByPayPalId(String paypalId, String status) {
+        Order order = orderRepository.findByPayId(paypalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found", "paypalId", paypalId));
+        order.setPaymentStatus(status);
+        orderRepository.save(order);
     }
 
     @Override

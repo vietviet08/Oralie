@@ -3,10 +3,13 @@ package com.oralie.orders.controller;
 import com.oralie.orders.constant.PayPalConstant;
 import com.oralie.orders.dto.OrderContactDto;
 import com.oralie.orders.dto.request.OrderRequest;
-import com.oralie.orders.dto.request.PayPalInfoRequest;
 import com.oralie.orders.dto.response.ListResponse;
 import com.oralie.orders.dto.response.OrderItemResponse;
 import com.oralie.orders.dto.response.OrderResponse;
+import com.oralie.orders.dto.response.paypal.PayerResponse;
+import com.oralie.orders.dto.response.paypal.PaymentResponse;
+import com.oralie.orders.dto.response.paypal.RedirectUrlsResponse;
+import com.oralie.orders.dto.response.paypal.TransactionResponse;
 import com.oralie.orders.exception.PaymentProcessingException;
 import com.oralie.orders.service.OrderService;
 import com.oralie.orders.service.PayPalService;
@@ -25,14 +28,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.view.RedirectView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(consumes = "application/json", produces = "application/json")
+@RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
 public class OrderController {
 
     private static final Logger log = LoggerFactory.getLogger(OrderController.class);
@@ -101,7 +100,6 @@ public class OrderController {
         }
     }
 
-
     @PostMapping("/store/orders/paypal")
     public ResponseEntity<OrderResponse> createOrderWithPayPal(
             @RequestBody OrderRequest orderRequest) {
@@ -114,30 +112,44 @@ public class OrderController {
 
     //when client redirect to success page, call this api to execute payment
     // the link set in order response
-    @GetMapping("/store/checkout/success")
-    public ResponseEntity<Payment> paymentSuccess(
+    @GetMapping(value = "/store/orders/checkout/success")
+    public ResponseEntity<PaymentResponse> paymentSuccess(
             @RequestParam("paymentId") String paymentId,
             @RequestParam("PayerID") String payerId
     ) {
         try {
-//            Payment payment = payPalService.executePayment(paymentId, payerId);
-//            if (payment.getState().equals("approved")) {
-//                return ResponseEntity
-//                        .status(HttpStatus.OK)
-//                        .body(PayPalConstant.SUCCESS_MESSAGE);
-//            }
             Payment payment = payPalService.executePayment(paymentId, payerId);
-            return new ResponseEntity<>(payment, HttpStatus.OK);
+
+            PaymentResponse.PaymentResponseBuilder builder = PaymentResponse.builder()
+                    .id(payment.getId())
+                    .intent(payment.getIntent())
+                    .payer(PayerResponse.builder()
+                            .paymentMethod(payment.getPayer().getPaymentMethod())
+                            .build())
+
+                    .transactions(payment.getTransactions()
+                            .stream().map(transaction -> TransactionResponse.builder()
+                                    .amount(transaction.getAmount())
+                                    .description(transaction.getDescription())
+                                    .build())
+                            .toList());
+
+            if (payment.getRedirectUrls() != null) {
+                builder.redirectUrls(RedirectUrlsResponse.builder()
+                        .cancelUrl(payment.getRedirectUrls().getCancelUrl())
+                        .returnUrl(payment.getRedirectUrls().getReturnUrl())
+                        .build());
+            }
+
+            return new ResponseEntity<>(builder.build(), HttpStatus.OK);
+
         } catch (PayPalRESTException e) {
             log.error("Error the payment please try again", e);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-//        return ResponseEntity
-//                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                .body(PayPalConstant.ERROR_MESSAGE);
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/store/checkout/cancel")
+    @GetMapping("/store/orders/checkout/cancel")
     public ResponseEntity<String> paymentCancel() {
         return ResponseEntity
                 .status(HttpStatus.OK)
