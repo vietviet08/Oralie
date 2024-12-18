@@ -14,6 +14,7 @@ public class OrderItemResponse {
     private Long id;
     private Long productId;
     private String productName;
+    private String productImage;
     private int quantity;
     private Double totalPrice;
 

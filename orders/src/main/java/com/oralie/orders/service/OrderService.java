@@ -36,4 +36,5 @@ public interface OrderService {
 
     InputStreamResource generateBarCodeImage(String barCode) throws WriterException, IOException;
 
+    void deleteOrder(Long orderId);
 }

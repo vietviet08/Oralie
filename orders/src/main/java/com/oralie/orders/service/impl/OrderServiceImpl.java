@@ -119,6 +119,7 @@ public class OrderServiceImpl implements OrderService {
                 .paymentStatus(orderRequest.getPaymentStatus())
                 .note(orderRequest.getNote())
                 .build();
+
         order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
 
         if (PaymentMethod.COD.name().equalsIgnoreCase(orderRequest.getPaymentMethod())) {
@@ -211,7 +212,6 @@ public class OrderServiceImpl implements OrderService {
         Pageable pageable = PageRequest.of(page, size, sortObj);
         Page<Order> pageOrders = orderRepository.findByUserId(userId, pageable);
         List<Order> orders = pageOrders.getContent();
-        //        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ListResponse
                 .<OrderResponse>builder()
                 .data(mapToOrderResponseList(orders))
@@ -305,6 +305,13 @@ public class OrderServiceImpl implements OrderService {
         ByteArrayInputStream imageStream = new ByteArrayInputStream(baos.toByteArray());
 
         return new InputStreamResource(imageStream);
+    }
+
+    @Override
+    public void deleteOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found", "id", orderId + ""));
+        orderRepository.delete(order);
     }
 
     private OrderResponse mapToOrderResponse(Order order) {

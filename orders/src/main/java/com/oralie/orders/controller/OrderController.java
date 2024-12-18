@@ -68,6 +68,13 @@ public class OrderController {
                 .body(orderService.updateOrderStatus(orderId, status));
     }
 
+    @DeleteMapping("/dash/orders/{orderId}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable("orderId") Long orderId) {
+        orderService.deleteOrder(orderId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
+    }
 
     //store
     @PostMapping("/store/orders")
@@ -226,7 +233,6 @@ public class OrderController {
                 .status(HttpStatus.OK)
                 .body(environment.getProperty("JAVA_HOME"));
     }
-
 
     @GetMapping("/orders/contact-info")
     public ResponseEntity<OrderContactDto> getProductsContactDto() {
