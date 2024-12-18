@@ -61,7 +61,8 @@ public class OrderController {
     }
 
     @PutMapping("/dash/orders/{orderId}")
-    public ResponseEntity<OrderResponse> updateOrderStatus(@PathVariable("orderId") Long orderId, @RequestParam String status) {
+    public ResponseEntity<OrderResponse> updateOrderStatus(@PathVariable("orderId") Long orderId,
+                                                           @RequestParam String status) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(orderService.updateOrderStatus(orderId, status));

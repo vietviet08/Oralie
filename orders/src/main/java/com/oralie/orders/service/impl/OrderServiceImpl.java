@@ -240,9 +240,22 @@ public class OrderServiceImpl implements OrderService {
     public OrderResponse updateOrderStatus(Long orderId, String status) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found", "id", orderId + ""));
+
+        if (!isValidStatus(status)) {
+            throw new IllegalArgumentException("Invalid order status: " + status);
+        }
+
         order.setStatus(status);
         orderRepository.save(order);
         return mapToOrderResponse(order);
+    }
+
+    private boolean isValidStatus(String status) {
+        return OrderStatus.PENDING.equals(status) || OrderStatus.PROCESSING.equals(status) ||
+                OrderStatus.SHIPPING.equals(status) || OrderStatus.DELIVERED.equals(status) ||
+                OrderStatus.CANCELLED.equals(status) || OrderStatus.RETURNED.equals(status) ||
+                OrderStatus.REFUNDED.equals(status) || OrderStatus.FAILED.equals(status) ||
+                OrderStatus.COMPLETED.equals(status) || OrderStatus.EXPIRED.equals(status);
     }
 
     @Override
