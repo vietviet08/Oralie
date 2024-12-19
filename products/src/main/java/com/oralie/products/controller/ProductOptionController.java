@@ -34,7 +34,7 @@ public class ProductOptionController {
                 .body(productOptionService.getAllProductOptions(page, size, sortBy, sort));
     }
 
-    @GetMapping("/dash/product-options/{id}")
+    @GetMapping("/store/product-options/{id}")
     public ResponseEntity<ProductOptionResponse> getProductOptionById(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
