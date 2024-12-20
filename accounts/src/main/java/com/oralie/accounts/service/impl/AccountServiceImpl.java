@@ -152,7 +152,8 @@ public class AccountServiceImpl implements AccountService {
                             .email(accountRequest.getEmail())
                             .enabled(true)
                             .emailVerified(false)
-                            .build(), account.getUserId());
+                            .build(),
+                    account.getUserId());
 
             String userId = extractUserId(creationResponse);
 

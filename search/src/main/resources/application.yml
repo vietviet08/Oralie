@@ -8,6 +8,28 @@ spring:
   config:
     import: "optional:configserver:http://localhost:8071/"
 
+#  kafka:
+#    consumer:
+#      bootstrap-servers: kafka:29092
+#      group-id: search
+#    producer:
+#      bootstrap-servers: kafka:29092
+#      key-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      group-id: search
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
 springdoc:
   api-docs:
     path: /v3/api-docs
@@ -92,6 +114,10 @@ resilience4j.ratelimiter:
       timeoutDuration: 1000
       limitRefreshPeriod: 5000
       limitForPeriod: 1
+
+product:
+  topic:
+    name: dbproduct.public.product
 
 server:
   port: 8088
