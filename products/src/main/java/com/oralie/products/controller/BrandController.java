@@ -3,9 +3,13 @@ package com.oralie.products.controller;
 import com.oralie.products.dto.request.BrandRequest;
 import com.oralie.products.dto.response.BrandResponse;
 import com.oralie.products.dto.response.ListResponse;
+import com.oralie.products.model.Brand;
 import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.service.BrandService;
+import com.oralie.products.utils.excel.ExcelExporter;
+import com.oralie.products.utils.obj.ObjectManage;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,6 +17,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Tag(
@@ -52,6 +60,25 @@ public class BrandController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(brandService.getBrandById(id));
+    }
+    //dash
+    @GetMapping("/dash/export-brands")
+    public void exportBrands(HttpServletResponse response) throws IOException {
+        response.setContentType("application/octet-stream");
+        DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd_HH:mm:ss");
+        String currentDateTime = dateFormatter.format(new Date());
+
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=brands_" + currentDateTime + ".xlsx";
+        response.setHeader(headerKey, headerValue);
+
+        ExcelExporter<BrandResponse> excelExporter = new ExcelExporter<>(brandService.getAllBrands());
+
+        List<String> fieldsToExport = List.of("id",
+                "name",
+                "isDeleted",
+                "isActivated");
+        excelExporter.export(response, ObjectManage.Brands.name(), fieldsToExport);
     }
 
     @PostMapping(value = "/dash/brands")
