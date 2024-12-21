@@ -110,23 +110,6 @@ public class ProductController {
                 .body(productService.getProductBySlug(slug));
     }
 
-//    @GetMapping("/store/{categoryName}/{slug}")
-//    public ResponseEntity<ProductResponse> getProductBySlugs(
-//            @PathVariable String categoryName,
-//            @PathVariable String slug
-//    ) {
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(productService.getProductBySlugs(categoryName, slug));
-//    }
-
-//    @GetMapping("/store/products/{id}/options")
-//    public ResponseEntity<ListResponse<ProductOptionResponse>> getProductOptions(@PathVariable Long id) {
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(productService.getProductOptions(id));
-//    }
-
     @GetMapping("/store/products/product-es/{id}")
     public ResponseEntity<ProductResponseES> getProductByIdES(@PathVariable("id") Long id) {
         return ResponseEntity
@@ -149,11 +132,18 @@ public class ProductController {
     }
 
     @GetMapping("/store/products/top10/{productId}")
-    public ResponseEntity<List<ProductResponse>> top8ProductRelatedCategory(@PathVariable("productId") Long productId,
+    public ResponseEntity<List<ProductResponse>> top10ProductRelatedCategory(@PathVariable("productId") Long productId,
                                                                             @RequestParam String categoryName) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.top10ProductRelatedCategory(productId, categoryName));
+    }
+
+    @GetMapping("/store/products/top12")
+    public ResponseEntity<List<ProductResponse>> top12ProductOutStandingByCategorySlug(@RequestParam String categorySlug) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.top12ProductOutStandingByCategorySlug(categorySlug));
     }
 
     @GetMapping("/store/products/options/{id}")

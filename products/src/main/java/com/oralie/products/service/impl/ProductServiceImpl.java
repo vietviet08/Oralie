@@ -429,6 +429,14 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found", "id", id + ""));
     }
 
+    @Override
+    public List<ProductResponse> top12ProductOutStandingByCategorySlug(String categorySlug) {
+        List<ProductResponse> products = mapToProductResponseList(productRepository
+                .getTop12ProductOutStandingByCategorySlug(categorySlug));
+        Collections.shuffle(products);
+        return products.stream().limit(12).collect(Collectors.toList());
+    }
+
     private List<ProductResponse> mapToProductResponseList(List<Product> products) {
         return products.stream()
                 .map(product -> ProductResponse.builder()

@@ -66,4 +66,13 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     boolean existsBySlug(String slug);
 
     boolean existsById(Long productId);
+
+    @Query(value = "SELECT p FROM Product p " +
+            "JOIN p.productCategories pc " +
+            "JOIN pc.category c " +
+            "LEFT JOIN c.parentCategory pc2 " +
+            "WHERE c.slug = :categorySlug OR pc2.slug = :categorySlug "
+    )
+    List<Product> getTop12ProductOutStandingByCategorySlug(@Param("categorySlug") String categorySlug);
+
 }

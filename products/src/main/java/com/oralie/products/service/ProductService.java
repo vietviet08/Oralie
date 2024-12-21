@@ -39,4 +39,6 @@ public interface ProductService {
     List<ProductResponse> top10ProductRelatedCategory(Long productId, String categoryName);
 
     List<ProductOptionResponse> getProductOptionsByProductId(Long id);
+
+    List<ProductResponse> top12ProductOutStandingByCategorySlug(String categorySlug);
 }
