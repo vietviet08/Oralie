@@ -5,7 +5,6 @@ import com.oralie.search.dto.entity.ProductCdcMessage;
 import com.oralie.search.dto.entity.ProductMsgKey;
 import com.oralie.search.dto.entity.kafka.BaseCdcConsumer;
 import com.oralie.search.dto.entity.kafka.RetrySupportDql;
-import com.oralie.search.kafka.config.consumer.ProductCdcKafkaListenerConfig;
 import com.oralie.search.service.ProductSyncDataService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,21 +17,23 @@ import org.springframework.messaging.handler.annotation.Headers;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 
-
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class ProductSyncDataConsumer extends BaseCdcConsumer<ProductMsgKey, ProductCdcMessage> {
 
     private final ProductSyncDataService productSyncDataService;
 
+    public ProductSyncDataConsumer(ProductSyncDataService productSyncDataService) {
+        this.productSyncDataService = productSyncDataService;
+    }
+
     @KafkaListener(
             id = "product-sync-es",
             groupId = "product-sync-search",
-            topics = "${product.topic.name}",
-            containerFactory = ProductCdcKafkaListenerConfig.PRODUCT_CDC_LISTENER_CONTAINER_FACTORY
+            topics = "${product.topic.name}"
+//            containerFactory = "productCdcListenerContainerFactory"
     )
-    @RetrySupportDql(listenerContainerFactory = ProductCdcKafkaListenerConfig.PRODUCT_CDC_LISTENER_CONTAINER_FACTORY)
+//    @RetrySupportDql(listenerContainerFactory = "productCdcListenerContainerFactory")
     public void processMessage(
             @Header(KafkaHeaders.RECEIVED_KEY) ProductMsgKey key,
             @Payload(required = false) @Valid ProductCdcMessage productCdcMessage,
@@ -42,7 +43,7 @@ public class ProductSyncDataConsumer extends BaseCdcConsumer<ProductMsgKey, Prod
     }
 
     public void sync(ProductMsgKey key, ProductCdcMessage productCdcMessage) {
-        boolean isHardDeleteEvent = productCdcMessage == null || Operation. DELETE.equals(productCdcMessage.getOp());
+        boolean isHardDeleteEvent = productCdcMessage == null || Operation.DELETE.equals(productCdcMessage.getOp());
         if (isHardDeleteEvent) {
             log.warn("Having hard delete event for product: '{}'", key.getId());
             productSyncDataService.deleteProduct(key.getId());
