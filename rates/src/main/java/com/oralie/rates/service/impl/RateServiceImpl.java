@@ -10,10 +10,7 @@ import com.oralie.rates.exception.ResourceNotFoundException;
 import com.oralie.rates.model.Rate;
 import com.oralie.rates.model.UserRateComment;
 import com.oralie.rates.repository.RateRepository;
-import com.oralie.rates.service.ProductService;
-import com.oralie.rates.service.RateService;
-import com.oralie.rates.service.SocialService;
-import com.oralie.rates.service.AccountService;
+import com.oralie.rates.service.*;
 import jakarta.ws.rs.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -39,6 +36,7 @@ public class RateServiceImpl implements RateService {
     private final SocialService socialService;
     private final AccountService accountService;
     private final ProductService productService;
+    private final OrderService orderService;
 
     @Override
     public ListResponse<RateResponse> getAllRate(int page, int size, String sortBy, String sort) {
@@ -86,12 +84,17 @@ public class RateServiceImpl implements RateService {
     @Override
     public RateResponse postComment(Long productId, String userId, RateRequest rateRequest) {
         //check existing user
-        boolean existUser = accountService.existingAccountByUserId(userId);
+//        boolean existUser = accountService.existingAccountByUserId(userId);
 
-        if (!existUser) {
-            log.error("Not existing account by UserId: {}", userId);
-            throw new BadRequestException(RateConstant.NOT_EXISTING_USER);
+//        if (!existUser) {
+//            log.error("Not existing account by UserId: {}", userId);
+//            throw new BadRequestException(RateConstant.NOT_EXISTING_USER);
+//        }
+
+        if (orderService.checkIsRated(rateRequest.getOrderItemId())) {
+            throw new BadRequestException(RateConstant.ORDER_ITEM_RATED);
         }
+        orderService.updateRateStatus(rateRequest.getOrderItemId());
 
         List<String> urls = new ArrayList<>();
 
@@ -105,6 +108,7 @@ public class RateServiceImpl implements RateService {
         Rate rate = Rate.builder()
                 .userId(userId)
                 .productId(productId)
+                .orderItemId(rateRequest.getOrderItemId())
                 .content(rateRequest.getContent())
                 .urlFile(urls)
                 .totalLike(0L)
@@ -114,21 +118,25 @@ public class RateServiceImpl implements RateService {
                 .parentRate(parentRate)
                 .subRates(rateRequest.getSubRates())
                 .build();
+
+        orderService.updateRateStatus(rateRequest.getOrderItemId());
+
         return mapToRateResponse(rateRepository.save(rate));
     }
 
     @Override
     public RateResponse updateComment(Long productId, String userId, RateRequest rateRequest) {
-        boolean existUser = accountService.existingAccountByUserId(userId);
-
-        if (!existUser) {
-            log.error("Not existing account by UserId: {}", userId);
-            throw new BadRequestException(RateConstant.NOT_EXISTING_USER);
-        }
-
+//        boolean existUser = accountService.existingAccountByUserId(userId);
+//
+//        if (!existUser) {
+//            log.error("Not existing account by UserId: {}", userId);
+//            throw new BadRequestException(RateConstant.NOT_EXISTING_USER);
+//        }
 
         Rate rate = rateRepository.findById(rateRequest.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Rate not found", "id", rateRequest.getId().toString()));
+
+        if(!orderService.checkIsRated(rate.getOrderItemId())) throw new BadRequestException(RateConstant.ORDER_ITEM_NOT_RATED);
 
         List<String> urls = new ArrayList<>();
 
@@ -141,6 +149,7 @@ public class RateServiceImpl implements RateService {
 
         rate.setUserId(userId);
         rate.setProductId(productId);
+        rate.setOrderItemId(rateRequest.getOrderItemId());
         rate.setContent(rateRequest.getContent());
         rate.setUrlFile(urls);
         rate.setIsAvailable(true);
@@ -304,7 +313,7 @@ public class RateServiceImpl implements RateService {
         return rateResponses;
     }
 
-    private List<UserRateCommentResponse> mapToUserRateCommentResponse(List<UserRateComment> userRateComments  ){
+    private List<UserRateCommentResponse> mapToUserRateCommentResponse(List<UserRateComment> userRateComments) {
         List<UserRateCommentResponse> userRateCommentResponses = new ArrayList<>();
         userRateComments.forEach(userRateComment -> {
             UserRateCommentResponse userRateCommentResponse = UserRateCommentResponse.builder()

@@ -14,24 +14,24 @@ import java.net.URI;
 
 @Service
 @RequiredArgsConstructor
-public class ProductService extends AbstractCircuitBreakFallbackHandler {
+public class OrderService extends AbstractCircuitBreakFallbackHandler {
 
     private static final Logger log = LoggerFactory.getLogger(ProductService.class);
 
     private final RestClient restClient;
 
-    @Value("${url.products}")
-    private String URL_PRODUCT;
+    @Value("${url.orders}")
+    private String URL_ORDERS;
 
     @Retry(name = "restRetry")
     @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleBooleanFallback")
-    public boolean existingProductByProductId(Long productId) {
-        log.info("Checking product by id: {}", productId.toString());
+    public boolean checkIsRated(Long orderItemId) {
+        log.info("Checking order item by id: {}", orderItemId.toString());
 
         final URI url = UriComponentsBuilder
-                .fromHttpUrl(URL_PRODUCT)
-                .path("/store/products/existingById/{productId}")
-                .buildAndExpand(productId)
+                .fromHttpUrl(URL_ORDERS)
+                .path("/store/orders/rated/{orderItemId}")
+                .buildAndExpand(orderItemId)
                 .toUri();
 
         try {
@@ -40,13 +40,35 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler {
                     .retrieve()
                     .body(Boolean.class));
         } catch (Exception ex) {
-            log.error("Error fetching product with id: {}", productId, ex);
+            log.error("Error fetching product with id: {}", orderItemId, ex);
             throw ex;
         }
+    }
+
+    @Retry(name = "restRetry")
+    @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleVoidFallback")
+    public void updateRateStatus(Long orderItemId) {
+        log.info("Checking order item by id: {}", orderItemId.toString());
+
+        final URI url = UriComponentsBuilder
+                .fromHttpUrl(URL_ORDERS)
+                .path("/store/orders/rated/{orderItemId}")
+                .buildAndExpand(orderItemId)
+                .toUri();
+
+        restClient.put()
+                .uri(url)
+                .retrieve()
+                .body(Void.class);
     }
 
     protected boolean handleBooleanFallback(Throwable throwable) throws Throwable {
         log.error("Fallback triggered due to: {}", throwable.getMessage(), throwable);
         return handleTypedFallback(throwable);
     }
-}	
+
+    protected void handleVoidFallback(Throwable throwable) throws Throwable {
+        log.error("Fallback triggered due to: {}", throwable.getMessage(), throwable);
+        handleTypedFallback(throwable);
+    }
+}

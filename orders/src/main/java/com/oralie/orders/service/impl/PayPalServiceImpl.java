@@ -134,6 +134,7 @@ public class PayPalServiceImpl implements PayPalService {
                                 .productName(orderItemRequest.getProductName())
                                 .quantity(orderItemRequest.getQuantity())
                                 .totalPrice(orderItemRequest.getTotalPrice())
+                                .isRated(false)
                                 .build())
                         .collect(Collectors.toList()))
                 .totalPrice(orderRequest.getTotalPrice())

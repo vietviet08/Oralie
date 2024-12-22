@@ -219,6 +219,21 @@ public class OrderController {
 
     }
 
+    @PutMapping("/store/orders/rated/{orderItemId}")
+    public ResponseEntity<Void> updateRatedStatus(@PathVariable("orderItemId") Long orderItemId) {
+        orderService.updateRatedStatus(orderItemId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
+    }
+
+    @GetMapping("/store/orders/rated/{orderItemId}")
+    public ResponseEntity<Boolean> checkOrderItemRated(@PathVariable("orderItemId") Long orderItemId) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(orderService.checkOrderItemRated(orderItemId));
+    }
+
     //info
     @GetMapping("/orders/build-version")
     public ResponseEntity<String> getBuildVersion() {

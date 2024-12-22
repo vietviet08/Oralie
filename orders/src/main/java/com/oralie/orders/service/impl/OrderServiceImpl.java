@@ -23,6 +23,7 @@ import com.oralie.orders.exception.ResourceNotFoundException;
 import com.oralie.orders.model.Order;
 import com.oralie.orders.model.OrderAddress;
 import com.oralie.orders.model.OrderItem;
+import com.oralie.orders.repository.OrderItemRepository;
 import com.oralie.orders.repository.OrderRepository;
 import com.oralie.orders.repository.client.CartFeignClient;
 import com.oralie.orders.service.CartService;
@@ -64,6 +65,8 @@ public class OrderServiceImpl implements OrderService {
     private final KafkaTemplate<String, String> kafkaTemplate;
 
     private final OrderRepository orderRepository;
+
+    private final OrderItemRepository orderItemRepository;
 
     private final CartService cartService;
 
@@ -107,6 +110,7 @@ public class OrderServiceImpl implements OrderService {
                                 .productName(orderItemRequest.getProductName())
                                 .quantity(orderItemRequest.getQuantity())
                                 .totalPrice(orderItemRequest.getTotalPrice())
+                                .isRated(false)
                                 .build())
                         .collect(Collectors.toList()))
                 .totalPrice(orderRequest.getTotalPrice())
@@ -152,7 +156,7 @@ public class OrderServiceImpl implements OrderService {
 
         log.info("Start- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
 
-        kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
+//        kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
 
         log.info("End- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
         //subtract quantity product in inventory service
@@ -314,6 +318,23 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.delete(order);
     }
 
+    @Override
+    public void updateRatedStatus(Long orderItemId) {
+        OrderItem orderItem = orderItemRepository.findOrderItemById(orderItemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order item not found", "id", orderItemId + ""));
+
+        orderItem.setRated(true);
+        orderItemRepository.save(orderItem);
+        log.info("Order item with id {} has been rated", orderItemId);
+    }
+
+    @Override
+    public boolean checkOrderItemRated(Long orderItemId) {
+        OrderItem orderItem = orderItemRepository.findOrderItemById(orderItemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order item not found", "id", orderItemId + ""));
+        return orderItem.isRated();
+    }
+
     private OrderResponse mapToOrderResponse(Order order) {
         return OrderResponse.builder()
                 .id(order.getId())
@@ -343,6 +364,7 @@ public class OrderServiceImpl implements OrderService {
                         .productName(orderItem.getProductName())
                         .quantity(orderItem.getQuantity())
                         .totalPrice(orderItem.getTotalPrice())
+                        .isRated(orderItem.isRated())
                         .build())
                 .collect(Collectors.toList());
     }

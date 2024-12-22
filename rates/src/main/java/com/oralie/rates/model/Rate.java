@@ -24,6 +24,8 @@ public class Rate extends BaseEntity {
 
     private Long productId;
 
+    private Long orderItemId;
+
     private int rateStar;
 
     private String content;

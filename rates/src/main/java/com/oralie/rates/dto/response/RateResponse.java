@@ -20,6 +20,8 @@ public class RateResponse {
 
     private Long productId;
 
+    private Long orderItemId;
+
     private int rateStar;
 
     private String content;

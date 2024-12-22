@@ -47,4 +47,5 @@ public class Order extends BaseEntity {
     // PayPal(optional)
     private String linkPaypalToExecute;
     private String payId;
+
 }

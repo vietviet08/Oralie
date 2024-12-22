@@ -28,6 +28,8 @@ public class OrderItem extends BaseEntity {
 
     private Double totalPrice;
 
+    private boolean isRated = false;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id", referencedColumnName = "order_id")
     private Order order;
