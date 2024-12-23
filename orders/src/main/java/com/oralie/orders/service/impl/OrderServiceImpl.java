@@ -110,6 +110,7 @@ public class OrderServiceImpl implements OrderService {
                                 .productName(orderItemRequest.getProductName())
                                 .quantity(orderItemRequest.getQuantity())
                                 .totalPrice(orderItemRequest.getTotalPrice())
+                                .productImage(orderItemRequest.getProductImage())
                                 .isRated(false)
                                 .build())
                         .collect(Collectors.toList()))

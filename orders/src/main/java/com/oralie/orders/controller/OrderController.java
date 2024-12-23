@@ -77,11 +77,11 @@ public class OrderController {
     }
 
     //store
-    @PostMapping("/store/orders")
-    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest) throws PaymentProcessingException {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(orderService.placeOrder(orderRequest));
+//    @PostMapping("/store/orders")
+//    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest) throws PaymentProcessingException {
+//        return ResponseEntity
+//                .status(HttpStatus.CREATED)
+//                .body(orderService.placeOrder(orderRequest));
 
         // if method is paypal will has the link success or cancel
         // if has the link success, we need get the link and redirect to that link
@@ -93,14 +93,14 @@ public class OrderController {
         // client will redirect to that link to execute payment
         // then redirect client will call api to execute payment (ex: "apigateway/api/orders/store/payment/success")
 
-    }
+//    }
 
     //response url to front & client use url to redirect page
     // this api will return the link to redirect to paypal if user click on button pay with paypal not click payment button
     // click payment button will call api create order @PostMapping("/store/orders")
-    @PostMapping("/store/orders/cod")
-    public ResponseEntity<OrderResponse> createOrderCOD(
-            @RequestBody OrderRequest orderRequest) {
+
+    @PostMapping("/store/orders")
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest orderRequest) {
         try {
             return new ResponseEntity<>(orderService.placeOrder(orderRequest), HttpStatus.OK);
         } catch (Exception e) {
