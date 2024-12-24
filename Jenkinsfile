@@ -351,11 +351,11 @@ pipeline {
                 buildDockerImage("gatewayserver", "gatewayserver")
                 buildDockerImage("accounts", "accounts")
                 buildDockerImage("products", "products")
-                buildDockerImage("carts", "carts")
+                 buildDockerImage("carts", "carts")
                 buildDockerImage("orders", "orders")
-                buildDockerImage("notification", "notification")
-                buildDockerImage("social", "social")
-                buildDockerImage("search", "search")
+               buildDockerImage("notification", "notification")
+                 buildDockerImage("social", "social")
+                 buildDockerImage("search", "search")
                 buildDockerImage("rates", "rates")
                 buildDockerImage("inventory", "inventory")
             }
@@ -369,19 +369,21 @@ pipeline {
                     }
 
                     parallel {
-                        pushDockerImage("configserver")
-                        pushDockerImage("eurekaserver")
+                          pushDockerImage("configserver")
+                         pushDockerImage("eurekaserver")
                         pushDockerImage("gatewayserver")
-                        pushDockerImage("accounts")
-                        pushDockerImage("products")
-                        pushDockerImage("carts")
-                        pushDockerImage("orders")
-                        pushDockerImage("notification")
-                        pushDockerImage("social")
+                         pushDockerImage("accounts")
+                         pushDockerImage("products")
+                         pushDockerImage("carts")
+                          pushDockerImage("orders")
+                         pushDockerImage("notification")
+                         pushDockerImage("social")
                         pushDockerImage("search")
                         pushDockerImage("rates")
                         pushDockerImage("inventory")
                     }
+
+
                     sh 'docker logout'
                 }
             }
