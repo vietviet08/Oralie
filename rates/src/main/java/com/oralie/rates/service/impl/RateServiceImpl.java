@@ -95,6 +95,8 @@ public class RateServiceImpl implements RateService {
 //            throw new BadRequestException(RateConstant.ORDER_ITEM_RATED);
 //        }
 
+        log.info("rateRequest: {}", rateRequest);
+
         List<String> urls = new ArrayList<>();
 
         if (rateRequest.getFiles() != null && !rateRequest.getFiles().isEmpty()) {
