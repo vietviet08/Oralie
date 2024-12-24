@@ -81,6 +81,10 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.POST, "/api/payment/store/**").hasRole("CUSTOMER")
                         .pathMatchers(HttpMethod.PUT, "/api/payment/store/**").hasRole("CUSTOMER")
 
+                        .pathMatchers(HttpMethod.GET, "/api/rates/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.POST, "/api/rates/store/**").hasRole("CUSTOMER")
+                        .pathMatchers(HttpMethod.PUT, "/api/rates/store/**").hasRole("CUSTOMER")
+
                         // Dash
                         .pathMatchers(HttpMethod.GET, "/api/products/dash/**").hasRole("ADMIN")
                         .pathMatchers(HttpMethod.POST, "/api/products/dash/**").hasRole("ADMIN")

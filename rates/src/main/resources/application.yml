@@ -79,6 +79,8 @@ logging:
     com:
       oralie:
         rates: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 resilience4j.circuitbreaker:
   configs:
@@ -106,7 +108,6 @@ resilience4j.ratelimiter:
       timeoutDuration: 1000
       limitRefreshPeriod: 5000
       limitForPeriod: 1
-
 
 server:
   port: 8084

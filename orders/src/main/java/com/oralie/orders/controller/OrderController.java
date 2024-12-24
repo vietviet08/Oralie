@@ -228,10 +228,10 @@ public class OrderController {
     }
 
     @GetMapping("/store/orders/rated/{orderItemId}")
-    public ResponseEntity<Boolean> checkOrderItemRated(@PathVariable("orderItemId") Long orderItemId) {
+    public ResponseEntity<String> checkOrderItemRated(@PathVariable("orderItemId") Long orderItemId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(orderService.checkOrderItemRated(orderItemId));
+                .body(Boolean.toString(orderService.checkOrderItemRated(orderItemId)));
     }
 
     //info

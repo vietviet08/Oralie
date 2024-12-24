@@ -333,7 +333,9 @@ public class OrderServiceImpl implements OrderService {
     public boolean checkOrderItemRated(Long orderItemId) {
         OrderItem orderItem = orderItemRepository.findOrderItemById(orderItemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order item not found", "id", orderItemId + ""));
-        return orderItem.isRated();
+        Order order = orderItem.getOrder();
+
+        return orderItem.isRated() || !order.getStatus().equals(OrderStatus.DELIVERED);
     }
 
     private OrderResponse mapToOrderResponse(Order order) {

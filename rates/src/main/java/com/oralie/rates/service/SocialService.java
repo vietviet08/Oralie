@@ -25,6 +25,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class SocialService extends AbstractCircuitBreakFallbackHandler {
+
     private final RestTemplate restTemplate;
 
     @Value("${url.social}")
@@ -33,8 +34,10 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
     @Retry(name = "restRetry")
     @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleFileMetadataFallback")
     public FileMetadata uploadImage(MultipartFile image) {
-        final String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+
+        final String jwtToken = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
                 .getTokenValue();
+
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_SOCIAL)
                 .path("/dash/social/upload-image")
@@ -42,7 +45,7 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
                 .toUri();
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(jwt);
+        headers.setBearerAuth(jwtToken);
 //        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
@@ -63,8 +66,10 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
     @Retry(name = "restRetry")
     @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleFileMetadataFallback")
     public List<FileMetadata> uploadImages(List<MultipartFile> images) {
+
         final String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
                 .getTokenValue();
+
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_SOCIAL)
                 .path("/dash/social/upload-images")
@@ -96,8 +101,10 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
     @Retry(name = "restRetry")
     @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleStringFallback")
     public String deleteFile(String fileName) {
+
         final String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
                 .getTokenValue();
+
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_SOCIAL)
                 .path("/dash/social/delete/{fileName}")

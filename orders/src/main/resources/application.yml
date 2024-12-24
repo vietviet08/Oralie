@@ -46,7 +46,6 @@ springdoc:
   packages-to-scan:
     - com.oralie.orders
 
-
 management:
   endpoints:
     web:

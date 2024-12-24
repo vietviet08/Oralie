@@ -91,10 +91,9 @@ public class RateServiceImpl implements RateService {
 //            throw new BadRequestException(RateConstant.NOT_EXISTING_USER);
 //        }
 
-        if (orderService.checkIsRated(rateRequest.getOrderItemId())) {
-            throw new BadRequestException(RateConstant.ORDER_ITEM_RATED);
-        }
-        orderService.updateRateStatus(rateRequest.getOrderItemId());
+//        if (Boolean.parseBoolean(orderService.checkIsRated(rateRequest.getOrderItemId()))) {
+//            throw new BadRequestException(RateConstant.ORDER_ITEM_RATED);
+//        }
 
         List<String> urls = new ArrayList<>();
 
@@ -103,7 +102,7 @@ public class RateServiceImpl implements RateService {
             fileMetadatas.forEach(fileMetadata -> urls.add(fileMetadata.getUrl()));
         }
 
-        Rate parentRate = rateRepository.findById(rateRequest.getParentRate()).orElse(null);
+        Rate parentRate = rateRequest.getParentRate() != null ? rateRepository.findById(rateRequest.getParentRate()).orElse(null) : null;
 
         Rate rate = Rate.builder()
                 .userId(userId)
@@ -136,7 +135,9 @@ public class RateServiceImpl implements RateService {
         Rate rate = rateRepository.findById(rateRequest.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Rate not found", "id", rateRequest.getId().toString()));
 
-        if(!orderService.checkIsRated(rate.getOrderItemId())) throw new BadRequestException(RateConstant.ORDER_ITEM_NOT_RATED);
+//        if (!Boolean.parseBoolean(orderService.checkIsRated(rate.getOrderItemId()))) {
+//            throw new BadRequestException(RateConstant.ORDER_ITEM_NOT_RATED);
+//        }
 
         List<String> urls = new ArrayList<>();
 
@@ -145,7 +146,7 @@ public class RateServiceImpl implements RateService {
             fileMetadatas.forEach(fileMetadata -> urls.add(fileMetadata.getUrl()));
         }
 
-        Rate parentRate = rateRepository.findById(rateRequest.getId()).orElse(null);
+        Rate parentRate = rateRequest.getParentRate() != null ? rateRepository.findById(rateRequest.getParentRate()).orElse(null) : null;
 
         rate.setUserId(userId);
         rate.setProductId(productId);
@@ -294,22 +295,24 @@ public class RateServiceImpl implements RateService {
 
     private List<RateResponse> mapToRateResponseList(List<Rate> rates) {
         List<RateResponse> rateResponses = new ArrayList<>();
-        rates.forEach(rate -> {
-            RateResponse rateResponse = RateResponse.builder()
-                    .id(rate.getId())
-                    .userId(rate.getUserId())
-                    .productId(rate.getProductId())
-                    .rateStar(rate.getRateStar())
-                    .content(rate.getContent())
-                    .urlFile(rate.getUrlFile())
-                    .totalLike(rate.getTotalLike())
-                    .listUserLike(rate.getListUserLike() != null ? mapToUserRateCommentResponse(rate.getListUserLike()) : null)
-                    .isAvailable(rate.getIsAvailable())
-                    .parentRate(rate.getParentRate() != null ? rate.getParentRate().getId() : null)
-                    .subRates(mapToRateResponseList(rate.getSubRates()))
-                    .build();
-            rateResponses.add(rateResponse);
-        });
+        if (rates != null) {
+            rates.forEach(rate -> {
+                RateResponse rateResponse = RateResponse.builder()
+                        .id(rate.getId())
+                        .userId(rate.getUserId())
+                        .productId(rate.getProductId())
+                        .rateStar(rate.getRateStar())
+                        .content(rate.getContent())
+                        .urlFile(rate.getUrlFile())
+                        .totalLike(rate.getTotalLike())
+                        .listUserLike(rate.getListUserLike() != null ? mapToUserRateCommentResponse(rate.getListUserLike()) : null)
+                        .isAvailable(rate.getIsAvailable())
+                        .parentRate(rate.getParentRate() != null ? rate.getParentRate().getId() : null)
+                        .subRates(mapToRateResponseList(rate.getSubRates()))
+                        .build();
+                rateResponses.add(rateResponse);
+            });
+        }
         return rateResponses;
     }
 

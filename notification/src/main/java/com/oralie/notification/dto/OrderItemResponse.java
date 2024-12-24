@@ -17,5 +17,6 @@ public class OrderItemResponse {
     private String productImage;
     private int quantity;
     private Double totalPrice;
+    private boolean isRated;
 
 }

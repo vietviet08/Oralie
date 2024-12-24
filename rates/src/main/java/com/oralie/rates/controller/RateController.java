@@ -61,7 +61,7 @@ public class RateController {
     @PostMapping(value = "/store/rates/{productId}")
     public ResponseEntity<RateResponse> postComment(
             @PathVariable Long productId,
-            @RequestBody RateRequest rateRequest
+            @ModelAttribute RateRequest rateRequest
     ) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.status(HttpStatus.OK)
@@ -71,7 +71,7 @@ public class RateController {
     @PutMapping(value = "/store/rates/{productId}")
     public ResponseEntity<RateResponse> updateComment(
             @PathVariable Long productId,
-            @RequestBody RateRequest rateRequest) {
+            @ModelAttribute RateRequest rateRequest) {
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return ResponseEntity.status(HttpStatus.OK)

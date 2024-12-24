@@ -100,7 +100,6 @@ logging:
       oralie:
         payment: DEBUG
 
-
 paypal:
   client-id: ${PAYPAL_CLIENT_ID}
   client-secret: ${PAYPAL_CLIENT_SECRET}

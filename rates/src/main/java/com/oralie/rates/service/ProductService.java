@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,6 +30,9 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler {
     public boolean existingProductByProductId(Long productId) {
         log.info("Checking product by id: {}", productId.toString());
 
+        final String jwtToken = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
+                .getTokenValue();
+
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_PRODUCT)
                 .path("/store/products/existingById/{productId}")
@@ -37,6 +42,7 @@ public class ProductService extends AbstractCircuitBreakFallbackHandler {
         try {
             return Boolean.TRUE.equals(restClient.get()
                     .uri(url)
+                    .headers(h -> h.setBearerAuth(jwtToken))
                     .retrieve()
                     .body(Boolean.class));
         } catch (Exception ex) {
