@@ -60,7 +60,7 @@ public class OrderController {
                 .body(orderService.getAllOrders(page, size, sortBy, sort));
     }
 
-    @PutMapping("/dash/orders/{orderId}")
+    @PostMapping("/dash/orders/{orderId}/status")
     public ResponseEntity<OrderResponse> updateOrderStatus(@PathVariable("orderId") Long orderId,
                                                            @RequestParam String status) {
         return ResponseEntity
@@ -191,7 +191,7 @@ public class OrderController {
                 .body(orderService.getOrderItemsByOrderId(orderId));
     }
 
-    @PutMapping("/store/orders/{orderId}/cancel")
+    @PostMapping("/store/orders/{orderId}/cancel")
     public ResponseEntity<String> cancelOrder(@PathVariable("orderId") Long orderId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
