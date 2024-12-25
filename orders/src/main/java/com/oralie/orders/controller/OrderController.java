@@ -60,7 +60,7 @@ public class OrderController {
                 .body(orderService.getAllOrders(page, size, sortBy, sort));
     }
 
-    @PostMapping("/dash/orders/{orderId}/status")
+    @PutMapping("/dash/orders/{orderId}/status")
     public ResponseEntity<OrderResponse> updateOrderStatus(@PathVariable("orderId") Long orderId,
                                                            @RequestParam String status) {
         return ResponseEntity
@@ -191,7 +191,7 @@ public class OrderController {
                 .body(orderService.getOrderItemsByOrderId(orderId));
     }
 
-    @PostMapping("/store/orders/{orderId}/cancel")
+    @PutMapping("/store/orders/{orderId}/cancel")
     public ResponseEntity<String> cancelOrder(@PathVariable("orderId") Long orderId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -216,7 +216,6 @@ public class OrderController {
                 .contentType(MediaType.IMAGE_PNG)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + barCode + "\"")
                 .body(orderService.generateBarCodeImage(barCode));
-
     }
 
     @PutMapping("/store/orders/rated/{orderItemId}")

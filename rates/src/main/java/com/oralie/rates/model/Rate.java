@@ -20,7 +20,9 @@ public class Rate extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String userId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_info_id")
+    private UserInfo userInfo;
 
     private Long productId;
 
@@ -42,7 +44,7 @@ public class Rate extends BaseEntity {
 
     private Boolean isAvailable;
    
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_category_id")
     private Rate parentRate;
 

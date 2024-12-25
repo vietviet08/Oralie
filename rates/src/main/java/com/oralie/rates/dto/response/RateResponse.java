@@ -1,7 +1,5 @@
 package com.oralie.rates.dto.response;
 
-import com.oralie.rates.model.Rate;
-import com.oralie.rates.model.UserRateComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +14,7 @@ import java.util.List;
 public class RateResponse {
     private Long id;
 
-    private String userId;
+    private UserInfoResponse userInfo;
 
     private Long productId;
 
@@ -27,6 +25,8 @@ public class RateResponse {
     private String content;
 
     private List<String> urlFile;
+
+    private String latestDateModified;
 
     private List<UserRateCommentResponse> listUserLike;
 

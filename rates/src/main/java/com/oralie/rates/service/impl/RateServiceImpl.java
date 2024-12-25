@@ -3,11 +3,14 @@ package com.oralie.rates.service.impl;
 import com.oralie.rates.constant.RateConstant;
 import com.oralie.rates.dto.FileMetadata;
 import com.oralie.rates.dto.request.RateRequest;
+import com.oralie.rates.dto.request.UserInfoRequest;
 import com.oralie.rates.dto.response.ListResponse;
 import com.oralie.rates.dto.response.RateResponse;
+import com.oralie.rates.dto.response.UserInfoResponse;
 import com.oralie.rates.dto.response.UserRateCommentResponse;
 import com.oralie.rates.exception.ResourceNotFoundException;
 import com.oralie.rates.model.Rate;
+import com.oralie.rates.model.UserInfo;
 import com.oralie.rates.model.UserRateComment;
 import com.oralie.rates.repository.RateRepository;
 import com.oralie.rates.service.*;
@@ -107,7 +110,9 @@ public class RateServiceImpl implements RateService {
         Rate parentRate = rateRequest.getParentRate() != null ? rateRepository.findById(rateRequest.getParentRate()).orElse(null) : null;
 
         Rate rate = Rate.builder()
-                .userId(userId)
+                .userInfo(
+                        mapToUserInfo(rateRequest.getUserInfo())
+                )
                 .productId(productId)
                 .orderItemId(rateRequest.getOrderItemId())
                 .content(rateRequest.getContent())
@@ -150,7 +155,9 @@ public class RateServiceImpl implements RateService {
 
         Rate parentRate = rateRequest.getParentRate() != null ? rateRepository.findById(rateRequest.getParentRate()).orElse(null) : null;
 
-        rate.setUserId(userId);
+        rate.setUserInfo(
+                mapToUserInfo(rateRequest.getUserInfo())
+        );
         rate.setProductId(productId);
         rate.setOrderItemId(rateRequest.getOrderItemId());
         rate.setContent(rateRequest.getContent());
@@ -269,7 +276,7 @@ public class RateServiceImpl implements RateService {
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        if (!userId.equals(rate.getUserId()))
+        if (!userId.equals(rate.getUserInfo().getUserId()))
             throw new BadRequestException(RateConstant.RATE_NOT_MATCH_USER);
 
         log.info("User with id: {}, hiding comment", userId);
@@ -281,11 +288,14 @@ public class RateServiceImpl implements RateService {
     private RateResponse mapToRateResponse(Rate rate) {
         return RateResponse.builder()
                 .id(rate.getId())
-                .userId(rate.getUserId())
+                .userInfo(
+                        mapToUserInfoResponse(rate.getUserInfo())
+                )
                 .productId(rate.getProductId())
                 .rateStar(rate.getRateStar())
                 .content(rate.getContent())
                 .urlFile(rate.getUrlFile())
+                .latestDateModified(rate.getUpdatedAt().toString())
                 .totalLike(rate.getTotalLike())
                 .totalDislike(rate.getTotalDislike())
                 .listUserLike(rate.getListUserLike() != null ? mapToUserRateCommentResponse(rate.getListUserLike()) : null)
@@ -301,7 +311,9 @@ public class RateServiceImpl implements RateService {
             rates.forEach(rate -> {
                 RateResponse rateResponse = RateResponse.builder()
                         .id(rate.getId())
-                        .userId(rate.getUserId())
+                        .userInfo(
+                               mapToUserInfoResponse(rate.getUserInfo())
+                        )
                         .productId(rate.getProductId())
                         .rateStar(rate.getRateStar())
                         .content(rate.getContent())
@@ -331,5 +343,21 @@ public class RateServiceImpl implements RateService {
             userRateCommentResponses.add(userRateCommentResponse);
         });
         return userRateCommentResponses;
+    }
+
+    private UserInfoResponse mapToUserInfoResponse(UserInfo userInfo) {
+        return UserInfoResponse.builder()
+                .userId(userInfo.getUserId())
+                .fullName(userInfo.getFullName())
+                .urlAvatar(userInfo.getUrlAvatar())
+                .build();
+    }
+
+    private UserInfo mapToUserInfo(UserInfoRequest userInfoRequest) {
+        return UserInfo.builder()
+                .userId(userInfoRequest.getUserId())
+                .fullName(userInfoRequest.getFullName())
+                .urlAvatar(userInfoRequest.getUrlAvatar())
+                .build();
     }
 }
