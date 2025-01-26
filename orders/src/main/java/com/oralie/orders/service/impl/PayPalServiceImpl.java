@@ -4,7 +4,6 @@ import com.oralie.orders.constant.OrderStatus;
 import com.oralie.orders.constant.PayPalConstant;
 import com.oralie.orders.constant.PaymentMethod;
 import com.oralie.orders.constant.PaymentStatus;
-import com.oralie.orders.dto.entity.OrderPlaceEvent;
 import com.oralie.orders.dto.request.OrderRequest;
 import com.oralie.orders.dto.request.PayPalInfoRequest;
 import com.oralie.orders.dto.response.OrderAddressResponse;
@@ -29,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -187,6 +187,12 @@ public class PayPalServiceImpl implements PayPalService {
                 order.setStatus(OrderStatus.PROCESSING);
                 order.setPaymentMethod(PaymentMethod.PAYPAL.name());
 
+            } catch (HttpClientErrorException.BadRequest e) {
+                log.error("Bad request for orderId: {} error: ", order.getId(), e);
+                order.setPaymentStatus(PaymentStatus.FAILED);
+                order.setStatus(OrderStatus.FAILED);
+                orderRepository.save(order);
+                throw new PaymentProcessingException("Bad request: " + e.getMessage());
             } catch (Exception e) {
                 log.error("Payment failed for orderId: {} error: ", order.getId(), e);
                 order.setPaymentStatus(PaymentStatus.FAILED);

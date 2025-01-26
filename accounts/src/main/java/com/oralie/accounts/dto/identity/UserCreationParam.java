@@ -23,5 +23,5 @@ public class UserCreationParam {
     String lastName;
     List<String> realmRoles;
     List<Credential> credentials;
-
+    UserAttribute attributes;
 }

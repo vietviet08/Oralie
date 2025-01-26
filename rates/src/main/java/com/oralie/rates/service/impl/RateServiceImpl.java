@@ -24,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,7 +88,7 @@ public class RateServiceImpl implements RateService {
     @Override
     public RateResponse postComment(Long productId, String userId, RateRequest rateRequest) {
         //check existing user
-//        boolean existUser = accountService.existingAccountByUserId(userId);
+        boolean existUser = accountService.existingAccountByUserId(userId);
 
 //        if (!existUser) {
 //            log.error("Not existing account by UserId: {}", userId);
@@ -100,14 +101,10 @@ public class RateServiceImpl implements RateService {
 
         log.info("rateRequest: {}", rateRequest);
 
-        List<String> urls = new ArrayList<>();
-
-        if (rateRequest.getFiles() != null && !rateRequest.getFiles().isEmpty()) {
-            List<FileMetadata> fileMetadatas = socialService.uploadImages(rateRequest.getFiles());
-            fileMetadatas.forEach(fileMetadata -> urls.add(fileMetadata.getUrl()));
-        }
+        List<String> urls = postMediaRequest(rateRequest);
 
         Rate parentRate = rateRequest.getParentRate() != null ? rateRepository.findById(rateRequest.getParentRate()).orElse(null) : null;
+
 
         Rate rate = Rate.builder()
                 .userInfo(
@@ -146,12 +143,7 @@ public class RateServiceImpl implements RateService {
 //            throw new BadRequestException(RateConstant.ORDER_ITEM_NOT_RATED);
 //        }
 
-        List<String> urls = new ArrayList<>();
-
-        if (rateRequest.getFiles() != null && !rateRequest.getFiles().isEmpty()) {
-            List<FileMetadata> fileMetadatas = socialService.uploadImages(rateRequest.getFiles());
-            fileMetadatas.forEach(fileMetadata -> urls.add(fileMetadata.getUrl()));
-        }
+        List<String> urls = postMediaRequest(rateRequest);
 
         Rate parentRate = rateRequest.getParentRate() != null ? rateRepository.findById(rateRequest.getParentRate()).orElse(null) : null;
 
@@ -285,6 +277,15 @@ public class RateServiceImpl implements RateService {
         rateRepository.save(rate);
     }
 
+    private List<String> postMediaRequest(RateRequest rateRequest) {
+        List<String> urls = new ArrayList<>();
+        if (rateRequest.getFiles() != null && !rateRequest.getFiles().isEmpty()) {
+            List<FileMetadata> fileMetadatas = socialService.uploadImages(rateRequest.getFiles());
+            fileMetadatas.forEach(fileMetadata -> urls.add(fileMetadata.getUrl()));
+        }
+        return urls;
+    }
+
     private RateResponse mapToRateResponse(Rate rate) {
         return RateResponse.builder()
                 .id(rate.getId())
@@ -312,7 +313,7 @@ public class RateServiceImpl implements RateService {
                 RateResponse rateResponse = RateResponse.builder()
                         .id(rate.getId())
                         .userInfo(
-                               mapToUserInfoResponse(rate.getUserInfo())
+                                mapToUserInfoResponse(rate.getUserInfo())
                         )
                         .productId(rate.getProductId())
                         .rateStar(rate.getRateStar())

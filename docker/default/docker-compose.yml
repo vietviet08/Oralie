@@ -466,6 +466,9 @@ services:
       SPRING_APPLICATION_NAME: "accounts"
       OTEL_SERVICE_NAME: "accounts"
       SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/accounts_db"
+      IDP_URL: ${KEYCLOAK_URL}
+      IDP_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+      IDP_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
     extends:
       file: common-config.yml
       service: microservice-service-config
@@ -576,10 +579,10 @@ services:
     environment:
       SPRING_APPLICATION_NAME: "social"
       OTEL_SERVICE_NAME: "social"
-      AWS_REGION: ${AWS_REGION}
+      AWS_REGION_STATIC: ${AWS_REGION}
       AWS_BUCKET_NAME: ${AWS_BUCKET_NAME}
-      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
-      AWS_SECRET_KEY: ${AWS_SECRET_KEY}
+      AWS_CREDENTIALS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_CREDENTIALS_SECRET_KEY: ${AWS_SECRET_KEY}
     extends:
       file: common-config.yml
       service: microservice-service-config

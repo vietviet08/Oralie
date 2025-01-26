@@ -40,7 +40,8 @@ public class RateController {
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sort) {
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(rateService.getAllRate(page, size, sortBy, sort));
 
     }
@@ -53,7 +54,8 @@ public class RateController {
             @RequestParam(required = false, defaultValue = "10") int size,
             @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sort) {
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(rateService.getAllRateByProductId(productId, page, size, sortBy, sort));
 
     }
@@ -64,7 +66,8 @@ public class RateController {
             @ModelAttribute RateRequest rateRequest
     ) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(rateService.postComment(productId, userId, rateRequest));
     }
 
@@ -74,7 +77,8 @@ public class RateController {
             @ModelAttribute RateRequest rateRequest) {
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ResponseEntity.status(HttpStatus.OK)
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(rateService.updateComment(productId, userId, rateRequest));
     }
 
@@ -82,7 +86,9 @@ public class RateController {
     public ResponseEntity<Void> deleteComment(@PathVariable Long rateId) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         rateService.deleteComment(rateId, userId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body(null);
     }
 
     @PutMapping(value = "/store/rates/like/{productId}")
@@ -90,7 +96,9 @@ public class RateController {
                                             @RequestParam Long rateId) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         rateService.likeComment(rateId, productId, userId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body(null);
     }
 
     @PutMapping(value = "/store/rates/dislike/{productId}")
@@ -98,18 +106,24 @@ public class RateController {
                                                @RequestParam Long rateId) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         rateService.dislikeComment(rateId, productId, userId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body(null);
     }
 
     @PutMapping(value = "/store/rates/available/{rateId}")
     public ResponseEntity<Void> updateAvailableComment(@PathVariable Long rateId) {
         rateService.updateAvailableComment(rateId);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body(null);
     }
 
     @GetMapping(value = "/store/rates/avg/{productId}")
     public ResponseEntity<Double> getAvgRateStar(@PathVariable Long productId) {
-        return ResponseEntity.status(HttpStatus.OK).body(rateService.avgRateStar(productId));
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(rateService.avgRateStar(productId));
     }
 
     //info service

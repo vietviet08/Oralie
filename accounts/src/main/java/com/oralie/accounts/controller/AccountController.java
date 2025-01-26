@@ -11,20 +11,15 @@ import com.oralie.accounts.dto.entity.response.ResponseDto;
 import com.oralie.accounts.dto.identity.AssignRole;
 import com.oralie.accounts.exception.ResourceNotFoundException;
 import com.oralie.accounts.service.AccountService;
-import feign.FeignException;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Tag(
         name = "CRUD REST APIs for Accounts",
@@ -127,14 +122,14 @@ public class AccountController {
     public ResponseEntity<AccountResponse> getAccountByUsername(@PathVariable String username) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(accountService.getAccount(username));
+                .body(accountService.getAccountByUsername(username));
     }
 
     @GetMapping("/dash/accounts/userId/{userId}")
     public ResponseEntity<AccountResponse> getAccountByUserId(@PathVariable String userId) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(accountService.getAccount(userId));
+                .body(accountService.getAccountByUserId(userId));
     }
 
     @GetMapping("/dash/accounts")

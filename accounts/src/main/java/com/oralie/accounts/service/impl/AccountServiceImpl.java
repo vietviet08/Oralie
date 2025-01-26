@@ -46,10 +46,10 @@ public class AccountServiceImpl implements AccountService {
     private final IdentityClient identityClient;
     private final ErrorNormalizer errorNormalizer;
 
-    @Value("${idp.client-id}")
+    @Value("${idp.client.id}")
     private String clientId;
 
-    @Value("${idp.client-secret}")
+    @Value("${idp.client.secret}")
     private String clientSecret;
 
     // get access token? => all request can accept it?
@@ -105,23 +105,9 @@ public class AccountServiceImpl implements AccountService {
             var profile = mapToAccount(request);
             profile.setUserId(userId);
 
-            Account account = accountsRepository.save(profile);
+            accountsRepository.save(profile);
 
-            List<UserAddress> userAddresses = new ArrayList<>();
-            UserAddress address = UserAddress.builder()
-                    .account(account)
-                    .userId(userId)
-                    .addressDetail(request.getAddressDetail())
-                    .phone(request.getPhoneNumber())
-                    .city(request.getCity())
-                    .build();
-            userAddresses.add(address);
-            account.setAddress(userAddresses);
-
-            accountsRepository.save(account);
-
-            return mapToAccountResponse(account);
-
+            return mapToAccountResponse(profile);
         } catch (FeignException exception) {
             log.error("Error while creating account", exception);
 
@@ -219,7 +205,7 @@ public class AccountServiceImpl implements AccountService {
 
 
     @Override
-    public AccountResponse getAccount(String username) {
+    public AccountResponse getAccountByUsername(String username) {
         Account account = accountsRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("Account not found", "username", username));
         return mapToAccountResponse(account);
     }
@@ -312,10 +298,25 @@ public class AccountServiceImpl implements AccountService {
             throw errorNormalizer.handleKeyCloakException(exception);
         }
     }
-    
+
     @Override
-    public boolean existingAccountByUserId(String userId){
-        return accountsRepository.existsByUserId(userId);
+    public boolean existingAccountByUserId(String userId) {
+        boolean isExistingInDB = accountsRepository.existsByUserId(userId);
+        if (!isExistingInDB) {
+            log.warn("Account not found in DB, trying to get account from keycloak");
+            ResponseEntity<?> user = identityClient.getUser("Bearer " + getAccessToken(), userId);
+            if (user.getStatusCode().is2xxSuccessful() && user.getBody() != null) {
+                log.warn("Account found in keycloak, creating account in DB");
+                createAccount(AccountKeyCloakRequest.builder()
+                        .username(user.getBody().toString())
+                        .email(user.getBody().toString())
+                        .firstName(user.getBody().toString())
+                        .lastName(user.getBody().toString())
+                        .build());
+                return true;
+            }
+        }
+        return false;
     }
 
     private String extractUserId(ResponseEntity<?> response) {

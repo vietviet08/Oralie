@@ -10,6 +10,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Credential {
     String type;
+    String userLabel;
+    String secretData;
+    String credentialData;
     String value;
     boolean temporary;
 }

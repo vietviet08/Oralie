@@ -6,8 +6,6 @@ import com.oralie.accounts.dto.entity.response.AccountResponse;
 import com.oralie.accounts.dto.entity.response.ListResponse;
 import com.oralie.accounts.dto.identity.AssignRole;
 
-import java.util.List;
-
 public interface AccountService {
     AccountResponse createAccount(AccountKeyCloakRequest accountRequest);
     AccountResponse createAccount(AccountRequest accountRequest);
@@ -16,7 +14,7 @@ public interface AccountService {
     AssignRole assignRole(String username, String roleName);
     AccountResponse getAccountById(Long id);
 
-    AccountResponse getAccount(String username);
+    AccountResponse getAccountByUsername(String username);
     AccountResponse getAccountByUserId(String userId);
     ListResponse<AccountResponse> getAccounts(int page, int size, String sortBy, String sort);
     void changePassword(String username, String password);
