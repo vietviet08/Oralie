@@ -2,10 +2,13 @@ package com.oralie.accounts.repository.client;
 
 import com.oralie.accounts.dto.identity.*;
 import feign.QueryMap;
+import org.keycloak.models.UserModel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @FeignClient(name = "identity-client", url = "${idp.url}")
 public interface IdentityClient {
@@ -23,13 +26,13 @@ public interface IdentityClient {
     ResponseEntity<?> getUser(@RequestHeader("authorization") String token,
                               @PathVariable("user-id") String userid);
 
-    @PostMapping(value = "/admin/realms/" + IdentityClient.REALM + "/users", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/admin/realms/" + IdentityClient.REALM + "/users")
     ResponseEntity<?> createUser(@RequestHeader("authorization") String token,
-                                 @RequestBody UserCreationParam param);
+                                 @RequestBody KeycloakUser user);
 
-    @PutMapping(value = "/admin/realms/" + IdentityClient.REALM + "/users/{user-id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/admin/realms/" + IdentityClient.REALM + "/users/{user-id}")
     ResponseEntity<?> updateUser(@RequestHeader("authorization") String token,
-                                 @RequestBody UserCreationParam param,
+                                 @RequestBody KeycloakUser user,
                                  @PathVariable("user-id") String userid);
 
     @DeleteMapping(value = "/admin/realms/" + IdentityClient.REALM + "/users/{user-id}")

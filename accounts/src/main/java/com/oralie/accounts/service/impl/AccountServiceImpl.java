@@ -8,7 +8,7 @@ import com.oralie.accounts.dto.entity.response.ListResponse;
 import com.oralie.accounts.dto.identity.AssignRole;
 import com.oralie.accounts.dto.identity.Credential;
 import com.oralie.accounts.dto.identity.TokenExchangeParam;
-import com.oralie.accounts.dto.identity.UserCreationParam;
+import com.oralie.accounts.dto.identity.KeycloakUser;
 import com.oralie.accounts.exception.ErrorNormalizer;
 import com.oralie.accounts.exception.ResourceNotFoundException;
 import com.oralie.accounts.model.Account;
@@ -32,7 +32,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -84,7 +83,7 @@ public class AccountServiceImpl implements AccountService {
             // Get userId of keyCloak account
             var creationResponse = identityClient.createUser(
                     "Bearer " + getAccessToken(),
-                    UserCreationParam.builder()
+                    KeycloakUser.builder()
                             .username(request.getUsername())
                             .firstName(request.getFirstName())
                             .lastName(request.getLastName())
@@ -131,7 +130,7 @@ public class AccountServiceImpl implements AccountService {
 
             var creationResponse = identityClient.updateUser(
                     "Bearer " + getAccessToken(),
-                    UserCreationParam.builder()
+                    KeycloakUser.builder()
 //                            .username(account.getUsername())
                             .firstName(accountRequest.getFirstName())
                             .lastName(accountRequest.getLastName())

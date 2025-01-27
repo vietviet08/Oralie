@@ -90,14 +90,14 @@ public class RateServiceImpl implements RateService {
         //check existing user
         boolean existUser = accountService.existingAccountByUserId(userId);
 
-//        if (!existUser) {
-//            log.error("Not existing account by UserId: {}", userId);
-//            throw new BadRequestException(RateConstant.NOT_EXISTING_USER);
-//        }
+        if (!existUser) {
+            log.error("Not existing account by UserId: {}", userId);
+            throw new BadRequestException(RateConstant.NOT_EXISTING_USER);
+        }
 
-//        if (Boolean.parseBoolean(orderService.checkIsRated(rateRequest.getOrderItemId()))) {
-//            throw new BadRequestException(RateConstant.ORDER_ITEM_RATED);
-//        }
+        if (Boolean.parseBoolean(orderService.checkIsRated(rateRequest.getOrderItemId()))) {
+            throw new BadRequestException(RateConstant.ORDER_ITEM_RATED);
+        }
 
         log.info("rateRequest: {}", rateRequest);
 
@@ -129,12 +129,12 @@ public class RateServiceImpl implements RateService {
 
     @Override
     public RateResponse updateComment(Long productId, String userId, RateRequest rateRequest) {
-//        boolean existUser = accountService.existingAccountByUserId(userId);
-//
-//        if (!existUser) {
-//            log.error("Not existing account by UserId: {}", userId);
-//            throw new BadRequestException(RateConstant.NOT_EXISTING_USER);
-//        }
+        boolean existUser = accountService.existingAccountByUserId(userId);
+
+        if (!existUser) {
+            log.error("Not existing account by UserId: {}", userId);
+            throw new BadRequestException(RateConstant.NOT_EXISTING_USER);
+        }
 
         Rate rate = rateRepository.findById(rateRequest.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Rate not found", "id", rateRequest.getId().toString()));

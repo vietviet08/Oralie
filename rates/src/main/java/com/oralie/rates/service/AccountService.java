@@ -48,7 +48,7 @@ public class AccountService extends AbstractCircuitBreakFallbackHandler {
 
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_ACCOUNT)
-                .pathSegment("dash", "accounts", "existing", userId)
+                .pathSegment("store", "keycloak", "existing", userId)
                 .build()
                 .toUri();
 

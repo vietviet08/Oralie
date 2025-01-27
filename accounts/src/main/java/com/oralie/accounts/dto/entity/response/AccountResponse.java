@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class AccountResponse {
+    private String id;
     private String username;
     private String email;
     private List<UserAddressDto> address;
