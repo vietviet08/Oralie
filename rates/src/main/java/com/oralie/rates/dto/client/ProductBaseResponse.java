@@ -1,6 +1,5 @@
-package com.oralie.carts.dto.response;
+package com.oralie.rates.dto.client;
 
-import com.oralie.carts.dto.response.client.ProductOptionResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,8 +15,8 @@ public class ProductBaseResponse {
     private Long id;
     private String name;
     private List<ProductOptionResponse> options;
-    private String image;
     private String slug;
+    private String image;
     private String description;
     private Double price;
     private Long quantity;

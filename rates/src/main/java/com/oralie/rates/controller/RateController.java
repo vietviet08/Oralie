@@ -57,7 +57,18 @@ public class RateController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(rateService.getAllRateByProductId(productId, page, size, sortBy, sort));
+    }
 
+    @GetMapping(value = "/store/rates/user/{userId}")
+    public ResponseEntity<ListResponse<RateResponse>> getAllRateByUserId(
+            @PathVariable("userId") String userId,
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String sort) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(rateService.getAllRateByUserId(userId, page, size, sortBy, sort));
     }
 
     @PostMapping(value = "/store/rates/{productId}")

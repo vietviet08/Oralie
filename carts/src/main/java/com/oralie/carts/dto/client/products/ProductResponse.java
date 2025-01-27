@@ -1,4 +1,4 @@
-package com.oralie.rates.dto;
+package com.oralie.carts.dto.client.products;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,21 +11,38 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductBaseResponse {
+public class ProductResponse {
     private Long id;
+
     private String name;
-    private List<ProductOptionResponse> options;
+
     private String slug;
-    private String image;
+
     private String description;
+
+    private String sku;
+
+    private List<ProductCategoryResponse> productCategories;
+
+    private BrandResponse brand;
+
+    private List<ProductImageResponse> images;
+
+    private List<ProductOptionResponse> options;
+
     private Double price;
-    private Long quantity;
-    private List<Long> category;
-    private Long brand;
-    private Double discount;
+
     private Boolean isDiscounted;
+
+    private Double discount;
+
+    private Long quantity;
+
     private Boolean isAvailable;
+
     private Boolean isDeleted;
+
     private Boolean isFeatured;
+
     private Boolean isPromoted;
 }

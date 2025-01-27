@@ -1,4 +1,4 @@
-package com.oralie.carts.dto.response.client;
+package com.oralie.rates.dto.client;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,11 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BrandResponse {
+public class ProductOptionResponse {
     private Long id;
     private String name;
-    private String slug;
-    private String description;
-    private String image;
-    private Boolean isActive;
+    private String value;
 }

@@ -23,5 +23,5 @@ public class KeycloakUser {
     String lastName;
     List<String> realmRoles;
     List<Credential> credentials;
-    UserAttribute attributes;
+    KeycloakUserAttribute attributes;
 }

@@ -1,6 +1,6 @@
 package com.oralie.carts.dto.response;
 
-import com.oralie.carts.dto.response.client.ProductOptionResponse;
+import com.oralie.carts.dto.client.products.ProductOptionResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.oralie.carts.dto.response.client;
+package com.oralie.carts.dto.client.products;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductImageResponse {
+public class BrandResponse {
     private Long id;
     private String name;
-    private String type;
-    private String url;
+    private String slug;
+    private String description;
+    private String image;
+    private Boolean isActive;
 }

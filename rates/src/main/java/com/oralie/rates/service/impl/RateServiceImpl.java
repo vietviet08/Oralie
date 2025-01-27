@@ -105,11 +105,8 @@ public class RateServiceImpl implements RateService {
 
         Rate parentRate = rateRequest.getParentRate() != null ? rateRepository.findById(rateRequest.getParentRate()).orElse(null) : null;
 
-
         Rate rate = Rate.builder()
-                .userInfo(
-                        mapToUserInfo(rateRequest.getUserInfo())
-                )
+                .userInfo(mapToUserInfo(rateRequest.getUserInfo()))
                 .productId(productId)
                 .orderItemId(rateRequest.getOrderItemId())
                 .content(rateRequest.getContent())

@@ -5,13 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserAddressDto {
+public class UserAttributeDto {
         private String userId;
-        private String addressDetail;
-        private String city;
-        private String phone;
+        private List<String> addressDetail;
+        private List<String> city;
+        private List<String> phone;
 }

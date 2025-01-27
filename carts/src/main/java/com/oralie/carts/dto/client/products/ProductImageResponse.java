@@ -1,4 +1,4 @@
-package com.oralie.rates.dto;
+package com.oralie.carts.dto.client.products;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProductOptionResponse {
+public class ProductImageResponse {
     private Long id;
     private String name;
-    private String value;
+    private String type;
+    private String url;
 }

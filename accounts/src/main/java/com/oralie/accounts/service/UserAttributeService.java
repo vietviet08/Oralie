@@ -1,13 +1,25 @@
 package com.oralie.accounts.service;
 
-import com.oralie.accounts.dto.identity.UserAttribute;
+import com.oralie.accounts.dto.entity.request.UserAttributeRequest;
+import com.oralie.accounts.dto.entity.response.UserAttributeResponse;
+
+import java.util.List;
 
 public interface UserAttributeService {
-    UserAttribute getUserAttributeByUserId(String userId);
+    UserAttributeResponse findById(Long userAttributeId);
 
-    UserAttribute save(UserAttribute userAttribute, String userId);
+    UserAttributeResponse save(UserAttributeRequest userAttributeRequest);
 
-    UserAttribute update(UserAttribute userAttribute, String userId);
+    UserAttributeResponse update(UserAttributeRequest userAttributeRequest, String userId);
+
+    void deleteById(Long userAttributeId);
 
     void deleteByUserId(String userId);
+
+    void deleteByUsername(String username);
+
+    UserAttributeResponse findAllByUserId(String userId);
+
+    List<UserAttributeResponse> findAll(int page, int size, String sortBy, String sort);
+
 }

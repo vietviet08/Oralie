@@ -5,14 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddressResponse {
+public class UserAttributeResponse {
     private Long id;
     private String userId;
-    private String addressDetail;
-    private String city;
-    private String phone;
+    private List<String> address;
+    private List<String> city;
+    private List<String> phone;
+    private List<String> picture;
 }

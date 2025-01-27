@@ -4,9 +4,7 @@ import com.oralie.accounts.dto.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,6 +20,7 @@ public class Account extends BaseEntity {
     @Column(name = "account_id")
     private Long id;
 
+    @Column(name = "user_id", unique = true, nullable = false)
     private String userId;
 
     @Column(name = "username")
@@ -33,8 +32,8 @@ public class Account extends BaseEntity {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "account")
-    private List<UserAddress> address;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private UserAttribute attributes;
 
     private String fullName;
 

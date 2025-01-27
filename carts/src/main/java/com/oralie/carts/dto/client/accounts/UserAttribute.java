@@ -1,4 +1,4 @@
-package com.oralie.accounts.dto.identity;
+package com.oralie.carts.dto.client.accounts;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,12 +8,12 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class UserAttribute {
-   private List<String> address;
-   private List<String> phone;
-   private List<String> city;
-   private List<String> picture;
+    private List<String> address;
+    private List<String> phone;
+    private List<String> city;
+    private List<String> picture;
 }

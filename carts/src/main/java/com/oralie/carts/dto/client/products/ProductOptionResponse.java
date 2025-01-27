@@ -1,4 +1,4 @@
-package com.oralie.accounts.dto.entity.request;
+package com.oralie.carts.dto.client.products;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddressRequest {
-    private String addressDetail;
-    private String city;
-    private String phone;
+public class ProductOptionResponse {
+    private Long id;
+    private String name;
+    private String value;
 }

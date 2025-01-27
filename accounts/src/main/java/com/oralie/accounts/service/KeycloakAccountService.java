@@ -4,8 +4,6 @@ import com.oralie.accounts.dto.entity.response.AccountResponse;
 import com.oralie.accounts.dto.entity.response.ListResponse;
 import com.oralie.accounts.dto.identity.KeycloakUser;
 
-import java.util.List;
-
 public interface KeycloakAccountService {
     ListResponse<AccountResponse> getUsers(int page, int size, String sortBy, String sort, String search);
 

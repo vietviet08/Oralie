@@ -1,6 +1,5 @@
-package com.oralie.carts.dto;
+package com.oralie.carts.dto.client.accounts;
 
-import com.oralie.carts.dto.response.client.UserAddressDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,10 +11,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AccountResponse {
+public class UserResponse {
+    private String id;
     private String username;
     private String email;
-    private List<UserAddressDto> address;
     private String fullName;
+    private String firstName;
+    private String lastName;
     private boolean gender;
+    private UserAttribute attributes;
+    private boolean enabled;
+    private boolean emailVerified;
+    private List<String> realmRoles;
 }

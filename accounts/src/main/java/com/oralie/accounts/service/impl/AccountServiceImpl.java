@@ -1,22 +1,21 @@
 package com.oralie.accounts.service.impl;
 
-import com.oralie.accounts.dto.UserAddressDto;
+import com.oralie.accounts.dto.UserAttributeDto;
 import com.oralie.accounts.dto.entity.request.AccountKeyCloakRequest;
 import com.oralie.accounts.dto.entity.request.AccountRequest;
+import com.oralie.accounts.dto.entity.request.UserAttributeRequest;
 import com.oralie.accounts.dto.entity.response.AccountResponse;
 import com.oralie.accounts.dto.entity.response.ListResponse;
-import com.oralie.accounts.dto.identity.AssignRole;
-import com.oralie.accounts.dto.identity.Credential;
-import com.oralie.accounts.dto.identity.TokenExchangeParam;
-import com.oralie.accounts.dto.identity.KeycloakUser;
+import com.oralie.accounts.dto.entity.response.UserAttributeResponse;
+import com.oralie.accounts.dto.identity.*;
 import com.oralie.accounts.exception.ErrorNormalizer;
 import com.oralie.accounts.exception.ResourceNotFoundException;
 import com.oralie.accounts.model.Account;
-import com.oralie.accounts.model.UserAddress;
+import com.oralie.accounts.model.UserAttribute;
 import com.oralie.accounts.repository.AccountsRepository;
 import com.oralie.accounts.repository.client.IdentityClient;
-import com.oralie.accounts.repository.UserAddressRepository;
 import com.oralie.accounts.service.AccountService;
+import com.oralie.accounts.service.SocialService;
 import feign.FeignException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -40,8 +39,8 @@ public class AccountServiceImpl implements AccountService {
 
     private static final Logger log = LoggerFactory.getLogger(AccountServiceImpl.class);
 
+    private final SocialService socialService;
     private final AccountsRepository accountsRepository;
-    private final UserAddressRepository userAddressRepository;
     private final IdentityClient identityClient;
     private final ErrorNormalizer errorNormalizer;
 
@@ -51,7 +50,6 @@ public class AccountServiceImpl implements AccountService {
     @Value("${idp.client.secret}")
     private String clientSecret;
 
-    // get access token? => all request can accept it?
     private String getAccessToken() {
         var token = identityClient.exchangeToken(TokenExchangeParam.builder()
                 .grant_type("client_credentials")
@@ -59,7 +57,6 @@ public class AccountServiceImpl implements AccountService {
                 .client_secret(clientSecret)
                 .scope("openid")
                 .build());
-
         return token.getAccessToken();
     }
 
@@ -90,6 +87,7 @@ public class AccountServiceImpl implements AccountService {
                             .email(request.getEmail())
                             .enabled(true)
                             .emailVerified(false)
+                            .attributes(mapFromUserAttributeRequestToKeycloakUserAttribute(request.getUserAttribute()))
                             .realmRoles(List.of("CUSTOMER"))
                             .credentials(List.of(Credential.builder()
                                     .type("password")
@@ -334,7 +332,7 @@ public class AccountServiceImpl implements AccountService {
         account.setUsername(accountRequest.getUsername());
         account.setPassword(new BCryptPasswordEncoder().encode(accountRequest.getPassword()));
         account.setEmail(accountRequest.getEmail());
-        account.setAddress(null);
+        account.setAttributes(mapFromUserAttributeRequestToUserAttribute(accountRequest.getUserAttribute()));
         account.setFullName(accountRequest.getFirstName() + " " + accountRequest.getLastName());
         account.setFirstName(accountRequest.getFirstName());
         account.setLastName(accountRequest.getLastName());
@@ -346,7 +344,7 @@ public class AccountServiceImpl implements AccountService {
         return AccountResponse.builder()
                 .username(account.getUsername())
                 .email(account.getEmail())
-                .address(account.getAddress() != null ? mapToListUserAddressDto(account.getAddress()) : null)
+                .attributes(account.getAttributes() != null ? mapToUserAttributeResponse(account.getAttributes()) : null)
                 .fullName(account.getFullName())
                 .firstName(account.getFirstName())
                 .lastName(account.getLastName())
@@ -359,7 +357,7 @@ public class AccountServiceImpl implements AccountService {
                 .map(account -> AccountResponse.builder()
                         .username(account.getUsername())
                         .email(account.getEmail())
-                        .address(account.getAddress() != null ? mapToListUserAddressDto(account.getAddress()) : null)
+                        .attributes(account.getAttributes() != null ? mapToUserAttributeResponse(account.getAttributes()) : null)
                         .fullName(account.getFullName())
                         .firstName(account.getFirstName())
                         .lastName(account.getLastName())
@@ -368,15 +366,28 @@ public class AccountServiceImpl implements AccountService {
                 .toList();
     }
 
-    private List<UserAddressDto> mapToListUserAddressDto(List<UserAddress> userAddresses) {
-        return userAddresses.stream()
-                .map(userAddress -> UserAddressDto.builder()
-                        .userId(userAddress.getUserId())
-                        .phone(userAddress.getPhone())
-                        .city(userAddress.getCity())
-                        .addressDetail(userAddress.getAddressDetail())
-                        .city(userAddress.getCity()).build())
-                .toList();
+    private UserAttribute mapFromUserAttributeRequestToUserAttribute(UserAttributeRequest userAttribute) {
+        return UserAttribute.builder()
+                .phone(userAttribute.getPhone())
+                .city(userAttribute.getCity())
+                .addressDetail(userAttribute.getAddress())
+                .build();
+    }
+
+    private KeycloakUserAttribute mapFromUserAttributeRequestToKeycloakUserAttribute(UserAttributeRequest userAttribute) {
+        return KeycloakUserAttribute.builder()
+                .phone(userAttribute.getPhone())
+                .city(userAttribute.getCity())
+                .address(userAttribute.getAddress())
+                .build();
+    }
+
+    private UserAttributeResponse mapToUserAttributeResponse(UserAttribute userAttribute) {
+        return UserAttributeResponse.builder()
+                .phone(userAttribute.getPhone())
+                .city(userAttribute.getCity())
+                .address(userAttribute.getAddressDetail())
+                .build();
     }
 
 

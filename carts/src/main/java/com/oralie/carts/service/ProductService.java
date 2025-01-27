@@ -1,8 +1,7 @@
 package com.oralie.carts.service;
 
-import com.oralie.carts.dto.ProductResponse;
-import com.oralie.carts.dto.response.ProductBaseResponse;
-import com.oralie.carts.dto.response.client.ProductOptionResponse;
+import com.oralie.carts.dto.client.search.ProductBaseResponse;
+import com.oralie.carts.dto.client.products.ProductOptionResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
