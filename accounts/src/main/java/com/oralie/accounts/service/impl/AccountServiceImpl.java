@@ -1,6 +1,5 @@
 package com.oralie.accounts.service.impl;
 
-import com.oralie.accounts.dto.UserAttributeDto;
 import com.oralie.accounts.dto.entity.request.AccountKeyCloakRequest;
 import com.oralie.accounts.dto.entity.request.AccountRequest;
 import com.oralie.accounts.dto.entity.request.UserAttributeRequest;

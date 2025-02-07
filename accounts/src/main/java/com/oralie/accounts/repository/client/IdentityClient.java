@@ -2,13 +2,10 @@ package com.oralie.accounts.repository.client;
 
 import com.oralie.accounts.dto.identity.*;
 import feign.QueryMap;
-import org.keycloak.models.UserModel;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @FeignClient(name = "identity-client", url = "${idp.url}")
 public interface IdentityClient {

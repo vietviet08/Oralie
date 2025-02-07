@@ -1,10 +1,10 @@
 package com.oralie.carts.service.impl;
 
+import com.oralie.carts.dto.client.products.ProductOptionResponse;
+import com.oralie.carts.dto.client.search.ProductBaseResponse;
 import com.oralie.carts.dto.response.CartItemResponse;
 import com.oralie.carts.dto.response.CartResponse;
 import com.oralie.carts.dto.response.ListResponse;
-import com.oralie.carts.dto.client.search.ProductBaseResponse;
-import com.oralie.carts.dto.client.products.ProductOptionResponse;
 import com.oralie.carts.exception.ResourceNotFoundException;
 import com.oralie.carts.model.Cart;
 import com.oralie.carts.model.CartItem;
@@ -22,7 +22,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -116,72 +118,6 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartResponse addItemToCart(String userId, Long productId, Long productOptionId, Integer quantity) {
 
-//        Cart cart = cartRepository.findByUserId(userId).orElse(null);
-//
-//        if (cart == null) {
-//            cart = Cart.builder()
-//                    .userId(userId)
-//                    .quantity(0)
-//                    .totalPrice(0.0)
-//                    .cartItems(new ArrayList<>())
-//                    .build();
-//        }
-//
-//        Set<CartItem> cartItems = cart.getCartItems();
-//
-//        ProductBaseResponse product = productService.getProductById(productId);
-//
-//        if (product == null)
-//            throw new ResourceNotFoundException("Product", "id", productId + "");
-//        if (cartItems == null || cartItems.isEmpty()) {
-//            cartItems = new ArrayList<>();
-//            CartItem cartItem = CartItem.builder()
-//                    .productId(productId)
-//                    .productName(product.getName())
-//                    .productSlug(product.getSlug())
-//                    .urlImageThumbnail(product.getImage())
-//                    .quantity(quantity)
-//                    .price(product.getPrice())
-//                    .totalPrice(product.getPrice() * quantity)
-//                    .cart(cart)
-//                    .build();
-//            cartItems.add(cartItem);
-//            cart.setCartItems(cartItems);
-//            cart.setQuantity(cart.getQuantity() + quantity);
-//            cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
-//            Cart cartSaved = cartRepository.save(cart);
-//            return mapToCartResponse(cartSaved);
-//        } else {
-//            CartItem cartItem = cartItems.stream()
-//                    .filter(item -> item.getProductId().equals(productId))
-//                    .findFirst()
-//                    .orElse(null);
-//            if (cartItem == null) {
-//                cartItem = CartItem.builder()
-//                        .productId(productId)
-//                        .productName(product.getName())
-//                        .urlImageThumbnail(product.getImage())
-//                        .productSlug(product.getSlug())
-//                        .quantity(quantity)
-//                        .price(product.getPrice())
-//                        .totalPrice(product.getPrice() * quantity)
-//                        .cart(cart)
-//                        .build();
-//                cartItems.add(cartItem);
-//                cart.setCartItems(cartItems);
-//                cart.setQuantity(cart.getQuantity() + quantity);
-//                cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
-//                Cart cartSaved = cartRepository.save(cart);
-//                return mapToCartResponse(cartSaved);
-//            } else {
-//                cartItem.setQuantity(cartItem.getQuantity() + quantity);
-//                cartItem.setTotalPrice(cartItem.getTotalPrice() + product.getPrice() * quantity);
-//                cart.setQuantity(cart.getQuantity() + quantity);
-//                cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * quantity);
-//                Cart cartSaved = cartRepository.save(cart);
-//                return mapToCartResponse(cartSaved);
-//            }
-//        }
         if (quantity <= 0) {
             throw new BadRequestException("Quantity must be greater than 0");
         }

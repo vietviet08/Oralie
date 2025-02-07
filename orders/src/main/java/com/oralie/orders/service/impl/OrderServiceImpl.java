@@ -8,12 +8,10 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.EAN13Writer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.oralie.orders.constant.OrderStatus;
-import com.oralie.orders.constant.PayPalConstant;
 import com.oralie.orders.constant.PaymentMethod;
 import com.oralie.orders.constant.PaymentStatus;
 import com.oralie.orders.dto.entity.OrderPlaceEvent;
 import com.oralie.orders.dto.request.OrderRequest;
-import com.oralie.orders.dto.request.PayPalInfoRequest;
 import com.oralie.orders.dto.response.ListResponse;
 import com.oralie.orders.dto.response.OrderAddressResponse;
 import com.oralie.orders.dto.response.OrderItemResponse;
@@ -25,11 +23,8 @@ import com.oralie.orders.model.OrderAddress;
 import com.oralie.orders.model.OrderItem;
 import com.oralie.orders.repository.OrderItemRepository;
 import com.oralie.orders.repository.OrderRepository;
-import com.oralie.orders.repository.client.CartFeignClient;
 import com.oralie.orders.service.CartService;
 import com.oralie.orders.service.OrderService;
-import com.oralie.orders.service.PayPalService;
-import com.paypal.api.payments.Payment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -53,7 +48,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -133,15 +127,11 @@ public class OrderServiceImpl implements OrderService {
             order.setPaymentMethod(PaymentMethod.COD.name());
             order.setPaymentStatus(PaymentStatus.PENDING);
 
-//TODO:
-
         } else if (PaymentMethod.BANK_TRANSFER.name().equalsIgnoreCase(orderRequest.getPaymentMethod())) {
             order.setPaymentStatus(PaymentStatus.PENDING);
             order.setStatus(OrderStatus.PROCESSING);
             order.setPaymentMethod(PaymentMethod.BANK_TRANSFER.name());
             order.setPaymentStatus(PaymentStatus.COMPLETED);
-//TODO:
-
         } else {
             throw new PaymentProcessingException("Invalid payment method");
         }
@@ -196,7 +186,6 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found", "id", callBackMessage.getOrderId()));
 
         //TODO: update inventory service
-
 
         order.setPaymentStatus(callBackMessage.getPaymentStatus());
 

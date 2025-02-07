@@ -1,6 +1,5 @@
 package com.oralie.accounts.service.impl;
 
-import com.oralie.accounts.dto.UserAttributeDto;
 import com.oralie.accounts.dto.entity.request.UserAttributeRequest;
 import com.oralie.accounts.dto.entity.response.UserAttributeResponse;
 import com.oralie.accounts.exception.ResourceNotFoundException;
@@ -18,7 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
