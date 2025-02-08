@@ -1,50 +1,54 @@
 package com.oralie.inventory.service.impl;
 
 import com.oralie.inventory.dto.request.WareHouseRequest;
+import com.oralie.inventory.dto.response.InventoryResponse;
 import com.oralie.inventory.dto.response.ListResponse;
 import com.oralie.inventory.dto.response.WareHouseResponse;
 import com.oralie.inventory.exception.ResourceNotFoundException;
+import com.oralie.inventory.model.Inventory;
 import com.oralie.inventory.model.WareHouse;
 import com.oralie.inventory.repository.WareHouseRepository;
 import com.oralie.inventory.service.WareHouseService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class WareHouseServiceImpl implements WareHouseService {
 
-    private static final Logger log = LoggerFactory.getLogger(InventoryServiceImpl.class);
 
     private final WareHouseRepository wareHouseRepository;
 
     @Override
-    public List<WareHouseResponse> getAllWareHouses() {
-        List<WareHouse> wareHouses = wareHouseRepository.findAll();
-        log.info("wareHouse size is {}, wareHouses.size().toString()");
-        return mapToListWareHouseResponse(wareHouses);
-    }
+    public ListResponse<WareHouseResponse> getAllWareHouses(int page, int size, String sortBy, String sort, String search) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sortObj);
 
+        Page<WareHouse> pageWareHouse;
 
-    @Override
-    public ListResponse<WareHouseResponse> getAllWareHouses(int pageNo, int pageSize) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
-        Page<WareHouse> pageWareHouse = wareHouseRepository.findAll(pageable);
-        List<WareHouse> warehouses = pageWareHouse.getContent();
+        if (search != null && !search.isEmpty()) {
+            pageWareHouse = wareHouseRepository.findByNameContainingIgnoreCase(search, pageable);
+        } else {
+            pageWareHouse = wareHouseRepository.findAll(pageable);
+        }
 
-        return ListResponse
-                .<WareHouseResponse>builder()
-                .data(mapToListWareHouseResponse(warehouses))
+        List<WareHouse> wareHouses = pageWareHouse.getContent();
+
+        return ListResponse.<WareHouseResponse>builder()
+                .data(mapToListWareHouseResponse(wareHouses))
                 .pageNo(pageWareHouse.getNumber())
                 .pageSize(pageWareHouse.getSize())
                 .totalElements((int) pageWareHouse.getTotalElements())

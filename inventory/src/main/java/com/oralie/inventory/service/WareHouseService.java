@@ -8,9 +8,7 @@ import java.util.List;
 
 public interface WareHouseService {
 
-    List<WareHouseResponse> getAllWareHouses();
-
-    ListResponse<WareHouseResponse> getAllWareHouses(int pageNo, int pageSize);
+    ListResponse<WareHouseResponse> getAllWareHouses(int page, int size, String sortBy, String sort, String search);
 
     WareHouseResponse getWareHouseById(Long id);
 

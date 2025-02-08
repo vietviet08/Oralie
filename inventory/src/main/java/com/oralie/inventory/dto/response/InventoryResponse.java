@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class InventoryResponse {
     private Long id;
     private Long productId;
+    private String productName;
     private Long wareHouseId;
     private Long quantity;
 }
