@@ -56,7 +56,7 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
     volumes:
       - ../../keycloak/themes/oralie/theme:/opt/keycloak/themes
-#      - ../libs/providers:/opt/keycloak/providers
+    #      - ../libs/providers:/opt/keycloak/providers
     extends:
       file: common-config.yml
       service: network-deploy-service
@@ -496,9 +496,11 @@ services:
       SPRING_DATA_REDIS_HOST: redis
       SPRING_DATA_REDIS_PORT: 6379
       SPRING_DATA_REDIS_TIMEOUT: 1s
+      SPRING_KAFKA_TEMPLATE_DEFAULT_TOPIC: "products-topic"
+      SPRING_KAFKA_CONSUMER_GROUP_ID: "products-group"
     extends:
       file: common-config.yml
-      service: microservice-service-config
+      service: microservice-service-config-kafka
 
   carts:
     image: vietquoc2408/carts-oralie:${LATEST_VERSION}
@@ -544,22 +546,13 @@ services:
       SPRING_APPLICATION_NAME: "orders"
       OTEL_SERVICE_NAME: "orders"
       SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/orders_db"
-      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      KAFKA_TEMPLATE_DEFAULT_TOPIC: orders
-      KAFKA_PRODUCER_KEY_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
-      KAFKA_PRODUCER_VALUE_SERIALIZER: org.springframework.kafka.support.serializer.JsonSerializer
-      SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET: earliest
-      SPRING_KAFKA_CONSUMER_KEY_DESERIALIZER: org.apache.kafka.common.serialization.StringDeserializer
-      SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_VALUE_DELEGATE_CLASS: org.springframework.kafka.support.serializer.JsonDeserializer
-      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_JSON_TRUSTED_PACKAGES: "*"
-      SPRING_KAFKA_PRODUCER_KEY_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
-      SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: org.springframework.kafka.support.serializer.JsonSerializer
       PAYPAL_CLIENT_ID: ${PAYPAL_CLIENT_ID}
       PAYPAL_CLIENT_SECRET: ${PAYPAL_CLIENT_SECRET}
+      SPRING_KAFKA_TEMPLATE_DEFAULT_TOPIC: "orders-topic"
+      SPRING_KAFKA_CONSUMER_GROUP_ID: "orders-group"
     extends:
       file: common-config.yml
-      service: microservice-service-config
+      service: microservice-service-config-kafka
 
   social:
     image: vietquoc2408/social-oralie:${LATEST_VERSION}
@@ -630,9 +623,11 @@ services:
       SPRING_APPLICATION_NAME: "inventory"
       OTEL_SERVICE_NAME: "inventory"
       SPRING_DATASOURCE_URL: "jdbc:mysql://oralie_db:3306/inventory_db"
+      SPRING_KAFKA_TEMPLATE_DEFAULT_TOPIC: "inventory-topic"
+      SPRING_KAFKA_CONSUMER_GROUP_ID: "inventory-group"
     extends:
       file: common-config.yml
-      service: microservice-service-config
+      service: microservice-service-config-kafka
 
   notification:
     image: vietquoc2408/notification-oralie:${LATEST_VERSION}
@@ -646,18 +641,11 @@ services:
       SPRING_MAIL_USERNAME: ${USERNAME_MAIL}
       SPRING_MAIL_PASSWORD: ${PASSWORD_MAIL}
       SPRING_MAIL_PROTOCOL: "smtp"
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
-      SPRING_KAFKA_CONSUMER_GROUP_ID: "notification"
-      SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET: earliest
-      SPRING_KAFKA_CONSUMER_KEY_DESERIALIZER: org.apache.kafka.common.serialization.StringDeserializer
-      SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_VALUE_DELEGATE_CLASS: org.springframework.kafka.support.serializer.JsonDeserializer
-      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_JSON_TRUSTED_PACKAGES: "*"
-      SPRING_KAFKA_PRODUCER_KEY_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
-      SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: org.springframework.kafka.support.serializer.JsonSerializer
+      SPRING_KAFKA_TEMPLATE_DEFAULT_TOPIC: "notification-topic"
+      SPRING_KAFKA_CONSUMER_GROUP_ID: "notification-group"
     extends:
       file: common-config.yml
-      service: network-deploy-service
+      service: kafka-base-config
 
   search:
     image: vietquoc2408/search-oralie:${LATEST_VERSION}
@@ -677,18 +665,11 @@ services:
       SPRING_APPLICATION_NAME: "search"
       OTEL_SERVICE_NAME: "search"
       SPRING_ELASTICSEARCH_URIS: "elasticsearch:9200"
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
-      SPRING_KAFKA_CONSUMER_GROUP_ID: "notification"
-      SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET: earliest
-      SPRING_KAFKA_CONSUMER_KEY_DESERIALIZER: org.apache.kafka.common.serialization.StringDeserializer
-      SPRING_KAFKA_CONSUMER_VALUE_DESERIALIZER: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_DESERIALIZER_VALUE_DELEGATE_CLASS: org.springframework.kafka.support.serializer.JsonDeserializer
-      SPRING_KAFKA_CONSUMER_PROPERTIES_SPRING_JSON_TRUSTED_PACKAGES: "*"
-      SPRING_KAFKA_PRODUCER_KEY_SERIALIZER: org.apache.kafka.common.serialization.StringSerializer
-      SPRING_KAFKA_PRODUCER_VALUE_SERIALIZER: org.springframework.kafka.support.serializer.JsonSerializer
+      SPRING_KAFKA_TEMPLATE_DEFAULT_TOPIC: "search-topic"
+      SPRING_KAFKA_CONSUMER_GROUP_ID: "search-group"
     extends:
       file: common-config.yml
-      service: microservice-service-config
+      service: microservice-service-config-kafka
 
   gatewayserver:
     image: vietquoc2408/gatewayserver-oralie:${LATEST_VERSION}

@@ -88,6 +88,8 @@ logging:
     com:
       oralie:
         inventory: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 resilience4j.circuitbreaker:
   configs:

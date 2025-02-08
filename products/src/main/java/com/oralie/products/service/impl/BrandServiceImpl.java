@@ -7,14 +7,12 @@ import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.exception.ResourceAlreadyExistException;
 import com.oralie.products.exception.ResourceNotFoundException;
 import com.oralie.products.model.Brand;
-import com.oralie.products.model.Category;
 import com.oralie.products.model.s3.FileMetadata;
 import com.oralie.products.repository.BrandRepository;
 import com.oralie.products.service.BrandService;
 import com.oralie.products.service.SocialService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,11 +26,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BrandServiceImpl implements BrandService {
-
-    private static final Logger log = LoggerFactory.getLogger(BrandServiceImpl.class);
 
     @Value("${aws.bucket.url}")
     private String URL_BUCKET;

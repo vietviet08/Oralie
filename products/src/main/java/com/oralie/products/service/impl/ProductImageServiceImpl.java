@@ -11,8 +11,7 @@ import com.oralie.products.repository.ProductRepository;
 import com.oralie.products.service.CloudinaryService;
 import com.oralie.products.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductImageServiceImpl implements ProductImageService {
@@ -29,7 +29,6 @@ public class ProductImageServiceImpl implements ProductImageService {
     private final CloudinaryService cloudinaryService;
     private final ProductImageRepository productImageRepository;
     private static final String FOLDER_NAME = "products";
-    private static final Logger log = LoggerFactory.getLogger(ProductImageServiceImpl.class);
 
     @Override
     public List<ProductImageResponse> uploadFile(ProductImageRequest productImageRequest, Long productId) {

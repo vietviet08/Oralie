@@ -3,8 +3,7 @@ package com.oralie.products.service.impl;
 import com.cloudinary.Cloudinary;
 import com.oralie.products.service.CloudinaryService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -14,13 +13,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CloudinaryServiceImpl implements CloudinaryService {
 
     private final Cloudinary cloudinary;
     private static final String FOLDER_NAME = "products";
-    private static final Logger log = LoggerFactory.getLogger(CloudinaryServiceImpl.class);
 
     @Override
     public List<String> uploadFile(List<MultipartFile> files, String folderName) {
@@ -44,7 +43,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
 
     @Override
     public String uploadFileSingle(MultipartFile file, String folderName) throws IOException {
-        try{
+        try {
 
             HashMap<Object, Object> options = new HashMap<>();
             options.put("folder", folderName);
@@ -53,7 +52,7 @@ public class CloudinaryServiceImpl implements CloudinaryService {
 
             return cloudinary.url().secure(true).generate(publicId);
 
-        }catch (IOException e){
+        } catch (IOException e) {
             log.error("Error uploading file: {}", e.getMessage());
             return null;
 
