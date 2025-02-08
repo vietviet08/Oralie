@@ -1,5 +1,6 @@
 package com.oralie.products.service.impl;
 
+import com.google.gson.Gson;
 import com.oralie.products.dto.request.ProductOptionRequest;
 import com.oralie.products.dto.request.ProductQuantityPost;
 import com.oralie.products.dto.request.ProductRequest;
@@ -13,6 +14,7 @@ import com.oralie.products.repository.*;
 import com.oralie.products.service.ProductService;
 import com.oralie.products.service.SocialService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -30,14 +32,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private static final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
-
     private final SocialService socialService;
-
+    private final Gson gson;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
@@ -435,6 +436,13 @@ public class ProductServiceImpl implements ProductService {
                 .getTop12ProductOutStandingByCategorySlug(categorySlug));
         Collections.shuffle(products);
         return products.stream().limit(12).collect(Collectors.toList());
+    }
+
+    @Override
+    @KafkaListener(topics = "products-reserved-topic", groupId = "products-group")
+    public void updateProductQuantity(String message) {
+        List<ProductQuantityPost> productQuantityPost = Collections.singletonList(gson.fromJson(message, ProductQuantityPost.class));
+        updateQuantityProduct(productQuantityPost);
     }
 
     private List<ProductResponse> mapToProductResponseList(List<Product> products) {

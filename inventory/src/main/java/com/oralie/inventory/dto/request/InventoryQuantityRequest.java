@@ -1,6 +1,5 @@
 package com.oralie.inventory.dto.request;
 
-import jakarta.annotation.security.DenyAll;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -10,7 +10,8 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.oralie.orders.constant.OrderStatus;
 import com.oralie.orders.constant.PaymentMethod;
 import com.oralie.orders.constant.PaymentStatus;
-import com.oralie.orders.dto.entity.OrderPlaceEvent;
+import com.oralie.orders.dto.event.OrderItemEvent;
+import com.oralie.orders.dto.event.OrderPlaceEvent;
 import com.oralie.orders.dto.request.OrderRequest;
 import com.oralie.orders.dto.response.ListResponse;
 import com.oralie.orders.dto.response.OrderAddressResponse;
@@ -29,8 +30,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,13 +48,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-
-    private static final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
@@ -142,15 +142,29 @@ public class OrderServiceImpl implements OrderService {
                 .orderId(order.getId())
                 .userId(order.getUserId())
                 .email(order.getAddress().getEmail())
+                .orderItems(order.getOrderItems().stream()
+                        .map(orderItem -> OrderItemEvent.builder()
+                                .productId(orderItem.getProductId())
+                                .productName(orderItem.getProductName())
+                                .quantity(orderItem.getQuantity())
+                                .totalPrice(orderItem.getTotalPrice())
+                                .build())
+                        .collect(Collectors.toList()))
                 .totalPrice(order.getTotalPrice())
+                .discount(order.getDiscount())
+                .shippingFee(order.getShippingFee())
+                .status(order.getStatus())
+                .shippingMethod(order.getShippingMethod())
+                .paymentMethod(order.getPaymentMethod())
+                .tokenViewOrder(order.getId() + UUID.randomUUID().toString())
                 .build();
 
         log.info("Start- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
-
-//        kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
-
+        kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
         log.info("End- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
         //subtract quantity product in inventory service
+
+        kafkaTemplate.send("inventory-restock-topic", gson.toJson(orderPlacedEvent));
 
         //clear cart in cart service | need using kafka to send event to cart service & inventory also
         cartService.clearCart();

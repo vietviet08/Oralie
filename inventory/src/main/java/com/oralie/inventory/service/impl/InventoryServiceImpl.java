@@ -1,6 +1,8 @@
 package com.oralie.inventory.service.impl;
 
+import com.google.gson.Gson;
 import com.oralie.inventory.constant.InventoryConstant;
+import com.oralie.inventory.dto.event.OrderPlaceEvent;
 import com.oralie.inventory.dto.request.InventoryQuantityRequest;
 import com.oralie.inventory.dto.request.InventoryRequest;
 import com.oralie.inventory.dto.request.ProductQuantityPost;
@@ -18,24 +20,52 @@ import com.oralie.inventory.service.ProductService;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.BadRequestException;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class InventoryServiceImpl implements InventoryService {
 
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
+    private final Gson gson;
+
     private final InventoryRepository inventoryRepository;
+
     private final WareHouseRepository warehouseRepository;
+
     private final ProductService productService;
+
+    @Override
+    public void test() {
+        log.info("Test kafka, from inventory service is the producer");
+        kafkaTemplate.send("inventory-topic", "Test kafka, from inventory service is the producer");
+    }
+
+    @KafkaListener(topics = "inventory-restock-topic", groupId = "inventory-group")
+    public void restockProductListen(String message) {
+
+        OrderPlaceEvent orderPlaceEvent = gson.fromJson(message, OrderPlaceEvent.class);
+        List<ProductQuantityPost> productQuantityPosts = orderPlaceEvent.getOrderItems().stream().map(
+                orderItemEvent -> ProductQuantityPost.builder()
+                        .productId(orderItemEvent.getProductId())
+                        .quantity(orderItemEvent.getQuantity())
+                        .build()
+        ).toList();
+        reserveProductQuantity(productQuantityPosts);
+        kafkaTemplate.send("products-reserved-topic", gson.toJson(productQuantityPosts));
+    }
 
     @Override
     public ListResponse<InventoryResponse> getAllInventories(int page, int size, String sortBy, String sort, String search) {
@@ -134,49 +164,54 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public void reserveProductQuantity(ProductQuantityPost productQuantityPost) {
-        Inventory inventory = inventoryRepository
-                .findByProductId(productQuantityPost
-                        .getProductId())
-                .orElseThrow(() -> new ResourceNotFoundException("inventory", "productId", productQuantityPost.getProductId().toString()));
-        if(inventory.getQuantity() < productQuantityPost.getQuantity()) throw new BadRequestException(InventoryConstant.INVALID_VALUE_REQUEST);
-        inventory.setQuantity(inventory.getQuantity() - productQuantityPost.getQuantity());
-        inventoryRepository.save(inventory);
+    public void reserveProductQuantity(List<ProductQuantityPost> productQuantityPosts) {
+        productQuantityPosts.stream().map(
+                productQuantityPost -> {
+                    Inventory inventory = inventoryRepository
+                            .findByProductId(productQuantityPost.getProductId())
+                            .orElseThrow(() -> new ResourceNotFoundException("inventory", "productId", productQuantityPost.getProductId().toString()));
+                    if (inventory.getQuantity() < productQuantityPost.getQuantity())
+                        throw new BadRequestException(InventoryConstant.INVALID_VALUE_REQUEST);
+                    inventory.setQuantity(inventory.getQuantity() - productQuantityPost.getQuantity());
+                    inventoryRepository.save(inventory);
+                    return null;
+                }
+        );
     }
 
     @Override
-    public void releaseProductQuantity(ProductQuantityPost productQuantityPost) {
-        Inventory inventory = inventoryRepository
-                .findByProductId(productQuantityPost
-                        .getProductId())
-                .orElseThrow(() -> new ResourceNotFoundException("inventory", "productId", productQuantityPost.getProductId().toString()));
-        inventory.setQuantity(inventory.getQuantity() + productQuantityPost.getQuantity());
-        inventoryRepository.save(inventory);
+    public void releaseProductQuantity(List<ProductQuantityPost> productQuantityPost) {
+        productQuantityPost.stream().map(
+                productQuantity -> {
+                    Inventory inventory = inventoryRepository
+                            .findByProductId(productQuantity.getProductId())
+                            .orElseThrow(() -> new ResourceNotFoundException("inventory", "productId", productQuantity.getProductId().toString()));
+                    inventory.setQuantity(inventory.getQuantity() + productQuantity.getQuantity());
+                    inventoryRepository.save(inventory);
+                    return null;
+                }
+        );
     }
 
     private List<ProductQuantityPost> mapListInventoryToProductQuantityPost(List<Inventory> inventories) {
 
         return inventories.stream().map(
-                inventory -> {
-                    return ProductQuantityPost.builder()
-                            .productId(inventory.getProductId())
-                            .quantity(inventory.getQuantity())
-                            .build();
-                }
+                inventory -> ProductQuantityPost.builder()
+                        .productId(inventory.getProductId())
+                        .quantity(inventory.getQuantity())
+                        .build()
         ).toList();
     }
 
     private List<InventoryResponse> mapToInventoryResponseList(List<Inventory> inventories) {
         return inventories.stream().map(
-                inventory -> {
-                    return InventoryResponse.builder()
-                            .id(inventory.getId())
-                            .productId(inventory.getProductId())
-                            .productName(inventory.getProductName())
-                            .quantity(inventory.getQuantity())
-                            .wareHouseId(inventory.getWareHouse().getId())
-                            .build();
-                }
+                inventory -> InventoryResponse.builder()
+                        .id(inventory.getId())
+                        .productId(inventory.getProductId())
+                        .productName(inventory.getProductName())
+                        .quantity(inventory.getQuantity())
+                        .wareHouseId(inventory.getWareHouse().getId())
+                        .build()
         ).toList();
     }
 }

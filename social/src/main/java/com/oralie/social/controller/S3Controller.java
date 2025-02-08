@@ -6,8 +6,7 @@ import com.oralie.social.dto.s3.FileMetadata;
 import com.oralie.social.service.S3Service;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.InputStreamResource;
@@ -23,6 +22,7 @@ import java.util.List;
 /**
  * Controller for handling operations with S3 such as uploading, downloading, and deleting files.
  */
+@Slf4j
 @Tag(
         name = "The API of S3 Service",
         description = "This API allows you to upload, download and delete files from S3 bucket"
@@ -31,8 +31,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
 public class S3Controller {
-
-    private static final Logger logger = LoggerFactory.getLogger(S3Controller.class);
 
     private final Environment environment;
 
@@ -44,6 +42,21 @@ public class S3Controller {
     private final S3Service s3Service;
 
     private final AmazonS3 s3client;
+
+    @GetMapping("/store/social/view/{fileName}")
+    public ResponseEntity<InputStreamResource> viewFile(@PathVariable String fileName) {
+        try {
+            var s3Object = s3Service.getFile(fileName);
+            var content = s3Object.getObjectContent();
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(s3Object.getObjectMetadata().getContentType()))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
+                    .body(new InputStreamResource(content));
+        } catch (Exception e) {
+            log.error("File viewing failed", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 
     @PostMapping(value = "/dash/social/upload-image")
     public ResponseEntity<FileMetadata> uploadImage(@RequestPart(value = "image") MultipartFile image) {
@@ -75,21 +88,6 @@ public class S3Controller {
         return new ResponseEntity<>(s3Service.uploadImages(files), HttpStatus.CREATED);
     }
 
-    @GetMapping("/store/social/view/{fileName}")
-    public ResponseEntity<InputStreamResource> viewFile(@PathVariable String fileName) {
-        try {
-            var s3Object = s3Service.getFile(fileName);
-            var content = s3Object.getObjectContent();
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(s3Object.getObjectMetadata().getContentType()))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"")
-                    .body(new InputStreamResource(content));
-        } catch (Exception e) {
-            logger.error("File viewing failed", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-        }
-    }
-
     @PostMapping("/dash/social/download/{fileName}")
     public ResponseEntity<InputStreamResource> downloadFile(@PathVariable String fileName) {
         try {
@@ -100,7 +98,7 @@ public class S3Controller {
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                     .body(new InputStreamResource(content));
         } catch (Exception e) {
-            logger.error("File download failed", e);
+            log.error("File download failed", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
@@ -111,7 +109,7 @@ public class S3Controller {
             s3Service.deleteFile(fileName);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("File deleted successfully");
         } catch (Exception e) {
-            logger.error("File deletion failed", e);
+            log.error("File deletion failed", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting file");
         }
     }
@@ -122,7 +120,7 @@ public class S3Controller {
             s3Service.deleteFiles(fileName);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Files deleted successfully");
         } catch (Exception e) {
-            logger.error("Files deletion failed", e);
+            log.error("Files deletion failed", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting files");
         }
     }
@@ -143,6 +141,6 @@ public class S3Controller {
     }
 
     private void logBucketNames() {
-        s3client.listBuckets().forEach(bucket -> logger.info("Bucket name: {}", bucket.getName()));
+        s3client.listBuckets().forEach(bucket -> log.info("Bucket name: {}", bucket.getName()));
     }
 }

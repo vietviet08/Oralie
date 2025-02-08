@@ -9,7 +9,7 @@ spring:
     import: "optional:configserver:http://localhost:8071/"
 
   kafka:
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: localhost:9092
     consumer:
       group-id: search
       auto-offset-reset: earliest

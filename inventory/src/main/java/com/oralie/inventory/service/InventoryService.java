@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface InventoryService {
 
+    void test();
+
     ListResponse<InventoryResponse> getAllInventories(int page, int size, String sortBy, String sort, String search);
 
     void addProductToWareHouse(List<InventoryRequest>  inventoryRequest);
@@ -21,8 +23,8 @@ public interface InventoryService {
 
     boolean checkProductQuantity(Long productId);
 
-    void reserveProductQuantity(ProductQuantityPost productQuantityPost);
+    void reserveProductQuantity(List<ProductQuantityPost> productQuantityPosts);
 
-    void releaseProductQuantity(ProductQuantityPost productQuantityPost);
+    void releaseProductQuantity(List<ProductQuantityPost> productQuantityPosts);
 
 }

@@ -105,16 +105,15 @@ services:
     container_name: kafka
     ports:
       - "9092:9092"
-      - "29092:29092"
     depends_on:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     extends:
       file: common-config.yml
       service: network-deploy-service
@@ -647,7 +646,7 @@ services:
       SPRING_MAIL_USERNAME: ${USERNAME_MAIL}
       SPRING_MAIL_PASSWORD: ${PASSWORD_MAIL}
       SPRING_MAIL_PROTOCOL: "smtp"
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
       SPRING_KAFKA_CONSUMER_GROUP_ID: "notification"
       SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET: earliest
       SPRING_KAFKA_CONSUMER_KEY_DESERIALIZER: org.apache.kafka.common.serialization.StringDeserializer
@@ -678,7 +677,7 @@ services:
       SPRING_APPLICATION_NAME: "search"
       OTEL_SERVICE_NAME: "search"
       SPRING_ELASTICSEARCH_URIS: "elasticsearch:9200"
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka:29092"
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
       SPRING_KAFKA_CONSUMER_GROUP_ID: "notification"
       SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET: earliest
       SPRING_KAFKA_CONSUMER_KEY_DESERIALIZER: org.apache.kafka.common.serialization.StringDeserializer

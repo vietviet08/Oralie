@@ -1,4 +1,5 @@
-package com.oralie.notification.dto;
+package com.oralie.notification.dto.event;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,12 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class OrderItemResponse {
-    private Long id;
+public class OrderItemEvent {
     private Long productId;
     private String productName;
     private String productImage;
-    private int quantity;
+    private Long quantity;
     private Double totalPrice;
-    private boolean isRated;
+    private boolean isRated = false;
 }

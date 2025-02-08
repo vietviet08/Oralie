@@ -28,6 +28,12 @@ public class InventoryController {
 
     private final InventoryService inventoryService;
 
+    @GetMapping("/inventory/test")
+    public ResponseEntity<Void> test() {
+        inventoryService.test();
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     @GetMapping("/dash/inventory")
     public ResponseEntity<ListResponse<InventoryResponse>> getAllWareHouses(
             @RequestParam(required = false, defaultValue = "0") int page,
@@ -65,13 +71,13 @@ public class InventoryController {
     }
 
     @PostMapping("/dash/inventory/reserve")
-    public ResponseEntity<Void> reserveProductQuantity(@RequestBody ProductQuantityPost productQuantityPost) {
+    public ResponseEntity<Void> reserveProductQuantity(@RequestBody List<ProductQuantityPost> productQuantityPost) {
         inventoryService.reserveProductQuantity(productQuantityPost);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @PostMapping("/dash/inventory/release")
-    public ResponseEntity<Void> releaseProductQuantity(@RequestBody ProductQuantityPost productQuantityPost) {
+    public ResponseEntity<Void> releaseProductQuantity(@RequestBody List<ProductQuantityPost> productQuantityPost) {
         inventoryService.releaseProductQuantity(productQuantityPost);
         return ResponseEntity.status(HttpStatus.OK).build();
     }

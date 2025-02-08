@@ -38,12 +38,13 @@ public class SecurityConfig {
         return http
                 .httpBasic(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults()) // enable CORS using the default configuration
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/",
                                 "/login",
                                 "/store/**",
+                                "/store/view/**",
                                 "/store/social/register",
                                 "/social/build-version",
                                 "/social/contact-info",
