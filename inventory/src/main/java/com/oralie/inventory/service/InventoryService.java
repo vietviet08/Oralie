@@ -10,5 +10,15 @@ public interface InventoryService {
 
     void addProductToWareHouse(List<InventoryRequest>  inventoryRequest);
 
-    List<ProductBaseResponse> updateProductQuantity(List<InventoryQuantityRequest> inventoryQuantityRequests);
+    List<ProductBaseResponse> restockProduct(List<InventoryQuantityRequest> inventoryQuantityRequests);
+
+    void reduceProductQuantity(InventoryQuantityRequest inventoryQuantityRequests);
+
+    boolean checkProductQuantity(Long productId);
+
+    void reserveProductQuantity(Long productId, Long quantity);
+
+    void releaseProductQuantity(Long productId, Long quantity);
+
+
 }

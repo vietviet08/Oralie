@@ -64,7 +64,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public List<ProductBaseResponse> updateProductQuantity(List<InventoryQuantityRequest> inventoryQuantityRequests) {
+    public List<ProductBaseResponse> restockProduct(List<InventoryQuantityRequest> inventoryQuantityRequests) {
         //get list inventory from this request
         List<Inventory> inventories = inventoryRepository.findAllById(inventoryQuantityRequests.stream().map(InventoryQuantityRequest::getInventoryId).toList());
 
@@ -89,6 +89,33 @@ public class InventoryServiceImpl implements InventoryService {
             productBaseResponses = productService.updateProductQuantity(productQuantityPosts);
 
         return productBaseResponses;
+    }
+
+    @Override
+    public void reduceProductQuantity(InventoryQuantityRequest inventoryQuantityRequests) {
+        Inventory inventory = inventoryRepository.findById(inventoryQuantityRequests.getInventoryId()).orElseThrow(() -> new ResourceNotFoundException("inventory", "inventoryId", inventoryQuantityRequests.getInventoryId().toString()));
+        inventory.setQuantity(inventory.getQuantity() - inventoryQuantityRequests.getQuantity());
+        inventoryRepository.save(inventory);
+    }
+
+    @Override
+    public boolean checkProductQuantity(Long productId) {
+        Inventory inventory = inventoryRepository.findByProductId(productId).orElseThrow(() -> new ResourceNotFoundException("inventory", "productId", productId.toString()));
+        return inventory.getQuantity() > 0;
+    }
+
+    @Override
+    public void reserveProductQuantity(Long productId, Long quantity) {
+        Inventory inventory = inventoryRepository.findByProductId(productId).orElseThrow(() -> new ResourceNotFoundException("inventory", "productId", productId.toString()));
+        inventory.setQuantity(inventory.getQuantity() - quantity);
+        inventoryRepository.save(inventory);
+    }
+
+    @Override
+    public void releaseProductQuantity(Long productId, Long quantity) {
+        Inventory inventory = inventoryRepository.findByProductId(productId).orElseThrow(() -> new ResourceNotFoundException("inventory", "productId", productId.toString()));
+        inventory.setQuantity(inventory.getQuantity() + quantity);
+        inventoryRepository.save(inventory);
     }
 
     private List<ProductQuantityPost> mapListInventoryToProductQuantityPost(List<Inventory> inventories) {
