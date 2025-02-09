@@ -53,7 +53,7 @@ public class InventoryServiceImpl implements InventoryService {
         kafkaTemplate.send("inventory-topic", "Test kafka, from inventory service is the producer");
     }
 
-    @KafkaListener(topics = "inventory-restock-topic", groupId = "inventory-group")
+    @KafkaListener(topics = "order-placed-topic", groupId = "inventory-group")
     public void restockProductListen(String message) {
 
         OrderPlaceEvent orderPlaceEvent = gson.fromJson(message, OrderPlaceEvent.class);

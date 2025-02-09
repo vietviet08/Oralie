@@ -1,13 +1,9 @@
 package com.oralie.notification.service.impl;
 
 import com.google.gson.Gson;
-import com.oralie.notification.dto.AccountResponse;
 import com.oralie.notification.dto.OrderItemResponse;
 import com.oralie.notification.dto.event.OrderItemEvent;
 import com.oralie.notification.dto.event.OrderPlaceEvent;
-import com.oralie.notification.dto.OrderResponse;
-import com.oralie.notification.repository.client.account.AccountFeignClient;
-import com.oralie.notification.repository.client.order.OrderFeignClient;
 import com.oralie.notification.service.NotificationService;
 import com.oralie.notification.service.ThymeleafService;
 import jakarta.mail.internet.InternetAddress;
@@ -37,15 +33,15 @@ public class NotificationServiceImpl implements NotificationService {
 
     private final JavaMailSender javaMailSender;
     private final ThymeleafService thymeleafService;
-    private final AccountFeignClient accountFeignClient;
-    private final OrderFeignClient orderFeignClient;
+//    private final AccountFeignClient accountFeignClient;
+//    private final OrderFeignClient orderFeignClient;
 
     private final Gson gson;
 
     @Value("${spring.mail.username}")
     private String email;
 
-    @KafkaListener(topics = "order-placed-topic", groupId = "order-group")
+    @KafkaListener(topics = "order-placed-topic", groupId = "notification-group")
     @Override
     public void orderPlaceListen(String message) {
         OrderPlaceEvent orderPlacedEvent = gson.fromJson(message, OrderPlaceEvent.class);

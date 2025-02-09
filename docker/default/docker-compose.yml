@@ -56,6 +56,7 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
     volumes:
       - ../../keycloak/themes/oralie/theme:/opt/keycloak/themes
+      - ../../keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
     #      - ../libs/providers:/opt/keycloak/providers
     extends:
       file: common-config.yml
@@ -69,6 +70,7 @@ services:
     environment:
       MYSQL_DATABASE: oralie_db
     volumes:
+      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
       - mysql_data:/var/lib/mysql
     extends:
       file: common-config.yml

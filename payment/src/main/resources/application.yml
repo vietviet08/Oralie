@@ -99,6 +99,8 @@ logging:
     com:
       oralie:
         payment: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 paypal:
   client-id: ${PAYPAL_CLIENT_ID}

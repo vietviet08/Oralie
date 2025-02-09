@@ -159,12 +159,15 @@ public class OrderServiceImpl implements OrderService {
                 .tokenViewOrder(order.getId() + UUID.randomUUID().toString())
                 .build();
 
+        //send this message have the topic is order-placed-topic to any service can listen the topic
+        //in here 2 service can hear this message is notification service & inventory service
+        //1. notification service will send email to user
+        //2. inventory service will subtract quantity product in inventory
+        //(feature) 3. cart service will clear cart
+        //(feature) 4. products service will update product quantity
         log.info("Start- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
         kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
         log.info("End- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
-        //subtract quantity product in inventory service
-
-        kafkaTemplate.send("inventory-restock-topic", gson.toJson(orderPlacedEvent));
 
         //clear cart in cart service | need using kafka to send event to cart service & inventory also
         cartService.clearCart();
