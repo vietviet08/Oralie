@@ -8,7 +8,7 @@ pipeline {
         LATEST_VERSION = '1.0.3'
         NEXT_VERSION = '1.0.4'
     }
-
+// dockerized jenkins preparing 
     stages {
 //         stage('Checkout') {
 //             steps {
