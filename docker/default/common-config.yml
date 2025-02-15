@@ -51,10 +51,29 @@ services:
     environment:
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
 
+  # Service normal configuration
   microservice-service-config:
     extends:
       service: microservice-eurekaserver-config
     environment:
       SPRING_JPA_HIBERNATE_DDL_AUTO: "update"
       SPRING_JPA_SHOW_SQL: "true"
-#      SPRING_PROFILES_ACTIVE: default
+
+  # Kafka base configuration use for service not in context of microservice
+  kafka-base-config:
+    extends:
+      service: network-deploy-service
+    depends_on:
+      - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
+
+  # Kafka configuration for service use kafka
+  microservice-service-config-kafka:
+    extends:
+      service: microservice-service-config
+    depends_on:
+      - kafka
+    environment:
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
+

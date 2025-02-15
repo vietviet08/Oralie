@@ -4,7 +4,6 @@ import com.oralie.orders.constant.OrderStatus;
 import com.oralie.orders.constant.PayPalConstant;
 import com.oralie.orders.constant.PaymentMethod;
 import com.oralie.orders.constant.PaymentStatus;
-import com.oralie.orders.dto.entity.OrderPlaceEvent;
 import com.oralie.orders.dto.request.OrderRequest;
 import com.oralie.orders.dto.request.PayPalInfoRequest;
 import com.oralie.orders.dto.response.OrderAddressResponse;
@@ -23,23 +22,22 @@ import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.OAuthTokenCredential;
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class PayPalServiceImpl implements PayPalService {
-
-    private static final Logger log = LoggerFactory.getLogger(PayPalServiceImpl.class);
 
     @Value("${paypal.client-id}")
     private String clientId;
@@ -119,7 +117,7 @@ public class PayPalServiceImpl implements PayPalService {
     public OrderResponse placeOrderWithoutPayPal(OrderRequest orderRequest) throws PaymentProcessingException {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        com.oralie.orders.model.Order order = Order.builder()
+        Order order = Order.builder()
                 .userId(userId)
                 .cartId(cartService.getCartIdByUserId())
                 .address(OrderAddress.builder()
@@ -168,13 +166,16 @@ public class PayPalServiceImpl implements PayPalService {
                         .successUrl(PayPalConstant.PAYPAL_SUCCESS_URL)
                         .build();
 
-                payment = this.placePaypalPayment(payPalInfoRequest);
+                payment = placePaypalPayment(payPalInfoRequest);
 
                 link = payment.getLinks().stream()
                         .filter(links -> links.getRel().equals("approval_url"))
                         .findFirst()
                         .orElseThrow(() -> new PaymentProcessingException("Approval URL not found"))
                         .getHref();
+
+                log.info("Payment created with id: {}", payment.getId());
+                log.info("link: {}", link);
 
                 payId = payment.getId();
 
@@ -184,6 +185,12 @@ public class PayPalServiceImpl implements PayPalService {
                 order.setStatus(OrderStatus.PROCESSING);
                 order.setPaymentMethod(PaymentMethod.PAYPAL.name());
 
+            } catch (HttpClientErrorException.BadRequest e) {
+                log.error("Bad request for orderId: {} error: ", order.getId(), e);
+                order.setPaymentStatus(PaymentStatus.FAILED);
+                order.setStatus(OrderStatus.FAILED);
+                orderRepository.save(order);
+                throw new PaymentProcessingException("Bad request: " + e.getMessage());
             } catch (Exception e) {
                 log.error("Payment failed for orderId: {} error: ", order.getId(), e);
                 order.setPaymentStatus(PaymentStatus.FAILED);
@@ -193,22 +200,22 @@ public class PayPalServiceImpl implements PayPalService {
             }
         }
 
-        OrderPlaceEvent orderPlacedEvent = OrderPlaceEvent.builder()
-                .orderId(order.getId())
-                .userId(order.getUserId())
-                .email(order.getAddress().getEmail())
-                .totalPrice(order.getTotalPrice())
-                .build();
+//        OrderPlaceEvent orderPlacedEvent = OrderPlaceEvent.builder()
+//                .orderId(order.getId())
+//                .userId(order.getUserId())
+//                .email(order.getAddress().getEmail())
+//                .totalPrice(order.getTotalPrice())
+//                .build();
 
-        log.info("Start- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
+//        log.info("Start- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
 
 //        kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
 
-        log.info("End- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
+//        log.info("End- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
 
         //subtract quantity product in inventory service
 
-        cartService.clearCart();
+//        cartService.clearCart();
 
         return mapToOrderResponse(order);
     }
@@ -242,6 +249,7 @@ public class PayPalServiceImpl implements PayPalService {
                                 .productImage(orderItem.getProductImage())
                                 .quantity(orderItem.getQuantity())
                                 .totalPrice(orderItem.getTotalPrice())
+                                .isRated(orderItem.isRated())
                                 .build())
                         .collect(Collectors.toList()))
                 .totalPrice(order.getTotalPrice())

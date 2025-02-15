@@ -76,22 +76,18 @@ info:
     version: "1.0.0"
 
 idp:
-  url: http://localhost:7080
-  client-id: store_client
-  client-secret: XdOVzE0vxhGcvUsiw6eiYqMGlsf35wIj
+  url: ${KEYCLOAK_URL}
+  client:
+    id: ${KEYCLOAK_CLIENT_ID}
+    secret: ${KEYCLOAK_CLIENT_SECRET}
 
 logging:
   level:
     com:
       oralie:
         accounts: DEBUG
-    org:
-      springframework:
-        security: DEBUG
-        web: DEBUG
   pattern:
     level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
-
 
 resilience4j.circuitbreaker:
   configs:

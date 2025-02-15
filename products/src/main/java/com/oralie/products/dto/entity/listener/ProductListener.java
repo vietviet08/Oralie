@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 @RequiredArgsConstructor
 public class ProductListener {
 
-    private static final Logger log = LoggerFactory.getLogger(ProductListener.class);
     private final ProductRedisService productRedisService;
 
     @PrePersist

@@ -17,7 +17,7 @@ import java.util.List;
 public class RateRequest {
     private Long id;
 
-    private String userId;
+    private UserInfoRequest userInfo;
 
     private Long productId;
 

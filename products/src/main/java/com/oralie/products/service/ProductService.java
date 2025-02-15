@@ -41,4 +41,7 @@ public interface ProductService {
     List<ProductOptionResponse> getProductOptionsByProductId(Long id);
 
     List<ProductResponse> top12ProductOutStandingByCategorySlug(String categorySlug);
+
+    void updateProductQuantity(String message);
 }
+

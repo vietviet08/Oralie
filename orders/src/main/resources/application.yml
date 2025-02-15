@@ -25,9 +25,9 @@ spring:
         enabled: true
 
   kafka:
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: localhost:9092
     consumer:
-      group-id: order-group
+      group-id: orders-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
@@ -93,10 +93,6 @@ logging:
     com:
       oralie:
         orders: DEBUG
-    org:
-      springframework:
-        security: DEBUG
-        web: DEBUG
   pattern:
     level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 

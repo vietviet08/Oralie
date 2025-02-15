@@ -1,6 +1,7 @@
 package com.oralie.rates.service;
 
 
+import com.oralie.rates.dto.client.UserResponse;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
@@ -48,7 +49,7 @@ public class AccountService extends AbstractCircuitBreakFallbackHandler {
 
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_ACCOUNT)
-                .pathSegment("dash", "accounts", "existing", userId)
+                .pathSegment("store", "keycloak", "existing", userId)
                 .build()
                 .toUri();
 
@@ -61,8 +62,38 @@ public class AccountService extends AbstractCircuitBreakFallbackHandler {
         return response.getBody() != null && response.getBody();
     }
 
+    @Retry(name = "restRetry")
+    @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleUserResponseFallback")
+    public UserResponse getUserByUserId(String userId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || authentication.getCredentials() == null) {
+            log.error("Authentication or credentials are null");
+            throw new RuntimeException("Authentication or credentials are null");
+        }
+        final String jwtToken = authentication.getCredentials().toString();
+
+        final URI url = UriComponentsBuilder
+                .fromHttpUrl(URL_ACCOUNT)
+                .pathSegment("store", "keycloak", "users", userId)
+                .build()
+                .toUri();
+
+        ResponseEntity<UserResponse> response = restClient.get()
+                .uri(url)
+                .headers(headers -> headers.setBearerAuth(jwtToken))
+                .retrieve()
+                .toEntity(UserResponse.class);
+
+        return response.getBody();
+    }
+
     protected Boolean handleBooleanFallback(Throwable throwable) {
         log.error("Fallback triggered due to: {}", throwable.getMessage(), throwable);
         return false;
+    }
+
+    protected UserResponse handleUserResponseFallback(Throwable throwable) {
+        log.error("Fallback triggered due to: {}", throwable.getMessage(), throwable);
+        return UserResponse.builder().build();
     }
 }

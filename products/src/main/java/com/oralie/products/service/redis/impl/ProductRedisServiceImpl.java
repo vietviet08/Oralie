@@ -7,18 +7,17 @@ import com.oralie.products.dto.response.ListResponse;
 import com.oralie.products.dto.response.ProductResponse;
 import com.oralie.products.service.redis.ProductRedisService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductRedisServiceImpl implements ProductRedisService {
 
-    private static final Logger log = LoggerFactory.getLogger(ProductRedisServiceImpl.class);
     private final RedisTemplate<String, Object> redisTemplate;
     private final ObjectMapper redisObjectMapper;
 

@@ -24,7 +24,7 @@ public class OrderItem extends BaseEntity {
 
     private String productImage;
 
-    private int quantity;
+    private Long quantity;
 
     private Double totalPrice;
 

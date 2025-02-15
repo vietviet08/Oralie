@@ -34,7 +34,6 @@ public class BrandController {
 
     private final BrandService brandService;
 
-
     @GetMapping("/store/brands")
     public ResponseEntity<ListResponse<BrandResponse>> getAllBrands(
             @RequestParam(required = false, defaultValue = "0") int page,

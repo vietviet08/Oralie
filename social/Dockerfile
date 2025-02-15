@@ -4,7 +4,7 @@ WORKDIR ./src
 COPY . .
 RUN mvn install -DskipTests=true
 
-FROM eclipse-temurin:17.0.8.1_1-jre-ubi9-minimal
+FROM eclipse-temurin:17-jre-alpine-3.21
 
 RUN unlink /etc/localtime;ln -s  /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime
 COPY --from=build src/target/social*.jar /run/app.jar

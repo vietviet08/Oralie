@@ -9,9 +9,9 @@ spring:
     import: "optional:configserver:http://localhost:8071/"
 
   kafka:
-    bootstrap-servers: localhost:29092
+    bootstrap-servers: localhost:9092
     consumer:
-      group-id: search
+      group-id: search-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
@@ -81,7 +81,8 @@ logging:
       oralie:
         search: DEBUG
     org.elasticsearch: DEBUG
-
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
 resilience4j.circuitbreaker:
   configs:

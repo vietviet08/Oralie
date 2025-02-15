@@ -27,9 +27,7 @@ public class AccountRequest {
     @Email(message = "Email is invalid")
     private String email;
 
-    private String phoneNumber;
-    private String city;
-    private String addressDetail;
+    private UserAttributeRequest userAttribute;
 
     private String firstName;
     private String lastName;

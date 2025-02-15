@@ -8,12 +8,11 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.EAN13Writer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.oralie.orders.constant.OrderStatus;
-import com.oralie.orders.constant.PayPalConstant;
 import com.oralie.orders.constant.PaymentMethod;
 import com.oralie.orders.constant.PaymentStatus;
-import com.oralie.orders.dto.entity.OrderPlaceEvent;
+import com.oralie.orders.dto.event.OrderItemEvent;
+import com.oralie.orders.dto.event.OrderPlaceEvent;
 import com.oralie.orders.dto.request.OrderRequest;
-import com.oralie.orders.dto.request.PayPalInfoRequest;
 import com.oralie.orders.dto.response.ListResponse;
 import com.oralie.orders.dto.response.OrderAddressResponse;
 import com.oralie.orders.dto.response.OrderItemResponse;
@@ -25,17 +24,13 @@ import com.oralie.orders.model.OrderAddress;
 import com.oralie.orders.model.OrderItem;
 import com.oralie.orders.repository.OrderItemRepository;
 import com.oralie.orders.repository.OrderRepository;
-import com.oralie.orders.repository.client.CartFeignClient;
 import com.oralie.orders.service.CartService;
 import com.oralie.orders.service.OrderService;
-import com.oralie.orders.service.PayPalService;
-import com.paypal.api.payments.Payment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -53,14 +48,13 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
-
-    private static final Logger log = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     private final KafkaTemplate<String, String> kafkaTemplate;
 
@@ -133,15 +127,11 @@ public class OrderServiceImpl implements OrderService {
             order.setPaymentMethod(PaymentMethod.COD.name());
             order.setPaymentStatus(PaymentStatus.PENDING);
 
-//TODO:
-
         } else if (PaymentMethod.BANK_TRANSFER.name().equalsIgnoreCase(orderRequest.getPaymentMethod())) {
             order.setPaymentStatus(PaymentStatus.PENDING);
             order.setStatus(OrderStatus.PROCESSING);
             order.setPaymentMethod(PaymentMethod.BANK_TRANSFER.name());
             order.setPaymentStatus(PaymentStatus.COMPLETED);
-//TODO:
-
         } else {
             throw new PaymentProcessingException("Invalid payment method");
         }
@@ -152,15 +142,32 @@ public class OrderServiceImpl implements OrderService {
                 .orderId(order.getId())
                 .userId(order.getUserId())
                 .email(order.getAddress().getEmail())
+                .orderItems(order.getOrderItems().stream()
+                        .map(orderItem -> OrderItemEvent.builder()
+                                .productId(orderItem.getProductId())
+                                .productName(orderItem.getProductName())
+                                .quantity(orderItem.getQuantity())
+                                .totalPrice(orderItem.getTotalPrice())
+                                .build())
+                        .collect(Collectors.toList()))
                 .totalPrice(order.getTotalPrice())
+                .discount(order.getDiscount())
+                .shippingFee(order.getShippingFee())
+                .status(order.getStatus())
+                .shippingMethod(order.getShippingMethod())
+                .paymentMethod(order.getPaymentMethod())
+                .tokenViewOrder(order.getId() + UUID.randomUUID().toString())
                 .build();
 
+        //send this message have the topic is order-placed-topic to any service can listen the topic
+        //in here 2 service can hear this message is notification service & inventory service
+        //1. notification service will send email to user
+        //2. inventory service will subtract quantity product in inventory
+        //(feature) 3. cart service will clear cart
+        //(feature) 4. products service will update product quantity
         log.info("Start- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
-
-//        kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
-
+        kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
         log.info("End- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
-        //subtract quantity product in inventory service
 
         //clear cart in cart service | need using kafka to send event to cart service & inventory also
         cartService.clearCart();
@@ -196,7 +203,6 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found", "id", callBackMessage.getOrderId()));
 
         //TODO: update inventory service
-
 
         order.setPaymentStatus(callBackMessage.getPaymentStatus());
 

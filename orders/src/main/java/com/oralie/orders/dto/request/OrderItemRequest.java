@@ -16,7 +16,7 @@ public class OrderItemRequest {
 
     private String productImage;
 
-    private int quantity;
+    private Long quantity;
 
     private Double totalPrice;
 }

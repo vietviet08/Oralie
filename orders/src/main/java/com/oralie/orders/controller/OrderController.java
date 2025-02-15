@@ -10,10 +10,8 @@ import com.oralie.orders.dto.response.paypal.PayerResponse;
 import com.oralie.orders.dto.response.paypal.PaymentResponse;
 import com.oralie.orders.dto.response.paypal.RedirectUrlsResponse;
 import com.oralie.orders.dto.response.paypal.TransactionResponse;
-import com.oralie.orders.exception.PaymentProcessingException;
 import com.oralie.orders.service.OrderService;
 import com.oralie.orders.service.PayPalService;
-import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +58,7 @@ public class OrderController {
                 .body(orderService.getAllOrders(page, size, sortBy, sort));
     }
 
-    @PutMapping("/dash/orders/{orderId}")
+    @PutMapping("/dash/orders/{orderId}/status")
     public ResponseEntity<OrderResponse> updateOrderStatus(@PathVariable("orderId") Long orderId,
                                                            @RequestParam String status) {
         return ResponseEntity
@@ -216,7 +214,6 @@ public class OrderController {
                 .contentType(MediaType.IMAGE_PNG)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + barCode + "\"")
                 .body(orderService.generateBarCodeImage(barCode));
-
     }
 
     @PutMapping("/store/orders/rated/{orderItemId}")

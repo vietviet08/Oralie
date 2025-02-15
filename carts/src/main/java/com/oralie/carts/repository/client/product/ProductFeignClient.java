@@ -1,6 +1,6 @@
 package com.oralie.carts.repository.client.product;
 
-import com.oralie.carts.dto.ProductResponse;
+import com.oralie.carts.dto.client.products.ProductResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

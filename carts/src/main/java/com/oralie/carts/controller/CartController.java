@@ -18,7 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 
 @Tag(
@@ -69,14 +68,6 @@ public class CartController {
                 .body(cartService.createCart(SecurityContextHolder.getContext().getAuthentication().getName()));
     }
 
-//    @PutMapping("/dash/carts/{id}")
-//    public ResponseEntity<CartResponse> updateCart(@PathVariable("id") Long id, @RequestBody CartResponse cart) {
-//        return ResponseEntity
-//                .status(HttpStatus.OK)
-//                .body(cartService.updateCart(id, cart));
-//    }
-
-
     @DeleteMapping("/dash/carts/{id}")
     public HttpStatus deleteCart(@PathVariable("id") Long id) {
         cartService.deleteCart(id);
@@ -90,7 +81,6 @@ public class CartController {
                 .status(HttpStatus.OK)
                 .body(cartService.getCartIdByUserId(SecurityContextHolder.getContext().getAuthentication().getName()));
     }
-
 
     @GetMapping("/store/carts")
     public ResponseEntity<CartResponse> getCart() {

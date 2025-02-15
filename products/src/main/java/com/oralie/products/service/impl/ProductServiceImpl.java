@@ -1,5 +1,6 @@
 package com.oralie.products.service.impl;
 
+import com.google.gson.Gson;
 import com.oralie.products.dto.request.ProductOptionRequest;
 import com.oralie.products.dto.request.ProductQuantityPost;
 import com.oralie.products.dto.request.ProductRequest;
@@ -13,12 +14,12 @@ import com.oralie.products.repository.*;
 import com.oralie.products.service.ProductService;
 import com.oralie.products.service.SocialService;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -30,14 +31,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
-    private static final Logger log = LoggerFactory.getLogger(ProductServiceImpl.class);
-
     private final SocialService socialService;
-
+    private final Gson gson;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final BrandRepository brandRepository;
@@ -268,29 +268,6 @@ public class ProductServiceImpl implements ProductService {
 
         // check old categories if they are still in the list keep them else delete them
         // and new categories add them
-//        List<ProductCategory> productCategoryListOld = product.getProductCategories();
-//        List<Long> categoryIds = productRequest.getCategoryIds();
-//
-//        for (ProductCategory productCategory : productCategoryListOld) {
-//            if (!categoryIds.contains(productCategory.getCategory().getId())) {
-//                productCategoryRepository.delete(productCategory);
-//            }
-//        }
-//
-//        List<ProductCategory> productCategoryList = new ArrayList<>();
-//        for (Long idCategory : productRequest.getCategoryIds()) {
-//            Category category = categoryRepository.findById(idCategory)
-//                    .orElseThrow(() -> new ResourceNotFoundException("Category not found", "id", idCategory + ""));
-//            boolean isExist = productCategoryListOld.stream()
-//                    .anyMatch(productCategory -> productCategory.getCategory().getId().equals(idCategory));
-//            if (isExist) {
-//                ProductCategory productCategory = ProductCategory.builder()
-//                        .category(category)
-//                        .product(productSaved)
-//                        .build();
-//                productCategoryList.add(productCategory);
-//            }
-//        }
 
         List<ProductCategory> productCategoryListOld = product.getProductCategories();
         List<Long> categoryIds = productRequest.getCategoryIds();
@@ -437,34 +414,16 @@ public class ProductServiceImpl implements ProductService {
         return products.stream().limit(12).collect(Collectors.toList());
     }
 
+    @Override
+    @KafkaListener(topics = "products-reserved-topic", groupId = "products-group")
+    public void updateProductQuantity(String message) {
+        List<ProductQuantityPost> productQuantityPost = Collections.singletonList(gson.fromJson(message, ProductQuantityPost.class));
+        updateQuantityProduct(productQuantityPost);
+    }
+
     private List<ProductResponse> mapToProductResponseList(List<Product> products) {
         return products.stream()
-                .map(product -> ProductResponse.builder()
-                        .id(product.getId())
-                        .name(product.getName())
-                        .description(product.getDescription())
-                        .price(product.getPrice())
-                        .discount(product.getDiscount())
-                        .productCategories(mapToProductCategoryResponseList(product.getProductCategories()))
-                        .brand(mapToBrandResponse(product.getBrand()))
-                        .sku(product.getSku())
-                        .images(mapToProductImageResponseList(product.getImages()))
-                        .options(mapToProductOptionResponseList(product.getOptions()))
-                        .specifications(product.getSpecifications().stream()
-                                .map(productSpecification -> ProductSpecificationResponse.builder()
-                                        .id(productSpecification.getId())
-                                        .name(productSpecification.getName())
-                                        .value(productSpecification.getValue())
-                                        .build())
-                                .collect(Collectors.toList()))
-                        .quantity(product.getQuantity())
-                        .slug(product.getSlug())
-                        .isAvailable(product.getIsAvailable())
-                        .isDeleted(product.getIsDeleted())
-                        .isDiscounted(product.getIsDiscounted())
-                        .isFeatured(product.getIsFeatured())
-                        .isPromoted(product.getIsPromoted())
-                        .build())
+                .map(this::mapToProductResponse)
                 .collect(Collectors.toList());
     }
 

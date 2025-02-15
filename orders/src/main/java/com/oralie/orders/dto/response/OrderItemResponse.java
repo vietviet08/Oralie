@@ -15,7 +15,7 @@ public class OrderItemResponse {
     private Long productId;
     private String productName;
     private String productImage;
-    private int quantity;
+    private Long quantity;
     private Double totalPrice;
     private boolean isRated;
 
