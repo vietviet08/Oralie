@@ -110,7 +110,7 @@ pipeline {
             }
         }
 
-        stage('Clean up Docker repository') {
+        stage('Clean up Docker repository after') {
             steps {
                 script {
                     sh 'docker system prune -af'
