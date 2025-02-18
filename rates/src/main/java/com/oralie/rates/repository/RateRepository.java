@@ -8,15 +8,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface RateRepository extends JpaRepository<Rate, Long> {
 
-    Page<Rate> findAll(Pageable pageable);
+  Page<Rate> findAll(Pageable pageable);
 
-    @Query("SELECT r FROM Rate r WHERE r.productId = :productId")
-    Page<Rate> findAllByProductId(Long productId, Pageable pageable);
+  @Query("SELECT r FROM Rate r WHERE r.productId = :productId")
+  Page<Rate> findAllByProductId(Long productId, Pageable pageable);
 
-    List<Rate> findByProductId(Long productId);
+  List<Rate> findByProductId(Long productId);
 }
