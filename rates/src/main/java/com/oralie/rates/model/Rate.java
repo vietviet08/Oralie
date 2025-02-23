@@ -16,39 +16,39 @@ import java.util.List;
 @Table(name = "rate")
 public class Rate extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_info_id")
-    private UserInfo userInfo;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "user_info_id")
+  private UserInfo userInfo;
 
-    private Long productId;
+  private Long productId;
 
-    private Long orderItemId;
+  private Long orderItemId;
 
-    private int rateStar;
+  private int rateStar;
 
-    private String content;
+  private String content;
 
-    @ElementCollection
-    private List<String> urlFile;
+  @ElementCollection
+  private List<String> urlFile;
 
-    @OneToMany(mappedBy = "rate", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<UserRateComment> listUserLike; 
+  @OneToMany(mappedBy = "rate", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<UserRateComment> listUserLike;
 
-    private Long totalLike;
+  private Long totalLike;
 
-    private Long totalDislike;
+  private Long totalDislike;
 
-    private Boolean isAvailable;
-   
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "parent_category_id")
-    private Rate parentRate;
+  private Boolean isAvailable;
 
-    @OneToMany(mappedBy = "parentRate", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Rate> subRates;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "parent_category_id")
+  private Rate parentRate;
+
+  @OneToMany(mappedBy = "parentRate", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  private List<Rate> subRates;
 
 }

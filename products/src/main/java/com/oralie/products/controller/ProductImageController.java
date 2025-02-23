@@ -15,24 +15,23 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
 public class ProductImageController {
 
-    private final ProductImageService productImageService;
+  private final ProductImageService productImageService;
 
-    private final S3FeignClient s3FeignClient;
+  private final S3FeignClient s3FeignClient;
 
-    @PostMapping("/dash/products/images")
-    public ResponseEntity<Map> uploadFile(@ModelAttribute("file") MultipartFile file) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(productImageService.uploadFileSingle(file));
-    }
+  @PostMapping("/dash/products/images")
+  public ResponseEntity<Map<Object, Object>> uploadFile(@ModelAttribute("file") MultipartFile file) {
+    return ResponseEntity
+        .status(HttpStatus.OK)
+        .body(productImageService.uploadFileSingle(file));
+  }
 
-    @PostMapping("/store/products/upload-images")
-    public ResponseEntity<List<FileMetadata>> uploadImage(@RequestParam("images") MultipartFile file) {
-        return s3FeignClient.createAttachments(List.of(file));
-    }
-
+  @PostMapping("/store/products/upload-images")
+  public ResponseEntity<List<FileMetadata>> uploadImage(@RequestParam("images") MultipartFile file) {
+    return s3FeignClient.createAttachments(List.of(file));
+  }
 
 }

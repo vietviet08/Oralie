@@ -1,8 +1,4 @@
-server:
-  port: 8086
-
 spring:
-
   application:
     name: social
 
@@ -81,4 +77,7 @@ aws:
   credentials:
     accessKey: ${AWS_ACCESS_KEY}
     secretKey: ${AWS_SECRET_KEY}
+server:
+  port: 8086
+
 
