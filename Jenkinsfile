@@ -1,3 +1,5 @@
+//single build docker image steps
+
 pipeline {
 
     agent any
