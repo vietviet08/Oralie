@@ -17,6 +17,8 @@ pipeline {
 //                 git branch: 'master', credentialsId: 'github-account', url: 'https://github.com/vietviet08/Oralie.git'
 //             }
 //         }
+        stage('Build Services') {
+            parallel {
                  stage('Clean up Docker repository') {
                     steps {
                         script {
@@ -203,6 +205,8 @@ pipeline {
                         }
                     }
                 }
+            }
+        }
 
         stage('Push to Docker Hub') {
             steps {
