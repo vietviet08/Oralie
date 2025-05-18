@@ -41,6 +41,10 @@ public class ProductRequest {
 
     private List<MultipartFile> images;
 
+    private List<String> deletedImageUrls;
+    
+    private List<String> existingImageUrls;
+
     private List<ProductOptionRequest> options;
 
     private List<ProductSpecificationRequest> specifications;
