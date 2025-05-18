@@ -16,193 +16,129 @@ pipeline {
 //             }
 //         }
         stage('Build Services') {
+            steps {
+                script {
+                    // First clean up Docker repository
+                    sh 'docker system prune -af'
 
-            parallel {
-
-                 stage('Clean up Docker repository') {
-                    steps {
-                        script {
-                            sh 'docker system prune -af'
-                        }
+                    // Build Config Server
+                    dir('configserver') {
+                        sh """
+                            if docker images | grep '${DOCKERHUB_REPO}/configserver-oralie'; then
+                                docker rmi -f ${DOCKERHUB_REPO}/configserver-oralie:${LATEST_VERSION}
+                            fi
+                            docker build -t ${DOCKERHUB_REPO}/configserver-oralie:${NEXT_VERSION} .
+                        """
                     }
-                }
 
-                stage('Build Config Server') {
-                    steps {
-                        script {
-                            dir('configserver') {
-                                sh """
-                                    if docker images | grep '${DOCKERHUB_REPO}/configserver-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/configserver-oralie:${LATEST_VERSION}
-                                    fi
-                                    docker build -t ${DOCKERHUB_REPO}/configserver-oralie:${NEXT_VERSION} .
-                                """
-                            }
-                        }
+                    // Build Eureka Server
+                    dir('eurekaserver') {
+                            sh """
+                                if docker images | grep '${DOCKERHUB_REPO}/eurekaserver-oralie'; then
+                                    docker rmi -f ${DOCKERHUB_REPO}/eurekaserver-oralie:${LATEST_VERSION}
+                                fi
+                                docker build -t ${DOCKERHUB_REPO}/eurekaserver-oralie:${NEXT_VERSION} .
+                            """
                     }
-                }
 
-                stage('Build Eureka Server') {
-                    steps {
-                        script {
-                            dir('eurekaserver') {
-                                 sh """
-                                     if docker images | grep '${DOCKERHUB_REPO}/eurekaserver-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/eurekaserver-oralie:${LATEST_VERSION}
-                                     fi
-                                     docker build -t ${DOCKERHUB_REPO}/eurekaserver-oralie:${NEXT_VERSION} .
-                                 """
-                            }
-                        }
+                    // Build Gateway Server
+                    dir('gatewayserver') {
+                        sh """
+                            if docker images | grep '${DOCKERHUB_REPO}/gatewayserver-oralie'; then
+                                docker rmi -f ${DOCKERHUB_REPO}/gatewayserver-oralie:${LATEST_VERSION}
+                            fi
+                            docker build -t ${DOCKERHUB_REPO}/gatewayserver-oralie:${NEXT_VERSION} .
+                        """
                     }
-                }
 
-                stage('Build Gateway Server') {
-                    steps {
-                        script {
-                            dir('gatewayserver') {
-                                sh """
-                                    if docker images | grep '${DOCKERHUB_REPO}/gatewayserver-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/gatewayserver-oralie:${LATEST_VERSION}
-                                    fi
-                                    docker build -t ${DOCKERHUB_REPO}/gatewayserver-oralie:${NEXT_VERSION} .
-                                """
-                            }
-                        }
+                    // Build Accounts Service
+                    dir('accounts') {
+                        sh """
+                            if docker images | grep '${DOCKERHUB_REPO}/accounts-oralie'; then
+                                docker rmi -f ${DOCKERHUB_REPO}/accounts-oralie:${LATEST_VERSION}
+                            fi
+                            docker build -t ${DOCKERHUB_REPO}/accounts-oralie:${NEXT_VERSION} .
+                        """
                     }
-                }
+                    
+                    // Build Product Service
+                    dir('products') {
+                        sh """
+                            if docker images | grep '${DOCKERHUB_REPO}/products-oralie'; then
+                                docker rmi -f ${DOCKERHUB_REPO}/products-oralie:${LATEST_VERSION}
+                            fi
+                            docker build -t ${DOCKERHUB_REPO}/products-oralie:${NEXT_VERSION} .
+                        """
+                    }
 
-                stage('Build Accounts Service') {
-                    steps {
-                        script {
-                            dir('accounts') {
-                                sh """
-                                    if docker images | grep '${DOCKERHUB_REPO}/accounts-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/accounts-oralie:${LATEST_VERSION}
-                                    fi
-                                    docker build -t ${DOCKERHUB_REPO}/accounts-oralie:${NEXT_VERSION} .
-                                """
-                            }
-                        }
+                    // Build Cart Service
+                    dir('carts') {
+                        sh """
+                            if docker images | grep '${DOCKERHUB_REPO}/carts-oralie'; then
+                                docker rmi -f ${DOCKERHUB_REPO}/carts-oralie:${LATEST_VERSION}
+                            fi
+                            docker build -t ${DOCKERHUB_REPO}/carts-oralie:${NEXT_VERSION} .
+                        """
                     }
-                }
-                stage('Build Product Service') {
-                    steps {
-                        script {
-                            dir('products') {
-                                sh """
-                                    if docker images | grep '${DOCKERHUB_REPO}/products-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/products-oralie:${LATEST_VERSION}
-                                    fi
-                                    docker build -t ${DOCKERHUB_REPO}/products-oralie:${NEXT_VERSION} .
-                                """
-                            }
-                        }
-                    }
-                }
 
-                stage('Build Cart Service') {
-                    steps {
-                        script {
-                            dir('carts') {
-                                sh """
-                                    if docker images | grep '${DOCKERHUB_REPO}/carts-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/carts-oralie:${LATEST_VERSION}
-                                    fi
-                                    docker build -t ${DOCKERHUB_REPO}/carts-oralie:${NEXT_VERSION} .
-                                """
-                            }
-                        }
+                    // Build Order Service
+                    dir('orders') {
+                        sh """
+                            if docker images | grep '${DOCKERHUB_REPO}/orders-oralie'; then
+                                docker rmi -f ${DOCKERHUB_REPO}/orders-oralie:${LATEST_VERSION}
+                            fi
+                            docker build -t ${DOCKERHUB_REPO}/orders-oralie:${NEXT_VERSION} .
+                        """
                     }
-                }
 
-                stage('Build Order Service') {
-                    steps {
-                        script {
-                            dir('orders') {
-                                sh """
-                                    if docker images | grep '${DOCKERHUB_REPO}/orders-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/orders-oralie:${LATEST_VERSION}
-                                    fi
-                                    docker build -t ${DOCKERHUB_REPO}/orders-oralie:${NEXT_VERSION} .
-                                """
-                            }
-                        }
+                    // Build Notification Service
+                    dir('notification') {
+                        sh """
+                            if docker images | grep '${DOCKERHUB_REPO}/notification-oralie'; then
+                                docker rmi -f ${DOCKERHUB_REPO}/notification-oralie:${LATEST_VERSION}
+                            fi
+                            docker build -t ${DOCKERHUB_REPO}/notification-oralie:${NEXT_VERSION} .
+                        """
                     }
-                }
 
-                 stage('Build Notification Service') {
-                    steps {
-                        script {
-                            dir('notification') {
-                                sh """
-                                    if docker images | grep '${DOCKERHUB_REPO}/notification-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/notification-oralie:${LATEST_VERSION}
-                                    fi
-                                    docker build -t ${DOCKERHUB_REPO}/notification-oralie:${NEXT_VERSION} .
-                                """
-                            }
-                        }
+                    // Build Social Service
+                    dir('social') {
+                        sh """
+                            if docker images | grep '${DOCKERHUB_REPO}/social-oralie'; then
+                                docker rmi -f ${DOCKERHUB_REPO}/social-oralie:${LATEST_VERSION}
+                            fi
+                            docker build -t ${DOCKERHUB_REPO}/social-oralie:${NEXT_VERSION} .
+                        """
                     }
-                }
 
-                stage('Build Social Service') {
-                    steps {
-                        script {
-                            dir('social') {
-                                sh """
-                                    if docker images | grep '${DOCKERHUB_REPO}/social-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/social-oralie:${LATEST_VERSION}
-                                    fi
-                                    docker build -t ${DOCKERHUB_REPO}/social-oralie:${NEXT_VERSION} .
-                                """
-                            }
-                        }
+                    // Build Search Service
+                    dir('search') {
+                        sh """
+                            if docker images | grep '${DOCKERHUB_REPO}/search-oralie'; then
+                                docker rmi -f ${DOCKERHUB_REPO}/search-oralie:${LATEST_VERSION}
+                            fi
+                            docker build -t ${DOCKERHUB_REPO}/search-oralie:${NEXT_VERSION} .
+                        """
                     }
-                }
 
-                stage('Build Search Service') {
-                    steps {
-                        script {
-                            dir('search') {
-                                sh """
-                                    if docker images | grep '${DOCKERHUB_REPO}/search-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/search-oralie:${LATEST_VERSION}
-                                    fi
-                                    docker build -t ${DOCKERHUB_REPO}/search-oralie:${NEXT_VERSION} .
-                                """
-                            }
-                        }
+                    // Build Rate Service
+                    dir('rates') {
+                        sh """
+                            if docker images | grep '${DOCKERHUB_REPO}/rates-oralie'; then
+                                docker rmi -f ${DOCKERHUB_REPO}/rates-oralie:${LATEST_VERSION}
+                            fi
+                            docker build -t ${DOCKERHUB_REPO}/rates-oralie:${NEXT_VERSION} .
+                        """
                     }
-                }
 
-                stage('Build Rate Service') {
-                    steps {
-                        script {
-                            dir('rates') {
-                                sh """
-                                    if docker images | grep '${DOCKERHUB_REPO}/rates-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/rates-oralie:${LATEST_VERSION}
-                                    fi
-                                    docker build -t ${DOCKERHUB_REPO}/rates-oralie:${NEXT_VERSION} .
-                                """
-                            }
-                        }
-                    }
-                }
-
-                stage('Build Inventory Service') {
-                    steps {
-                        script {
-                            dir('inventory') {
-                                sh """
-                                    if docker images | grep '${DOCKERHUB_REPO}/inventory-oralie'; then
-                                        docker rmi -f ${DOCKERHUB_REPO}/inventory-oralie:${LATEST_VERSION}
-                                    fi
-                                    docker build -t ${DOCKERHUB_REPO}/inventory-oralie:${NEXT_VERSION} .
-                                """
-                            }
-                        }
+                    // Build Inventory Service
+                    dir('inventory') {
+                        sh """
+                            if docker images | grep '${DOCKERHUB_REPO}/inventory-oralie'; then
+                                docker rmi -f ${DOCKERHUB_REPO}/inventory-oralie:${LATEST_VERSION}
+                            fi
+                            docker build -t ${DOCKERHUB_REPO}/inventory-oralie:${NEXT_VERSION} .
+                        """
                     }
                 }
             }
