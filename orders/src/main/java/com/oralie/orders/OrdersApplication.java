@@ -16,30 +16,11 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableFeignClients
 @EnableConfigurationProperties(OrderContactDto.class)
 @EnableJpaAuditing(auditorAwareRef = "auditorAware")
-@OpenAPIDefinition(
-        info = @Info(
-                title = "Product microservice REST API Documentation",
-                description = "Oralie Orders microservice REST API Documentation",
-                version = "v1",
-                contact = @Contact(
-                        name = "Viet Quoc",
-                        email = "vietnq23ceb@vku.udn.vn",
-                        url = "github.com/vietviet08"
-                ),
-                license = @License(
-                        name = "Apache 2.0",
-                        url = "github.com/vietviet08"
-                )
-        ),
-        externalDocs = @ExternalDocumentation(
-                description = "Oralie Orders microservice REST API Documentation",
-                url = "https://www.oralie.com.vn/swagger-ui.html"
-        )
-)
+@OpenAPIDefinition(info = @Info(title = "Product microservice REST API Documentation", description = "Oralie Orders microservice REST API Documentation", version = "v1", contact = @Contact(name = "Viet Quoc", email = "vietnq23ceb@vku.udn.vn", url = "github.com/vietviet08"), license = @License(name = "Apache 2.0", url = "github.com/vietviet08")), externalDocs = @ExternalDocumentation(description = "Oralie Orders microservice REST API Documentation", url = "https://www.oralie.com.vn/swagger-ui.html"))
 public class OrdersApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(OrdersApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(OrdersApplication.class, args);
+  }
 
 }
