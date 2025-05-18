@@ -65,6 +65,75 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ListResponse<ProductResponse> getAllProductsWithFilter(int page, int size, String sortBy, String sort, 
+                                                               String search, String category, String price) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+        
+        // Parse price range from the format "min-max" (e.g., "100-500")
+        Double minPrice = null;
+        Double maxPrice = null;
+        
+        if (price != null && !price.isEmpty()) {
+            // Handle multiple price ranges (separated by dots)
+            if (price.contains(".")) {
+                // For multiple price filters, we take the min of all mins and max of all maxes
+                String[] priceRanges = price.split("\\.");
+                double minOfMins = Double.MAX_VALUE;
+                double maxOfMaxes = 0.0;
+                
+                for (String priceRange : priceRanges) {
+                    String[] parts = priceRange.split("-");
+                    if (parts.length == 2) {
+                        try {
+                            double min = Double.parseDouble(parts[0]);
+                            double max = Double.parseDouble(parts[1]);
+                            
+                            if (min < minOfMins) {
+                                minOfMins = min;
+                            }
+                            
+                            if (max > maxOfMaxes) {
+                                maxOfMaxes = max;
+                            }
+                        } catch (NumberFormatException e) {
+                            log.error("Error parsing price range: {}", e.getMessage());
+                        }
+                    }
+                }
+                
+                minPrice = minOfMins != Double.MAX_VALUE ? minOfMins : null;
+                maxPrice = maxOfMaxes > 0 ? maxOfMaxes : null;
+            } else {
+                // Single price range
+                String[] parts = price.split("-");
+                if (parts.length == 2) {
+                    try {
+                        minPrice = Double.parseDouble(parts[0]);
+                        maxPrice = Double.parseDouble(parts[1]);
+                    } catch (NumberFormatException e) {
+                        log.error("Error parsing price range: {}", e.getMessage());
+                    }
+                }
+            }
+        }
+        
+        Page<Product> pageProducts = productRepository.findAllProductsWithFilter(pageable, search, category, minPrice, maxPrice);
+        List<Product> products = pageProducts.getContent();
+        
+        return ListResponse
+                .<ProductResponse>builder()
+                .data(mapToProductResponseList(products))
+                .pageNo(pageProducts.getNumber())
+                .pageSize(pageProducts.getSize())
+                .totalElements((int) pageProducts.getTotalElements())
+                .totalPages(pageProducts.getTotalPages())
+                .isLast(pageProducts.isLast())
+                .build();
+    }
+
+    @Override
     public ListResponse<ProductResponse> getAllProductsByCategory(int page, int size, String sortBy, String sort,
                                                                   String categorySlug) {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
@@ -73,6 +142,76 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> pageProducts = productRepository.findAllByCategorySlug(pageable, categorySlug);
         List<Product> products = pageProducts.getContent();
 
+        return ListResponse
+                .<ProductResponse>builder()
+                .data(mapToProductResponseList(products))
+                .pageNo(pageProducts.getNumber())
+                .pageSize(pageProducts.getSize())
+                .totalElements((int) pageProducts.getTotalElements())
+                .totalPages(pageProducts.getTotalPages())
+                .isLast(pageProducts.isLast())
+                .build();
+    }
+
+    @Override
+    public ListResponse<ProductResponse> getAllProductsByCategoryWithPrice(int page, int size, String sortBy, String sort,
+                                                                       String categorySlug, String price) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+        
+        // Parse price range
+        Double minPrice = null;
+        Double maxPrice = null;
+        
+        if (price != null && !price.isEmpty()) {
+            // Handle multiple price ranges (separated by dots)
+            if (price.contains(".")) {
+                // For multiple price filters, we take the min of all mins and max of all maxes
+                String[] priceRanges = price.split("\\.");
+                double minOfMins = Double.MAX_VALUE;
+                double maxOfMaxes = 0.0;
+                
+                for (String priceRange : priceRanges) {
+                    String[] parts = priceRange.split("-");
+                    if (parts.length == 2) {
+                        try {
+                            double min = Double.parseDouble(parts[0]);
+                            double max = Double.parseDouble(parts[1]);
+                            
+                            if (min < minOfMins) {
+                                minOfMins = min;
+                            }
+                            
+                            if (max > maxOfMaxes) {
+                                maxOfMaxes = max;
+                            }
+                        } catch (NumberFormatException e) {
+                            log.error("Error parsing price range: {}", e.getMessage());
+                        }
+                    }
+                }
+                
+                minPrice = minOfMins != Double.MAX_VALUE ? minOfMins : null;
+                maxPrice = maxOfMaxes > 0 ? maxOfMaxes : null;
+            } else {
+                // Single price range
+                String[] parts = price.split("-");
+                if (parts.length == 2) {
+                    try {
+                        minPrice = Double.parseDouble(parts[0]);
+                        maxPrice = Double.parseDouble(parts[1]);
+                    } catch (NumberFormatException e) {
+                        log.error("Error parsing price range: {}", e.getMessage());
+                    }
+                }
+            }
+        }
+        
+        Page<Product> pageProducts = productRepository.findAllByCategorySlugWithPriceRange(
+                pageable, categorySlug, minPrice, maxPrice);
+        List<Product> products = pageProducts.getContent();
+        
         return ListResponse
                 .<ProductResponse>builder()
                 .data(mapToProductResponseList(products))
@@ -97,6 +236,88 @@ public class ProductServiceImpl implements ProductService {
         }
         List<Product> products = pageProducts.getContent();
 
+        return ListResponse
+                .<ProductResponse>builder()
+                .data(mapToProductResponseList(products))
+                .pageNo(pageProducts.getNumber())
+                .pageSize(pageProducts.getSize())
+                .totalElements((int) pageProducts.getTotalElements())
+                .totalPages(pageProducts.getTotalPages())
+                .isLast(pageProducts.isLast())
+                .build();
+    }
+
+    @Override
+    public ListResponse<ProductResponse> getAllProductsByBrandAndPrice(int page, int size, String sortBy, String sort,
+                                                                   String categorySlug, String brandSlug, String price) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+        
+        // Parse price range
+        Double minPrice = null;
+        Double maxPrice = null;
+        
+        if (price != null && !price.isEmpty()) {
+            // Handle multiple price ranges (separated by dots)
+            if (price.contains(".")) {
+                // For multiple price filters, we take the min of all mins and max of all maxes
+                String[] priceRanges = price.split("\\.");
+                double minOfMins = Double.MAX_VALUE;
+                double maxOfMaxes = 0.0;
+                
+                for (String priceRange : priceRanges) {
+                    String[] parts = priceRange.split("-");
+                    if (parts.length == 2) {
+                        try {
+                            double min = Double.parseDouble(parts[0]);
+                            double max = Double.parseDouble(parts[1]);
+                            
+                            if (min < minOfMins) {
+                                minOfMins = min;
+                            }
+                            
+                            if (max > maxOfMaxes) {
+                                maxOfMaxes = max;
+                            }
+                        } catch (NumberFormatException e) {
+                            log.error("Error parsing price range: {}", e.getMessage());
+                        }
+                    }
+                }
+                
+                minPrice = minOfMins != Double.MAX_VALUE ? minOfMins : null;
+                maxPrice = maxOfMaxes > 0 ? maxOfMaxes : null;
+            } else {
+                // Single price range
+                String[] parts = price.split("-");
+                if (parts.length == 2) {
+                    try {
+                        minPrice = Double.parseDouble(parts[0]);
+                        maxPrice = Double.parseDouble(parts[1]);
+                    } catch (NumberFormatException e) {
+                        log.error("Error parsing price range: {}", e.getMessage());
+                    }
+                }
+            }
+        }
+        
+        // Handle multiple brands (separated by dots)
+        List<String> brandSlugs = new ArrayList<>();
+        if (brandSlug != null && !brandSlug.isEmpty()) {
+            if (brandSlug.contains(".")) {
+                String[] brands = brandSlug.split("\\.");
+                Collections.addAll(brandSlugs, brands);
+            } else {
+                brandSlugs.add(brandSlug);
+            }
+        }
+        
+        Page<Product> pageProducts = productRepository.findAllByBrandsAndCategorySlugWithPriceRange(
+                pageable, categorySlug, brandSlugs, minPrice, maxPrice);
+        
+        List<Product> products = pageProducts.getContent();
+        
         return ListResponse
                 .<ProductResponse>builder()
                 .data(mapToProductResponseList(products))
@@ -297,56 +518,87 @@ public class ProductServiceImpl implements ProductService {
 
         productCategoryRepository.saveAll(productCategoryList);
 
-        // check old images if they are still in the list keep them else delete them and
-        // new images add them
+        // Handle product images
         List<ProductImage> productImageListOld = product.getImages();
         List<MultipartFile> productImageNew = productRequest.getImages();
+        List<String> deletedImageUrls = productRequest.getDeletedImageUrls();
+        List<String> existingImageUrls = productRequest.getExistingImageUrls();
+        
+        log.info("Image status - Existing: {}, New: {}, Deleted: {}",
+                existingImageUrls != null ? existingImageUrls.size() : 0,
+                productImageNew != null ? productImageNew.size() : 0,
+                deletedImageUrls != null ? deletedImageUrls.size() : 0);
 
-        if (productImageNew != null) {
-
-            List<FileMetadata> fileMetadataList = socialService.uploadImages(productImageNew);
-
-            List<String> newImageUrls = Objects.requireNonNull(fileMetadataList)
-                    .stream()
-                    .map(FileMetadata::getUrl)
-                    .toList();
-
-            if (productImageListOld != null && !productImageListOld.isEmpty()) {
-                productImageListOld.removeIf(oldImage -> {
-                    if (!newImageUrls.contains(oldImage.getUrl())) {
-                        productImageRepository.delete(oldImage);
-                        log.info("Deleting image by S3 service");
-                        try {
-                            socialService.deleteFile(oldImage.getUrl());
-                        } catch (Exception e) {
-                            log.error("Error deleting image by S3 service: {}", e.getMessage());
-                        }
-                        log.info("Image deleted successfully");
-                        return true;
+        // First, explicitly handle any images marked for deletion
+        if (deletedImageUrls != null && !deletedImageUrls.isEmpty() && productImageListOld != null) {
+            log.info("Processing {} explicitly deleted image URLs", deletedImageUrls.size());
+            productImageListOld.removeIf(oldImage -> {
+                if (deletedImageUrls.contains(oldImage.getUrl())) {
+                    productImageRepository.delete(oldImage);
+                    log.info("Deleting explicitly marked image: {}", oldImage.getUrl());
+                    try {
+                        socialService.deleteFile(oldImage.getUrl());
+                    } catch (Exception e) {
+                        log.error("Error deleting explicitly marked image by S3 service: {}", e.getMessage());
                     }
-                    return false;
-                });
-            }
+                    return true;
+                }
+                return false;
+            });
+        }
+        
+        // If there are existing images we want to keep, ensure they are not deleted
+        if (existingImageUrls != null && !existingImageUrls.isEmpty() && productImageListOld != null) {
+            // We'll keep only images that are in the existingImageUrls list
+            productImageListOld.removeIf(oldImage -> {
+                // If the image is not in existingImageUrls and not already handled by deletedImageUrls
+                if (!existingImageUrls.contains(oldImage.getUrl()) && 
+                    (deletedImageUrls == null || !deletedImageUrls.contains(oldImage.getUrl()))) {
+                    productImageRepository.delete(oldImage);
+                    log.info("Removing image not in existingImageUrls: {}", oldImage.getUrl());
+                    try {
+                        socialService.deleteFile(oldImage.getUrl());
+                    } catch (Exception e) {
+                        log.error("Error deleting image by S3 service: {}", e.getMessage());
+                    }
+                    return true;
+                }
+                return false;
+            });
+        }
 
-            assert productImageListOld != null;
-            for (FileMetadata newImageUrl : fileMetadataList) {
-                boolean exists = productImageListOld.stream()
-                        .anyMatch(oldImage -> oldImage.getUrl().equals(newImageUrl.getUrl()));
-                if (!exists) {
-                    ProductImage newImage = ProductImage.builder()
-                            .url(newImageUrl.getUrl())
-                            .product(product)
-                            .name(newImageUrl.getName())
-                            .type(newImageUrl.getMime())
-                            .build();
-                    productImageListOld.add(newImage);
+        // Process new images
+        if (productImageNew != null && !productImageNew.isEmpty()) {
+            List<FileMetadata> fileMetadataList = socialService.uploadImages(productImageNew);
+            
+            if (fileMetadataList != null && !fileMetadataList.isEmpty()) {
+                log.info("Uploaded {} new images", fileMetadataList.size());
+                
+                for (FileMetadata newImageMetadata : fileMetadataList) {
+                    // Check if this image already exists to avoid duplicates
+                    boolean exists = productImageListOld.stream()
+                            .anyMatch(oldImage -> oldImage.getUrl().equals(newImageMetadata.getUrl()));
+                    
+                    if (!exists) {
+                        ProductImage newImage = ProductImage.builder()
+                                .url(newImageMetadata.getUrl())
+                                .product(product)
+                                .name(newImageMetadata.getName())
+                                .type(newImageMetadata.getMime())
+                                .build();
+                        productImageListOld.add(newImage);
+                        log.info("Added new image: {}", newImageMetadata.getUrl());
+                    }
                 }
             }
         }
 
-        assert productImageListOld != null;
+        // Save all the image changes
         productImageRepository.saveAll(productImageListOld);
         productSaved.setImages(productImageListOld);
+        
+        // Log the final image count
+        log.info("Final product image count: {}", productImageListOld.size());
 
         productSaved.setProductCategories(productCategoryList);
 

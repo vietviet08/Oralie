@@ -69,18 +69,27 @@ public class ProductController {
 
   private final ProductRedisService productRedisService;
 
-  // store
-  @GetMapping("/store/products")
-  public ResponseEntity<ListResponse<ProductResponse>> getAllProducts(
-      @RequestParam(required = false, defaultValue = "0") int page,
-      @RequestParam(required = false, defaultValue = "10") int size,
-      @RequestParam(required = false, defaultValue = "id") String sortBy,
-      @RequestParam(required = false, defaultValue = "asc") String sort,
-      @RequestParam(required = false) String search,
-      @RequestParam(required = false) String category) throws JsonProcessingException {
+    //store
+    @GetMapping("/store/products")
+    public ResponseEntity<ListResponse<ProductResponse>> getAllProducts(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String sort,
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String price
+    ) throws JsonProcessingException {
+        // Check if we have price filtering
+        if (price != null && !price.isEmpty()) {
+            ListResponse<ProductResponse> productResponses = productService.getAllProductsWithFilter(page, size, sortBy, sort, search, category, price);
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(productResponses);
+        }
 
-    ListResponse<ProductResponse> productResponses = productRedisService.getAllProduct(page, size, sortBy, sort,
-        search);
+        // Use existing redis cache for non-filtered results
+        ListResponse<ProductResponse> productResponses = productRedisService.getAllProduct(page, size, sortBy, sort, search);
 
     if (productResponses == null || productResponses.getData() == null) {
       productResponses = productService.getAllProducts(page, size, sortBy, sort, search, category);
@@ -92,23 +101,42 @@ public class ProductController {
         .body(productResponses);
   }
 
-  @GetMapping("/store/categories")
-  public ResponseEntity<ListResponse<ProductResponse>> getAllProductsByBrandName(
-      @RequestParam(required = false, defaultValue = "0") int page,
-      @RequestParam(required = false, defaultValue = "10") int size,
-      @RequestParam(required = false, defaultValue = "id") String sortBy,
-      @RequestParam(required = false, defaultValue = "asc") String sort,
-      @RequestParam String category,
-      @RequestParam(required = false) String brand) {
-    if (brand == null || brand.isEmpty()) {
-      return ResponseEntity
-          .status(HttpStatus.OK)
-          .body(productService.getAllProductsByCategory(page, size, sortBy, sort, category));
+    @GetMapping("/store/categories")
+    public ResponseEntity<ListResponse<ProductResponse>> getAllProductsByBrandName(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String sort,
+            @RequestParam String category,
+            @RequestParam(required = false) String brand,
+            @RequestParam(required = false) String price
+    ) {
+        // Case 1: Only category with price filter
+        if ((brand == null || brand.isEmpty()) && price != null && !price.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(productService.getAllProductsByCategoryWithPrice(page, size, sortBy, sort, category, price));
+        }
+        
+        // Case 2: Only category filter
+        if (brand == null || brand.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(productService.getAllProductsByCategory(page, size, sortBy, sort, category));
+        }
+        
+        // Case 3: Category and brand with price filter
+        if (price != null && !price.isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(productService.getAllProductsByBrandAndPrice(page, size, sortBy, sort, category, brand, price));
+        }
+        
+        // Case 4: Category and brand filter
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.getAllProductsByBrand(page, size, sortBy, sort, category, brand));
     }
-    return ResponseEntity
-        .status(HttpStatus.OK)
-        .body(productService.getAllProductsByBrand(page, size, sortBy, sort, category, brand));
-  }
 
   @GetMapping("/store/products/id/{id}")
   public ResponseEntity<ProductResponse> getProductById(@PathVariable("id") Long id) {

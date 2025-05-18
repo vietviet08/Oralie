@@ -15,5 +15,4 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
 
     Optional<Order> findByPayId(String paypalId);
 
-
 }

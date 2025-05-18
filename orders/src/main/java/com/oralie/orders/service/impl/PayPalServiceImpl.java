@@ -95,6 +95,24 @@ public class PayPalServiceImpl implements PayPalService {
 
     public Payment executePayment(String paymentId, String payerId) throws PayPalRESTException {
         try {
+            log.info("Executing payment with ID: {} and payerID: {}", paymentId, payerId);
+            
+            // Check if payment has already been successfully processed
+            try {
+                boolean paymentAlreadyProcessed = orderService.checkIfOrderPaymentProcessed(paymentId);
+                if (paymentAlreadyProcessed) {
+                    log.info("Payment {} already processed, returning success response", paymentId);
+                    // Return a simplified Payment object with the ID
+                    Payment alreadyProcessedPayment = new Payment();
+                    alreadyProcessedPayment.setId(paymentId);
+                    alreadyProcessedPayment.setState("approved");
+                    return alreadyProcessedPayment;
+                }
+            } catch (Exception e) {
+                log.warn("Error checking if payment was already processed: {}", e.getMessage());
+                // Continue with payment execution even if check fails
+            }
+            
             Payment payment = new Payment();
             payment.setId(paymentId);
             PaymentExecution paymentExecution = new PaymentExecution();
@@ -103,11 +121,50 @@ public class PayPalServiceImpl implements PayPalService {
             apiContext.setConfigurationMap(getDefaultConfigurationMap());
 
             Payment paymentExecuted = payment.execute(apiContext, paymentExecution);
+            log.info("Payment executed successfully with state: {}", paymentExecuted.getState());
 
+            // Update order payment status
             orderService.updateOrderPaymentStatusByPayPalId(paymentExecuted.getId(), paymentExecuted.getState());
+            
+            // Clear user's cart after successful payment
+            try {
+                cartService.clearCart();
+                log.info("User's cart cleared after successful PayPal payment");
+            } catch (Exception e) {
+                log.error("Failed to clear cart after PayPal payment: {}", e.getMessage());
+                // Don't fail the whole operation if cart clearing fails
+            }
 
             return paymentExecuted;
         } catch (PayPalRESTException e) {
+            log.error("PayPal error executing payment: {}", e.getMessage());
+            
+            // Check if it's the "PAYMENT_ALREADY_DONE" error
+            if (e.getMessage() != null && e.getMessage().contains("PAYMENT_ALREADY_DONE")) {
+                log.info("Payment already completed for ID: {}", paymentId);
+                
+                try {
+                    // Mark the order as paid if it's not already
+                    orderService.updateOrderPaymentStatusByPayPalId(paymentId, "approved");
+                    
+                    // Clear user's cart here too for PAYMENT_ALREADY_DONE case
+                    try {
+                        cartService.clearCart();
+                        log.info("User's cart cleared after handling PAYMENT_ALREADY_DONE");
+                    } catch (Exception cartException) {
+                        log.error("Failed to clear cart for PAYMENT_ALREADY_DONE: {}", cartException.getMessage());
+                    }
+                    
+                    // Return a simplified Payment object with the ID
+                    Payment alreadyDonePayment = new Payment();
+                    alreadyDonePayment.setId(paymentId);
+                    alreadyDonePayment.setState("approved");
+                    return alreadyDonePayment;
+                } catch (Exception innerException) {
+                    log.error("Error updating order after PAYMENT_ALREADY_DONE: {}", innerException.getMessage());
+                }
+            }
+            
             throw new PayPalRESTException("Error executing payment", e);
         }
     }
@@ -116,6 +173,8 @@ public class PayPalServiceImpl implements PayPalService {
     @Transactional
     public OrderResponse placeOrderWithoutPayPal(OrderRequest orderRequest) throws PaymentProcessingException {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        
+        log.info("Starting PayPal payment process for user: {}", userId);
 
         Order order = Order.builder()
                 .userId(userId)
@@ -184,15 +243,28 @@ public class PayPalServiceImpl implements PayPalService {
                 order.setPaymentStatus(PaymentStatus.PENDING);
                 order.setStatus(OrderStatus.PROCESSING);
                 order.setPaymentMethod(PaymentMethod.PAYPAL.name());
+                
+                // Save the order to ensure we have an ID
+                Order savedOrder = orderRepository.save(order);
+                
+                // Note: We don't clear the cart here because the payment is not yet completed
+                // Cart will be cleared after payment is executed
+                
+                OrderResponse response = mapToOrderResponse(savedOrder);
+                
+                log.info("Successfully created PayPal order: {}, with paypal link: {}", 
+                         response.getId(), response.getLinkPaypalToExecute());
+                
+                return response;
 
             } catch (HttpClientErrorException.BadRequest e) {
-                log.error("Bad request for orderId: {} error: ", order.getId(), e);
+                log.error("Bad request for orderId: {} error: {}", order.getId(), e.getMessage());
                 order.setPaymentStatus(PaymentStatus.FAILED);
                 order.setStatus(OrderStatus.FAILED);
                 orderRepository.save(order);
                 throw new PaymentProcessingException("Bad request: " + e.getMessage());
             } catch (Exception e) {
-                log.error("Payment failed for orderId: {} error: ", order.getId(), e);
+                log.error("Payment failed for orderId: {} error: {}", order.getId(), e.getMessage());
                 order.setPaymentStatus(PaymentStatus.FAILED);
                 order.setStatus(OrderStatus.FAILED);
                 orderRepository.save(order);
@@ -200,24 +272,8 @@ public class PayPalServiceImpl implements PayPalService {
             }
         }
 
-//        OrderPlaceEvent orderPlacedEvent = OrderPlaceEvent.builder()
-//                .orderId(order.getId())
-//                .userId(order.getUserId())
-//                .email(order.getAddress().getEmail())
-//                .totalPrice(order.getTotalPrice())
-//                .build();
-
-//        log.info("Start- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
-
-//        kafkaTemplate.send("order-placed-topic", gson.toJson(orderPlacedEvent));
-
-//        log.info("End- Sending OrderPlacedEvent {} to Kafka Topic", orderPlacedEvent);
-
-        //subtract quantity product in inventory service
-
-//        cartService.clearCart();
-
-        return mapToOrderResponse(order);
+        Order savedOrder = orderRepository.save(order);
+        return mapToOrderResponse(savedOrder);
     }
 
     private String getAccessToken() throws PayPalRESTException {
@@ -232,6 +288,7 @@ public class PayPalServiceImpl implements PayPalService {
     }
 
     private OrderResponse mapToOrderResponse(Order order) {
+        log.debug("Mapping order to OrderResponse: {}", order.getId());
         return OrderResponse.builder()
                 .id(order.getId())
                 .userId(order.getUserId())
@@ -250,18 +307,21 @@ public class PayPalServiceImpl implements PayPalService {
                                 .quantity(orderItem.getQuantity())
                                 .totalPrice(orderItem.getTotalPrice())
                                 .isRated(orderItem.isRated())
+                                .id(orderItem.getId())
                                 .build())
                         .collect(Collectors.toList()))
                 .totalPrice(order.getTotalPrice())
                 .voucher(order.getVoucher())
                 .discount(order.getDiscount())
                 .shippingFee(order.getShippingFee())
-                .status(order.getStatus())
                 .shippingMethod(order.getShippingMethod())
                 .paymentMethod(order.getPaymentMethod())
                 .paymentStatus(order.getPaymentStatus())
+                .status(order.getStatus())
+                .payId(order.getPayId())
+                .linkPaypalToExecute(order.getLinkPaypalToExecute())
                 .note(order.getNote())
-                .createdAt(order.getCreatedAt().toString())
+                .createdAt(order.getCreatedAt() != null ? order.getCreatedAt().toString() : null)
                 .build();
     }
 

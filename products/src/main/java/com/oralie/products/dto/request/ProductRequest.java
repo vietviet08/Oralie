@@ -41,6 +41,10 @@ public class ProductRequest {
 
     private List<MultipartFile> images;
 
+    private List<String> deletedImageUrls;
+    
+    private List<String> existingImageUrls;
+
     private List<ProductOptionRequest> options;
 
     private List<ProductSpecificationRequest> specifications;
@@ -49,7 +53,7 @@ public class ProductRequest {
     @DecimalMin(value = "0.0", message = "Price must be greater than 0")
     private Double price;
 
-    private Double discount;
+    private Double discount; 
 
     @NotBlank(message = "Quantity is required")
     @DecimalMin(value = "0", message = "Quantity must be greater than 0")

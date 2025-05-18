@@ -22,6 +22,19 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                   @Param("category") String category
     );
 
+    @Query("SELECT p FROM Product p " +
+            "JOIN p.productCategories pc JOIN pc.category c " +
+            "WHERE (:search IS NULL OR p.name LIKE %:search% OR p.description LIKE %:search%) " +
+            "AND (:category IS NULL OR c.slug = :category) " +
+            "AND (:minPrice IS NULL OR p.price >= :minPrice) " +
+            "AND (:maxPrice IS NULL OR p.price <= :maxPrice)")
+    Page<Product> findAllProductsWithFilter(Pageable pageable,
+                                 @Param("search") String search,
+                                 @Param("category") String category,
+                                 @Param("minPrice") Double minPrice,
+                                 @Param("maxPrice") Double maxPrice
+    );
+
 //    @Query(value = "SELECT p FROM Product p" +
 //            " JOIN p.productCategories pc WHERE pc.category.name = :categoryName " +
 //            "AND p.brand.name = :brandName")
@@ -40,12 +53,36 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
                                      @Param("categorySlug") String categorySlug,
                                      @Param("brandSlug") String brandSlug);
 
+    @Query(value = "SELECT p FROM Product p" +
+            " JOIN p.productCategories pc " +
+            "WHERE pc.category.slug = :categorySlug " +
+            "AND p.brand.slug IN :brandSlugs " +
+            "AND (:minPrice IS NULL OR p.price >= :minPrice) " +
+            "AND (:maxPrice IS NULL OR p.price <= :maxPrice)")
+    Page<Product> findAllByBrandsAndCategorySlugWithPriceRange(
+            Pageable pageable,
+            @Param("categorySlug") String categorySlug,
+            @Param("brandSlugs") List<String> brandSlugs,
+            @Param("minPrice") Double minPrice,
+            @Param("maxPrice") Double maxPrice);
+
     @Query(value = "SELECT p FROM Product p WHERE p.brand.slug = :brandSlug")
     Page<Product> findAllByBrandSlug(Pageable pageable, @Param("brandSlug") String brandSlug);
 
     @Query("SELECT p FROM Product p JOIN p.productCategories pc " +
             "JOIN pc.category c WHERE c.slug = :categorySlug")
     Page<Product> findAllByCategorySlug(Pageable pageable, @Param("categorySlug") String categorySlug);
+
+    @Query("SELECT p FROM Product p JOIN p.productCategories pc " +
+            "JOIN pc.category c " +
+            "WHERE c.slug = :categorySlug " +
+            "AND (:minPrice IS NULL OR p.price >= :minPrice) " +
+            "AND (:maxPrice IS NULL OR p.price <= :maxPrice)")
+    Page<Product> findAllByCategorySlugWithPriceRange(
+            Pageable pageable, 
+            @Param("categorySlug") String categorySlug,
+            @Param("minPrice") Double minPrice,
+            @Param("maxPrice") Double maxPrice);
 
     @Query("SELECT p FROM Product p WHERE p.slug = :slug")
     Optional<Product> findBySlug(String slug);

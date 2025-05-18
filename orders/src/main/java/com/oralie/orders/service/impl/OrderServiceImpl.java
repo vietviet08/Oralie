@@ -48,6 +48,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -337,11 +338,29 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean checkOrderItemRated(Long orderItemId) {
-        OrderItem orderItem = orderItemRepository.findOrderItemById(orderItemId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order item not found", "id", orderItemId + ""));
-        Order order = orderItem.getOrder();
+        OrderItem orderItem = orderItemRepository.findById(orderItemId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order item not found", "id", orderItemId.toString()));
+        return orderItem.isRated();
+    }
 
-        return orderItem.isRated() || !order.getStatus().equals(OrderStatus.DELIVERED);
+    @Override
+    public boolean checkIfOrderPaymentProcessed(String paypalId) {
+        Optional<Order> orderOpt = orderRepository.findByPayId(paypalId);
+        
+        // If no order found with this payId, payment hasn't been processed
+        if (orderOpt.isEmpty()) {
+            log.debug("No order found with PayPal ID: {}", paypalId);
+            return false;
+        }
+        
+        Order order = orderOpt.get();
+        boolean hasProcessedPayment = 
+            PaymentStatus.COMPLETED.equals(order.getPaymentStatus()) || 
+            "approved".equalsIgnoreCase(order.getPaymentStatus()) ||
+            "completed".equalsIgnoreCase(order.getPaymentStatus());
+        
+        log.debug("Payment status for PayPal ID {}: processed={}", paypalId, hasProcessedPayment);
+        return hasProcessedPayment;
     }
 
     private OrderResponse mapToOrderResponse(Order order) {
