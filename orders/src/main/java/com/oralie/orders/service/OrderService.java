@@ -41,4 +41,11 @@ public interface OrderService {
     void updateRatedStatus(Long orderItemId);
 
     boolean checkOrderItemRated(Long orderItemId);
+
+    /**
+     * Check if a PayPal payment has already been processed
+     * @param paypalId The PayPal ID to check
+     * @return true if the payment has already been processed, false otherwise
+     */
+    boolean checkIfOrderPaymentProcessed(String paypalId);
 }

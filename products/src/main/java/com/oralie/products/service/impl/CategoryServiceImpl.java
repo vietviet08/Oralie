@@ -147,11 +147,14 @@ public class CategoryServiceImpl implements CategoryService {
             if (category.getImage() != null) {
                 log.info("Starting delete old image: {}", category.getImage());
 
-                var responseS3 = socialService.deleteFile(category.getImage());
-
-                log.info("Message from s3FeignClient: {}", responseS3);
-
-                log.info("Deleted old image: {}", category.getImage());
+                try {
+                    var responseS3 = socialService.deleteFile(category.getImage());
+                    log.info("Message from s3FeignClient: {}", responseS3);
+                    log.info("Deleted old image: {}", category.getImage());
+                } catch (Exception e) {
+                    // Log the error but continue with the update
+                    log.error("Failed to delete old image from S3, continuing with update: {}", e.getMessage());
+                }
             }
 
             FileMetadata fileMetadata = socialService.uploadImage(categoryRequest.getImage());

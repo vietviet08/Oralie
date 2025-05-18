@@ -71,7 +71,7 @@ services:
     environment:
       MYSQL_DATABASE: oralie_db
     volumes:
-      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
+      - ./mysql:/docker-entrypoint-initdb.d
       - mysql_data:/var/lib/mysql
     extends:
       file: common-config.yml
@@ -343,7 +343,6 @@ services:
       file: common-config.yml
       service: network-deploy-service
 
-
   gateway:
     image: nginx:latest
     container_name: gateway
@@ -414,7 +413,6 @@ services:
     extends:
       file: common-config.yml
       service: network-deploy-service
-
 
   configserver:
     image: vietquoc2408/configserver-oralie:${LATEST_VERSION}

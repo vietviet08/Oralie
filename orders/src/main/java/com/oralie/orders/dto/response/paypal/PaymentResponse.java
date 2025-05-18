@@ -13,4 +13,5 @@ public class PaymentResponse {
     private PayerResponse payer;
     private RedirectUrlsResponse redirectUrls;
     private List<TransactionResponse> transactions;
+    private boolean cartCleared;
 }

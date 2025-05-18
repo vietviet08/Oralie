@@ -61,7 +61,7 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
     }
 
     @Retry(name = "restRetry")
-    @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleFileMetadataFallback")
+    @CircuitBreaker(name = "restCircuitBreaker", fallbackMethod = "handleFileMetadataListFallback")
     public List<FileMetadata> uploadImages(List<MultipartFile> images) {
         final String jwt = ((Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
                 .getTokenValue();
@@ -99,7 +99,7 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
                 .getTokenValue();
         final URI url = UriComponentsBuilder
                 .fromHttpUrl(URL_SOCIAL)
-                .path("/dash/social/delete/" + fileName)
+                .path("/dash/social/delete/{fileName}")
                 .buildAndExpand(fileName)
                 .toUri();
 
@@ -118,11 +118,15 @@ public class SocialService extends AbstractCircuitBreakFallbackHandler {
         return response.getBody();
     }
 
-    protected List<FileMetadata> handleFileMetadataFallback(Throwable throwable) throws Throwable {
+    protected FileMetadata handleFileMetadataFallback(MultipartFile image, Throwable throwable) throws Throwable {
         return handleTypedFallback(throwable);
     }
 
-    protected List<FileMetadata> handleStringFallback(Throwable throwable) throws Throwable {
+    protected List<FileMetadata> handleFileMetadataListFallback(List<MultipartFile> images, Throwable throwable) throws Throwable {
+        return handleTypedFallback(throwable);
+    }
+
+    protected String handleStringFallback(String fileName, Throwable throwable) throws Throwable {
         return handleTypedFallback(throwable);
     }
 }

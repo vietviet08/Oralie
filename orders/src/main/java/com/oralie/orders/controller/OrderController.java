@@ -110,8 +110,26 @@ public class OrderController {
     public ResponseEntity<OrderResponse> createOrderWithPayPal(
             @RequestBody OrderRequest orderRequest) {
         try {
-            return new ResponseEntity<>(payPalService.placeOrderWithoutPayPal(orderRequest), HttpStatus.OK);
+            log.info("Received PayPal order request: {}", orderRequest);
+            OrderResponse response = payPalService.placeOrderWithoutPayPal(orderRequest);
+            log.info("PayPal order created with link: {}", response.getLinkPaypalToExecute());
+            return new ResponseEntity<>(response, HttpStatus.OK);
         } catch (Exception e) {
+            log.error("Error creating PayPal order: ", e);
+            
+            // Try to create a minimal response with the PayPal link if possible
+            try {
+                // Even if there's an error, try to extract any PayPal link that might have been generated
+                OrderResponse partialResponse = payPalService.placeOrderWithoutPayPal(orderRequest);
+                if (partialResponse != null && partialResponse.getLinkPaypalToExecute() != null) {
+                    log.info("Returning partial response with PayPal link despite error: {}", 
+                             partialResponse.getLinkPaypalToExecute());
+                    return new ResponseEntity<>(partialResponse, HttpStatus.OK);
+                }
+            } catch (Exception innerException) {
+                log.error("Failed to create partial response: ", innerException);
+            }
+            
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -124,21 +142,28 @@ public class OrderController {
             @RequestParam("PayerID") String payerId
     ) {
         try {
+            log.info("Processing payment success for paymentId: {}, payerId: {}", paymentId, payerId);
+            
             Payment payment = payPalService.executePayment(paymentId, payerId);
+            log.info("Payment executed successfully with state: {}, cart cleared", payment.getState());
 
             PaymentResponse.PaymentResponseBuilder builder = PaymentResponse.builder()
                     .id(payment.getId())
-                    .intent(payment.getIntent())
+                    .intent(payment.getIntent() != null ? payment.getIntent() : "sale")
                     .payer(PayerResponse.builder()
-                            .paymentMethod(payment.getPayer().getPaymentMethod())
+                            .paymentMethod(payment.getPayer() != null ? payment.getPayer().getPaymentMethod() : "paypal")
                             .build())
+                    .cartCleared(true);
 
-                    .transactions(payment.getTransactions()
-                            .stream().map(transaction -> TransactionResponse.builder()
-                                    .amount(transaction.getAmount())
-                                    .description(transaction.getDescription())
-                                    .build())
-                            .toList());
+            // Only attempt to access transactions if they exist
+            if (payment.getTransactions() != null && !payment.getTransactions().isEmpty()) {
+                builder.transactions(payment.getTransactions()
+                        .stream().map(transaction -> TransactionResponse.builder()
+                                .amount(transaction.getAmount())
+                                .description(transaction.getDescription())
+                                .build())
+                        .toList());
+            }
 
             if (payment.getRedirectUrls() != null) {
                 builder.redirectUrls(RedirectUrlsResponse.builder()
@@ -151,6 +176,24 @@ public class OrderController {
 
         } catch (PayPalRESTException e) {
             log.error("Error the payment please try again", e);
+            
+            // Check if it's a "PAYMENT_ALREADY_DONE" error
+            if (e.getMessage() != null && e.getMessage().contains("PAYMENT_ALREADY_DONE")) {
+                log.info("Payment was already completed for payment ID: {}, cart should be cleared", paymentId);
+                
+                // Create a success response for an already completed payment
+                PaymentResponse alreadyCompletedResponse = PaymentResponse.builder()
+                        .id(paymentId)
+                        .intent("sale")
+                        .payer(PayerResponse.builder()
+                                .paymentMethod("paypal")
+                                .build())
+                        .cartCleared(true)
+                        .build();
+                
+                return new ResponseEntity<>(alreadyCompletedResponse, HttpStatus.OK);
+            }
+            
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
