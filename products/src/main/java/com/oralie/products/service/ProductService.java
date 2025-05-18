@@ -9,10 +9,16 @@ import java.util.List;
 public interface ProductService {
 
     ListResponse<ProductResponse> getAllProducts(int page, int size, String sortBy, String sort, String search, String category);
+    
+    ListResponse<ProductResponse> getAllProductsWithFilter(int page, int size, String sortBy, String sort, String search, String category, String price);
 
-    ListResponse<ProductResponse> getAllProductsByCategory( int page, int size, String sortBy, String sort, String categorySlug);
+    ListResponse<ProductResponse> getAllProductsByCategory(int page, int size, String sortBy, String sort, String categorySlug);
+    
+    ListResponse<ProductResponse> getAllProductsByCategoryWithPrice(int page, int size, String sortBy, String sort, String categorySlug, String price);
 
-    ListResponse<ProductResponse> getAllProductsByBrand( int page, int size, String sortBy, String sort,String categorySlug, String brandSlug);
+    ListResponse<ProductResponse> getAllProductsByBrand(int page, int size, String sortBy, String sort, String categorySlug, String brandSlug);
+    
+    ListResponse<ProductResponse> getAllProductsByBrandAndPrice(int page, int size, String sortBy, String sort, String categorySlug, String brandSlug, String price);
 
     ProductResponse getProductById(Long id);
 

@@ -65,6 +65,75 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ListResponse<ProductResponse> getAllProductsWithFilter(int page, int size, String sortBy, String sort, 
+                                                               String search, String category, String price) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+        
+        // Parse price range from the format "min-max" (e.g., "100-500")
+        Double minPrice = null;
+        Double maxPrice = null;
+        
+        if (price != null && !price.isEmpty()) {
+            // Handle multiple price ranges (separated by dots)
+            if (price.contains(".")) {
+                // For multiple price filters, we take the min of all mins and max of all maxes
+                String[] priceRanges = price.split("\\.");
+                double minOfMins = Double.MAX_VALUE;
+                double maxOfMaxes = 0.0;
+                
+                for (String priceRange : priceRanges) {
+                    String[] parts = priceRange.split("-");
+                    if (parts.length == 2) {
+                        try {
+                            double min = Double.parseDouble(parts[0]);
+                            double max = Double.parseDouble(parts[1]);
+                            
+                            if (min < minOfMins) {
+                                minOfMins = min;
+                            }
+                            
+                            if (max > maxOfMaxes) {
+                                maxOfMaxes = max;
+                            }
+                        } catch (NumberFormatException e) {
+                            log.error("Error parsing price range: {}", e.getMessage());
+                        }
+                    }
+                }
+                
+                minPrice = minOfMins != Double.MAX_VALUE ? minOfMins : null;
+                maxPrice = maxOfMaxes > 0 ? maxOfMaxes : null;
+            } else {
+                // Single price range
+                String[] parts = price.split("-");
+                if (parts.length == 2) {
+                    try {
+                        minPrice = Double.parseDouble(parts[0]);
+                        maxPrice = Double.parseDouble(parts[1]);
+                    } catch (NumberFormatException e) {
+                        log.error("Error parsing price range: {}", e.getMessage());
+                    }
+                }
+            }
+        }
+        
+        Page<Product> pageProducts = productRepository.findAllProductsWithFilter(pageable, search, category, minPrice, maxPrice);
+        List<Product> products = pageProducts.getContent();
+        
+        return ListResponse
+                .<ProductResponse>builder()
+                .data(mapToProductResponseList(products))
+                .pageNo(pageProducts.getNumber())
+                .pageSize(pageProducts.getSize())
+                .totalElements((int) pageProducts.getTotalElements())
+                .totalPages(pageProducts.getTotalPages())
+                .isLast(pageProducts.isLast())
+                .build();
+    }
+
+    @Override
     public ListResponse<ProductResponse> getAllProductsByCategory(int page, int size, String sortBy, String sort,
                                                                   String categorySlug) {
         Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
@@ -73,6 +142,76 @@ public class ProductServiceImpl implements ProductService {
         Page<Product> pageProducts = productRepository.findAllByCategorySlug(pageable, categorySlug);
         List<Product> products = pageProducts.getContent();
 
+        return ListResponse
+                .<ProductResponse>builder()
+                .data(mapToProductResponseList(products))
+                .pageNo(pageProducts.getNumber())
+                .pageSize(pageProducts.getSize())
+                .totalElements((int) pageProducts.getTotalElements())
+                .totalPages(pageProducts.getTotalPages())
+                .isLast(pageProducts.isLast())
+                .build();
+    }
+
+    @Override
+    public ListResponse<ProductResponse> getAllProductsByCategoryWithPrice(int page, int size, String sortBy, String sort,
+                                                                       String categorySlug, String price) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+        
+        // Parse price range
+        Double minPrice = null;
+        Double maxPrice = null;
+        
+        if (price != null && !price.isEmpty()) {
+            // Handle multiple price ranges (separated by dots)
+            if (price.contains(".")) {
+                // For multiple price filters, we take the min of all mins and max of all maxes
+                String[] priceRanges = price.split("\\.");
+                double minOfMins = Double.MAX_VALUE;
+                double maxOfMaxes = 0.0;
+                
+                for (String priceRange : priceRanges) {
+                    String[] parts = priceRange.split("-");
+                    if (parts.length == 2) {
+                        try {
+                            double min = Double.parseDouble(parts[0]);
+                            double max = Double.parseDouble(parts[1]);
+                            
+                            if (min < minOfMins) {
+                                minOfMins = min;
+                            }
+                            
+                            if (max > maxOfMaxes) {
+                                maxOfMaxes = max;
+                            }
+                        } catch (NumberFormatException e) {
+                            log.error("Error parsing price range: {}", e.getMessage());
+                        }
+                    }
+                }
+                
+                minPrice = minOfMins != Double.MAX_VALUE ? minOfMins : null;
+                maxPrice = maxOfMaxes > 0 ? maxOfMaxes : null;
+            } else {
+                // Single price range
+                String[] parts = price.split("-");
+                if (parts.length == 2) {
+                    try {
+                        minPrice = Double.parseDouble(parts[0]);
+                        maxPrice = Double.parseDouble(parts[1]);
+                    } catch (NumberFormatException e) {
+                        log.error("Error parsing price range: {}", e.getMessage());
+                    }
+                }
+            }
+        }
+        
+        Page<Product> pageProducts = productRepository.findAllByCategorySlugWithPriceRange(
+                pageable, categorySlug, minPrice, maxPrice);
+        List<Product> products = pageProducts.getContent();
+        
         return ListResponse
                 .<ProductResponse>builder()
                 .data(mapToProductResponseList(products))
@@ -97,6 +236,88 @@ public class ProductServiceImpl implements ProductService {
         }
         List<Product> products = pageProducts.getContent();
 
+        return ListResponse
+                .<ProductResponse>builder()
+                .data(mapToProductResponseList(products))
+                .pageNo(pageProducts.getNumber())
+                .pageSize(pageProducts.getSize())
+                .totalElements((int) pageProducts.getTotalElements())
+                .totalPages(pageProducts.getTotalPages())
+                .isLast(pageProducts.isLast())
+                .build();
+    }
+
+    @Override
+    public ListResponse<ProductResponse> getAllProductsByBrandAndPrice(int page, int size, String sortBy, String sort,
+                                                                   String categorySlug, String brandSlug, String price) {
+        Sort sortObj = sort.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+        
+        // Parse price range
+        Double minPrice = null;
+        Double maxPrice = null;
+        
+        if (price != null && !price.isEmpty()) {
+            // Handle multiple price ranges (separated by dots)
+            if (price.contains(".")) {
+                // For multiple price filters, we take the min of all mins and max of all maxes
+                String[] priceRanges = price.split("\\.");
+                double minOfMins = Double.MAX_VALUE;
+                double maxOfMaxes = 0.0;
+                
+                for (String priceRange : priceRanges) {
+                    String[] parts = priceRange.split("-");
+                    if (parts.length == 2) {
+                        try {
+                            double min = Double.parseDouble(parts[0]);
+                            double max = Double.parseDouble(parts[1]);
+                            
+                            if (min < minOfMins) {
+                                minOfMins = min;
+                            }
+                            
+                            if (max > maxOfMaxes) {
+                                maxOfMaxes = max;
+                            }
+                        } catch (NumberFormatException e) {
+                            log.error("Error parsing price range: {}", e.getMessage());
+                        }
+                    }
+                }
+                
+                minPrice = minOfMins != Double.MAX_VALUE ? minOfMins : null;
+                maxPrice = maxOfMaxes > 0 ? maxOfMaxes : null;
+            } else {
+                // Single price range
+                String[] parts = price.split("-");
+                if (parts.length == 2) {
+                    try {
+                        minPrice = Double.parseDouble(parts[0]);
+                        maxPrice = Double.parseDouble(parts[1]);
+                    } catch (NumberFormatException e) {
+                        log.error("Error parsing price range: {}", e.getMessage());
+                    }
+                }
+            }
+        }
+        
+        // Handle multiple brands (separated by dots)
+        List<String> brandSlugs = new ArrayList<>();
+        if (brandSlug != null && !brandSlug.isEmpty()) {
+            if (brandSlug.contains(".")) {
+                String[] brands = brandSlug.split("\\.");
+                Collections.addAll(brandSlugs, brands);
+            } else {
+                brandSlugs.add(brandSlug);
+            }
+        }
+        
+        Page<Product> pageProducts = productRepository.findAllByBrandsAndCategorySlugWithPriceRange(
+                pageable, categorySlug, brandSlugs, minPrice, maxPrice);
+        
+        List<Product> products = pageProducts.getContent();
+        
         return ListResponse
                 .<ProductResponse>builder()
                 .data(mapToProductResponseList(products))
