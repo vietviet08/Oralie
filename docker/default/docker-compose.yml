@@ -711,6 +711,35 @@ services:
       file: common-config.yml
       service: microservice-eurekaserver-config
 
+  frontend:
+    image: oralie-frontend:latest
+    container_name: oralie-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_DEBUG_HYDRATION: ${NEXT_DEBUG_HYDRATION}
+      NEXT_PUBLIC_API_URL: "http://gatewayserver:8072"
+      NEXT_PUBLIC_URL: "http://localhost:3000"
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      KEYCLOAK_URL: "http://keycloak:7080"
+      KEYCLOAK_DOMAIN: "http://keycloak:7080/realms/oralie"
+      KEYCLOAK_END_SESSION_URL: "http://keycloak:7080/realms/oralie/protocol/openid-connect/logout"
+      KEYCLOAK_REFRESH_TOKEN_URL: "http://keycloak:7080/realms/oralie/protocol/openid-connect/token"
+      KEYCLOAK_STORE_CLIENT_ID: ${KEYCLOAK_STORE_CLIENT_ID}
+      KEYCLOAK_STORE_CLIENT_SECRET: ${KEYCLOAK_STORE_CLIENT_SECRET}
+      URL_AWS_S3: ${URL_AWS_S3}
+      URL_TT: ${URL_TT}
+      URL_PICTURE: ${URL_PICTURE}
+      NEXTAUTH_URL: ${NEXTAUTH_URL}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+    depends_on:
+      gatewayserver:
+        condition: service_healthy
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
 volumes:
   postgres_data:
   mysql_data:
