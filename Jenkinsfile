@@ -7,8 +7,8 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-account')
         DOCKERHUB_REPO = 'vietquoc2408'
-        LATEST_VERSION = '1.0.4'
-        NEXT_VERSION = '1.0.5'
+        LATEST_VERSION = '1.0.3'
+        NEXT_VERSION = '1.0.4'
     }
 
     stages {
