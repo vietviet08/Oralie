@@ -160,13 +160,13 @@ pipeline {
 
                     sh "docker push ${DOCKERHUB_REPO}/accounts-oralie:${NEXT_VERSION}"
 
-                    sh "docker push ${DOCKERHUB_REPO}/products-oralie:${NEXT_VERSION}"
+                    // sh "docker push ${DOCKERHUB_REPO}/products-oralie:${NEXT_VERSION}"
 
-                    sh "docker push ${DOCKERHUB_REPO}/carts-oralie:${NEXT_VERSION}"
+                    // sh "docker push ${DOCKERHUB_REPO}/carts-oralie:${NEXT_VERSION}"
 
-                    sh "docker push ${DOCKERHUB_REPO}/orders-oralie:${NEXT_VERSION}"
+                    // sh "docker push ${DOCKERHUB_REPO}/orders-oralie:${NEXT_VERSION}"
 
-                    sh "docker push ${DOCKERHUB_REPO}/notification-oralie:${NEXT_VERSION}"
+                    // sh "docker push ${DOCKERHUB_REPO}/notification-oralie:${NEXT_VERSION}"
 
                     // sh "docker push ${DOCKERHUB_REPO}/social-oralie:${NEXT_VERSION}"
 
