@@ -1211,7 +1211,7 @@ This project uses the following open-source libraries:
         <sub><b>Nguyen Quoc Viet</b></sub>
       </a><br />
       <sub>Project Lead & Backend Developer</sub><br />
-      📧 vietquoc@gmail.com
+      📧 vietvie203@gmail.com
     </td>
     <td align="center">
       <a href="#">
