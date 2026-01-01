@@ -18,6 +18,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgres/initdb.d:/docker-entrypoint-initdb.d
     extends:
       file: common-config.yml
       service: network-deploy-service
@@ -687,6 +688,46 @@ services:
       file: common-config.yml
       service: microservice-service-config-kafka
 
+  sonarqube:
+    image: sonarqube:10.4-community
+    container_name: sonarqube
+    hostname: sonarqube
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "9000:9000"
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://postgres:5432/sonarqube
+      SONAR_JDBC_USERNAME: ${POSTGRES_USER}
+      SONAR_JDBC_PASSWORD: ${POSTGRES_PASSWORD}
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+      - ./sonarqube/conf/elasticsearch.yml:/opt/sonarqube/elasticsearch/config/elasticsearch.yml:ro
+    ulimits:
+      nofile:
+        soft: 65536
+        hard: 65536
+    extra_hosts:
+      - "sonarqube:127.0.0.1"
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget --no-verbose --tries=1 --spider http://localhost:9000/api/system/status || exit 1",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
   gatewayserver:
     image: vietquoc2408/gatewayserver-oralie:${LATEST_VERSION}
     container_name: gatewayserver-oralie-ms
@@ -757,6 +798,9 @@ volumes:
   mysql_data:
   pgadmin:
   esdata:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
 
 networks:
   vietquoc:
