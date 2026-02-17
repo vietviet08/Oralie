@@ -1,22 +1,26 @@
 # Oralie - E-commerce Microservices Platform
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://jenkins.io/) 
-[![Coverage](https://img.shields.io/badge/coverage-90%25-green)](https://sonarcloud.io/) 
-[![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/vietviet08/Oralie/releases) 
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://jenkins.io/)
+[![Coverage](https://img.shields.io/badge/coverage-90%25-green)](https://sonarcloud.io/)
+[![Version](https://img.shields.io/badge/version-0.0.1--SNAPSHOT-blue)](https://github.com/vietviet08/Oralie/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Java](https://img.shields.io/badge/Java-17-orange)](https://www.oracle.com/java/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.1-green)](https://spring.io/projects/spring-boot)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3-green)](https://spring.io/projects/spring-boot)
+[![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2023.0.3-blue)](https://spring.io/projects/spring-cloud)
 
 > A modern, scalable e-commerce platform built with microservices architecture, featuring comprehensive product management, shopping cart, order processing, payment integration, and advanced DevOps monitoring capabilities.
 
 ---
 
 ## Table of Contents
+
 - [Description](#description)
 - [Features](#features)
 - [Architecture](#architecture)
+- [Tech Stack](#tech-stack)
 - [Screenshots](#screenshots)
-- [Installation & Setup](#installation--setup)
+- [Installation \& Setup](#installation--setup)
+- [Service Ports](#service-ports)
 - [Usage](#usage)
 - [Configuration](#configuration)
 - [Project Structure](#project-structure)
@@ -25,72 +29,190 @@
 - [Deployment](#deployment)
 - [Contributing](#contributing)
 - [License](#license)
-- [Authors & Maintainers](#authors--maintainers)
+- [Authors \& Maintainers](#authors--maintainers)
 - [Acknowledgments](#acknowledgments)
 
 ---
 
 ## Description
 
-Oralie is a comprehensive e-commerce platform designed with modern microservices architecture. The platform provides a complete online shopping experience with features including product catalog management, shopping cart functionality, order processing, payment integration, user authentication, and real-time notifications.
+Oralie is a comprehensive e-commerce platform designed with modern microservices architecture. The platform provides a complete online shopping experience with features including product catalog management, shopping cart functionality, order processing, payment integration (PayPal), user authentication (Keycloak), real-time notifications, full-text search (Elasticsearch), and a Next.js storefront.
 
-Built with Spring Boot and Spring Cloud ecosystem, Oralie emphasizes scalability, maintainability, and observability. The platform integrates industry-standard DevOps practices including containerization, service discovery, API gateway, centralized configuration, monitoring, and logging.
+Built with **Spring Boot 3.3** and **Spring Cloud 2023.0.3**, Oralie emphasizes scalability, maintainability, and observability through distributed tracing (OpenTelemetry + Tempo), centralized logging (Loki + Grafana Alloy), and metrics collection (Prometheus + Grafana).
 
 **Key Objectives:**
+
 - Provide a scalable and maintainable e-commerce solution
-- Demonstrate microservices best practices
-- Integrate modern DevOps and monitoring tools
-- Support high availability and fault tolerance
-- Enable easy deployment and scaling
+- Demonstrate microservices best practices with Spring Cloud ecosystem
+- Integrate modern DevOps and full-stack observability tooling
+- Support event-driven architecture with Apache Kafka & Debezium CDC
+- Enable easy deployment with Docker Compose
+
+---
 
 ## Features
 
-### 🛍️ Core E-commerce Features
-- **Product Management**: Complete product catalog with categories, pricing, and inventory
-- **Shopping Cart**: Add, remove, and manage items with real-time updates
-- **Order Processing**: End-to-end order management from creation to fulfillment
-- **Payment Integration**: Secure payment processing and transaction management
-- **User Authentication**: Comprehensive user registration, login, and profile management
-- **Search & Filter**: Advanced product search and filtering capabilities
+### Core E-commerce
 
-### 🏗️ Technical Features
-- **Microservices Architecture**: Loosely coupled services for better scalability
-- **Service Discovery**: Automatic service registration and discovery with Eureka
-- **API Gateway**: Centralized routing and load balancing
-- **Configuration Management**: Centralized configuration with Spring Cloud Config
-- **Authentication & Authorization**: OAuth2/JWT with Keycloak integration
-- **Real-time Notifications**: Event-driven notification system
+- **Product Management** — Complete product catalog with categories, pricing, inventory, image upload (Cloudinary), and Excel import/export
+- **Shopping Cart** — Add, remove, and manage items with real-time updates
+- **Order Processing** — End-to-end order management from creation to fulfillment
+- **Payment Integration** — PayPal payment processing and transaction management
+- **User Authentication** — OAuth2/OIDC with Keycloak, JWT-based security
+- **Full-Text Search** — Elasticsearch-powered product search with Kafka-synced indexing
+- **Ratings & Reviews** — Product rating and review system
+- **Media Storage** — AWS S3 integration for user-uploaded media
+- **Notifications** — Kafka-driven email notifications with Thymeleaf templates
 
-### 📊 Monitoring & Observability
-- **Metrics Collection**: Prometheus for metrics aggregation
-- **Visualization**: Grafana dashboards for monitoring
-- **Distributed Tracing**: Request tracing across microservices
-- **Centralized Logging**: Log aggregation with Loki
-- **Health Checks**: Application and infrastructure health monitoring
+### Technical Highlights
 
-### 🚀 Planned Features
-- **Recommendation Engine**: AI-powered product recommendations
-- **Product Reviews & Ratings**: Customer feedback system
-- **Live Chat Support**: Real-time customer support
-- **Mobile App**: Native mobile applications
-- **Multi-tenant Support**: Support for multiple vendors
-- **Advanced Analytics**: Business intelligence and reporting
+- **Microservices Architecture** — 12 independently deployable services
+- **Service Discovery** — Netflix Eureka for automatic registration and discovery
+- **API Gateway** — Spring Cloud Gateway with rate limiting (Redis-backed) and centralized routing
+- **Centralized Configuration** — Spring Cloud Config Server with Git-backed configs
+- **Circuit Breaker** — Resilience4j for fault tolerance
+- **Inter-service Communication** — OpenFeign declarative REST clients
+- **Event-Driven Architecture** — Apache Kafka for asynchronous messaging; Debezium for Change Data Capture (CDC)
+- **Caching** — Redis for product data and gateway rate limiting
+- **API Docs** — SpringDoc OpenAPI (Swagger UI) per service
+
+### Monitoring & Observability
+
+- **Metrics** — Prometheus + Micrometer for metrics collection
+- **Dashboards** — Grafana for visualization
+- **Distributed Tracing** — OpenTelemetry Java Agent → Grafana Tempo
+- **Centralized Logging** — Grafana Alloy → Loki (read/write/backend mode)
+- **Health Checks** — Spring Boot Actuator readiness/liveness probes
+- **Code Quality** — SonarQube for static analysis
+
+### Planned Features
+
+- Recommendation engine (AI-powered)
+- Live chat support
+- Native mobile applications
+- Multi-tenant / multi-vendor support
+- Advanced analytics & reporting
+
+---
 
 ## Architecture
 
 ![System Architecture](assets/ms-ecommerce.drawio.png)
 
-The platform follows a microservices architecture pattern with the following key components:
+The platform follows a microservices architecture pattern:
 
-- **API Gateway**: Single entry point for all client requests
-- **Service Registry**: Eureka server for service discovery
-- **Config Server**: Centralized configuration management
-- **Authentication**: Keycloak for identity and access management
-- **Business Services**: Independent microservices for different domains
-- **Monitoring Stack**: Prometheus, Grafana, and Loki for observability
+```mermaid
+graph TD
+    FE[Next.js Frontend :3000] --> GW[API Gateway :8072]
+
+    GW --> ACC[Accounts :8080]
+    GW --> PRD[Products :8081]
+    GW --> CRT[Carts :8082]
+    GW --> ORD[Orders :8083]
+    GW --> RAT[Rates :8084]
+    GW --> SOC[Social :8086]
+    GW --> NOT[Notification :8087]
+    GW --> SRC[Search :8088]
+    GW --> INV[Inventory :8089]
+
+    ACC --> EUR[Eureka Server :8070]
+    PRD --> EUR
+    CRT --> EUR
+    ORD --> EUR
+    RAT --> EUR
+    SOC --> EUR
+    SRC --> EUR
+    INV --> EUR
+
+    ACC --> CFG[Config Server :8071]
+    PRD --> CFG
+    CRT --> CFG
+    ORD --> CFG
+    RAT --> CFG
+    SOC --> CFG
+    SRC --> CFG
+    INV --> CFG
+
+    ACC --> KC[Keycloak :7080]
+
+    PRD --> KFK[Kafka]
+    ORD --> KFK
+    NOT --> KFK
+    SRC --> KFK
+    INV --> KFK
+
+    PRD --> RDS[Redis]
+    GW --> RDS
+
+    SRC --> ES[Elasticsearch]
+
+    PRD --> CLD[Cloudinary]
+    SOC --> S3[AWS S3]
+    ORD --> PP[PayPal]
+
+    DBZ[Debezium CDC] --> KFK
+    DBZ --> DB[(MySQL)]
+    DBZ --> PG[(PostgreSQL)]
+
+    ACC --> DB
+    PRD --> DB
+    CRT --> DB
+    ORD --> DB
+    RAT --> DB
+    INV --> DB
+
+    KC --> PG
+
+    PROM[Prometheus] --> GW
+    PROM --> ACC
+    PROM --> PRD
+    PROM --> CRT
+    PROM --> ORD
+
+    GRF[Grafana :3003] --> PROM
+    GRF --> LOKI[Loki]
+    GRF --> TEMPO[Tempo]
+```
+
+---
+
+## Tech Stack
+
+| Category            | Technology               | Version        |
+| ------------------- | ------------------------ | -------------- |
+| **Language**        | Java                     | 17             |
+| **Framework**       | Spring Boot              | 3.3.3 – 3.4.1  |
+| **Cloud**           | Spring Cloud             | 2023.0.3       |
+| **Auth**            | Keycloak                 | 26.0.6         |
+| **Database**        | MySQL                    | 8.x            |
+| **Database**        | PostgreSQL               | 16.4           |
+| **Cache**           | Redis                    | latest         |
+| **Search**          | Elasticsearch            | 8.15.3         |
+| **Messaging**       | Apache Kafka (Confluent) | 7.5.0          |
+| **CDC**             | Debezium                 | 2.5 / 2.7.3    |
+| **Gateway**         | Spring Cloud Gateway     | —              |
+| **Discovery**       | Netflix Eureka           | —              |
+| **Resilience**      | Resilience4j             | —              |
+| **Tracing**         | OpenTelemetry Java Agent | 1.33.5         |
+| **Metrics**         | Prometheus + Micrometer  | latest         |
+| **Dashboards**      | Grafana                  | latest         |
+| **Logging**         | Loki + Grafana Alloy     | 3.1.0          |
+| **Tracing Backend** | Grafana Tempo            | latest         |
+| **Code Quality**    | SonarQube                | 10.4 Community |
+| **Payment**         | PayPal REST SDK          | 1.14.0         |
+| **Image Upload**    | Cloudinary               | 1.33.0         |
+| **Storage**         | AWS S3                   | —              |
+| **Frontend**        | Next.js                  | —              |
+| **Build**           | Maven + Jib              | 3.4.1          |
+| **CI/CD**           | Jenkins                  | —              |
+| **Container**       | Docker + Docker Compose  | 3.9            |
+
+---
+
 ## Screenshots
 
-### 🖥️ Infrastructure & Monitoring
+### Infrastructure & Monitoring
+
 <table>
   <tr>
     <td align="center">
@@ -124,7 +246,8 @@ The platform follows a microservices architecture pattern with the following key
   </tr>
 </table>
 
-### 🛒 User Interface
+### User Interface
+
 <table>
   <tr>
     <td align="center">
@@ -158,7 +281,8 @@ The platform follows a microservices architecture pattern with the following key
   </tr>
 </table>
 
-### 🏪 Admin Interface
+### Admin Interface
+
 <table>
   <tr>
     <td align="center">
@@ -185,231 +309,280 @@ The platform follows a microservices architecture pattern with the following key
 
 ### Prerequisites
 
-Ensure you have the following installed on your system:
-
-| Tool | Version | Purpose |
-|------|---------|---------|
-| Java JDK | 17+ | Runtime environment |
-| Maven | 3.8+ | Build automation |
-| Docker | 20.10+ | Containerization |
-| Docker Compose | 2.0+ | Multi-container deployment |
-| Git | 2.30+ | Version control |
+| Tool           | Version | Purpose                       |
+| -------------- | ------- | ----------------------------- |
+| Java JDK       | 17+     | Runtime environment           |
+| Maven          | 3.8+    | Build automation              |
+| Docker         | 20.10+  | Containerization              |
+| Docker Compose | 2.0+    | Multi-container orchestration |
+| Git            | 2.30+   | Version control               |
 
 ### Quick Start
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/vietviet08/Oralie.git
    cd Oralie
    ```
 
-2. **Build the project**
+2. **Build all microservices**
+
    ```bash
-   # Build all microservices
-   ./mvnw clean install
-   
-   # Or build individual services
-   cd accounts && ../mvnw clean install
-   cd ../products && ../mvnw clean install
-   # ... repeat for other services
+   # Build each service (no parent POM aggregator)
+   for svc in library configserver eurekaserver gatewayserver accounts products carts orders payment rates inventory notification search social; do
+     cd $svc && ../mvnw clean install -DskipTests && cd ..
+   done
    ```
 
-3. **Run with Docker Compose (Recommended)**
+   Or build individually:
+
    ```bash
-   # Start all services
+   cd accounts && ./mvnw clean package -DskipTests
+   ```
+
+3. **Configure environment**
+
+   Create a `.env` file in `docker/default/` with the required variables (see [Configuration](#configuration)).
+
+4. **Run with Docker Compose (Recommended)**
+
+   ```bash
+   cd docker/default
    docker-compose up -d
-   
+
    # Check service status
    docker-compose ps
-   
-   # View logs
-   docker-compose logs -f [service-name]
+
+   # View logs for a specific service
+   docker-compose logs -f accounts
    ```
 
-4. **Run locally (Development)**
+5. **Run locally (Development)**
+
    ```bash
-   # Start infrastructure services first
-   docker-compose up -d keycloak eureka-server config-server
-   
-   # Then start business services
-   cd accounts && ../mvnw spring-boot:run &
-   cd ../products && ../mvnw spring-boot:run &
-   cd ../carts && ../mvnw spring-boot:run &
+   # Start infrastructure first via Docker
+   cd docker/default
+   docker-compose up -d postgres oralie_db redis kafka zookeeper elasticsearch keycloak
+
+   # Then start Spring services locally
+   cd ../../configserver && ./mvnw spring-boot:run &
+   cd ../eurekaserver && ./mvnw spring-boot:run &
+   cd ../gatewayserver && ./mvnw spring-boot:run &
+   cd ../accounts && ./mvnw spring-boot:run &
    # ... start other services as needed
-   ```
-
-### Environment Setup
-
-1. **Create environment file**
-   ```bash
-   cp .env.example .env
-   ```
-
-2. **Configure environment variables**
-   ```env
-   # Database Configuration
-   DB_HOST=localhost
-   DB_PORT=3306
-   DB_NAME=oralie
-   DB_USERNAME=oralie_user
-   DB_PASSWORD=oralie_pass
-   
-   # Keycloak Configuration
-   KEYCLOAK_URL=http://localhost:8080
-   KEYCLOAK_REALM=oralie
-   KEYCLOAK_CLIENT_ID=oralie-client
-   
-   # Service Discovery
-   EUREKA_SERVER_URL=http://localhost:8761/eureka
-   
-   # Monitoring
-   PROMETHEUS_URL=http://localhost:9090
-   GRAFANA_URL=http://localhost:3000
    ```
 
 ### Verification
 
-After successful setup, verify the installation:
+After setup, verify the installation:
 
-1. **Service Registry**: http://localhost:8761
-2. **API Gateway**: http://localhost:8080
-3. **Keycloak Admin**: http://localhost:8080/auth/admin
-4. **Grafana Dashboard**: http://localhost:3000
-5. **Prometheus**: http://localhost:9090
+| Component        | URL                                   |
+| ---------------- | ------------------------------------- |
+| Eureka Dashboard | http://localhost:8070                 |
+| Config Server    | http://localhost:8071/actuator/health |
+| API Gateway      | http://localhost:8072                 |
+| Keycloak Admin   | http://localhost:7080                 |
+| Grafana          | http://localhost:3003                 |
+| Prometheus       | http://localhost:9090                 |
+| Kafka UI         | http://localhost:8989                 |
+| SonarQube        | http://localhost:9000                 |
+| Elasticsearch    | http://localhost:9200                 |
+| PgAdmin          | http://localhost:5050                 |
+
+---
+
+## Service Ports
+
+### Infrastructure Services
+
+| Service        | Port | Description                  |
+| -------------- | ---- | ---------------------------- |
+| Config Server  | 8071 | Centralized configuration    |
+| Eureka Server  | 8070 | Service discovery            |
+| Gateway Server | 8072 | API gateway & routing        |
+| Keycloak       | 7080 | Identity & access management |
+
+### Business Services
+
+| Service      | Port | Description                        |
+| ------------ | ---- | ---------------------------------- |
+| Accounts     | 8080 | User account management            |
+| Products     | 8081 | Product catalog & categories       |
+| Carts        | 8082 | Shopping cart management           |
+| Orders       | 8083 | Order processing & PayPal payment  |
+| Rates        | 8084 | Ratings & reviews                  |
+| Social       | 8086 | Media & AWS S3 storage             |
+| Notification | 8087 | Email notifications (Kafka-driven) |
+| Search       | 8088 | Elasticsearch full-text search     |
+| Inventory    | 8089 | Inventory management               |
+
+### Data & Messaging
+
+| Service       | Port | Description                      |
+| ------------- | ---- | -------------------------------- |
+| MySQL         | 3306 | Primary database (microservices) |
+| PostgreSQL    | 5432 | Keycloak & SonarQube database    |
+| Redis         | 6379 | Caching & rate limiting          |
+| Elasticsearch | 9200 | Search engine                    |
+| Kafka         | 9092 | Message broker                   |
+| Zookeeper     | 2181 | Kafka coordination               |
+| Debezium      | 9083 | Change Data Capture              |
+
+### Monitoring & Tools
+
+| Service       | Port        | Description                |
+| ------------- | ----------- | -------------------------- |
+| Prometheus    | 9090        | Metrics collection         |
+| Grafana       | 3003        | Dashboards & visualization |
+| Tempo         | 3110 / 4317 | Distributed tracing        |
+| Loki Gateway  | 3100        | Log aggregation            |
+| Grafana Alloy | 12345       | Log/metrics collector      |
+| Kafka UI      | 8989        | Kafka management UI        |
+| SonarQube     | 9000        | Code quality analysis      |
+| PgAdmin       | 5050        | PostgreSQL admin           |
+
+### Frontend
+
+| Service          | Port | Description                |
+| ---------------- | ---- | -------------------------- |
+| Next.js Frontend | 3000 | Customer-facing storefront |
 
 ---
 
 ## Usage
 
-### Accessing the Application
-
-| Service | URL | Description |
-|---------|-----|-------------|
-| Main Application | http://localhost:8080 | Customer-facing e-commerce site |
-| Admin Panel | http://localhost:8080/admin | Administrative interface |
-| API Gateway | http://localhost:8080/api | REST API endpoints |
-| Service Registry | http://localhost:8761 | Eureka dashboard |
-| Monitoring | http://localhost:3000 | Grafana dashboards |
-
 ### API Examples
 
-#### Authentication
-```bash
-# Login
-curl -X POST http://localhost:8080/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"username": "user@example.com", "password": "password"}'
+All API requests go through the **Gateway Server** at `http://localhost:8072`.
 
-# Get user profile
-curl -X GET http://localhost:8080/api/auth/profile \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+#### Authentication (Keycloak)
+
+```bash
+# Get access token from Keycloak
+curl -X POST http://localhost:7080/realms/oralie/protocol/openid-connect/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "grant_type=password&client_id=YOUR_CLIENT_ID&client_secret=YOUR_CLIENT_SECRET&username=user@example.com&password=password"
 ```
 
-#### Product Management
+#### Products
+
 ```bash
 # Get all products
-curl -X GET http://localhost:8080/api/products
-
-# Get product by ID
-curl -X GET http://localhost:8080/api/products/1
+curl http://localhost:8072/api/products
 
 # Search products
-curl -X GET "http://localhost:8080/api/products/search?q=laptop&category=electronics"
-
-# Create product (admin only)
-curl -X POST http://localhost:8080/api/products \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer ADMIN_TOKEN" \
-  -d '{
-    "name": "Gaming Laptop",
-    "description": "High-performance gaming laptop",
-    "price": 1299.99,
-    "categoryId": 1,
-    "stock": 50
-  }'
+curl "http://localhost:8072/api/search?q=laptop"
 ```
 
 #### Shopping Cart
+
 ```bash
 # Add item to cart
-curl -X POST http://localhost:8080/api/carts/items \
+curl -X POST http://localhost:8072/api/carts/items \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer USER_TOKEN" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
   -d '{"productId": 1, "quantity": 2}'
 
-# Get cart contents
-curl -X GET http://localhost:8080/api/carts \
-  -H "Authorization: Bearer USER_TOKEN"
-
-# Update item quantity
-curl -X PUT http://localhost:8080/api/carts/items/1 \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer USER_TOKEN" \
-  -d '{"quantity": 3}'
+# Get cart
+curl http://localhost:8072/api/carts \
+  -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
-#### Order Processing
+#### Orders
+
 ```bash
 # Create order
-curl -X POST http://localhost:8080/api/orders \
+curl -X POST http://localhost:8072/api/orders \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer USER_TOKEN" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
   -d '{
     "shippingAddress": {
       "street": "123 Main St",
-      "city": "Anytown",
-      "zipCode": "12345",
-      "country": "USA"
+      "city": "Ho Chi Minh",
+      "zipCode": "70000",
+      "country": "VN"
     },
-    "paymentMethod": "CREDIT_CARD"
+    "paymentMethod": "PAYPAL"
   }'
-
-# Get order history
-curl -X GET http://localhost:8080/api/orders \
-  -H "Authorization: Bearer USER_TOKEN"
-
-# Get order details
-curl -X GET http://localhost:8080/api/orders/1 \
-  -H "Authorization: Bearer USER_TOKEN"
 ```
-
-### Default Credentials
-
-| Role | Username | Password | Description |
-|------|----------|----------|-------------|
-| Admin | admin@oralie.com | admin123 | Full system access |
-| Manager | manager@oralie.com | manager123 | Product and order management |
-| Customer | user@oralie.com | user123 | Regular customer account |
 
 ---
 
 ## Configuration
 
-### Application Configuration
+### Environment Variables
 
-Each microservice has its own configuration file located in `src/main/resources/application.yml`:
+Create a `.env` file in `docker/default/` with:
+
+```env
+# Docker image version
+LATEST_VERSION=1.0.4
+
+# PostgreSQL (Keycloak & SonarQube)
+POSTGRES_USER=keycloak
+POSTGRES_PASSWORD=your_password
+
+# PgAdmin
+PGADMIN_DEFAULT_EMAIL=admin@oralie.com
+PGADMIN_DEFAULT_PASSWORD=admin
+
+# MySQL (Microservices)
+MYSQL_ROOT_PASSWORD=your_mysql_root_password
+
+# Keycloak
+KEYCLOAK_ADMIN=admin
+KEYCLOAK_ADMIN_PASSWORD=admin
+KEYCLOAK_URL=http://keycloak:7080
+KEYCLOAK_CLIENT_ID=your_client_id
+KEYCLOAK_CLIENT_SECRET=your_client_secret
+KEYCLOAK_STORE_CLIENT_ID=your_store_client_id
+KEYCLOAK_STORE_CLIENT_SECRET=your_store_client_secret
+
+# PayPal
+PAYPAL_CLIENT_ID=your_paypal_client_id
+PAYPAL_CLIENT_SECRET=your_paypal_client_secret
+
+# AWS S3 (Social service)
+AWS_REGION=ap-southeast-1
+AWS_BUCKET_NAME=your_bucket
+AWS_ACCESS_KEY=your_access_key
+AWS_SECRET_KEY=your_secret_key
+URL_AWS_S3=https://your-bucket.s3.amazonaws.com
+
+# Mail (Notification service)
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+USERNAME_MAIL=your_email@gmail.com
+PASSWORD_MAIL=your_app_password
+
+# Frontend
+NEXTAUTH_SECRET=your_nextauth_secret
+NEXTAUTH_URL=http://localhost:3000
+NEXT_DEBUG_HYDRATION=false
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+URL_TT=your_url
+URL_PICTURE=your_url
+```
+
+### Service Configuration
+
+Each microservice loads its configuration from the **Config Server** (port 8071), which sources configs from a Git repository. Service-specific overrides can be set via environment variables in `docker-compose.yml`.
+
+Common configuration pattern per service:
 
 ```yaml
-# Example configuration for products service
-server:
-  port: 8081
-
 spring:
   application:
-    name: products-service
-  datasource:
-    url: jdbc:mysql://localhost:3306/oralie_products
-    username: ${DB_USERNAME:oralie_user}
-    password: ${DB_PASSWORD:oralie_pass}
-  jpa:
-    hibernate:
-      ddl-auto: update
-    show-sql: false
+    name: products
+  config:
+    import: "optional:configserver:http://localhost:8071/"
 
 eureka:
   client:
     service-url:
-      defaultZone: ${EUREKA_SERVER_URL:http://localhost:8761/eureka}
+      defaultZone: http://localhost:8070/eureka/
 
 management:
   endpoints:
@@ -421,146 +594,49 @@ management:
       show-details: always
 ```
 
-### Environment Variables
-
-| Variable | Description | Default Value |
-|----------|-------------|---------------|
-| `DB_HOST` | Database host | localhost |
-| `DB_PORT` | Database port | 3306 |
-| `DB_USERNAME` | Database username | oralie_user |
-| `DB_PASSWORD` | Database password | oralie_pass |
-| `KEYCLOAK_URL` | Keycloak server URL | http://localhost:8080 |
-| `EUREKA_SERVER_URL` | Eureka server URL | http://localhost:8761/eureka |
-| `JWT_SECRET` | JWT signing secret | your_jwt_secret |
-| `SPRING_PROFILES_ACTIVE` | Active Spring profiles | dev |
-
-### Docker Configuration
-
-The `docker-compose.yml` file orchestrates all services:
-
-```yaml
-version: '3.8'
-services:
-  # Infrastructure Services
-  keycloak:
-    image: quay.io/keycloak/keycloak:latest
-    environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
-    ports:
-      - "8080:8080"
-
-  eureka-server:
-    build: ./eurekaserver
-    ports:
-      - "8761:8761"
-
-  # Business Services
-  accounts-service:
-    build: ./accounts
-    environment:
-      - SPRING_PROFILES_ACTIVE=docker
-      - EUREKA_SERVER_URL=http://eureka-server:8761/eureka
-    depends_on:
-      - eureka-server
-      - keycloak
-```
-
-### Monitoring Configuration
-
-Prometheus configuration (`docker/observability/prometheus.yml`):
-
-```yaml
-global:
-  scrape_interval: 15s
-
-scrape_configs:
-  - job_name: 'spring-boot-apps'
-    metrics_path: '/actuator/prometheus'
-    static_configs:
-      - targets: 
-        - 'accounts-service:8081'
-        - 'products-service:8082'
-        - 'carts-service:8083'
-        - 'orders-service:8084'
-```
-
 ---
 
 ## Project Structure
 
 ```
 Oralie/
-├── 📁 accounts/              # User account management service
-│   ├── src/main/java/        # Account business logic
-│   ├── src/test/java/        # Unit and integration tests
-│   ├── Dockerfile            # Container configuration
-│   └── pom.xml              # Maven dependencies
-├── 📁 carts/                # Shopping cart service
-│   ├── src/main/java/        # Cart management logic
-│   └── ...
-├── 📁 products/             # Product catalog service
-│   ├── src/main/java/        # Product business logic
-│   └── ...
-├── 📁 orders/               # Order processing service
-├── 📁 payment/              # Payment processing service
-├── 📁 inventory/            # Inventory management service
-├── 📁 notification/         # Notification service
-├── 📁 rates/                # Rating and review service
-├── 📁 search/               # Search service
-├── 📁 social/               # Social features service
-├── 📁 configserver/         # Spring Cloud Config Server
-├── 📁 eurekaserver/         # Service discovery server
-├── 📁 gatewayserver/        # API Gateway
-├── 📁 keycloak/             # Authentication configuration
-│   ├── realm-export.json    # Keycloak realm configuration
-│   └── themes/              # Custom UI themes
-├── 📁 library/              # Shared libraries and utilities
-├── 📁 docker/               # Docker configurations
-│   ├── default/             # Default environment configs
-│   ├── prod/                # Production environment configs
-│   └── observability/       # Monitoring stack configs
-├── 📁 assets/               # Documentation images
-├── 📁 logs/                 # Application logs
-├── 📄 docker-compose.yml    # Multi-container orchestration
-├── 📄 Jenkinsfile           # CI/CD pipeline configuration
-├── 📄 README.md             # Project documentation
-└── 📄 pom.xml               # Parent Maven configuration
-```
-
-### Service Dependencies
-
-```mermaid
-graph TD
-    A[API Gateway] --> B[Accounts Service]
-    A --> C[Products Service]
-    A --> D[Carts Service]
-    A --> E[Orders Service]
-    A --> F[Payment Service]
-    
-    B --> G[Eureka Server]
-    C --> G
-    D --> G
-    E --> G
-    F --> G
-    
-    B --> H[Config Server]
-    C --> H
-    D --> H
-    E --> H
-    F --> H
-    
-    B --> I[Keycloak]
-    E --> J[Notification Service]
-    C --> K[Inventory Service]
-    
-    L[Prometheus] --> A
-    L --> B
-    L --> C
-    L --> D
-    L --> E
-    
-    M[Grafana] --> L
+├── accounts/              # User account management service (port 8080)
+├── products/              # Product catalog service (port 8081)
+├── carts/                 # Shopping cart service (port 8082)
+├── orders/                # Order processing + PayPal (port 8083)
+├── rates/                 # Ratings & reviews service (port 8084)
+├── social/                # Media & AWS S3 service (port 8086)
+├── notification/          # Kafka-driven email service (port 8087)
+├── search/                # Elasticsearch search service (port 8088)
+├── inventory/             # Inventory management service (port 8089)
+├── payment/               # Payment processing service
+├── configserver/          # Spring Cloud Config Server (port 8071)
+├── eurekaserver/          # Netflix Eureka Server (port 8070)
+├── gatewayserver/         # Spring Cloud Gateway (port 8072)
+├── library/               # Shared library module (DTOs, utilities)
+├── keycloak/
+│   ├── realm-export.json  # Keycloak realm configuration
+│   ├── kel-kafka/         # Keycloak Kafka event listener SPI
+│   └── themes/oralie/     # Custom Keycloak UI theme
+├── docker/
+│   ├── default/           # Default Docker Compose environment
+│   │   ├── docker-compose.yml
+│   │   ├── common-config.yml
+│   │   ├── configs/       # Debezium connector configs
+│   │   ├── mysql/         # MySQL init scripts
+│   │   ├── postgres/      # PostgreSQL init scripts
+│   │   └── sonarqube/     # SonarQube configuration
+│   ├── prod/              # Production environment
+│   ├── libs/              # Shared JARs / providers
+│   └── observability/     # Monitoring stack configs
+│       ├── alloy/         # Grafana Alloy config
+│       ├── grafana/       # Grafana datasources
+│       ├── loki/          # Loki config
+│       ├── prometheus/    # Prometheus scrape config
+│       └── tempo/         # Tempo config
+├── assets/                # Documentation images
+├── Jenkinsfile            # Jenkins CI/CD pipeline
+└── README.md
 ```
 
 ---
@@ -569,62 +645,38 @@ graph TD
 
 ### Swagger UI
 
-Each microservice exposes its API documentation through Swagger UI:
+Each service exposes OpenAPI docs via SpringDoc:
 
-| Service | Swagger URL | Description |
-|---------|-------------|-------------|
-| API Gateway | http://localhost:8080/swagger-ui.html | Aggregated API docs |
-| Accounts | http://localhost:8081/swagger-ui.html | User management APIs |
-| Products | http://localhost:8082/swagger-ui.html | Product catalog APIs |
-| Carts | http://localhost:8083/swagger-ui.html | Shopping cart APIs |
-| Orders | http://localhost:8084/swagger-ui.html | Order processing APIs |
-| Payment | http://localhost:8085/swagger-ui.html | Payment processing APIs |
-
-### Postman Collection
-
-Import the Postman collection for comprehensive API testing:
-
-```bash
-# Download the collection
-curl -o Oralie-API.postman_collection.json \
-  https://github.com/vietviet08/Oralie/raw/main/docs/Oralie-API.postman_collection.json
-
-# Import environment variables
-curl -o Oralie-Environment.postman_environment.json \
-  https://github.com/vietviet08/Oralie/raw/main/docs/Oralie-Environment.postman_environment.json
-```
-
-### API Rate Limiting
-
-The API Gateway implements rate limiting to ensure fair usage:
-
-| Endpoint Pattern | Rate Limit | Window |
-|------------------|------------|--------|
-| `/api/auth/**` | 10 requests | 1 minute |
-| `/api/products/**` | 100 requests | 1 minute |
-| `/api/carts/**` | 50 requests | 1 minute |
-| `/api/orders/**` | 20 requests | 1 minute |
+| Service              | Swagger URL                           |
+| -------------------- | ------------------------------------- |
+| Accounts             | http://localhost:8080/swagger-ui.html |
+| Products             | http://localhost:8081/swagger-ui.html |
+| Carts                | http://localhost:8082/swagger-ui.html |
+| Orders               | http://localhost:8083/swagger-ui.html |
+| Rates                | http://localhost:8084/swagger-ui.html |
+| Social               | http://localhost:8086/swagger-ui.html |
+| Search               | http://localhost:8088/swagger-ui.html |
+| Inventory            | http://localhost:8089/swagger-ui.html |
+| Gateway (aggregated) | http://localhost:8072/swagger-ui.html |
 
 ### Authentication Flow
 
 ```mermaid
 sequenceDiagram
-    participant C as Client
-    participant G as API Gateway
-    participant K as Keycloak
-    participant S as Service
+    participant C as Client / Frontend
+    participant GW as Gateway :8072
+    participant KC as Keycloak :7080
+    participant S as Microservice
 
-    C->>G: Request with credentials
-    G->>K: Validate credentials
-    K->>G: Return JWT token
-    G->>C: Return access token
-    
-    C->>G: API request with token
-    G->>K: Validate token
-    K->>G: Token valid
-    G->>S: Forward request
-    S->>G: Response
-    G->>C: Return response
+    C->>KC: POST /realms/oralie/protocol/openid-connect/token
+    KC-->>C: JWT Access Token + Refresh Token
+
+    C->>GW: API request + Authorization: Bearer {token}
+    GW->>KC: Validate JWT (JWK Set)
+    KC-->>GW: Token valid
+    GW->>S: Forward request
+    S-->>GW: Response
+    GW-->>C: Response
 ```
 
 ---
@@ -634,530 +686,138 @@ sequenceDiagram
 ### Running Tests
 
 ```bash
-# Run all tests
-./mvnw test
+# Run tests for a specific service
+cd accounts && ./mvnw test
 
-# Run tests for specific service
-cd accounts && ../mvnw test
+# Run tests with coverage report
+cd accounts && ./mvnw test jacoco:report
+# Open target/site/jacoco/index.html
 
 # Run integration tests
-./mvnw verify -P integration-test
-
-# Run with coverage
-./mvnw test jacoco:report
+cd accounts && ./mvnw verify -P integration-test
 ```
 
-### Test Categories
+### Test Frameworks
 
-#### Unit Tests
-- **Location**: `src/test/java/**/*Test.java`
-- **Purpose**: Test individual components in isolation
-- **Framework**: JUnit 5, Mockito, AssertJ
-
-#### Integration Tests
-- **Location**: `src/test/java/**/*IT.java`
-- **Purpose**: Test service interactions and database operations
-- **Framework**: Spring Boot Test, Testcontainers
-
-#### Contract Tests
-- **Location**: `src/test/java/**/*ContractTest.java`
-- **Purpose**: Ensure API contracts between services
-- **Framework**: Spring Cloud Contract
-
-### Test Coverage
-
-Generate coverage reports:
-
-```bash
-# Generate coverage report
-./mvnw jacoco:report
-
-# View coverage in browser
-open target/site/jacoco/index.html
-```
-
-**Coverage Targets:**
-- Line Coverage: > 80%
-- Branch Coverage: > 70%
-- Method Coverage: > 85%
-
-### Performance Testing
-
-Load testing with JMeter:
-
-```bash
-# Install JMeter
-brew install jmeter  # macOS
-sudo apt-get install jmeter  # Ubuntu
-
-# Run performance tests
-jmeter -n -t tests/performance/load-test.jmx -l results/load-test-results.jtl
-```
-
-### Database Testing
-
-Using Testcontainers for database integration tests:
-
-```java
-@Testcontainers
-@SpringBootTest
-class ProductRepositoryIT {
-    
-    @Container
-    static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:8.0")
-            .withDatabaseName("test_oralie")
-            .withUsername("test")
-            .withPassword("test");
-    
-    @Test
-    void shouldSaveAndRetrieveProduct() {
-        // Test implementation
-    }
-}
-```
+| Framework            | Purpose                |
+| -------------------- | ---------------------- |
+| JUnit 5              | Unit testing           |
+| Mockito              | Mocking                |
+| Spring Boot Test     | Integration testing    |
+| Spring Security Test | Security layer testing |
 
 ---
 
 ## Deployment
 
-### Docker Deployment
+### Docker Compose (Default)
 
-#### Single Environment
 ```bash
-# Build and start all services
+cd docker/default
+
+# Start all services
 docker-compose up -d
 
-# Scale specific services
-docker-compose up -d --scale products-service=3
+# Scale a specific service
+docker-compose up -d --scale products=3
 
-# Update a service
-docker-compose up -d --no-deps products-service
+# Update a single service
+docker-compose up -d --no-deps products
+
+# Stop all
+docker-compose down
 ```
 
-#### Multi-Environment Support
+### Production Environment
+
 ```bash
-# Development environment
-docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
-
-# Production environment
-docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
-
-# Staging environment
-docker-compose -f docker-compose.yml -f docker-compose.staging.yml up -d
+cd docker/prod
+docker-compose up -d
 ```
 
-### Kubernetes Deployment
+### CI/CD — Jenkins
 
-#### Prerequisites
-```bash
-# Install kubectl
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-chmod +x kubectl && sudo mv kubectl /usr/local/bin/
+The project uses a Jenkins pipeline defined in `Jenkinsfile`. The pipeline:
 
-# Install Helm
-curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-```
-
-#### Deploy to Kubernetes
-```bash
-# Create namespace
-kubectl create namespace oralie
-
-# Deploy with Helm
-helm install oralie ./k8s/helm/oralie -n oralie
-
-# Update deployment
-helm upgrade oralie ./k8s/helm/oralie -n oralie
-
-# Check status
-kubectl get pods -n oralie
-kubectl get services -n oralie
-```
-
-#### Kubernetes Resources
-```yaml
-# Example service deployment
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: products-service
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: products-service
-  template:
-    metadata:
-      labels:
-        app: products-service
-    spec:
-      containers:
-      - name: products-service
-        image: oralie/products-service:latest
-        ports:
-        - containerPort: 8082
-        env:
-        - name: SPRING_PROFILES_ACTIVE
-          value: "k8s"
-```
-
-### Cloud Deployment
-
-#### AWS EKS
-```bash
-# Create EKS cluster
-eksctl create cluster --name oralie-cluster --region us-west-2
-
-# Deploy application
-kubectl apply -f k8s/aws/
-```
-
-#### Google GKE
-```bash
-# Create GKE cluster
-gcloud container clusters create oralie-cluster --zone us-central1-a
-
-# Deploy application
-kubectl apply -f k8s/gcp/
-```
-
-#### Azure AKS
-```bash
-# Create AKS cluster
-az aks create --resource-group oralie-rg --name oralie-cluster
-
-# Deploy application
-kubectl apply -f k8s/azure/
-```
-
-### CI/CD Pipeline
-
-#### Jenkins Pipeline
-
-The `Jenkinsfile` defines a complete CI/CD pipeline:
+1. Builds Docker images for each microservice
+2. Tags images with version numbers (e.g., `vietquoc2408/accounts-oralie:1.0.4`)
+3. Pushes images to Docker Hub
+4. Can be extended for staging/production deployment
 
 ```groovy
-pipeline {
-    agent any
-    
-    stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/vietviet08/Oralie.git'
-            }
-        }
-        
-        stage('Test') {
-            steps {
-                sh './mvnw clean test'
-            }
-            post {
-                always {
-                    publishTestResults testResultsPattern: '**/target/surefire-reports/*.xml'
-                    publishCoverage adapters: [jacocoAdapter('**/target/site/jacoco/jacoco.xml')]
-                }
-            }
-        }
-        
-        stage('Build') {
-            steps {
-                sh './mvnw clean package -DskipTests'
-            }
-        }
-        
-        stage('Docker Build') {
-            steps {
-                script {
-                    def services = ['accounts', 'products', 'carts', 'orders', 'payment']
-                    services.each { service ->
-                        sh "docker build -t oralie/${service}-service:${env.BUILD_NUMBER} ./${service}"
-                    }
-                }
-            }
-        }
-        
-        stage('Deploy to Staging') {
-            steps {
-                sh 'docker-compose -f docker-compose.staging.yml up -d'
-            }
-        }
-        
-        stage('Integration Tests') {
-            steps {
-                sh './mvnw verify -P integration-test'
-            }
-        }
-        
-        stage('Deploy to Production') {
-            when {
-                branch 'main'
-            }
-            steps {
-                sh 'kubectl apply -f k8s/production/'
-            }
-        }
-    }
-}
+// Key environment variables in Jenkinsfile
+DOCKERHUB_REPO = 'vietquoc2408'
+LATEST_VERSION = '1.0.3'
+NEXT_VERSION = '1.0.4'
 ```
 
-#### GitHub Actions
+### Health Checks
 
-`.github/workflows/ci-cd.yml`:
-
-```yaml
-name: CI/CD Pipeline
-
-on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main ]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK 17
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-    
-    - name: Run tests
-      run: ./mvnw clean test
-    
-    - name: Generate coverage report
-      run: ./mvnw jacoco:report
-    
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-
-  build-and-deploy:
-    needs: test
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-    - uses: actions/checkout@v3
-    
-    - name: Build Docker images
-      run: |
-        docker-compose build
-    
-    - name: Deploy to production
-      run: |
-        # Add deployment commands here
-        echo "Deploying to production..."
-```
-
-### Monitoring in Production
-
-#### Health Checks
 ```bash
-# Check service health
-curl http://localhost:8080/actuator/health
+# Check any service health
+curl http://localhost:8080/actuator/health/readiness
 
-# Check individual service
-curl http://localhost:8081/actuator/health
-```
-
-#### Metrics Endpoints
-```bash
 # Prometheus metrics
-curl http://localhost:8080/actuator/prometheus
+curl http://localhost:8081/actuator/prometheus
 
-# Application info
-curl http://localhost:8080/actuator/info
+# Service info
+curl http://localhost:8072/actuator/info
 ```
 
 ---
 
 ## Contributing
 
-We welcome contributions from the community! Please follow these guidelines to ensure a smooth collaboration.
-
 ### Getting Started
 
-1. **Fork the repository**
+1. **Fork & clone**
+
    ```bash
-   # Fork on GitHub, then clone your fork
    git clone https://github.com/YOUR_USERNAME/Oralie.git
    cd Oralie
-   
-   # Add upstream remote
    git remote add upstream https://github.com/vietviet08/Oralie.git
    ```
 
-2. **Set up development environment**
-   ```bash
-   # Install dependencies
-   ./mvnw clean install
-   
-   # Set up pre-commit hooks
-   pre-commit install
-   ```
+2. **Create a feature branch**
 
-3. **Create a feature branch**
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
-### Development Guidelines
+3. **Develop & test**
 
-#### Code Style
-
-We follow **Google Java Style Guide** with slight modifications:
-
-- **Indentation**: 4 spaces (not tabs)
-- **Line length**: 120 characters
-- **Imports**: Use wildcard imports sparingly
-- **Naming**: Use descriptive names for variables and methods
-
-#### Code Formatting
-
-Use the provided IDE configurations:
-- **IntelliJ IDEA**: Import `ide-config/intellij-codestyle.xml`
-- **Eclipse**: Import `ide-config/eclipse-formatter.xml`
-- **VS Code**: Install the Java extension pack
-
-#### Commit Message Convention
-
-We use **Conventional Commits** specification:
-
-```
-type(scope): description
-
-[optional body]
-
-[optional footer]
-```
-
-**Types:**
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation changes
-- `style`: Code style changes (formatting, etc.)
-- `refactor`: Code refactoring
-- `test`: Adding or modifying tests
-- `chore`: Maintenance tasks
-
-**Examples:**
-```
-feat(products): add product search functionality
-
-Implement elasticsearch integration for product search
-with filters and pagination support.
-
-Closes #123
-```
-
-```
-fix(cart): resolve cart item duplication issue
-
-Fixed bug where adding same product multiple times
-created duplicate entries instead of updating quantity.
-
-Fixes #456
-```
-
-### Pull Request Process
-
-1. **Update your branch**
    ```bash
-   git fetch upstream
-   git rebase upstream/main
+   cd <service> && ./mvnw clean test
    ```
 
-2. **Run tests and checks**
-   ```bash
-   # Run all tests
-   ./mvnw clean test
-   
-   # Check code style
-   ./mvnw checkstyle:check
-   
-   # Run integration tests
-   ./mvnw verify -P integration-test
+4. **Commit using Conventional Commits**
+
+   ```
+   feat(products): add product search with Elasticsearch
+   fix(cart): resolve cart item duplication issue
+   docs(readme): update service port table
    ```
 
-3. **Create pull request**
-   - Use the provided PR template
-   - Link related issues
-   - Add screenshots for UI changes
-   - Request review from maintainers
+5. **Open a Pull Request** against `master`
 
-#### Pull Request Template
+### Code Style
 
-```markdown
-## Description
-Brief description of changes made.
+- **Google Java Style Guide** (4-space indent, 120-char line limit)
+- Use Lombok annotations where applicable
+- All REST endpoints documented with SpringDoc `@Operation` annotations
 
-## Type of Change
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] Documentation update
+### Requirements for PRs
 
-## Related Issue
-Closes #(issue_number)
-
-## How Has This Been Tested?
-- [ ] Unit tests
-- [ ] Integration tests
-- [ ] Manual testing
-
-## Screenshots (if applicable)
-Add screenshots to help explain your changes.
-
-## Checklist
-- [ ] My code follows the style guidelines
-- [ ] I have performed a self-review of my code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes generate no new warnings
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
-```
-
-### Testing Requirements
-
-All contributions must include appropriate tests:
-
-- **Unit tests**: For new methods and classes
-- **Integration tests**: For new endpoints and database operations
-- **Contract tests**: For API changes between services
-
-### Documentation
-
-Update documentation for:
-- New features or APIs
-- Configuration changes
-- Deployment procedures
-- Architecture modifications
-
-### Security
-
-Report security vulnerabilities privately to: security@oralie.com
-
-### Code Review Process
-
-1. Automated checks must pass
-2. At least 2 approvals from maintainers
-3. All conversations resolved
-4. Up-to-date with main branch
-
-### Community
-
-- **Discussions**: Use GitHub Discussions for questions
-- **Issues**: Report bugs and request features
-- **Discord**: Join our developer community (link in bio)
+- All existing tests must pass
+- New features must include unit tests
+- API changes must update Swagger annotations
+- At least 1 maintainer approval required
 
 ---
 
 ## License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
 
 ```
 MIT License
@@ -1183,25 +843,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-### Third-Party Licenses
-
-This project uses the following open-source libraries:
-
-| Library | License | Purpose |
-|---------|---------|---------|
-| Spring Boot | Apache 2.0 | Application framework |
-| Spring Cloud | Apache 2.0 | Microservices toolkit |
-| Keycloak | Apache 2.0 | Identity and access management |
-| Prometheus | Apache 2.0 | Metrics collection |
-| Grafana | AGPL v3 | Monitoring dashboards |
-| MySQL | GPL v2 | Database |
-| Docker | Apache 2.0 | Containerization |
-
 ---
 
 ## Authors & Maintainers
-
-### Core Team
 
 <table>
   <tr>
@@ -1211,118 +855,50 @@ This project uses the following open-source libraries:
         <sub><b>Nguyen Quoc Viet</b></sub>
       </a><br />
       <sub>Project Lead & Backend Developer</sub><br />
-      📧 vietvie203@gmail.com
-    </td>
-    <td align="center">
-      <a href="#">
-        <img src="https://via.placeholder.com/100" width="100px;" alt="Team Member"/><br />
-        <sub><b>Team Member</b></sub>
-      </a><br />
-      <sub>Frontend Developer</sub><br />
-      📧 frontend@oralie.com
-    </td>
-    <td align="center">
-      <a href="#">
-        <img src="https://via.placeholder.com/100" width="100px;" alt="Team Member"/><br />
-        <sub><b>Team Member</b></sub>
-      </a><br />
-      <sub>DevOps Engineer</sub><br />
-      📧 devops@oralie.com
+      📧 viezquoc.dev@gmail.com
     </td>
   </tr>
 </table>
-
-### Contributors
-
-We appreciate all contributors who have helped make this project better:
-
-<!-- ALL-CONTRIBUTORS-LIST:START -->
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-### Contact Information
-
-- **General Inquiries**: info@oralie.com
-- **Technical Support**: support@oralie.com
-- **Security Issues**: security@oralie.com
-- **Business Partnerships**: business@oralie.com
-
-### Community
-
-- **GitHub Discussions**: [Project Discussions](https://github.com/vietviet08/Oralie/discussions)
-- **Discord Server**: [Join our community](https://discord.gg/oralie) (Coming soon)
-- **Twitter**: [@OralieProject](https://twitter.com/OralieProject) (Coming soon)
-- **LinkedIn**: [Oralie Project](https://linkedin.com/company/oralie) (Coming soon)
 
 ---
 
 ## Acknowledgments
 
-### Open Source Technologies
+### Core Technologies
 
-We extend our gratitude to the following open-source projects that make Oralie possible:
+- **[Spring Boot](https://spring.io/projects/spring-boot)** & **[Spring Cloud](https://spring.io/projects/spring-cloud)** — Application framework & microservices toolkit
+- **[Keycloak](https://www.keycloak.org/)** — Identity and access management
+- **[Apache Kafka](https://kafka.apache.org/)** — Event streaming platform
+- **[Elasticsearch](https://www.elastic.co/)** — Full-text search engine
+- **[Debezium](https://debezium.io/)** — Change Data Capture
 
-#### Backend Framework
-- **[Spring Boot](https://spring.io/projects/spring-boot)** - Application framework and auto-configuration
-- **[Spring Cloud](https://spring.io/projects/spring-cloud)** - Microservices patterns and tools
-- **[Spring Security](https://spring.io/projects/spring-security)** - Authentication and authorization
+### Observability
 
-#### Infrastructure & DevOps
-- **[Docker](https://www.docker.com/)** - Containerization platform
-- **[Kubernetes](https://kubernetes.io/)** - Container orchestration
-- **[Jenkins](https://www.jenkins.io/)** - CI/CD automation
-- **[Keycloak](https://www.keycloak.org/)** - Identity and access management
+- **[Prometheus](https://prometheus.io/)** — Metrics collection
+- **[Grafana](https://grafana.com/)** — Dashboards & visualization
+- **[Loki](https://grafana.com/oss/loki/)** — Log aggregation
+- **[Tempo](https://grafana.com/oss/tempo/)** — Distributed tracing
+- **[OpenTelemetry](https://opentelemetry.io/)** — Observability framework
 
-#### Monitoring & Observability
-- **[Prometheus](https://prometheus.io/)** - Metrics collection and alerting
-- **[Grafana](https://grafana.com/)** - Monitoring and observability platform
-- **[Loki](https://grafana.com/oss/loki/)** - Log aggregation system
-- **[Jaeger](https://www.jaegertracing.io/)** - Distributed tracing
+### Database & Caching
 
-#### Databases & Messaging
-- **[MySQL](https://www.mysql.com/)** - Relational database
-- **[Redis](https://redis.io/)** - In-memory data structure store
-- **[Apache Kafka](https://kafka.apache.org/)** - Event streaming platform
+- **[MySQL](https://www.mysql.com/)** — Relational database
+- **[PostgreSQL](https://www.postgresql.org/)** — Relational database
+- **[Redis](https://redis.io/)** — In-memory caching
 
-#### Testing
-- **[JUnit 5](https://junit.org/junit5/)** - Testing framework
-- **[Mockito](https://mockito.org/)** - Mocking framework
-- **[Testcontainers](https://www.testcontainers.org/)** - Integration testing with Docker
+### DevOps & Infrastructure
+
+- **[Docker](https://www.docker.com/)** — Containerization
+- **[Jenkins](https://www.jenkins.io/)** — CI/CD automation
+- **[SonarQube](https://www.sonarqube.org/)** — Code quality analysis
 
 ### Learning Resources
 
-Special thanks to the following resources that guided our architecture and best practices:
-
-#### Books
-- **"Microservices Patterns"** by Chris Richardson
-- **"Spring Boot in Action"** by Craig Walls
-- **"Building Microservices"** by Sam Newman
-- **"Effective Java"** by Joshua Bloch
-
-#### Online Resources
-- **[Baeldung](https://www.baeldung.com/)** - Comprehensive Java and Spring tutorials
-- **[Spring Guides](https://spring.io/guides)** - Official Spring framework guides
-- **[Microservices.io](https://microservices.io/)** - Microservices patterns and best practices
-- **[12 Factor App](https://12factor.net/)** - Methodology for building SaaS applications
-
-#### Courses & Tutorials
-- **Spring Microservices in Action** - John Carnell & Kalpit Patel
-- **Docker and Kubernetes: The Complete Guide** - Stephen Grider
-- **Microservices with Spring Cloud** - Various online platforms
-
-### Inspiration
-
-This project was inspired by real-world e-commerce platforms and the need for a comprehensive reference implementation of microservices architecture patterns.
-
-### Special Thanks
-
-- **The Spring Team** for creating an excellent framework ecosystem
-- **The Docker Team** for revolutionizing application deployment
-- **The Kubernetes Community** for making container orchestration accessible
-- **All Open Source Contributors** who make projects like this possible
-
-### Disclaimer
-
-This project is created for educational and demonstration purposes. While it follows production-ready patterns and practices, additional security hardening and performance optimization may be required for production deployment.
+- _Microservices Patterns_ — Chris Richardson
+- _Spring Boot in Action_ — Craig Walls
+- _Building Microservices_ — Sam Newman
+- [Baeldung](https://www.baeldung.com/) — Java & Spring tutorials
+- [Spring Guides](https://spring.io/guides) — Official Spring guides
 
 ---
 
@@ -1333,7 +909,7 @@ This project is created for educational and demonstration purposes. While it fol
       <img src="https://img.shields.io/github/stars/vietviet08/Oralie?style=social" alt="GitHub stars">
     </a>
   </p>
-  
+
   <p>Made with ❤️ by the Oralie Team</p>
   <p>© 2024 Oralie. All rights reserved.</p>
 </div>
